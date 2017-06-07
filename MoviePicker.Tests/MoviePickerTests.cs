@@ -12,7 +12,8 @@ namespace MooviePicker.Tests
 	[TestClass]
 	public class MoviePickerTests
 	{
-		private static UnityContainer _unity;
+		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
+		private static IUnityContainer _unity;
 
 		[ClassInitialize]
 		public static void InitializeBeforeAllTests(TestContext context)
@@ -25,11 +26,15 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePicker_ChooseBestOutOf01()
+		public void MoviePicker_ChooseBest_OutOf01()
 		{
+			var movieList = _unity.Resolve<IMovieList>();
+
+			Assert.IsNotNull(movieList);
+
 			var test = ConstructTestObject();
 
-			test.AddMovies(ThisWeeksMovies().Take(1).ToList());
+			test.AddMovies(ThisWeeksMoviesPicks().Take(1).ToList());
 
 			var best = test.ChooseBest();
 
@@ -39,11 +44,11 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePicker_ChooseBestOutOf02()
+		public void MoviePicker_ChooseBest_OutOf02()
 		{
 			var test = ConstructTestObject();
 
-			test.AddMovies(ThisWeeksMovies().Take(2).ToList());
+			test.AddMovies(ThisWeeksMoviesPicks().Take(2).ToList());
 
 			var best = test.ChooseBest();
 
@@ -51,11 +56,11 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePicker_ChooseBestOutOf03()
+		public void MoviePicker_ChooseBest_OutOf03()
 		{
 			var test = ConstructTestObject();
 
-			test.AddMovies(ThisWeeksMovies().Take(3).ToList());
+			test.AddMovies(ThisWeeksMoviesPicks().Take(3).ToList());
 
 			var best = test.ChooseBest();
 
@@ -63,11 +68,11 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePicker_ChooseBestOutOf04()
+		public void MoviePicker_ChooseBest_OutOf04()
 		{
 			var test = ConstructTestObject();
 
-			test.AddMovies(ThisWeeksMovies().Take(4).ToList());
+			test.AddMovies(ThisWeeksMoviesPicks().Take(4).ToList());
 
 			var best = test.ChooseBest();
 
@@ -75,11 +80,11 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePicker_ChooseBestOutOf06()
+		public void MoviePicker_ChooseBest_OutOf06()
 		{
 			var test = ConstructTestObject();
 
-			test.AddMovies(ThisWeeksMovies().Take(6).ToList());
+			test.AddMovies(ThisWeeksMoviesPicks().Take(6).ToList());
 
 			var best = test.ChooseBest();
 
@@ -87,13 +92,49 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePicker_ChooseBestOutOf10()
+		public void MoviePicker_ChooseBest_OutOf10()
 		{
 			var test = ConstructTestObject();
 
-			test.AddMovies(ThisWeeksMovies().Take(10).ToList());
+			test.AddMovies(ThisWeeksMoviesPicks().Take(10).ToList());
 
 			var best = test.ChooseBest();
+
+			WriteMovies(best);
+		}
+
+		[TestMethod]
+		public void MoviePicker_ChooseBest_WeekEnding_20170604()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			// FML 
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 3.3m, 22));
+			movies.Add(ConstructMovie(id++, "Baywatch", 8.7m, 62));
+			movies.Add(ConstructMovie(id++, "Alien", 41m, 31));
+			movies.Add(ConstructMovie(id++, "Guardians", 9.8m, 74));
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 103, 845));
+			movies.Add(ConstructMovie(id++, "Pirates", 22.1m, 193));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 23.9m, 239));
+			movies.Add(ConstructMovie(id++, "King Arthur", 1.2m, 12));
+			movies.Add(ConstructMovie(id++, "Snatched", 1.3m, 14));
+			movies.Add(ConstructMovie(id++, "Diary of a Wimpy Kid", 1.3m, 17));
+
+			// These movies seem inconsequential.
+			movies.Add(ConstructMovie(id++, "The Mummy", 38, 526));
+			movies.Add(ConstructMovie(id++, "It Comes at Night", 20, 150));
+			movies.Add(ConstructMovie(id++, "Meagan Leavey", 3.3m, 59));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1, 15));
+			movies.Add(ConstructMovie(id++, "Best of the Rest", 1.1m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			Assert.AreEqual(1, best.Movies.Count(movie => movie.Name == "Wonder Woman"));
+			Assert.AreEqual(7, best.Movies.Count(movie => movie.Name == "Everything, Everything"));
 
 			WriteMovies(best);
 		}
@@ -103,7 +144,7 @@ namespace MooviePicker.Tests
 		{
 			var test = ConstructTestObject();
 
-			test.AddMovies(ThisWeeksMovies());
+			test.AddMovies(ThisWeeksMoviesPicks());
 
 			var best = test.ChooseBest();
 
@@ -129,7 +170,7 @@ namespace MooviePicker.Tests
 			return result;
 		}
 
-		private List<IMovie> ThisWeeksMovies()
+		private List<IMovie> ThisWeeksMoviesPicks()
 		{
 			var movies = new List<IMovie>();
 

@@ -8,10 +8,13 @@ namespace MooveePicker
 		// TODO: Compute Hash() for list to spot check
 
 		private readonly List<IMovie> _movies;
+		private readonly IMovieList _movieListPrototype;
 
-		public MoviePicker()
+		public MoviePicker(IMovieList movieListPrototype)
 		{
 			_movies = new List<IMovie>();
+
+			_movieListPrototype = movieListPrototype;
 
 			ScreenCount = 8;
 			TotalCost = 1000;
@@ -35,8 +38,7 @@ namespace MooveePicker
 
 		public IMovieList ChooseBest()
 		{
-			// TODO: Use Unity.
-			IMovieList best = new MovieList();
+			IMovieList best = _movieListPrototype.Clone();
 
 			foreach (var movie in AvailableMovies(TotalCost))
 			{
@@ -57,7 +59,7 @@ namespace MooveePicker
 		{
 			if (sample == null)
 			{
-				sample = new MovieList();
+				sample = _movieListPrototype.Clone();
 			}
 
 			if (sample.CanAdd(movieToAdd))

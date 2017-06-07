@@ -20,7 +20,9 @@ namespace MooveePicker
 			_movies = new List<IMovie>();
 		}
 
-		public MovieList(MovieList toCopy)
+		// You'd think that Unity would be smart enough to NOT use this copy constructor when resolving an object with no parameters.
+		// I guess the rule of thumb is DON'T use copy constructors when using an IoC container (or make them private since by default Unity can only see public constructors)
+		private MovieList(MovieList toCopy)
 			: this()
 		{
 			if (!ReferenceEquals(this, toCopy))

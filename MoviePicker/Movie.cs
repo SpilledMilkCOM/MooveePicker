@@ -16,9 +16,9 @@ namespace MooveePicker
 
 		public string Name { get; set; }
 
-	    public override int GetHashCode()
-	    {
-		    return Id.GetHashCode();
-	    }
-    }
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
+	}
 }
