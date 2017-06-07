@@ -111,30 +111,46 @@ namespace MooviePicker.Tests
 			int id = 1;
 
 			// FML 
-			movies.Add(ConstructMovie(id++, "Everything, Everything", 3.3m, 22));
-			movies.Add(ConstructMovie(id++, "Baywatch", 8.7m, 62));
-			movies.Add(ConstructMovie(id++, "Alien", 41m, 31));
-			movies.Add(ConstructMovie(id++, "Guardians", 9.8m, 74));
 			movies.Add(ConstructMovie(id++, "Wonder Woman", 103, 845));
-			movies.Add(ConstructMovie(id++, "Pirates", 22.1m, 193));
 			movies.Add(ConstructMovie(id++, "Captain Underpants", 23.9m, 239));
-			movies.Add(ConstructMovie(id++, "King Arthur", 1.2m, 12));
-			movies.Add(ConstructMovie(id++, "Snatched", 1.3m, 14));
+			movies.Add(ConstructMovie(id++, "Pirates", 22.1m, 193));
+			movies.Add(ConstructMovie(id++, "Guardians", 9.8m, 74));
+			movies.Add(ConstructMovie(id++, "Baywatch", 8.7m, 62));
+			movies.Add(ConstructMovie(id++, "Alien", 4.1m, 31));
+			movies.Add(ConstructMovie(id++, "Everything Everything", 3.3m, 22));
 			movies.Add(ConstructMovie(id++, "Diary of a Wimpy Kid", 1.3m, 17));
+			movies.Add(ConstructMovie(id++, "Snatched", 1.3m, 14));
+			movies.Add(ConstructMovie(id++, "King Arthur", 1.2m, 12));
+
+			// From Raj
+			//movies.Add(ConstructMovie(id++, "Wonder Woman", 103.25m, 845));
+			//movies.Add(ConstructMovie(id++, "Captain Underpants", 23.9m, 239));
+			//movies.Add(ConstructMovie(id++, "Pirates of the Caribbean: Dead Men Tell No Tales", 22.1m, 193));
+			//movies.Add(ConstructMovie(id++, "Guardians of the Galaxy Vol. 2", 9.8m, 74));
+			//movies.Add(ConstructMovie(id++, "Baywatch", 8.7m, 62));
+			//movies.Add(ConstructMovie(id++, "Alien: Covenant", 4.1m, 31));
+			//movies.Add(ConstructMovie(id++, "Everything Everything", 3.3m, 22));
+			//movies.Add(ConstructMovie(id++, "Diary of a Wimpy Kid: The Long Haul", 1.3m, 17));
+			//movies.Add(ConstructMovie(id++, "Snatched", 1.3m, 14));
+			//movies.Add(ConstructMovie(id++, "King Arthur: Legend of the Sword", 1.2m, 12));
 
 			// These movies seem inconsequential.
-			movies.Add(ConstructMovie(id++, "The Mummy", 38, 526));
-			movies.Add(ConstructMovie(id++, "It Comes at Night", 20, 150));
-			movies.Add(ConstructMovie(id++, "Meagan Leavey", 3.3m, 59));
-			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1, 15));
-			movies.Add(ConstructMovie(id++, "Best of the Rest", 1.1m, 9));
+			//movies.Add(ConstructMovie(id++, "The Mummy", 38, 526));
+			//movies.Add(ConstructMovie(id++, "It Comes at Night", 20, 150));
+			//movies.Add(ConstructMovie(id++, "Meagan Leavey", 3.3m, 59));
+			//movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1, 15));
+			//movies.Add(ConstructMovie(id++, "Best of the Rest", 1.1m, 9));
 
 			test.AddMovies(movies);
 
 			var best = test.ChooseBest();
 
+			Debug.WriteLine($"Total Comparisons: {((MoviePicker)test).TotalComparisons}");
+
+			WriteMovies(best);
+
 			Assert.AreEqual(1, best.Movies.Count(movie => movie.Name == "Wonder Woman"));
-			Assert.AreEqual(7, best.Movies.Count(movie => movie.Name == "Everything, Everything"));
+			Assert.AreEqual(7, best.Movies.Count(movie => movie.Name == "Everything Everything"));
 
 			WriteMovies(best);
 		}

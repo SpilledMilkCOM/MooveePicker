@@ -33,6 +33,8 @@ namespace MooveePicker
 			}
 		}
 
+		public bool IsFull => _movies.Count >= MOVIE_MAX;
+
 		public IEnumerable<IMovie> Movies => _movies;
 
 		public decimal TotalCost => _totalCost;
@@ -101,15 +103,15 @@ namespace MooveePicker
 
 		private void UpdateTotals()
 		{
-			// Keep the list sorted by cost so we don't need to always sort the list in the algoritm.
+			// Keep the list sorted by efficiency so we don't need to always sort the list in the algoritm.
 
 			_movies.Sort((left, right) =>
 			{
-				if (left.Cost == right.Cost)
+				if (left.Efficiency == right.Efficiency)
 				{
 					return 0;
 				}
-				if (left.Cost < right.Cost)
+				if (left.Efficiency < right.Efficiency)
 				{
 					return -1;
 				}

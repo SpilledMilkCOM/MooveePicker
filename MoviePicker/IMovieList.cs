@@ -4,6 +4,8 @@ namespace MooveePicker
 {
 	public interface IMovieList
 	{
+		bool IsFull { get; }
+
 		IEnumerable<IMovie> Movies { get; }
 
 		decimal TotalCost { get; }
