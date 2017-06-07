@@ -117,13 +117,13 @@ namespace MooviePicker.Tests
 			return _unity.Resolve<IMoviePicker>();
 		}
 
-		private IMovie ConstructMovie(int id, string name, decimal earnings, decimal cost)
+		private IMovie ConstructMovie(int id, string name, decimal millions, decimal cost)
 		{
 			var result = _unity.Resolve<IMovie>();
 
 			result.Id = id;
 			result.Name = name;
-			result.Earnings = cost * 100000;
+			result.Earnings = millions * 1000000m;
 			result.Cost = cost;
 
 			return result;
@@ -135,21 +135,21 @@ namespace MooviePicker.Tests
 
 			int id = 1;
 
-			movies.Add(ConstructMovie(id++, "Wonder Woman", 0, 613));
-			movies.Add(ConstructMovie(id++, "The Mummy", 0, 526));
-			movies.Add(ConstructMovie(id++, "Captain Underpants", 0, 198));
-			movies.Add(ConstructMovie(id++, "It Comes at Night", 0, 150));
-			movies.Add(ConstructMovie(id++, "Pirates", 0, 143));
-			movies.Add(ConstructMovie(id++, "Guardians", 0, 70));
-			movies.Add(ConstructMovie(id++, "Baywatch", 0, 60));
-			movies.Add(ConstructMovie(id++, "Meagan Leavey", 0, 59));
-			movies.Add(ConstructMovie(id++, "Everything", 0, 28));
-			movies.Add(ConstructMovie(id++, "Alien", 0, 26));
-			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 0, 15));
-			movies.Add(ConstructMovie(id++, "Snatched", 0, 9));
-			movies.Add(ConstructMovie(id++, "Best of the Rest", 0, 9));
-			movies.Add(ConstructMovie(id++, "Diary of a Wimpy Kid", 0, 8));
-			movies.Add(ConstructMovie(id++, "King Arthur", 0, 7));
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 55, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 38, 526));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 12, 198));
+			movies.Add(ConstructMovie(id++, "It Comes at Night", 20, 150));
+			movies.Add(ConstructMovie(id++, "Pirates", 12, 143));
+			movies.Add(ConstructMovie(id++, "Guardians", 5, 70));
+			movies.Add(ConstructMovie(id++, "Baywatch", 5, 60));
+			movies.Add(ConstructMovie(id++, "Meagan Leavey", 3.3m, 59));
+			movies.Add(ConstructMovie(id++, "Everything", 1.5m, 28));
+			movies.Add(ConstructMovie(id++, "Alien", 2.1m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1, 15));
+			movies.Add(ConstructMovie(id++, "Snatched", 0.6m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the Rest", 1.1m, 9));
+			movies.Add(ConstructMovie(id++, "Diary of a Wimpy Kid", 0.6m, 8));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
 
 			return movies;
 		}
