@@ -28,19 +28,16 @@ namespace MooviePicker.Tests
 		[TestMethod]
 		public void MoviePicker_ChooseBest_OutOf01()
 		{
-			var movieList = _unity.Resolve<IMovieList>();
-
-			Assert.IsNotNull(movieList);
-
 			var test = ConstructTestObject();
 
 			test.AddMovies(ThisWeeksMoviesPicks().Take(1).ToList());
 
 			var best = test.ChooseBest();
 
-			Assert.AreEqual(1, best.Movies.Count());
-
+			WritePicker(test);
 			WriteMovies(best);
+
+			Assert.AreEqual(1, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -52,7 +49,10 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
+			WritePicker(test);
 			WriteMovies(best);
+
+			Assert.AreEqual(1, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -64,7 +64,10 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
+			WritePicker(test);
 			WriteMovies(best);
+
+			Assert.AreEqual(2, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -76,7 +79,25 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
+			WritePicker(test);
 			WriteMovies(best);
+
+			Assert.AreEqual(6, best.Movies.Count());
+		}
+
+		[TestMethod]
+		public void MoviePicker_ChooseBest_OutOf05()
+		{
+			var test = ConstructTestObject();
+
+			test.AddMovies(ThisWeeksMoviesPicks().Take(5).ToList());
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+
+			Assert.AreEqual(6, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -88,7 +109,10 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
+			WritePicker(test);
 			WriteMovies(best);
+
+			Assert.AreEqual(7, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -100,7 +124,10 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
+			WritePicker(test);
 			WriteMovies(best);
+
+			Assert.AreEqual(7, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -112,7 +139,10 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
+			WritePicker(test);
 			WriteMovies(best);
+
+			Assert.AreEqual(7, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -124,7 +154,10 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
+			WritePicker(test);
 			WriteMovies(best);
+
+			Assert.AreEqual(8, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -138,6 +171,8 @@ namespace MooviePicker.Tests
 
 			WritePicker(test);
 			WriteMovies(best);
+
+			Assert.AreEqual(8, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -248,7 +283,7 @@ namespace MooviePicker.Tests
 
 		private void WritePicker(IMoviePicker moviePicker)
 		{
-			Debug.WriteLine($"Total Movie Lists: {((MoviePicker)moviePicker).TotalComparisons:N0}");
+			Debug.WriteLine($"Total Comparisons: {((MoviePicker)moviePicker).TotalComparisons:N0}");
 		}
 
 		private void WriteMovies(IMovieList movies)

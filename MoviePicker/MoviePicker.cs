@@ -62,7 +62,11 @@ namespace MooveePicker
 		/// <returns>List of movies each within the budget (sorted by efficiency)</returns>
 		private IEnumerable<IMovie> AvailableMovies(IEnumerable<IMovie> movies, decimal budget)
 		{
-			return movies.Where(movie => movie.Cost <= budget).OrderByDescending(movie => movie.Efficiency);
+			// Sorting by efficiency will help a "greedy" method.
+
+			// Not really doing anything with efficiency just yet, so don't sort it.
+			//return movies.Where(movie => movie.Cost <= budget).OrderByDescending(movie => movie.Efficiency);
+			return movies.Where(movie => movie.Cost <= budget);
 		}
 
 		/// <summary>
@@ -102,9 +106,14 @@ namespace MooveePicker
 
 					foreach (var movie in availableMovies)
 					{
-						best = ChooseBest(best, movie, sample.Clone(), availableMovies, remainingBudget);
+						// Cloning is expensive.  Better to remove the added movie when done with this current method call.
+						//best = ChooseBest(best, movie, sample.Clone(), availableMovies, remainingBudget);
+
+						best = ChooseBest(best, movie, sample, availableMovies, remainingBudget);
 					}
 				}
+
+				sample.Remove(movieToAdd);
 			}
 
 			return best;
