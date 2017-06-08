@@ -284,6 +284,7 @@ namespace MooviePicker.Tests
 		private void WritePicker(IMoviePicker moviePicker)
 		{
 			Debug.WriteLine($"Total Comparisons: {((MoviePicker)moviePicker).TotalComparisons:N0}");
+			Debug.WriteLine($"Total Sub-problems: {((MoviePicker)moviePicker).TotalSubProblems:N0}");
 		}
 
 		private void WriteMovies(IMovieList movies)

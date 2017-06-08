@@ -10,8 +10,9 @@ namespace MooveePicker
 	{
 		private const decimal COST_MAX = 1000;
 		private const int MOVIE_MAX = 8;
-		private const int MISSING_THEATER_EARNINGS = 2000000;		// 2 million for each missing theater.
+		private const int MISSING_THEATER_EARNINGS = 2000000;       // 2 million for each missing theater.
 
+		private int _hashCode;
 		private readonly List<IMovie> _movies;
 		private decimal _totalCost;
 		private int _totalCount;
@@ -22,7 +23,7 @@ namespace MooveePicker
 			_movies = new List<IMovie>();
 
 			// If there are NO theaters, then you're running at a deficit.
-			_totalEarnings = -(MOVIE_MAX - _totalCount) * MISSING_THEATER_EARNINGS;
+			//_totalEarnings = -(MOVIE_MAX - _totalCount) * MISSING_THEATER_EARNINGS;
 		}
 
 		// You'd think that Unity would be smart enough to NOT use this copy constructor when resolving an object with no parameters.
@@ -99,6 +100,11 @@ namespace MooveePicker
 			return result;
 		}
 
+		public override int GetHashCode()
+		{
+			return _hashCode;
+		}
+
 		public void Remove(IMovie movie)
 		{
 			_movies.Remove(movie);
@@ -114,6 +120,7 @@ namespace MooveePicker
 
 		private void UpdateTotals()
 		{
+			// "Greedy" method is not used (yet)
 			// Keep the list sorted by efficiency so we don't need to always sort the list in the algoritm.
 
 			//_movies.Sort((left, right) =>
@@ -130,8 +137,46 @@ namespace MooveePicker
 			//	return 1;
 			//});
 
-			_totalCost = _movies.Sum(item => item.Cost);
-			_totalEarnings = _movies.Sum(item => item.Earnings) - (MOVIE_MAX - _movies.Count) * 2000000;
+			// Keep this list sorted by Id so the hashing won't care about the order added.
+
+			_movies.Sort((left, right) =>
+			{
+				if (left.Id == right.Id)
+				{
+					return 0;
+				}
+				if (left.Id < right.Id)
+				{
+					return -1;
+				}
+
+				return 1;
+			});
+
+			_totalCost = 0;
+			_totalEarnings = 0;
+			_hashCode = 19;
+			_totalCount = 0;
+
+			// Only iterate the list once.
+
+			foreach (var item in _movies)
+			{
+				// Order does NOT matter for this hash code.
+				// The hash for the following lists will produce the same hash:
+				// 1,2,3,3,3
+				// 1,3,2,3,3
+				// 1,3,3,2,3
+				// 1,3,3,3,2
+
+				_hashCode = _hashCode * 31 + item.GetHashCode();
+
+				_totalCount++;
+				_totalCost += item.Cost;
+				_totalEarnings += item.Earnings;
+			}
+
+			_totalEarnings -= (MOVIE_MAX - _totalCount) * 2000000;
 
 			if (_totalEarnings < 0)
 			{

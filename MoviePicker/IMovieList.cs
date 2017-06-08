@@ -22,6 +22,8 @@ namespace MooveePicker
 
 		IMovieList Clone();
 
+		int GetHashCode();
+
 		void Remove(IMovie movie);
 	}
 }

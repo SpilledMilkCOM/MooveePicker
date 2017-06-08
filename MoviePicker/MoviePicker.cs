@@ -10,9 +10,13 @@ namespace MooveePicker
 		private readonly List<IMovie> _movies;
 		private readonly IMovieList _movieListPrototype;
 
+		// Store the already processed sub-problems
+		private readonly HashSet<int> _processedHashes;
+
 		public MoviePicker(IMovieList movieListPrototype)
 		{
 			_movies = new List<IMovie>();
+			_processedHashes = new HashSet<int>();
 
 			_movieListPrototype = movieListPrototype;
 
@@ -27,6 +31,8 @@ namespace MooveePicker
 		public int TotalCost { get; set; }
 
 		public int TotalComparisons { get; set; }
+
+		public int TotalSubProblems { get { return _processedHashes.Count; } }
 
 		public void AddMovies(IEnumerable<IMovie> movies)
 		{
@@ -96,9 +102,13 @@ namespace MooveePicker
 					best = sample.Clone();
 				}
 
-				// If the sample is already full then don't try to add any more movies.
+				var sampleHashCode = sample.GetHashCode();
 
-				if (!sample.IsFull)
+				// DON'T PROCESS the sample:
+				//		If the sample is already full
+				//		Already been processed.
+
+				if (!sample.IsFull && !_processedHashes.Contains(sampleHashCode))
 				{
 					var availableMovies = AvailableMovies(movies, remainingBudget).ToList();
 
@@ -111,6 +121,10 @@ namespace MooveePicker
 
 						best = ChooseBest(best, movie, sample, availableMovies, remainingBudget);
 					}
+
+					// When finished processing this sub-list, store the list in the saved hashes.
+
+					_processedHashes.Add(sampleHashCode);
 				}
 
 				sample.Remove(movieToAdd);
