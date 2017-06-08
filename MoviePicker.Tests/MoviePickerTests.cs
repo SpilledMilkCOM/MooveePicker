@@ -92,6 +92,42 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
+		public void MoviePicker_ChooseBest_OutOf07()
+		{
+			var test = ConstructTestObject();
+
+			test.AddMovies(ThisWeeksMoviesPicks().Take(7).ToList());
+
+			var best = test.ChooseBest();
+
+			WriteMovies(best);
+		}
+
+		[TestMethod]
+		public void MoviePicker_ChooseBest_OutOf08()
+		{
+			var test = ConstructTestObject();
+
+			test.AddMovies(ThisWeeksMoviesPicks().Take(8).ToList());
+
+			var best = test.ChooseBest();
+
+			WriteMovies(best);
+		}
+
+		[TestMethod]
+		public void MoviePicker_ChooseBest_OutOf09()
+		{
+			var test = ConstructTestObject();
+
+			test.AddMovies(ThisWeeksMoviesPicks().Take(9).ToList());
+
+			var best = test.ChooseBest();
+
+			WriteMovies(best);
+		}
+
+		[TestMethod]
 		public void MoviePicker_ChooseBest_OutOf10()
 		{
 			var test = ConstructTestObject();
@@ -100,6 +136,7 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
+			WritePicker(test);
 			WriteMovies(best);
 		}
 
@@ -145,14 +182,11 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
-			Debug.WriteLine($"Total Comparisons: {((MoviePicker)test).TotalComparisons}");
-
+			WritePicker(test);
 			WriteMovies(best);
 
 			Assert.AreEqual(1, best.Movies.Count(movie => movie.Name == "Wonder Woman"));
 			Assert.AreEqual(7, best.Movies.Count(movie => movie.Name == "Everything Everything"));
-
-			WriteMovies(best);
 		}
 
 		[TestMethod]
@@ -164,6 +198,7 @@ namespace MooviePicker.Tests
 
 			var best = test.ChooseBest();
 
+			WritePicker(test);
 			WriteMovies(best);
 		}
 
@@ -211,6 +246,11 @@ namespace MooviePicker.Tests
 			return movies;
 		}
 
+		private void WritePicker(IMoviePicker moviePicker)
+		{
+			Debug.WriteLine($"Total Movie Lists: {((MoviePicker)moviePicker).TotalComparisons:N0}");
+		}
+
 		private void WriteMovies(IMovieList movies)
 		{
 			int screen = 1;
@@ -220,7 +260,7 @@ namespace MooviePicker.Tests
 
 			foreach (var movie in movies.Movies.OrderByDescending(item => item.Earnings))
 			{
-				Debug.WriteLine($"{screen} - {movie.Name}");
+				Debug.WriteLine($"{screen} - {movie.Name} ${movie.Earnings:N2}");
 			}
 		}
 	}

@@ -77,7 +77,9 @@ namespace MooveePicker
 
 		public bool CanAdd(IMovie movie)
 		{
-			return TotalCost + movie.Cost <= COST_MAX && _movies.Count() < MOVIE_MAX;
+			// Should NOT have to recount because checking IsFull BEFORE another recursive call.
+			//return TotalCost + movie.Cost <= COST_MAX && _movies.Count() < MOVIE_MAX;
+			return TotalCost + movie.Cost <= COST_MAX;
 		}
 
 		public void Clear()

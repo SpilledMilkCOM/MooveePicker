@@ -65,6 +65,15 @@ namespace MooveePicker
 			return movies.Where(movie => movie.Cost <= budget).OrderByDescending(movie => movie.Efficiency);
 		}
 
+		/// <summary>
+		/// The recursive call to find the best of the sample.
+		/// </summary>
+		/// <param name="best">The BEST earnings so far.</param>
+		/// <param name="movieToAdd">The movie to be added to the list.</param>
+		/// <param name="sample">Current movie list</param>
+		/// <param name="movies">Sending in a smaller set each time reduces the scan on the full movie list.</param>
+		/// <param name="remainingBudget"></param>
+		/// <returns></returns>
 		private IMovieList ChooseBest(IMovieList best, IMovie movieToAdd, IMovieList sample, IEnumerable<IMovie> movies, decimal remainingBudget)
 		{
 			if (sample == null)
