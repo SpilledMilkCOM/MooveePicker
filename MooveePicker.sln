@@ -1,13 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker", "MoviePicker\MoviePicker.csproj", "{FB01C56F-1F93-4174-9D64-154F23B92691}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.Tests", "MoviePicker.Tests\MoviePicker.Tests.csproj", "{F53C5B2D-DCE7-4BC2-BA98-55C2CC474BE2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieMiner", "MovieMiner\MovieMiner.csproj", "{1213DD7E-2ADE-4D0B-9E36-7C4552B24612}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{675F6756-FA0A-42ED-BEF4-1E1EBB81E1E6}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
