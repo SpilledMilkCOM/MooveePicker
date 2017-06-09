@@ -7,7 +7,7 @@ chooses the best lineup of movies to run in your theaters.
 ##### Basic Algorithm
 
 This is effectively an "unbounded knapsack" problem.  Added some hashing
-(which does not care about the sub-problem order) so not all 2,562,890,625 (15^8) possibilities
+(which does not care about the sub-problem order) so not all 4,294,967,296 (16^8) possibilities
 are attempted.  That is worst case if all the items have the same weight and value, but some are much
 **LARGER** than others and use up more space meaning that there will be **MUCH** less room for
 other movies.  You may choose multiples of the same movie provided that it maximizes your
