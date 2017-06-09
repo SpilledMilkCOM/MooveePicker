@@ -45,6 +45,7 @@
     <Compile Include="IMoviePicker.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieList.cs" />
+    <Compile Include="MoviePickerTopDropsOut.cs" />
     <Compile Include="MoviePickerVariants.cs" />
     <Compile Include="MoviePicker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

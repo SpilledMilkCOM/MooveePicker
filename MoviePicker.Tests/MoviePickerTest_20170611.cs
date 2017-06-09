@@ -119,6 +119,76 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
+		public void MoviePicker_ChooseBest_Cinefiles_20170611()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			// https://cinefilesreviews.com/2017/06/07/weekend-box-office-predictions-june-9-june-11/
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 83m, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 65m, 526));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 20m, 150));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 16m, 198));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 10m, 143));
+
+			// End of picks, using Parker's data for the rest.
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 3.3m, 59));
+			movies.Add(ConstructMovie(id++, "Baywatch", 5m, 69));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2.1m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 0.6m, 8));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 1.5m, 28));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 5m, 70));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
+			movies.Add(ConstructMovie(id++, "Snatched", 0.6m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the rest", 0.5m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+		}
+
+		[TestMethod]
+		public void MoviePicker_ChooseBest_TheNumbers_20170611()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			// http://www.the-numbers.com/news/222490830-Weekend-Predictions-Can-Mummy-Bury-the-Competition
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 47m, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 34m, 526));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 12m, 198));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 12m, 150));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 10m, 143));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 3m, 59));
+
+			// End of picks, using Parker's data for the rest.
+			movies.Add(ConstructMovie(id++, "Baywatch", 5m, 69));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2.1m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 0.6m, 8));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 1.5m, 28));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 5m, 70));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
+			movies.Add(ConstructMovie(id++, "Snatched", 0.6m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the rest", 0.5m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+		}
+
+		[TestMethod]
 		public void MoviePicker_ChooseBest_ToddMThatcher_20170611()
 		{
 			var test = ConstructTestObject();

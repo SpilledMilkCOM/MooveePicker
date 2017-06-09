@@ -1,29 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace MooveePicker
 {
 	/// <summary>
 	/// Vary the earnings by some offsets and compute the BEST out of how many of that list WINS.
+	/// The FULL version of this where it recursively tries ALL variants will require some SERIOUS compute power.
 	/// </summary>
 	public class MoviePickerVariants : IMoviePicker
 	{
 		private const decimal EARNINGS_ADJUSTMENT = 0.5m;
 		private const decimal EARNINGS_VARIANT_MAX = 0.5m;
 
+		private readonly List<IMovie> _baselineMovies;
 		private readonly Dictionary<int, int> _bestListCounts;          // Keyed using the hash code.
-		private readonly Dictionary<int, IMovieList> _bestLists;                // Keyed using the hash code.
+		private readonly Dictionary<int, IMovieList> _bestLists;        // Keyed using the hash code.
 		private readonly IMovieList _movieListPrototype;
 		private readonly IMoviePicker _moviePicker;
-		private readonly List<IMovie> _movies;
 
 		public MoviePickerVariants(IMovieList movieListPrototype)
 		{
 			_bestListCounts = new Dictionary<int, int>();
 			_bestLists = new Dictionary<int, IMovieList>();
 			_moviePicker = new MoviePicker(new MovieList());
-			_movies = new List<IMovie>();
+			_baselineMovies = new List<IMovie>();
 
 			_movieListPrototype = movieListPrototype;
 		}
@@ -40,7 +40,7 @@ namespace MooveePicker
 
 			foreach (var movie in movies)
 			{
-				_movies.Add(movie.Clone());
+				_baselineMovies.Add(movie.Clone());
 			}
 		}
 
@@ -58,8 +58,8 @@ namespace MooveePicker
 				var hashCode = best.GetHashCode();
 				int value;
 
-				TotalComparisons += ((MoviePicker)_moviePicker).TotalComparisons;
-				TotalSubProblems += ((MoviePicker)_moviePicker).TotalSubProblems;
+				TotalComparisons += _moviePicker.TotalComparisons;
+				TotalSubProblems += _moviePicker.TotalSubProblems;
 
 				if (_bestListCounts.TryGetValue(hashCode, out value))
 				{
@@ -86,20 +86,20 @@ namespace MooveePicker
 			var result = new List<List<IMovie>>();
 			var earningsAdjustment = EARNINGS_ADJUSTMENT * 1000000m;
 
-			result.Add(_movies);        // Add the original list
+			result.Add(_baselineMovies);        // Add the original list
 
 			// Only tweak one movie in each list.
 
-			foreach (var movie in _movies)
+			foreach (var movie in _baselineMovies)
 			{
-				var list = Copy(_movies);
+				var list = Copy(_baselineMovies);
 				var movieToAdjust = list.First(item => item.Id == movie.Id);
 
 				movieToAdjust.Earnings += earningsAdjustment;
 
 				result.Add(list);
 
-				var list2 = Copy(_movies);
+				var list2 = Copy(_baselineMovies);
 				var movieToAdjust2 = list2.First(item => item.Id == movie.Id);
 
 				movieToAdjust2.Earnings -= earningsAdjustment;

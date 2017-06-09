@@ -48,6 +48,9 @@ namespace MooveePicker
 
 			var availableMovies = AvailableMovies(_movies, TotalCost).ToList();
 
+			TotalComparisons = 0;
+			_processedHashes.Clear();
+
 			foreach (var movie in availableMovies)
 			{
 				best = ChooseBest(best, movie, null, availableMovies, TotalCost);
