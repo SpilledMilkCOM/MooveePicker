@@ -57,6 +57,37 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
+		public void MoviePicker_ChooseBest_Doug_20170611()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 55m, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 35m, 526));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 12m, 150));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 11m, 143));
+			movies.Add(ConstructMovie(id++, "Baywatch", 4m, 69));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 3m, 59));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 2m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 0.5m, 8));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 12m, 198));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 1.5m, 28));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 5m, 70));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
+			movies.Add(ConstructMovie(id++, "Snatched", 0.5m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the rest", 0.5m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+		}
+
+		[TestMethod]
 		public void MoviePicker_ChooseBest_Raj_20170611()
 		{
 			var test = ConstructTestObject();
@@ -253,7 +284,7 @@ namespace MooviePicker.Tests
 
 			foreach (var movie in movies.Movies.OrderByDescending(item => item.Earnings))
 			{
-				Debug.WriteLine($"{screen} - {movie.Name} ${movie.Earnings:N2}");
+				Debug.WriteLine($"{screen} - {movie.Name} ${movie.Earnings:N2} - [{movie.Efficiency}]");
 			}
 		}
 	}
