@@ -389,24 +389,5 @@ namespace MoviePicker.Tests
 
 			return movies;
 		}
-
-		private void WritePicker(IMoviePicker moviePicker)
-		{
-			Debug.WriteLine($"Total Comparisons: {moviePicker.TotalComparisons:N0}");
-			Debug.WriteLine($"Total Sub-problems: {moviePicker.TotalSubProblems:N0}");
-		}
-
-		private void WriteMovies(IMovieList movies)
-		{
-			int screen = 1;
-
-			Debug.WriteLine($"Total Cost (Bux): {movies.TotalCost}");
-			Debug.WriteLine($"Total Earnings  : ${movies.TotalEarnings:N0}");
-
-			foreach (var movie in movies.Movies.OrderByDescending(item => item.Earnings))
-			{
-				Debug.WriteLine($"{screen} - {movie.Name} ${movie.Earnings:N2}");
-			}
-		}
 	}
 }

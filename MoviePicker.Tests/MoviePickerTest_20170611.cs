@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using MooveePicker;
+using MoviePicker.Tests;
 
 namespace MooviePicker.Tests
 {
 	[TestClass]
-	public class MoviePickerTest_20170611
+	public class MoviePickerTest_20170611 : MoviePickerTestBase
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
+
+		protected override IUnityContainer UnityContainer => _unity;
 
 		[ClassInitialize]
 		public static void InitializeBeforeAllTests(TestContext context)
@@ -251,41 +251,5 @@ namespace MooviePicker.Tests
 		}
 
 		//----==== PRIVATE ====---------------------------------------------------------
-
-		private IMoviePicker ConstructTestObject()
-		{
-			return _unity.Resolve<IMoviePicker>();
-		}
-
-		private IMovie ConstructMovie(int id, string name, decimal millions, decimal cost)
-		{
-			var result = _unity.Resolve<IMovie>();
-
-			result.Id = id;
-			result.Name = name;
-			result.Earnings = millions * 1000000m;
-			result.Cost = cost;
-
-			return result;
-		}
-
-		private void WritePicker(IMoviePicker moviePicker)
-		{
-			Debug.WriteLine($"Total Comparisons: {((MooveePicker.MoviePicker)moviePicker).TotalComparisons:N0}");
-			Debug.WriteLine($"Total Sub-problems: {((MooveePicker.MoviePicker)moviePicker).TotalSubProblems:N0}");
-		}
-
-		private void WriteMovies(IMovieList movies)
-		{
-			int screen = 1;
-
-			Debug.WriteLine($"Total Cost (Bux): {movies.TotalCost}");
-			Debug.WriteLine($"Total Earnings  : ${movies.TotalEarnings:N0}");
-
-			foreach (var movie in movies.Movies.OrderByDescending(item => item.Earnings))
-			{
-				Debug.WriteLine($"{screen} - {movie.Name} ${movie.Earnings:N2} - [{movie.Efficiency}]");
-			}
-		}
 	}
 }
