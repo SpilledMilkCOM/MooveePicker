@@ -95,9 +95,7 @@ namespace MooveePicker
 
 		public IMovieList Clone()
 		{
-			var result = new MovieList(this);
-
-			return result;
+			return new MovieList(this);
 		}
 
 		public override int GetHashCode()

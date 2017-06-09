@@ -5,8 +5,6 @@ namespace MooveePicker
 {
 	public class MoviePicker : IMoviePicker
 	{
-		// TODO: Compute Hash() for list to spot check
-
 		private readonly List<IMovie> _movies;
 		private readonly IMovieList _movieListPrototype;
 
@@ -32,7 +30,7 @@ namespace MooveePicker
 
 		public int TotalComparisons { get; set; }
 
-		public int TotalSubProblems { get { return _processedHashes.Count; } }
+		public int TotalSubProblems => _processedHashes.Count;
 
 		public void AddMovies(IEnumerable<IMovie> movies)
 		{

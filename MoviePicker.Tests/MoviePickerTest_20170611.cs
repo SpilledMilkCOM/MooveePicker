@@ -1,0 +1,190 @@
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+
+using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using MooveePicker;
+
+namespace MooviePicker.Tests
+{
+	[TestClass]
+	public class MoviePickerTest_20170611
+	{
+		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
+		private static IUnityContainer _unity;
+
+		[ClassInitialize]
+		public static void InitializeBeforeAllTests(TestContext context)
+		{
+			_unity = new UnityContainer();
+
+			_unity.RegisterType<IMovie, Movie>();
+			_unity.RegisterType<IMovieList, MovieList>();
+			_unity.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();
+		}
+
+		[TestMethod]
+		public void MoviePicker_ChooseBest_Parker_20170611()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 55m, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 38m, 526));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 11m, 150));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 12m, 143));
+			movies.Add(ConstructMovie(id++, "Baywatch", 5m, 69));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 3.3m, 59));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2.1m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 0.6m, 8));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 12m, 198));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 1.5m, 28));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 5m, 70));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
+			movies.Add(ConstructMovie(id++, "Snatched", 0.6m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the rest", 0.5m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+		}
+
+		[TestMethod]
+		public void MoviePicker_ChooseBest_Raj_20170611()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 50m, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 32m, 526));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 10m, 150));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 10.5m, 143));
+			movies.Add(ConstructMovie(id++, "Baywatch", 4m, 69));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 2.4m, 59));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 0.5m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 0.5m, 8));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 13m, 198));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 1.5m, 28));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 4.5m, 70));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
+			movies.Add(ConstructMovie(id++, "Snatched", 0.5m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the rest", 0.5m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+		}
+
+		[TestMethod]
+		public void MoviePicker_ChooseBest_BoxOfficePro_20170611()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 50m, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 32m, 526));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 11m, 150));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 10.4m, 143));
+			movies.Add(ConstructMovie(id++, "Baywatch", 4.3m, 69));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 2.4m, 59));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 1.86m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 0m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 0m, 8));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 13.35m, 198));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 1.98m, 28));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 4.7m, 70));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0m, 7));
+			movies.Add(ConstructMovie(id++, "Snatched", 0m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the rest", 0m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+		}
+
+		[TestMethod]
+		public void MoviePicker_ChooseBest_ToddMThatcher_20170611()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 49.5m, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 38.7m, 526));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 9.5m, 150));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 12m, 143));
+			movies.Add(ConstructMovie(id++, "Baywatch", 4m, 69));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 3.3m, 59));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 0m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 1m, 8));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 7.18m, 198));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 1.39m, 28));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 4.5m, 70));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0.72m, 7));
+			movies.Add(ConstructMovie(id++, "Snatched", 0.87m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the rest", 0m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+		}
+
+		//----==== PRIVATE ====---------------------------------------------------------
+
+		private IMoviePicker ConstructTestObject()
+		{
+			return _unity.Resolve<IMoviePicker>();
+		}
+
+		private IMovie ConstructMovie(int id, string name, decimal millions, decimal cost)
+		{
+			var result = _unity.Resolve<IMovie>();
+
+			result.Id = id;
+			result.Name = name;
+			result.Earnings = millions * 1000000m;
+			result.Cost = cost;
+
+			return result;
+		}
+
+		private void WritePicker(IMoviePicker moviePicker)
+		{
+			Debug.WriteLine($"Total Comparisons: {((MooveePicker.MoviePicker)moviePicker).TotalComparisons:N0}");
+			Debug.WriteLine($"Total Sub-problems: {((MooveePicker.MoviePicker)moviePicker).TotalSubProblems:N0}");
+		}
+
+		private void WriteMovies(IMovieList movies)
+		{
+			int screen = 1;
+
+			Debug.WriteLine($"Total Cost (Bux): {movies.TotalCost}");
+			Debug.WriteLine($"Total Earnings  : ${movies.TotalEarnings:N0}");
+
+			foreach (var movie in movies.Movies.OrderByDescending(item => item.Earnings))
+			{
+				Debug.WriteLine($"{screen} - {movie.Name} ${movie.Earnings:N2}");
+			}
+		}
+	}
+}

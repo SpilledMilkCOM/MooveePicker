@@ -66,6 +66,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MoviePickerTestBase.cs" />
+    <Compile Include="MoviePickerVariantsTests.cs" />
+    <Compile Include="MoviePickerTest_20170611.cs" />
     <Compile Include="MoviePickerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
