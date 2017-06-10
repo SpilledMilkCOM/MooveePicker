@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MoviePicker.Common.Interfaces;
 
-namespace MooveePicker
+namespace MoviePicker.Common
 {
 	public class MovieList : IMovieList
 	{

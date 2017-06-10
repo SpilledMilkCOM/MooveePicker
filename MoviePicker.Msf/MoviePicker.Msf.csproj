@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FB01C56F-1F93-4174-9D64-154F23B92691}</ProjectGuid>
+    <ProjectGuid>{420FCF88-E38D-46EE-A4DE-BE87042D5B1B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MoviePicker</RootNamespace>
-    <AssemblyName>MoviePicker</AssemblyName>
+    <RootNamespace>MoviePicker.Msf</RootNamespace>
+    <AssemblyName>MoviePicker.Msf</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Solver.Foundation, Version=3.0.2.10889, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Solver.Foundation.3.1.0\lib\Microsoft.Solver.Foundation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,9 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MoviePickerTopDropsOut.cs" />
-    <Compile Include="MoviePickerVariants.cs" />
-    <Compile Include="MoviePicker.cs" />
+    <Compile Include="MsfMovieSolver.cs" />
+    <Compile Include="MsfMovieWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +53,9 @@
       <Project>{C413BA12-DCD8-485E-B008-087BA02004CB}</Project>
       <Name>MoviePicker.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
