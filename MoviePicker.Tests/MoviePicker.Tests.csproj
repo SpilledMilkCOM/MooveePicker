@@ -71,12 +71,17 @@
     <Compile Include="MoviePickerVariantsTests.cs" />
     <Compile Include="MoviePickerTest_20170611.cs" />
     <Compile Include="MoviePickerTests.cs" />
+    <Compile Include="MsfMovieSolver\MsfMoviePickerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoviePicker.Common\MoviePicker.Common.csproj">
       <Project>{C413BA12-DCD8-485E-B008-087BA02004CB}</Project>
       <Name>MoviePicker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MoviePicker.Msf\MoviePicker.Msf.csproj">
+      <Project>{420fcf88-e38d-46ee-a4de-be87042d5b1b}</Project>
+      <Name>MoviePicker.Msf</Name>
     </ProjectReference>
     <ProjectReference Include="..\MoviePicker\MoviePicker.csproj">
       <Project>{fb01c56f-1f93-4174-9d64-154f23b92691}</Project>
