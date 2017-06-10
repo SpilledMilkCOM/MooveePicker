@@ -5,7 +5,9 @@ namespace MooveePicker
 {
 	public class MoviePicker : IMoviePicker
 	{
-		private readonly List<IMovie> _movies;
+		private readonly List<IMovieList> _bestMovies;      // A list of top movies (not sorted)
+		private decimal _minimumTopEarnings;				// Keep track of the lowest earnings in the list.
+		private readonly List<IMovie> _movies;				// The list of baseline movies.
 		private readonly IMovieList _movieListPrototype;
 
 		// Store the already processed sub-problems
@@ -101,6 +103,8 @@ namespace MooveePicker
 				if (best.TotalEarnings < sample.TotalEarnings)
 				{
 					best = sample.Clone();
+
+					// Add to the top list.
 				}
 
 				var sampleHashCode = sample.GetHashCode();
