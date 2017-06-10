@@ -1,7 +1,8 @@
-﻿using System;
+﻿using MoviePicker.Common.Interfaces;
+using System;
 using System.Diagnostics;
 
-namespace MooveePicker
+namespace MoviePicker.Common
 {
 	[DebuggerDisplay("Name = {Name}")]
 	public class Movie : IMovie

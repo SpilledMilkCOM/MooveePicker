@@ -1,6 +1,6 @@
 using System;
 
-namespace MooveePicker
+namespace MoviePicker.Common.Interfaces
 {
 	public interface IMovie
 	{
