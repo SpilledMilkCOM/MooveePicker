@@ -43,6 +43,7 @@ namespace MoviePicker.Tests
 
 		protected void WritePicker(IMoviePicker moviePicker)
 		{
+            Debug.WriteLine($"Picker: {moviePicker.GetType().Name}");
 			Debug.WriteLine($"Total Comparisons: {moviePicker.TotalComparisons:N0} [{moviePicker.TotalComparisons / Math.Pow(16, 8) * 100}% of {Math.Pow(16, 8):N0}]");
 			Debug.WriteLine($"Total Sub-problems: {moviePicker.TotalSubProblems:N0}");
 		}
