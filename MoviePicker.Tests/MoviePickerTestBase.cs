@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using MooveePicker;
@@ -35,14 +36,14 @@ namespace MoviePicker.Tests
 
 			foreach (var movie in movies.Movies.OrderByDescending(item => item.Earnings))
 			{
-				Debug.WriteLine($"{screen} - {movie.Name} ${movie.Earnings:N2} - [{movie.Efficiency}]");
+				Debug.WriteLine($"{screen++} - {movie.Name,-30} ${movie.Earnings:N2} - [${movie.Efficiency:N2}]");
 			}
 		}
 
 		protected void WritePicker(IMoviePicker moviePicker)
 		{
-			Debug.WriteLine($"Total Comparisons: {((MooveePicker.MoviePicker)moviePicker).TotalComparisons:N0}");
-			Debug.WriteLine($"Total Sub-problems: {((MooveePicker.MoviePicker)moviePicker).TotalSubProblems:N0}");
+			Debug.WriteLine($"Total Comparisons: {moviePicker.TotalComparisons:N0} [{moviePicker.TotalComparisons / Math.Pow(16, 8) * 100}% of {Math.Pow(16, 8):N0}]");
+			Debug.WriteLine($"Total Sub-problems: {moviePicker.TotalSubProblems:N0}");
 		}
 	}
 }

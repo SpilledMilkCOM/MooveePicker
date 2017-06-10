@@ -36,7 +36,7 @@ namespace MooviePicker.Tests
 			movies.Add(ConstructMovie(id++, "The Mummy", 38m, 526));
 			movies.Add(ConstructMovie(id++, "It Comes at night", 11m, 150));
 			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 12m, 143));
-			movies.Add(ConstructMovie(id++, "Baywatch", 5m, 69));
+			movies.Add(ConstructMovie(id++, "Baywatch", 5m, 60));
 			movies.Add(ConstructMovie(id++, "Megan Leavey", 3.3m, 59));
 			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2.1m, 26));
 			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1m, 15));
@@ -57,6 +57,31 @@ namespace MooviePicker.Tests
 		}
 
 		[TestMethod]
+		public void MoviePicker_ChooseBest_Debug_20170611()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 55m, 613));
+			movies.Add(ConstructMovie(id++, "Baywatch", 5m, 69));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 12m, 143));
+			//movies.Add(ConstructMovie(id++, "Baywatch", 5m, 69));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2.1m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 0.6m, 8));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+
+			Assert.AreEqual(87100000m, best.TotalEarnings);
+		}
+
+		[TestMethod]
 		public void MoviePicker_ChooseBest_Doug_20170611()
 		{
 			var test = ConstructTestObject();
@@ -67,7 +92,7 @@ namespace MooviePicker.Tests
 			movies.Add(ConstructMovie(id++, "The Mummy", 35m, 526));
 			movies.Add(ConstructMovie(id++, "It Comes at night", 12m, 150));
 			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 11m, 143));
-			movies.Add(ConstructMovie(id++, "Baywatch", 4m, 69));
+			movies.Add(ConstructMovie(id++, "Baywatch", 4m, 60));
 			movies.Add(ConstructMovie(id++, "Megan Leavey", 3m, 59));
 			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2m, 26));
 			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 2m, 15));

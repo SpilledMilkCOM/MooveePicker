@@ -111,9 +111,9 @@ namespace MooveePicker
 
 				if (!sample.IsFull && !_processedHashes.Contains(sampleHashCode))
 				{
-					var availableMovies = AvailableMovies(movies, remainingBudget).ToList();
-
 					remainingBudget -= movieToAdd.Cost;
+
+					var availableMovies = AvailableMovies(movies, remainingBudget).ToList();
 
 					foreach (var movie in availableMovies)
 					{

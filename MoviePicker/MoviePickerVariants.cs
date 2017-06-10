@@ -32,6 +32,8 @@ namespace MooveePicker
 
 		public int TotalComparisons { get; set; }
 
+		public int TotalMovieLists { get; set; }
+
 		public int TotalSubProblems { get; set; }
 
 		public void AddMovies(IEnumerable<IMovie> movies)
@@ -47,6 +49,8 @@ namespace MooveePicker
 		public IMovieList ChooseBest()
 		{
 			var movieLists = GenerateMovieLists();
+
+			TotalMovieLists = movieLists.Count;
 
 			// Walk through the movie list adjusting the movies by the variant and then choose the best.
 
@@ -81,6 +85,11 @@ namespace MooveePicker
 
 		//----==== PRIVATE ====----------------------------------------------------------------------
 
+		private List<IMovie> Copy(IEnumerable<IMovie> toCopy)
+		{
+			return toCopy.Select(movie => movie.Clone()).ToList();
+		}
+
 		private List<List<IMovie>> GenerateMovieLists()
 		{
 			var result = new List<List<IMovie>>();
@@ -108,11 +117,6 @@ namespace MooveePicker
 			}
 
 			return result;
-		}
-
-		private List<IMovie> Copy(IEnumerable<IMovie> toCopy)
-		{
-			return toCopy.Select(movie => movie.Clone()).ToList();
 		}
 	}
 }
