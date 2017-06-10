@@ -74,6 +74,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MoviePicker.Common\MoviePicker.Common.csproj">
+      <Project>{C413BA12-DCD8-485E-B008-087BA02004CB}</Project>
+      <Name>MoviePicker.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MoviePicker\MoviePicker.csproj">
       <Project>{fb01c56f-1f93-4174-9d64-154f23b92691}</Project>
       <Name>MoviePicker</Name>

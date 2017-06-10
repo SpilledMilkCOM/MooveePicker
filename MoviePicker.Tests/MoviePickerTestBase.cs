@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Practices.Unity;
 using MooveePicker;
+using MoviePicker.Common.Interfaces;
 
 namespace MoviePicker.Tests
 {

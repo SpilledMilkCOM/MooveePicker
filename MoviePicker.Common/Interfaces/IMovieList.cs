@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MooveePicker
+namespace MoviePicker.Common.Interfaces
 {
 	public interface IMovieList
 	{
