@@ -3,6 +3,8 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using MooveePicker;
+using MoviePicker.Common;
+using MoviePicker.Common.Interfaces;
 using MoviePicker.Tests;
 
 namespace MooviePicker.Tests
@@ -78,7 +80,7 @@ namespace MooviePicker.Tests
 			WritePicker(test);
 			WriteMovies(best);
 
-			Assert.AreEqual(87100000m, best.TotalEarnings);
+			Assert.AreEqual(86900000m, best.TotalEarnings);
 		}
 
 		[TestMethod]
