@@ -15,7 +15,7 @@ namespace MoviePicker.Msf
 
 		private decimal PenaltyForUnusedScreens { get; set; }
 
-		private bool DisplayDebugMessage { get; set; }
+		public bool DisplayDebugMessage { get; set; }
 
 		public MsfMovieSolver()
 		{
@@ -114,18 +114,23 @@ namespace MoviePicker.Msf
 			fmlBux.SetBinding(_movies, "CostAsDouble", "Name");
 			model.AddParameters(estimatedEarnings, fmlBux);
 
-			//constraints: 2
-			//1: number of screens <= AvailableScreens
-			//2: available money to spend <= AvailableFmlBux
-			model.AddConstraint("cinePlexFmlBuxConstraint", Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t] * fmlBux[t])) <= AvailableFmlBux);
-			model.AddConstraint("cinePlexScreensConstraint", Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t])) <= AvailableScreens);
+			// constraints: 2
+			// 1: number of screens <= AvailableScreens
+			// 2: available money to spend <= AvailableFmlBux
+			model.AddConstraint("cinePlexFmlBuxConstraint", Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term] * fmlBux[term])) <= AvailableFmlBux);
+			model.AddConstraint("cinePlexScreensConstraint", Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term])) <= AvailableScreens);
 
-			//goal:
-			//maximize earnings. earnings = selectedMovies.Sum(Estimated Earnings) - ((AvailableScreens - selectedMovies.Count) * Penalty)
-			var revenueTerm = Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t] * estimatedEarnings[t]));
-			var penaltyTerm = Model.Product(-(double)PenaltyForUnusedScreens, Model.Difference(8, Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t]))));
+			// goal: maximize earnings.
+			// earnings = selectedMovies.Sum(Estimated Earnings) - ((AvailableScreens - selectedMovies.Count) * Penalty)
+			var goalTerm = Model.Sum(
+								Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term] * estimatedEarnings[term]))
+								, Model.Product(
+									-(double)PenaltyForUnusedScreens,
+									Model.Difference(
+										AvailableScreens
+										, Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term])))));
 
-			model.AddGoal("cinePlexMaximizeRevenueMinimizeUnusedScreens", GoalKind.Maximize, Model.Sum(revenueTerm, penaltyTerm));
+			model.AddGoal("cinePlexMaximizeRevenueMinimizeUnusedScreens", GoalKind.Maximize, goalTerm);
 
 			return context;
 		}
