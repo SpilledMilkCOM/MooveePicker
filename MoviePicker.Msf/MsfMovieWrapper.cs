@@ -8,7 +8,7 @@ namespace MoviePicker.Msf
     /// </summary>
     public class MsfMovieWrapper : IMovie
     {
-        private IMovie _movie;
+        private readonly IMovie _movie;
 
         public MsfMovieWrapper(IMovie movie)
         {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Common;
@@ -29,7 +26,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf01()
+        public void MsfMoviePicker_ChooseBest_OutOf01()
         {
             var test = ConstructTestObject();
 
@@ -44,7 +41,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf02()
+        public void MsfMoviePicker_ChooseBest_OutOf02()
         {
             var test = ConstructTestObject();
 
@@ -59,7 +56,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf03()
+        public void MsfMoviePicker_ChooseBest_OutOf03()
         {
             var test = ConstructTestObject();
 
@@ -74,7 +71,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf04()
+        public void MsfMoviePicker_ChooseBest_OutOf04()
         {
             var test = ConstructTestObject();
 
@@ -89,7 +86,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf05()
+        public void MsfMoviePicker_ChooseBest_OutOf05()
         {
             var test = ConstructTestObject();
 
@@ -104,7 +101,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf06()
+        public void MsfMoviePicker_ChooseBest_OutOf06()
         {
             var test = ConstructTestObject();
 
@@ -119,7 +116,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf07()
+        public void MsfMoviePicker_ChooseBest_OutOf07()
         {
             var test = ConstructTestObject();
 
@@ -134,7 +131,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf08()
+        public void MsfMoviePicker_ChooseBest_OutOf08()
         {
             var test = ConstructTestObject();
 
@@ -149,7 +146,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf09()
+        public void MsfMoviePicker_ChooseBest_OutOf09()
         {
             var test = ConstructTestObject();
 
@@ -164,7 +161,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_OutOf10()
+        public void MsfMoviePicker_ChooseBest_OutOf10()
         {
             var test = ConstructTestObject();
 
@@ -179,7 +176,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
         }
 
         [TestMethod]
-        public void MoviePicker_ChooseBest_WeekEnding_20170604()
+        public void MsfMoviePicker_ChooseBest_WeekEnding_20170604()
         {
             var test = ConstructTestObject();
             var movies = new List<IMovie>();
@@ -227,8 +224,47 @@ namespace MoviePicker.Tests.MsfMovieSolver
             Assert.AreEqual(7, best.Movies.Count(movie => movie.Name == "Everything Everything"));
         }
 
-        [TestMethod]
-        public void MoviePicker_ChooseBest_ThisWeeksPicks()
+		[TestMethod]
+		public void MsfMoviePicker_ChooseBest_WeekEnding_20170611()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			// Weekend gross from box office mojo (with FML bux)
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 58520672m, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 31688375m, 526));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 5988370m, 150));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 10704103m, 143));
+			movies.Add(ConstructMovie(id++, "Baywatch", 4648207m, 60));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 3810867m, 59));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 1826579m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 968506m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 656843m, 8));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 12180704m, 198));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 1627295m, 28));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 6312367m, 70));
+			movies.Add(ConstructMovie(id++, "King Arthur", 455744m, 7));
+			movies.Add(ConstructMovie(id++, "Snatched", 491644m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the rest", 512445m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+
+			Assert.AreEqual(1, best.Movies.Count(movie => movie.Name == "Wonder Woman"));
+			Assert.AreEqual(5, best.Movies.Count(movie => movie.Name == "Guardians of the Galaxy"));
+			Assert.AreEqual(1, best.Movies.Count(movie => movie.Name == "Alien: Covenant"));
+			Assert.AreEqual(1, best.Movies.Count(movie => movie.Name == "Diary of a wimpy Kid"));
+		}
+
+
+		[TestMethod]
+        public void MsfMoviePicker_ChooseBest_ThisWeeksPicks()
         {
             var test = ConstructTestObject();
 
