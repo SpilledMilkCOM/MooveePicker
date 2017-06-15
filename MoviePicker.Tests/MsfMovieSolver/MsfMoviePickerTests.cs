@@ -271,7 +271,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
             var movies = new List<IMovie>();
 
             int id = 1;
-
+			//Mine
 			movies.Add(ConstructMovie(id++, "Cars 3", 60, 719));
 			movies.Add(ConstructMovie(id++, "Wonder Woman", 30, 478));
 			movies.Add(ConstructMovie(id++, "All Eyez on Me", 24, 327));
@@ -287,7 +287,41 @@ namespace MoviePicker.Tests.MsfMovieSolver
 			movies.Add(ConstructMovie(id++, "Megan Leavey", 1.5m, 25));
 			movies.Add(ConstructMovie(id++, "Alien: Covenant", 0.8m, 11));
 			movies.Add(ConstructMovie(id++, "Everything, Everything", 0.8m, 10));
-			
+
+			//todd thatcher
+			//movies.Add(ConstructMovie(id++, "Cars 3", 57.8M, 719));
+			//movies.Add(ConstructMovie(id++, "Wonder Woman", 31.2m, 478));
+			//movies.Add(ConstructMovie(id++, "All Eyez on Me", 24.4m, 327));
+			//movies.Add(ConstructMovie(id++, "Rough Night", 15.1m, 243));
+			//movies.Add(ConstructMovie(id++, "The Mummy", 13.2m, 167));
+			//movies.Add(ConstructMovie(id++, "47 Meters Down", 7, 105));
+			//movies.Add(ConstructMovie(id++, "Captain Underpants", 5.6m, 78));
+			//movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 5.2m, 71));
+			//movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 4.2m, 60));
+			//movies.Add(ConstructMovie(id++, "It Comes at night", 2.2m, 34));
+			//movies.Add(ConstructMovie(id++, "The Book of Henry", 1.8m, 31));
+			//movies.Add(ConstructMovie(id++, "Baywatch", 0.82m, 29));
+			//movies.Add(ConstructMovie(id++, "Megan Leavey", 2.1m, 25));
+			//movies.Add(ConstructMovie(id++, "Alien: Covenant", 0.82m, 11));
+			//movies.Add(ConstructMovie(id++, "Everything, Everything", 0.75m, 10));
+
+			//medians
+			//movies.Add(ConstructMovie(id++, "Cars 3", 60M, 719));
+			//movies.Add(ConstructMovie(id++, "Wonder Woman", 30m, 478));
+			//movies.Add(ConstructMovie(id++, "All Eyez on Me", 22m, 327));
+			//movies.Add(ConstructMovie(id++, "Rough Night", 15.08m, 243));
+			//movies.Add(ConstructMovie(id++, "The Mummy", 14.83m, 167));
+			//movies.Add(ConstructMovie(id++, "47 Meters Down", 5.75m, 105));
+			//movies.Add(ConstructMovie(id++, "Captain Underpants", 6m, 78));
+			//movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 5.2m, 71));
+			//movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 3.16m, 60));
+			//movies.Add(ConstructMovie(id++, "It Comes at night", 2.97m, 34));
+			//movies.Add(ConstructMovie(id++, "The Book of Henry", 0.59m, 31));
+			//movies.Add(ConstructMovie(id++, "Baywatch", 1.83m, 29));
+			//movies.Add(ConstructMovie(id++, "Megan Leavey", 2.05m, 25));
+			//movies.Add(ConstructMovie(id++, "Alien: Covenant", 0.81m, 11));
+			//movies.Add(ConstructMovie(id++, "Everything, Everything", 0.775m, 10));
+
 			return movies;
         }
     }
