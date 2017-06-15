@@ -234,37 +234,61 @@ namespace MoviePicker.Tests.MsfMovieSolver
 
             test.AddMovies(ThisWeeksMoviesPicks());
 
-            var best = test.ChooseBest();
+			var best = test.ChooseBest();
 
             WritePicker(test);
             WriteMovies(best);
         }
 
-        //----==== PRIVATE ====---------------------------------------------------------
+		//----==== PRIVATE ====---------------------------------------------------------
+		private List<IMovie> MoviesPicks_20170609()
+		{
+			var movies = new List<IMovie>();
 
-        private List<IMovie> ThisWeeksMoviesPicks()
+			int id = 1;
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 55, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 38, 526));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 12, 198));
+			movies.Add(ConstructMovie(id++, "It Comes at Night", 20, 150));
+			movies.Add(ConstructMovie(id++, "Pirates", 12, 143));
+			movies.Add(ConstructMovie(id++, "Guardians", 5, 70));
+			movies.Add(ConstructMovie(id++, "Baywatch", 5, 60));
+			movies.Add(ConstructMovie(id++, "Meagan Leavey", 3.3m, 59));
+			movies.Add(ConstructMovie(id++, "Everything", 1.5m, 28));
+			movies.Add(ConstructMovie(id++, "Alien", 2.1m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1, 15));
+			movies.Add(ConstructMovie(id++, "Snatched", 0.6m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the Rest", 1.1m, 9));
+			movies.Add(ConstructMovie(id++, "Diary of a Wimpy Kid", 0.6m, 8));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
+
+			return movies;
+		}
+
+		private List<IMovie> ThisWeeksMoviesPicks()
         {
             var movies = new List<IMovie>();
 
             int id = 1;
 
-            movies.Add(ConstructMovie(id++, "Wonder Woman", 55, 613));
-            movies.Add(ConstructMovie(id++, "The Mummy", 38, 526));
-            movies.Add(ConstructMovie(id++, "Captain Underpants", 12, 198));
-            movies.Add(ConstructMovie(id++, "It Comes at Night", 20, 150));
-            movies.Add(ConstructMovie(id++, "Pirates", 12, 143));
-            movies.Add(ConstructMovie(id++, "Guardians", 5, 70));
-            movies.Add(ConstructMovie(id++, "Baywatch", 5, 60));
-            movies.Add(ConstructMovie(id++, "Meagan Leavey", 3.3m, 59));
-            movies.Add(ConstructMovie(id++, "Everything", 1.5m, 28));
-            movies.Add(ConstructMovie(id++, "Alien", 2.1m, 26));
-            movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1, 15));
-            movies.Add(ConstructMovie(id++, "Snatched", 0.6m, 9));
-            movies.Add(ConstructMovie(id++, "Best of the Rest", 1.1m, 9));
-            movies.Add(ConstructMovie(id++, "Diary of a Wimpy Kid", 0.6m, 8));
-            movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
-
-            return movies;
+			movies.Add(ConstructMovie(id++, "Cars 3", 60, 719));
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 30, 478));
+			movies.Add(ConstructMovie(id++, "All Eyez on Me", 24, 327));
+			movies.Add(ConstructMovie(id++, "Rough Night", 15, 243));
+			movies.Add(ConstructMovie(id++, "The Mummy", 14, 167));
+			movies.Add(ConstructMovie(id++, "47 Meters Down", 7, 105));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 6, 78));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 5, 71));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 3, 60));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 2.5m, 34));
+			movies.Add(ConstructMovie(id++, "The Book of Henry", 0.5m, 31));
+			movies.Add(ConstructMovie(id++, "Baywatch", 2, 29));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 1.5m, 25));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 0.8m, 11));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 0.8m, 10));
+			
+			return movies;
         }
     }
 }

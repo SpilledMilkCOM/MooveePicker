@@ -21,8 +21,8 @@ namespace MoviePicker.Msf
             
             AvailableScreens = 8;
             AvailableFmlBux = 1000;
-            PenaltyForUnusedScreens = 2;
-            DisplayDebugMessage = false;
+            PenaltyForUnusedScreens = 2000000;
+            DisplayDebugMessage = true;
 
 
         }
