@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="MoviePickerTestBase.cs" />
     <Compile Include="MovieListTests.cs" />
+    <Compile Include="MoviePickerTest_20170618.cs" />
     <Compile Include="MoviePickerTopDropsOutTests.cs" />
     <Compile Include="MoviePickerVariantsAllTests.cs" />
     <Compile Include="MoviePickerVariantsTests.cs" />
