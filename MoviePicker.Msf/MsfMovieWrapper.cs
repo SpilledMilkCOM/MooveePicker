@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using MoviePicker.Common.Interfaces;
 
 namespace MoviePicker.Msf
@@ -6,6 +7,7 @@ namespace MoviePicker.Msf
 	/// <summary>
 	/// needed as MSF solves with doubles not decimals
 	/// </summary>
+	[DebuggerDisplay("Id = {Id} - Name = {Name}")]
 	public class MsfMovieWrapper : IMovie
 	{
 		private readonly IMovie _movie;
@@ -13,6 +15,12 @@ namespace MoviePicker.Msf
 		public MsfMovieWrapper(IMovie movie)
 		{
 			_movie = movie;
+		}
+
+		public bool AdjustEarnings
+		{
+			get { return _movie.AdjustEarnings; }
+			set { _movie.AdjustEarnings = value; }
 		}
 
 		public decimal Cost
@@ -62,6 +70,11 @@ namespace MoviePicker.Msf
 		public IMovie Clone()
 		{
 			throw new NotImplementedException();
+		}
+
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
 		}
 	}
 }

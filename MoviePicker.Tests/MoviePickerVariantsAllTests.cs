@@ -12,7 +12,7 @@ using MoviePicker.Common.Interfaces;
 namespace MoviePicker.Tests
 {
 	[TestClass]
-	public class MoviePickerVariantsTests : MoviePickerTestBase
+	public class MoviePickerVariantsAllTests : MoviePickerTestBase
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
@@ -26,11 +26,11 @@ namespace MoviePicker.Tests
 
 			_unity.RegisterType<IMovie, Movie>();
 			_unity.RegisterType<IMovieList, MovieList>();
-			_unity.RegisterType<IMoviePicker, MoviePickerVariants>();
+			_unity.RegisterType<IMoviePicker, MoviePickerVariantsAll>();
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf01()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf01()
 		{
 			var test = ConstructTestObject();
 
@@ -45,7 +45,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf02()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf02()
 		{
 			var test = ConstructTestObject();
 
@@ -60,7 +60,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf03()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf03()
 		{
 			var test = ConstructTestObject();
 
@@ -75,7 +75,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf04()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf04()
 		{
 			var test = ConstructTestObject();
 
@@ -90,7 +90,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf05()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf05()
 		{
 			var test = ConstructTestObject();
 
@@ -105,7 +105,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf06()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf06()
 		{
 			var test = ConstructTestObject();
 
@@ -120,7 +120,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf07()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf07()
 		{
 			var test = ConstructTestObject();
 
@@ -135,7 +135,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf08()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf08()
 		{
 			var test = ConstructTestObject();
 
@@ -150,7 +150,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf09()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf09()
 		{
 			var test = ConstructTestObject();
 
@@ -165,7 +165,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_OutOf10()
+		public void MoviePickerVariantsAll_ChooseBest_OutOf10()
 		{
 			var test = ConstructTestObject();
 
@@ -180,7 +180,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_WeekEnding_20170604()
+		public void MoviePickerVariantsAll_ChooseBest_WeekEnding_20170604()
 		{
 			var test = ConstructTestObject();
 			var movies = new List<IMovie>();
@@ -229,7 +229,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_ThisWeeksPicks()
+		public void MoviePickerVariantsAll_ChooseBest_ThisWeeksPicks()
 		{
 			var test = ConstructTestObject();
 
@@ -242,7 +242,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_Parker_20170601()
+		public void MoviePickerVariantsAll_ChooseBest_Parker_2017061()
 		{
 			var test = ConstructTestObject();
 			var movies = new List<IMovie>();
@@ -273,7 +273,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_Parker_20170618()
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20170618()
 		{
 			var test = ConstructTestObject();
 			var movies = new List<IMovie>();
@@ -305,16 +305,16 @@ namespace MoviePicker.Tests
 			WriteMovies(best);
 			Debug.WriteLine(string.Empty);
 
-			foreach (var movieList in ((MoviePickerVariants)test).GetRankedMovieLists())
+			foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
 			{
 				WriteMovies(movieList);
-				Debug.WriteLine($"Total List Count: {((MoviePickerVariants)test).GetRankedMovieListCount(movieList)}");
+				Debug.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
 				Debug.WriteLine(string.Empty);
 			}
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_Parker_20170618_ByPercent()
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20170618_ByPercent()
 		{
 			var test = ConstructTestObject();
 			var movies = new List<IMovie>();
@@ -357,7 +357,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
-		public void MoviePickerVariants_ChooseBest_Raj_2017061()
+		public void MoviePickerVariantsAll_ChooseBest_Raj_2017061()
 		{
 			var test = ConstructTestObject();
 			var movies = new List<IMovie>();
@@ -410,6 +410,14 @@ namespace MoviePicker.Tests
 			movies.Add(ConstructMovie(id++, "Best of the Rest", 1.1m, 9));
 			movies.Add(ConstructMovie(id++, "Diary of a Wimpy Kid", 0.6m, 8));
 			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
+
+			foreach (var movie in movies)
+			{
+				if (movie.Id > 7)
+				{
+					movie.AdjustEarnings = false;
+				}
+			}
 
 			return movies;
 		}

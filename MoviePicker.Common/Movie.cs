@@ -12,7 +12,9 @@ namespace MoviePicker.Common
 		private decimal _efficiency;
 
 		public Movie()
-		{ }
+		{
+			AdjustEarnings = true;
+		}
 
 		/// <summary>
 		/// Copy constructor for Clone() needs to be private, otherwise the IoC will be confused.
@@ -23,6 +25,7 @@ namespace MoviePicker.Common
 		{
 			if (!ReferenceEquals(this, toCopy))
 			{
+				AdjustEarnings = toCopy.AdjustEarnings;
 				_earnings = toCopy._earnings;
 				_cost = toCopy._cost;
 				Id = toCopy.Id;
@@ -32,6 +35,8 @@ namespace MoviePicker.Common
 				UpdateEfficiency();
 			}
 		}
+
+		public bool AdjustEarnings { get; set; }
 
 		public decimal Cost
 		{
