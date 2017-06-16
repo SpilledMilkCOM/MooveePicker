@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.Common", "Movie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.Msf", "MoviePicker.Msf\MoviePicker.Msf.csproj", "{420FCF88-E38D-46EE-A4DE-BE87042D5B1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{C3CC820E-D9E7-4679-980B-FA67EE6AD965}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{420FCF88-E38D-46EE-A4DE-BE87042D5B1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{420FCF88-E38D-46EE-A4DE-BE87042D5B1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{420FCF88-E38D-46EE-A4DE-BE87042D5B1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3CC820E-D9E7-4679-980B-FA67EE6AD965}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3CC820E-D9E7-4679-980B-FA67EE6AD965}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3CC820E-D9E7-4679-980B-FA67EE6AD965}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3CC820E-D9E7-4679-980B-FA67EE6AD965}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
