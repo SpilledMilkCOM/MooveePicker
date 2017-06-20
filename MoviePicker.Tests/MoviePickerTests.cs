@@ -247,7 +247,43 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(1, best.Movies.Count(movie => movie.Name == "Diary of a wimpy Kid"));
 		}
 
-		[TestMethod]
+        [TestMethod]
+        public void MoviePicker_ChooseBest_WeekEnding_20170618()
+        {
+            var test = ConstructTestObject();
+            var movies = new List<IMovie>();
+            int id = 1;
+
+            // Weekend gross from box office mojo (with FML bux)
+
+            movies.Add(ConstructMovie(id++, "Cars 3", 53.68868m, 719));
+            movies.Add(ConstructMovie(id++, "Wonder Woman", 41.26885m, 478));
+            movies.Add(ConstructMovie(id++, "All Eyez on Me", 26.435354m, 327));
+            movies.Add(ConstructMovie(id++, "Rough Night", 8.004283m, 243));
+            movies.Add(ConstructMovie(id++, "The Mummy", 14.51096m, 167));
+            movies.Add(ConstructMovie(id++, "47 Meters Down", 11.205561m, 105));
+            movies.Add(ConstructMovie(id++, "Captain Underpants", 7.181541m, 78));
+            movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 8.964039m, 71));
+            movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 5.071732m, 60));
+            movies.Add(ConstructMovie(id++, "It Comes at night", 2.601468m, 34));
+            movies.Add(ConstructMovie(id++, "The Book of Henry", 1.42454m, 31));
+            movies.Add(ConstructMovie(id++, "Baywatch", 1.610987m, 29));
+            movies.Add(ConstructMovie(id++, "Megan Leavey", 2.541644m, 25));
+            movies.Add(ConstructMovie(id++, "Alien: Covenant", 0.568149m, 11));
+            movies.Add(ConstructMovie(id++, "Everything, Everything", 0.356241m, 10));
+
+            test.AddMovies(movies);
+
+            var best = test.ChooseBest();
+
+            WritePicker(test);
+            WriteMovies(best);
+
+            Assert.AreEqual(1, best.Movies.Count(movie => movie.Name == "Wonder Woman"));
+            Assert.AreEqual(7, best.Movies.Count(movie => movie.Name == "Pirates of the caribbean"));
+       }
+
+        [TestMethod]
 		public void MoviePicker_ChooseBest_ThisWeeksPicks()
 		{
 			var test = ConstructTestObject();
