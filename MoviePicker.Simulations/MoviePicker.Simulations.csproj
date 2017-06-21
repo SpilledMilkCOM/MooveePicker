@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FB01C56F-1F93-4174-9D64-154F23B92691}</ProjectGuid>
+    <ProjectGuid>{C337051A-A8D2-4A45-91A5-9D3074A14313}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MoviePicker</RootNamespace>
-    <AssemblyName>MoviePicker</AssemblyName>
+    <RootNamespace>MoviePicker.Simulations</RootNamespace>
+    <AssemblyName>MoviePicker.Simulations</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,13 +40,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MoviePicker.cs" />
+    <Compile Include="MoviePickerTopDropsOut.cs" />
+    <Compile Include="MoviePickerVariantsAll.cs" />
+    <Compile Include="MoviePickerVariants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MoviePicker.Common\MoviePicker.Common.csproj">
-      <Project>{C413BA12-DCD8-485E-B008-087BA02004CB}</Project>
+      <Project>{c413ba12-dcd8-485e-b008-087ba02004cb}</Project>
       <Name>MoviePicker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MoviePicker.Msf\MoviePicker.Msf.csproj">
+      <Project>{420fcf88-e38d-46ee-a4de-be87042d5b1b}</Project>
+      <Name>MoviePicker.Msf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MoviePicker\MoviePicker.csproj">
+      <Project>{fb01c56f-1f93-4174-9d64-154f23b92691}</Project>
+      <Name>MoviePicker</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

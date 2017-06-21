@@ -4,6 +4,11 @@ namespace MoviePicker.Common.Interfaces
 {
 	public interface IMovie
 	{
+		/// <summary>
+		/// Allow simulations to adjust this movie's earnings.
+		/// </summary>
+		bool AdjustEarnings { get; set; }
+
 		decimal Cost { get; set; }
 
 		decimal Efficiency { get; }
