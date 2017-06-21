@@ -1,65 +1,80 @@
 ﻿using System;
+using System.Diagnostics;
 using MoviePicker.Common.Interfaces;
 
 namespace MoviePicker.Msf
 {
-    /// <summary>
-    /// needed as MSF solves with doubles not decimals
-    /// </summary>
-    public class MsfMovieWrapper : IMovie
-    {
-        private IMovie _movie;
+	/// <summary>
+	/// needed as MSF solves with doubles not decimals
+	/// </summary>
+	[DebuggerDisplay("Id = {Id} - Name = {Name}")]
+	public class MsfMovieWrapper : IMovie
+	{
+		private readonly IMovie _movie;
 
-        public MsfMovieWrapper(IMovie movie)
-        {
-            _movie = movie;
-        }
+		public MsfMovieWrapper(IMovie movie)
+		{
+			_movie = movie;
+		}
 
-        public decimal Cost
-        {
-            get { return _movie.Cost; }
-            set { _movie.Cost = value; }
-        }
+		public bool AdjustEarnings
+		{
+			get { return _movie.AdjustEarnings; }
+			set { _movie.AdjustEarnings = value; }
+		}
 
-        public double CostAsDouble
-        {
-            get { return (double)_movie.Cost; }
-            set { _movie.Cost = (decimal) value; }
-        }
+		public decimal Cost
+		{
+			get { return _movie.Cost; }
+			set { _movie.Cost = value; }
+		}
 
-        public decimal Efficiency => _movie.Efficiency;
+		public double CostAsDouble
+		{
+			get { return (double)_movie.Cost; }
+			set { _movie.Cost = (decimal)value; }
+		}
 
-        public DateTime WeekendEnding
-        {
-            get { return _movie.WeekendEnding; }
-            set { _movie.WeekendEnding = value; }
-        }
-        public decimal Earnings
-        {
-            get { return _movie.Earnings; }
-            set { _movie.Earnings = value; }
-        }
+		public decimal Efficiency => _movie.Efficiency;
 
-        public double EarningsAsDouble
-        {
-            get { return (double)_movie.Earnings; }
-            set { _movie.Earnings = (decimal) value; }
-        }
+		public DateTime WeekendEnding
+		{
+			get { return _movie.WeekendEnding; }
+			set { _movie.WeekendEnding = value; }
+		}
 
-        public int Id
-        {
-            get { return _movie.Id; }
-            set { _movie.Id = value; }
-        }
+		public decimal Earnings
+		{
+			get { return _movie.Earnings; }
+			set { _movie.Earnings = value; }
+		}
 
-        public string Name
-        {
-            get { return _movie.Name; }
-            set { _movie.Name = value; }
-        }
-        public IMovie Clone()
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public double EarningsAsDouble
+		{
+			get { return (double)_movie.Earnings; }
+			set { _movie.Earnings = (decimal)value; }
+		}
+
+		public int Id
+		{
+			get { return _movie.Id; }
+			set { _movie.Id = value; }
+		}
+
+		public string Name
+		{
+			get { return _movie.Name; }
+			set { _movie.Name = value; }
+		}
+
+		public IMovie Clone()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
+	}
 }
