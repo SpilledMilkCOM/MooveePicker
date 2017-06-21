@@ -12,20 +12,20 @@ namespace MoviePicker.Msf
 	public class MsfMovieSolver : IMoviePicker
 	{
 		private readonly List<MsfMovieWrapper> _movies;
-
 		private decimal PenaltyForUnusedScreens { get; set; }
-
 		public bool DisplayDebugMessage { get; set; }
 
 		public MsfMovieSolver()
-		{
-			_movies = new List<MsfMovieWrapper>();
+        {
+            _movies = new List<MsfMovieWrapper>();
+            
+            AvailableScreens = 8;
+            AvailableFmlBux = 1000;
+            PenaltyForUnusedScreens = 2000000;
+            DisplayDebugMessage = true;
 
-			AvailableScreens = 8;
-			AvailableFmlBux = 1000;
-			PenaltyForUnusedScreens = 2;
-			DisplayDebugMessage = false;
-		}
+
+        }
 
 		public IEnumerable<IMovie> Movies => _movies;
 
@@ -122,16 +122,11 @@ namespace MoviePicker.Msf
 
 			// goal: maximize earnings.
 			// earnings = selectedMovies.Sum(Estimated Earnings) - ((AvailableScreens - selectedMovies.Count) * Penalty)
-			var goalTerm = Model.Sum(
-								Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term] * estimatedEarnings[term]))
-								, Model.Product(
-									-(double)PenaltyForUnusedScreens,
-									Model.Difference(
-										AvailableScreens
-										, Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term])))));
-
-			model.AddGoal("cinePlexMaximizeRevenueMinimizeUnusedScreens", GoalKind.Maximize, goalTerm);
-
+			var revenueTerm = Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t] * estimatedEarnings[t]));
+			var penaltyTerm = Model.Product(-(double)PenaltyForUnusedScreens,
+				Model.Difference(8, Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t]))));
+			model.AddGoal("cinePlexMaximizeRevenueMinimizeUnusedScreens", GoalKind.Maximize, Model.Sum(revenueTerm, penaltyTerm));
+			
 			return context;
 		}
 	}
