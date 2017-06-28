@@ -17,6 +17,14 @@ namespace XUnitTests
 
 		protected MoviePickerValidationTestsContext Context { get; set; }
 
+		public MoviePickerTestBase(ITestOutputHelper outputHelper, MoviePickerValidationTestsContext context)
+		{
+			OutputHelper = outputHelper;
+			Context = context;
+		}
+
+		
+
 		[Fact]
 		public void MoviePicker_ChooseBest_WeekEnding_20170604()
 		{
@@ -87,37 +95,22 @@ namespace XUnitTests
 			var movies = new List<IMovie>();
 
 			int id = 1;
-			/*movies.Add(ConstructMovie(id++, "Transformers", 56.8m, 560));
-			movies.Add(ConstructMovie(id++, "Wonder Woman", 24.125m, 286));
-			movies.Add(ConstructMovie(id++, "Cars 3", 28.425m, 278));
-			movies.Add(ConstructMovie(id++, "All Eyez on Me", 10.8m, 104));
-			movies.Add(ConstructMovie(id++, "The Mummy", 7.325m, 73));
-			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 4.65m, 58));
-			movies.Add(ConstructMovie(id++, "47 Meters Down", 5.5m, 55));
-			movies.Add(ConstructMovie(id++, "Captain Underpants", 3.85m, 45));
-			movies.Add(ConstructMovie(id++, "Rough Night", 3.95m, 39));
-			movies.Add(ConstructMovie(id++, "Tubelight", 2m, 34));
-			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 2.825m, 32));
-			movies.Add(ConstructMovie(id++, "Beatriz At Dinner", 1.3m, 17));
-			movies.Add(ConstructMovie(id++, "Megan Leavey", 1.275m, 16));
-			movies.Add(ConstructMovie(id++, "It Comes at night", 1.2m, 13));
-			movies.Add(ConstructMovie(id++, "The Book of Henry", 0.75m, 11));
-			*/
-			movies.Add(ConstructMovie(id++, "Transformers", 56.4m, 560));
-			movies.Add(ConstructMovie(id++, "Wonder Woman", 27.6m, 286));
-			movies.Add(ConstructMovie(id++, "Cars 3", 29m, 278));
-			movies.Add(ConstructMovie(id++, "All Eyez on Me", 9.25m, 104));
-			movies.Add(ConstructMovie(id++, "The Mummy", 7.26m, 73));
-			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 4.8m, 58));
-			movies.Add(ConstructMovie(id++, "47 Meters Down", 5.6m, 55));
-			movies.Add(ConstructMovie(id++, "Captain Underpants", 4.1m, 45));
-			movies.Add(ConstructMovie(id++, "Rough Night", 4m, 39));
-			movies.Add(ConstructMovie(id++, "Tubelight", 2m, 34));
-			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 3.1m, 32));
-			movies.Add(ConstructMovie(id++, "Beatriz At Dinner", 1.3m, 17));
-			movies.Add(ConstructMovie(id++, "Megan Leavey", 1.275m, 16));
-			movies.Add(ConstructMovie(id++, "It Comes at night", 1.2m, 13));
-			movies.Add(ConstructMovie(id++, "The Book of Henry", 0.75m, 11));
+			
+			movies.Add(ConstructMovie(id++, "Transformers", 44.7m, 560));
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 24.9m, 286));
+			movies.Add(ConstructMovie(id++, "Cars 3", 24.1m, 278));
+			movies.Add(ConstructMovie(id++, "All Eyez on Me", 5.8m, 104));
+			movies.Add(ConstructMovie(id++, "The Mummy", 6.1m, 73));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 5.4m, 58));
+			movies.Add(ConstructMovie(id++, "47 Meters Down", 7.1m, 55));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 4.3m, 45));
+			movies.Add(ConstructMovie(id++, "Rough Night", 4.7m, 39));
+			movies.Add(ConstructMovie(id++, "Tubelight", 0.9m, 34));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 3.0m, 32));
+			movies.Add(ConstructMovie(id++, "Beatriz At Dinner", 1.8m, 17));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 1.2m, 16));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 0.8m, 13));
+			movies.Add(ConstructMovie(id++, "The Book of Henry", 0.95m, 11));
 
 
 			test.AddMovies(movies);
@@ -127,8 +120,8 @@ namespace XUnitTests
 			WritePicker(test);
 			WriteMovies(best);
 
-			//Assert.Equal(1, best.Movies.Count(movie => movie.Name == "Wonder Woman"));
-			//Assert.Equal(7, best.Movies.Count(movie => movie.Name == "Pirates of the caribbean"));
+			Assert.Equal(1, best.Movies.Count(movie => movie.Name == "Transformers"));
+			Assert.Equal(7, best.Movies.Count(movie => movie.Name == "47 Meters Down"));
 		}
 
 		protected IMoviePicker ConstructTestObject()
