@@ -26,7 +26,7 @@ namespace XUnitTests
 		
 
 		[Fact]
-		public void MoviePicker_ChooseBest_WeekEnding_20170604()
+		public void MoviePicker_ChooseBest_WeekEnding_20170604_Week1()
 		{
 			var test = ConstructTestObject();
 			var movies = new List<IMovie>();
@@ -53,9 +53,44 @@ namespace XUnitTests
 			Assert.Equal(1, best.Movies.Count(movie => movie.Name == "Wonder Woman"));
 			Assert.Equal(7, best.Movies.Count(movie => movie.Name == "Everything Everything"));
 		}
+		[Fact]
+		public void MoviePicker_ChooseBest_WeekEnding_20170611_Week2()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 58.5m, 613));
+			movies.Add(ConstructMovie(id++, "The Mummy", 31.7m, 526));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 12.2m, 198));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 5.9m, 150));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 10.7m, 143));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 3.8m, 59));
+			movies.Add(ConstructMovie(id++, "Baywatch", 4.6m, 69));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 1.8m, 26));
+			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 0.95m, 15));
+			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 0.65m, 8));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 1.6m, 28));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 6.3m, 70));
+			movies.Add(ConstructMovie(id++, "King Arthur", 0.45m, 7));
+			movies.Add(ConstructMovie(id++, "Snatched", 0.49m, 9));
+			movies.Add(ConstructMovie(id++, "Best of the rest", 0.5m, 9));
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+
+			Assert.Equal(1, best.Movies.Count(movie => movie.Name == "Wonder Woman"));
+			Assert.Equal(5, best.Movies.Count(movie => movie.Name == "Guardians of the Galaxy"));
+			Assert.Equal(1, best.Movies.Count(movie => movie.Name == "Alien: Covenant"));
+			Assert.Equal(1, best.Movies.Count(movie => movie.Name == "Diary of a wimpy Kid"));
+		}
 
 		[Fact]
-		public void MoviePicker_ChooseBest_WeekEnding_20170618()
+		public void MoviePicker_ChooseBest_WeekEnding_20170618_Week3()
 		{
 			var test = ConstructTestObject();
 			var movies = new List<IMovie>();
@@ -89,7 +124,7 @@ namespace XUnitTests
 		}
 
 		[Fact]
-		public void MoviePicker_ChooseBest_WeekEnding_20170625()
+		public void MoviePicker_ChooseBest_WeekEnding_20170625_Week4()
 		{
 			var test = ConstructTestObject();
 			var movies = new List<IMovie>();
