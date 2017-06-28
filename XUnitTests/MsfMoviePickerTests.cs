@@ -1,19 +1,13 @@
 ﻿using Xunit;
+using Xunit.Abstractions;
 
 namespace XUnitTests
 {
 	public class MsfMoviePickerTests : MoviePickerTestBase, IClassFixture<MsfMoviePickerValidationTestsContext>
 	{
-		public MsfMoviePickerTests(MsfMoviePickerValidationTestsContext context)
+		public MsfMoviePickerTests(ITestOutputHelper outputHelper, MsfMoviePickerValidationTestsContext context)
 		{
-			Context = context;
-		}
-	}
-
-	public class ParkerMoviePickerTests : MoviePickerTestBase, IClassFixture<ParkerMoviePickerValidationTestsContext>
-	{
-		public ParkerMoviePickerTests(ParkerMoviePickerValidationTestsContext context)
-		{
+			OutputHelper = outputHelper;
 			Context = context;
 		}
 	}

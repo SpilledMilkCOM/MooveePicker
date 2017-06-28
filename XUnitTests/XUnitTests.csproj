@@ -79,6 +79,7 @@
     <Compile Include="MoviePickerValidationTestsContext.cs" />
     <Compile Include="MsfMoviePickerTests.cs" />
     <Compile Include="MsfMoviePickerValidationTestsContext.cs" />
+    <Compile Include="ParkerMoviePickerTests.cs" />
     <Compile Include="ParkerMoviePickerValidationTestsContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
