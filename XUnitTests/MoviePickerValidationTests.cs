@@ -11,7 +11,7 @@ using Xunit.Abstractions;
 
 namespace XUnitTests
 {
-	public class MoviePickerTestBase
+	public abstract class MoviePickerTestBase
 	{
 		protected ITestOutputHelper OutputHelper { get; set; }
 
