@@ -218,21 +218,21 @@ namespace XUnitTests
 
 			int id = 1;
 
-			movies.Add(ConstructMovie(id++, "FRI: Spider-Man: Homecoming", 48.311m, 501));
-			movies.Add(ConstructMovie(id++, "SAT: Spider-Man: Homecoming", 43.239m, 448));
-			movies.Add(ConstructMovie(id++, "Despicable Me 3", 36.2m, 404));
-			movies.Add(ConstructMovie(id++, "SUN: Spider-Man: Homecoming", 32.45m, 339));
-			movies.Add(ConstructMovie(id++, "Baby Driver", 13.878m, 143));
-			movies.Add(ConstructMovie(id++, "Wonder Woman", 8m, 104));
-			movies.Add(ConstructMovie(id++, "Transformers", 6.794m, 70));
-			movies.Add(ConstructMovie(id++, "Cars 3", 4.561m, 47));
-			movies.Add(ConstructMovie(id++, "The House", 4.35m, 46));
-			movies.Add(ConstructMovie(id++, "47 Meters Down", 1m, 30));
-			movies.Add(ConstructMovie(id++, "The Big Sick", 2.3585m, 28));
+			movies.Add(ConstructMovie(id++, "FRI: Spider-Man: Homecoming", 47.3m, 501));
+			movies.Add(ConstructMovie(id++, "SAT: Spider-Man: Homecoming", 41.4m, 448));
+			movies.Add(ConstructMovie(id++, "Despicable Me 3", 33.85m, 404));
+			movies.Add(ConstructMovie(id++, "SUN: Spider-Man: Homecoming", 31.1m, 339));
+			movies.Add(ConstructMovie(id++, "Baby Driver", 13.8m, 143));
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 9.35m, 104));
+			movies.Add(ConstructMovie(id++, "Transformers", 6.897m, 70));
+			movies.Add(ConstructMovie(id++, "Cars 3", 4.75m, 47));
+			movies.Add(ConstructMovie(id++, "The House", 4.407m, 46));
+			movies.Add(ConstructMovie(id++, "47 Meters Down", 2.7m, 30));
+			movies.Add(ConstructMovie(id++, "The Big Sick", 2.8585m, 28));
 			movies.Add(ConstructMovie(id++, "The Beguiled", 2m, 21));
-			movies.Add(ConstructMovie(id++, "The Mummy", 1.359m, 14));
-			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 1.25m, 13));
-			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 0.765m, 8));
+			movies.Add(ConstructMovie(id++, "The Mummy", 1.2795m, 14));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 1.225m, 13));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 0.7705m, 8));
 
 			test.AddMovies(movies);
 
