@@ -67,7 +67,9 @@ namespace MoviePicker.Msf
 			set { _movie.Name = value; }
 		}
 
-		public IMovie Clone()
+        public bool IsBestPerformer { get; set; }
+
+        public IMovie Clone()
 		{
 			throw new NotImplementedException();
 		}

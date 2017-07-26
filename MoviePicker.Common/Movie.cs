@@ -62,11 +62,13 @@ namespace MoviePicker.Common
 
 		public int Id { get; set; }
 
-		public string Name { get; set; }
+        public bool IsBestPerformer { get; set; }
+
+        public string Name { get; set; }
 
 		public DateTime WeekendEnding { get; set; }
 
-		public IMovie Clone()
+        public IMovie Clone()
 		{
 			return new Movie(this);
 		}
@@ -82,6 +84,8 @@ namespace MoviePicker.Common
 			{
 				_efficiency = Earnings / Cost;
 			}
+
+		    IsBestPerformer = false;
 		}
 	}
 }

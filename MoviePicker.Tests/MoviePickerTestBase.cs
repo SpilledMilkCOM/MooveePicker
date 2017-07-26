@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Practices.Unity;
-using MooveePicker;
 using MoviePicker.Common.Interfaces;
 
 namespace MoviePicker.Tests
@@ -11,7 +10,7 @@ namespace MoviePicker.Tests
 	{
 		protected abstract IUnityContainer UnityContainer { get; }
 
-		protected IMoviePicker ConstructTestObject()
+		protected virtual IMoviePicker ConstructTestObject()
 		{
 			return UnityContainer.Resolve<IMoviePicker>();
 		}

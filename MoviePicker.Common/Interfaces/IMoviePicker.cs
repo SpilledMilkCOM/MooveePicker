@@ -4,7 +4,18 @@ namespace MoviePicker.Common.Interfaces
 {
 	public interface IMoviePicker
 	{
-		IEnumerable<IMovie> Movies { get; }
+        /// <summary>
+        /// THE best performer (if not null - if this is null then there is a tie)
+        /// </summary>
+        IMovie BestPerformer { get; }
+
+        /// <summary>
+        /// A list of best performing movies ($$/bux).
+        /// NOTE: Return a list because there COULD be a tie.
+        /// </summary>
+        IEnumerable<IMovie> BestPerformers { get; }
+
+        IEnumerable<IMovie> Movies { get; }
 
 		int TotalComparisons { get; set; }
 

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElapsedTime.cs" />
     <Compile Include="MoviePickerTopDropsOut.cs" />
     <Compile Include="MoviePickerVariantsAll.cs" />
     <Compile Include="MoviePickerVariants.cs" />

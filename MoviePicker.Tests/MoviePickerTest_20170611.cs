@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,7 +11,8 @@ using MoviePicker.Tests;
 namespace MooviePicker.Tests
 {
 	[TestClass]
-	public class MoviePickerTest_20170611 : MoviePickerTestBase
+    [ExcludeFromCodeCoverage]
+    public class MoviePickerTest_20170611 : MoviePickerTestBase
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
@@ -30,7 +31,23 @@ namespace MooveePicker
 
 		public int TotalSubProblems { get; set; }
 
-		public void AddMovies(IEnumerable<IMovie> movies)
+        public IMovie BestPerformer
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<IMovie> BestPerformers
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public void AddMovies(IEnumerable<IMovie> movies)
 		{
 			// Need base copies of the movie earnings, so you need clones.
 
