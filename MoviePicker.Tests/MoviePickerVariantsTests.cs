@@ -356,7 +356,48 @@ namespace MoviePicker.Tests
 			}
 		}
 
-		[TestMethod]
+        [TestMethod]
+        public void MoviePickerVariantsAll_ChooseBest_Parker_20170730()
+        {
+            var test = ConstructTestObject();
+            var movies = new List<IMovie>();
+            int id = 1;
+
+            // The baseline movie list.
+
+            movies.Add(ConstructMovie(id++, "The Emoji Movie", 31.8666666666667m, 400));
+            movies.Add(ConstructMovie(id++, "Dunkirk", 29.0386666666667m, 373));
+            movies.Add(ConstructMovie(id++, "Atomic Blonde", 21.0666666666667m, 289));
+            movies.Add(ConstructMovie(id++, "Girls Trip", 17.4663333333333m, 219));
+            movies.Add(ConstructMovie(id++, "Spider-Man", 12.1573333333333m, 151));
+            movies.Add(ConstructMovie(id++, "War for the Planet of the Apes", 10.1466666666667m, 126));
+            movies.Add(ConstructMovie(id++, "Despicable Me 3", 7.909m, 100));
+            movies.Add(ConstructMovie(id++, "Valerian and the City of a Thousand Planets", 7.01533333333333m, 99));
+            movies.Add(ConstructMovie(id++, "Baby Driver", 4.142m, 52));
+            movies.Add(ConstructMovie(id++, "The Big Sick", 3.52533333333333m, 44));
+            movies.Add(ConstructMovie(id++, "Wonder Woman", 3.123m, 39));
+            movies.Add(ConstructMovie(id++, "Wish Upon", 1.13966666666667m, 15));
+            movies.Add(ConstructMovie(id++, "Cars 3", 1.04566666666667m, 14));
+            movies.Add(ConstructMovie(id++, "Transformers", 0.471666666666667m, 6));
+            movies.Add(ConstructMovie(id++, "Guardians of the Galaxy Vol. 2", 0.287666666666667m, 4));
+
+            test.AddMovies(movies);
+
+            var best = test.ChooseBest();
+
+            WritePicker(test);
+            WriteMovies(best);
+            Debug.WriteLine(string.Empty);
+
+            foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
+            {
+                WriteMovies(movieList);
+                Debug.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
+                Debug.WriteLine(string.Empty);
+            }
+        }
+
+        [TestMethod]
 		public void MoviePickerVariants_ChooseBest_Raj_2017061()
 		{
 			var test = ConstructTestObject();
