@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
 using MoviePicker.Common.Interfaces;
 
 namespace MooveePicker
@@ -28,8 +29,14 @@ namespace MooveePicker
             TotalCost = 1000;
         }
 
+        /// <summary>
+        /// Best Performer will return a value ONLY if it is the BEST performer (and there are no ties)
+        /// </summary>
         public IMovie BestPerformer => _bestPerformer != null && _bestPerformers == null ? _bestPerformer : null;
 
+        /// <summary>
+        /// A list of TIED Best Performers.
+        /// </summary>
         public IEnumerable<IMovie> BestPerformers => _bestPerformers;
 
         public IEnumerable<IMovie> Movies => _movies;
@@ -81,11 +88,14 @@ namespace MooveePicker
 
             foreach (var movie in _movies)
             {
+                // Check to see if there is only ONE Best Performer
                 if (movie == BestPerformer)
                 {
                     movie.IsBestPerformer = true;
                     break;
                 }
+
+                // Check to see if there are MANY tied Best Performers
                 if (_bestPerformers != null && _bestPerformers.Contains(movie))
                 {
                     movie.IsBestPerformer = true;
