@@ -36,7 +36,8 @@ namespace MoviePicker.Tests
 
 			foreach (var movie in movies.Movies.OrderByDescending(item => item.Earnings))
 			{
-				Debug.WriteLine($"{screen++} - {movie.Name,-30} ${movie.Earnings:N2} - [${movie.Efficiency:N2}]");
+			    var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
+				Debug.WriteLine($"{screen++} - {movie.Name,-30} ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
 			}
 		}
 

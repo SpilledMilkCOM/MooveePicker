@@ -14,8 +14,8 @@ namespace MooveePicker
     /// </summary>
     public class MoviePickerVariantsAll : IMoviePicker
     {
-        private const decimal EARNINGS_ADJUSTMENT = 0.5m;
-        private const decimal EARNINGS_VARIANT_MAX = 0.5m;
+        private const decimal EARNINGS_ADJUSTMENT = 0.1m;
+        private const decimal EARNINGS_VARIANT_MAX = 0.1m;
 
         private const decimal EARNINGS_ADJUSTMENT_PERCENT = 0.001m;
         private const decimal EARNINGS_VARIANT_PERCENT_MAX = 0.03m;
@@ -121,10 +121,10 @@ namespace MooveePicker
             return _bestListCounts[movieList.GetHashCode()];
         }
 
-        public List<IMovieList> GetRankedMovieLists()
+        public List<IMovieList> GetRankedMovieLists(int takeCount = 10)
         {
             return _bestListCounts.OrderByDescending(pair => pair.Value)
-                                .Take(10)
+                                .Take(takeCount)
                                 .Select(keyValuePair => _bestLists[keyValuePair.Key])
                                 .ToList();
         }
@@ -250,8 +250,11 @@ namespace MooveePicker
                     list += movie.Name + ",";
                 }
 
-                Debug.WriteLine(list);
-                Debug.WriteLine(_elapsed.FormatRemaining());
+				Debug.WriteLine(list);
+				Debug.WriteLine(_elapsed.FormatRemaining());
+
+				//Console.WriteLine(list);
+				//Console.WriteLine(_elapsed.FormatRemaining());
             }
         }
 

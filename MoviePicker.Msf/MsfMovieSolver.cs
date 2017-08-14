@@ -24,7 +24,7 @@ namespace MoviePicker.Msf
             AvailableScreens = 8;
             AvailableFmlBux = 1000;
             PenaltyForUnusedScreens = 2000000;
-            DisplayDebugMessage = true;
+            DisplayDebugMessage = false;
         }
 
         public IMovie BestPerformer
