@@ -27,8 +27,6 @@ namespace MooviePicker.Tests
 			_unity.RegisterType<IMovie, Movie>();
 			_unity.RegisterType<IMovieList, MovieList>();
 			_unity.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();
-
-			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
 		[TestMethod]

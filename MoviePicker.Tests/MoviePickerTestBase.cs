@@ -15,11 +15,40 @@ namespace MoviePicker.Tests
 		/// </summary>
 		public abstract IUnityContainer UnityContainer { get; }
 
-		protected ILogger Logger => _logger ?? (_logger = UnityContainer.Resolve<ILogger>());
+		protected ILogger Logger
+		{
+			get
+			{
+				if (_logger == null)
+				{
+					lock (this)
+					{
+						if (_logger == null)
+						{
+							AddDefaultLogger();
+
+							_logger = UnityContainer.Resolve<ILogger>();
+						}
+					}
+				}
+				return _logger;
+			}
+		}	
 
 		protected virtual IMoviePicker ConstructTestObject()
 		{
+			AddDefaultLogger();
+
 			return UnityContainer.Resolve<IMoviePicker>();
+		}
+
+		private void AddDefaultLogger()
+		{
+			if (UnityContainer.Registrations.FirstOrDefault(registration => registration.RegisteredType == typeof(ILogger)) == null)
+			{
+				// Register the DebugLogger if the interface is not defined.
+				UnityContainer.RegisterType<ILogger, DebugLogger>();
+			}
 		}
 
 		protected IMovie ConstructMovie(int id, string name, decimal millions, decimal cost)

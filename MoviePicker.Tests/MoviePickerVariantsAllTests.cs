@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Microsoft.Practices.Unity;
@@ -12,6 +13,7 @@ using MoviePicker.Common.Interfaces;
 namespace MoviePicker.Tests
 {
 	[TestClass]
+	[ExcludeFromCodeCoverage]
 	public class MoviePickerVariantsAllTests : MoviePickerTestBase
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
@@ -27,8 +29,6 @@ namespace MoviePicker.Tests
 			_unity.RegisterType<IMovie, Movie>();
 			_unity.RegisterType<IMovieList, MovieList>();
 			_unity.RegisterType<IMoviePicker, MoviePickerVariantsAll>();
-
-			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
 		[TestMethod]

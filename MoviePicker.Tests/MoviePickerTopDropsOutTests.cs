@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Microsoft.Practices.Unity;
@@ -12,6 +13,7 @@ using MoviePicker.Common.Interfaces;
 namespace MoviePicker.Tests
 {
 	[TestClass]
+	[ExcludeFromCodeCoverage]
 	public class MoviePickerTopDropsOutTests : MoviePickerTestBase
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
