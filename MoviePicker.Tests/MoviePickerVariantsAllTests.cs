@@ -17,7 +17,7 @@ namespace MoviePicker.Tests
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
 
-		protected override IUnityContainer UnityContainer => _unity;
+		public override IUnityContainer UnityContainer => _unity;
 
 		[ClassInitialize]
 		public static void InitializeBeforeAllTests(TestContext context)
@@ -27,6 +27,8 @@ namespace MoviePicker.Tests
 			_unity.RegisterType<IMovie, Movie>();
 			_unity.RegisterType<IMovieList, MovieList>();
 			_unity.RegisterType<IMoviePicker, MoviePickerVariantsAll>();
+
+			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
 		[TestMethod]
@@ -305,13 +307,13 @@ namespace MoviePicker.Tests
 
 			WritePicker(test);
 			WriteMovies(best);
-			Debug.WriteLine(string.Empty);
+			Logger.WriteLine(string.Empty);
 
 			foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
 			{
 				WriteMovies(movieList);
-				Debug.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
-				Debug.WriteLine(string.Empty);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
 			}
 		}
 
@@ -348,13 +350,13 @@ namespace MoviePicker.Tests
 
             WritePicker(test);
             WriteMovies(best);
-            Debug.WriteLine(string.Empty);
+			Logger.WriteLine(string.Empty);
 
             foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
             {
                 WriteMovies(movieList);
-                Debug.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
-                Debug.WriteLine(string.Empty);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
             }
         }
 
@@ -391,13 +393,13 @@ namespace MoviePicker.Tests
 
             WritePicker(test);
             WriteMovies(best);
-            Debug.WriteLine(string.Empty);
+			Logger.WriteLine(string.Empty);
 
             foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
             {
                 WriteMovies(movieList);
-                Debug.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
-                Debug.WriteLine(string.Empty);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
             }
         }
 
@@ -434,17 +436,60 @@ namespace MoviePicker.Tests
 
             WritePicker(test);
             WriteMovies(best);
-            Debug.WriteLine(string.Empty);
+			Logger.WriteLine(string.Empty);
 
             foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
             {
                 WriteMovies(movieList);
-                Debug.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
-                Debug.WriteLine(string.Empty);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
             }
         }
 
-        [TestMethod]
+		[TestMethod]
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20170820()
+		{
+			var test = ConstructTestObject();
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			// The baseline movie list.
+
+			movies.Add(ConstructMovie(id++, "The Hitman's Bodyguard", 16.9416666666667m, 254));
+			movies.Add(ConstructMovie(id++, "Annabelle", 14.8578333333333m, 216));
+			movies.Add(ConstructMovie(id++, "Logan Lucky", 10.925m, 184));
+			movies.Add(ConstructMovie(id++, "Dunkirk", 7.10666666666667m, 98));
+			movies.Add(ConstructMovie(id++, "The Nut Job 2", 4.56583333333333m, 62));
+			movies.Add(ConstructMovie(id++, "Spider-Man", 3.97016666666667m, 58));
+			movies.Add(ConstructMovie(id++, "The Emoji Movie", 3.52533333333333m, 52));
+			movies.Add(ConstructMovie(id++, "Girls Trip", 3.6845m, 50));
+			movies.Add(ConstructMovie(id++, "The Dark Tower", 3.337m, 48));
+			movies.Add(ConstructMovie(id++, "The Glass Castle", 3.0145m, 48));
+			movies.Add(ConstructMovie(id++, "Wind River", 3.0184m, 43));
+			movies.Add(ConstructMovie(id++, "Kidnap", 2.5836m, 38));
+			movies.Add(ConstructMovie(id++, "Atomic Blonde", 2.2956m, 34));
+			movies.Add(ConstructMovie(id++, "War for the Planet of the Apes", 1.9512m, 29));
+			movies.Add(ConstructMovie(id++, "Despicable Me 3", 1.834m, 28));
+
+			IgnoreMovies(movies, 5m);
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+			Logger.WriteLine(string.Empty);
+
+			foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
+			{
+				WriteMovies(movieList);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
+			}
+		}
+
+		[TestMethod]
 		public void MoviePickerVariantsAll_ChooseBest_Parker_20170618_ByPercent()
 		{
 			var test = ConstructTestObject();
@@ -477,13 +522,13 @@ namespace MoviePicker.Tests
 
 			WritePicker(test);
 			WriteMovies(best);
-			Debug.WriteLine(string.Empty);
+			Logger.WriteLine(string.Empty);
 
 			foreach (var movieList in ((MoviePickerVariants)test).GetRankedMovieLists())
 			{
 				WriteMovies(movieList);
-				Debug.WriteLine($"Total List Count: {((MoviePickerVariants)test).GetRankedMovieListCount(movieList)}");
-				Debug.WriteLine(string.Empty);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariants)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
 			}
 		}
 

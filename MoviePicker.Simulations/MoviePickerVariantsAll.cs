@@ -25,17 +25,19 @@ namespace MooveePicker
         private readonly Dictionary<int, IMovieList> _bestLists;        // Keyed using the hash code.
         private readonly ElapsedTime _elapsed;
         private readonly HashSet<int> _listGenerated;                   // Keyed using the hash code.
-        private int _logMessagesCount;
-        private readonly IMovieList _movieListPrototype;
+	    private readonly ILogger _logger;
+		private int _logMessagesCount;
+		private readonly IMovieList _movieListPrototype;
         private readonly IMoviePicker _moviePicker;
 
-        public MoviePickerVariantsAll(IMovieList movieListPrototype)
+        public MoviePickerVariantsAll(IMovieList movieListPrototype, ILogger logger)
         {
             _bestListCounts = new Dictionary<int, int>();
             _bestLists = new Dictionary<int, IMovieList>();
             _elapsed = new ElapsedTime();
             _listGenerated = new HashSet<int>();
             _logMessagesCount = 0;
+	        _logger = logger;
             _moviePicker = new MsfMovieSolver { DisplayDebugMessage = false };
             //_moviePicker = new MoviePicker(new MovieList());
             _baselineMovies = new List<IMovie>();
@@ -43,7 +45,36 @@ namespace MooveePicker
             _movieListPrototype = movieListPrototype;
         }
 
-        public int LogMessagesMax { get; set; }
+		public IMovie BestPerformer
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public IEnumerable<IMovie> BestPerformers
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public bool EnableBestPerformer
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public int LogMessagesMax { get; set; }
 
         public IEnumerable<IMovie> Movies => _moviePicker.Movies;
 
@@ -129,9 +160,12 @@ namespace MooveePicker
                                 .ToList();
         }
 
-        //----==== PRIVATE ====----------------------------------------------------------------------
+		//----==== PRIVATE ====----------------------------------------------------------------------
 
-        private List<IMovie> Copy(IEnumerable<IMovie> toCopy)
+		private bool CanLog => LogMessagesMax > 0 && (_logMessagesCount % LogMessagesMax) == 0;
+
+
+		private List<IMovie> Copy(IEnumerable<IMovie> toCopy)
         {
             return toCopy.Select(movie => movie.Clone()).ToList();
         }
@@ -250,33 +284,12 @@ namespace MooveePicker
                     list += movie.Name + ",";
                 }
 
-				Debug.WriteLine(list);
-				Debug.WriteLine(_elapsed.FormatRemaining());
-
-				//Console.WriteLine(list);
-				//Console.WriteLine(_elapsed.FormatRemaining());
+	            _logger?.WriteLine(list);
+				_logger?.WriteLine(_elapsed.FormatRemaining());
             }
         }
 
-        private bool CanLog => LogMessagesMax > 0 && (_logMessagesCount % LogMessagesMax) == 0;
-
-        public IMovie BestPerformer
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public IEnumerable<IMovie> BestPerformers
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        private List<IMovie> Concatenate(List<IMovie> list1, List<IMovie> list2)
+		private List<IMovie> Concatenate(List<IMovie> list1, List<IMovie> list2)
         {
             var result = new List<IMovie>();
 

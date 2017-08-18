@@ -8,7 +8,14 @@ namespace MoviePicker.Tests
 {
 	public abstract class MoviePickerTestBase
 	{
-		protected abstract IUnityContainer UnityContainer { get; }
+		private ILogger _logger;
+
+		/// <summary>
+		/// This is public so it can be modified from the TestHarness.
+		/// </summary>
+		public abstract IUnityContainer UnityContainer { get; }
+
+		protected ILogger Logger => _logger ?? (_logger = UnityContainer.Resolve<ILogger>());
 
 		protected virtual IMoviePicker ConstructTestObject()
 		{
@@ -31,21 +38,22 @@ namespace MoviePicker.Tests
 		{
 			int screen = 1;
 
-			Debug.WriteLine($"Total Cost (Bux): {movies.TotalCost}");
-			Debug.WriteLine($"Total Earnings  : ${movies.TotalEarnings:N0}");
+			Logger.WriteLine($"Total Cost (Bux): {movies.TotalCost}");
+			Logger.WriteLine($"Total Earnings  : ${movies.TotalEarnings:N0}");
 
 			foreach (var movie in movies.Movies.OrderByDescending(item => item.Earnings))
 			{
 			    var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
-				Debug.WriteLine($"{screen++} - {movie.Name,-30} ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
+
+				Logger.WriteLine($"{screen++} - {movie.Name,-30} ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
 			}
 		}
 
 		protected void WritePicker(IMoviePicker moviePicker)
 		{
-            Debug.WriteLine($"Picker: {moviePicker.GetType().Name}");
-			Debug.WriteLine($"Total Comparisons: {moviePicker.TotalComparisons:N0} [{moviePicker.TotalComparisons / Math.Pow(16, 8) * 100}% of {Math.Pow(16, 8):N0}]");
-			Debug.WriteLine($"Total Sub-problems: {moviePicker.TotalSubProblems:N0}");
+			Logger.WriteLine($"Picker: {moviePicker.GetType().Name}");
+			Logger.WriteLine($"Total Comparisons: {moviePicker.TotalComparisons:N0} [{moviePicker.TotalComparisons / Math.Pow(16, 8) * 100}% of {Math.Pow(16, 8):N0}]");
+			Logger.WriteLine($"Total Sub-problems: {moviePicker.TotalSubProblems:N0}");
 		}
 	}
 }

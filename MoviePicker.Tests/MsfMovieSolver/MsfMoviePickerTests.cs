@@ -13,7 +13,7 @@ namespace MoviePicker.Tests.MsfMovieSolver
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
 
-		protected override IUnityContainer UnityContainer => _unity;
+		public override IUnityContainer UnityContainer => _unity;
 
 		[ClassInitialize]
 		public static void InitializeBeforeAllTests(TestContext context)

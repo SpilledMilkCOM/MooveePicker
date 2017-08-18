@@ -15,6 +15,8 @@ namespace MoviePicker.Common.Interfaces
         /// </summary>
         IEnumerable<IMovie> BestPerformers { get; }
 
+		bool EnableBestPerformer { get; set; }
+
         IEnumerable<IMovie> Movies { get; }
 
 		int TotalComparisons { get; set; }

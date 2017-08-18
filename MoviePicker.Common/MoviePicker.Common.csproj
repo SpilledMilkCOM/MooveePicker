@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ILogger.cs" />
     <Compile Include="Interfaces\IMovie.cs" />
     <Compile Include="Interfaces\IMovieList.cs" />
     <Compile Include="Interfaces\IMoviePicker.cs" />

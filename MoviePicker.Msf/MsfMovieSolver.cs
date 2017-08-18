@@ -12,20 +12,19 @@ namespace MoviePicker.Msf
     public class MsfMovieSolver : IMoviePicker
     {
         private readonly List<MsfMovieWrapper> _movies;
+		private bool _enableBestPerformer;
 
-        private decimal PenaltyForUnusedScreens { get; set; }
+		public MsfMovieSolver()
+		{
+			_movies = new List<MsfMovieWrapper>();
+
+			AvailableScreens = 8;
+			AvailableFmlBux = 1000;
+			PenaltyForUnusedScreens = 2000000;
+			DisplayDebugMessage = false;
+		}
 
         public bool DisplayDebugMessage { get; set; }
-
-        public MsfMovieSolver()
-        {
-            _movies = new List<MsfMovieWrapper>();
-
-            AvailableScreens = 8;
-            AvailableFmlBux = 1000;
-            PenaltyForUnusedScreens = 2000000;
-            DisplayDebugMessage = false;
-        }
 
         public IMovie BestPerformer
         {
@@ -43,7 +42,31 @@ namespace MoviePicker.Msf
             }
         }
 
-        public IEnumerable<IMovie> Movies => _movies;
+		public bool EnableBestPerformer
+		{
+			get
+			{
+				return _enableBestPerformer;
+			}
+			set
+			{
+				_enableBestPerformer = value;
+
+				if (_enableBestPerformer)
+				{
+					// Re-add the movies.
+				}
+				else
+				{
+					foreach (var movie in _movies)
+					{
+						movie.IsBestPerformer = false;
+					}
+				}
+			}
+		}
+
+		public IEnumerable<IMovie> Movies => _movies;
 
         public int AvailableScreens { get; set; }
 
@@ -111,7 +134,9 @@ namespace MoviePicker.Msf
             return cinePlexMovies;
         }
 
-        private SolverContext CreateSolver()
+		private decimal PenaltyForUnusedScreens { get; set; }
+
+		private SolverContext CreateSolver()
         {
             SolverContext context = new SolverContext();
             Model model = context.CreateModel();

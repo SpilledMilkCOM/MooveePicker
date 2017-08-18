@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Reflection;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Practices.Unity;
 
-using MooviePicker.Tests;
+using MoviePicker.Common.Interfaces;
 using MoviePicker.Tests;
 using SM.Common.Utils;
 
@@ -13,74 +12,33 @@ namespace TestRunner
 	{
 		public void Invoke()
 		{
+			var logger = new StandardOutLogger();           // Uses Console
 			ElapsedTime elapsed = new ElapsedTime();
 
 			Console.WriteLine("Constructing test fixture...\n");
 
 			var fixture = new MoviePickerVariantsAllTests();
 
-			Console.WriteLine(elapsed.Elapsed);
+			logger.WriteLine(elapsed.Elapsed.ToString());
 
-			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine("Setting up test fixture...\n");
+			logger.ForegroundColor = ConsoleColor.Green;
+			logger.WriteLine("Setting up test fixture...\n");
 
 			MoviePickerVariantsAllTests.InitializeBeforeAllTests(null);          //<<<<< Static class needs to match constructor above.
 
-			Console.WriteLine("AFTER - InitializeBeforeAllTests {0}", elapsed.Elapsed);
+			// Override the debug logger inside of the tests.
 
-			fixture.MoviePickerVariantsAll_ChooseBest_Parker_20170813();               //<<<<< Test method.
+			fixture.UnityContainer.RegisterInstance(typeof(ILogger), null, logger, new ContainerControlledLifetimeManager());
 
-			Console.WriteLine("AFTER TEST - MoviePickerVariantsAll_ChooseBest_Parker_20170813 - {0}", elapsed.ElapsedSinceLastElapsed);
+			logger.WriteLine($"AFTER - InitializeBeforeAllTests {elapsed.Elapsed}");
 
-			//MoviePickerTest_20170813.CleanupAfterAllTests();
+			fixture.MoviePickerVariantsAll_ChooseBest_Parker_20170820();               //<<<<< Test method.
 
-			Console.WriteLine("AFTER - CleanupAfterAllTests {0}", elapsed.Elapsed);
+			logger.WriteLine($"AFTER TEST - MoviePickerVariantsAll_ChooseBest_Parker_20170820 - {elapsed.ElapsedSinceLastElapsed}");
+			logger.WriteLine($"AFTER - CleanupAfterAllTests {elapsed.Elapsed}");
+			logger.WriteLine("Press any key to continue...");
 
-			Console.WriteLine("Press any key to continue...");
 			Console.ReadKey();
-		}
-
-		private void InvokeAllTestMethodsSynchronous(object testFixture)
-		{
-			MethodInfo[] methods = testFixture.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public);
-
-			foreach (MethodInfo methodInfo in methods)
-			{
-				TestMethodAttribute[] testMethodAttributes = methodInfo.GetCustomAttributes(typeof(TestMethodAttribute), false) as TestMethodAttribute[];
-				IgnoreAttribute[] ignoreAttributes = methodInfo.GetCustomAttributes(typeof(IgnoreAttribute), false) as IgnoreAttribute[];
-				ConsoleColor saveColor = Console.ForegroundColor;
-
-				if (ignoreAttributes != null && ignoreAttributes.Length > 0)
-				{
-					Console.ForegroundColor = ConsoleColor.Yellow;
-					Console.WriteLine("\nSKIPPED test method '{0}'...\n", methodInfo.Name);
-				}
-				else if (testMethodAttributes != null && testMethodAttributes.Length > 0)
-				{
-					Console.ForegroundColor = ConsoleColor.Green;
-					Console.WriteLine("\nExecuting test method '{0}'...\n", methodInfo.Name);
-
-					try
-					{
-						methodInfo.Invoke(testFixture, null);
-					}
-					catch (Exception ex)
-					{
-						Console.ForegroundColor = ConsoleColor.Red;
-
-						if (ex.InnerException != null && ex.InnerException is AssertFailedException)
-						{
-							Console.WriteLine("\nAssert failed {0}\n", ex.InnerException.Message);
-						}
-						else
-						{
-							throw ex;
-						}
-					}
-				}
-
-				Console.ForegroundColor = saveColor;
-			}
 		}
 	}
 }

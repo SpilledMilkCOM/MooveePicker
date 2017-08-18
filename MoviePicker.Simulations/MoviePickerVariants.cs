@@ -61,7 +61,20 @@ namespace MooveePicker
             }
         }
 
-        public void AddMovies(IEnumerable<IMovie> movies)
+		public bool EnableBestPerformer
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public void AddMovies(IEnumerable<IMovie> movies)
 		{
 			// Need base copies of the movie earnings, so you need clones.
 
