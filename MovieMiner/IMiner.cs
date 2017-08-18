@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using MoviePicker.Common.Interfaces;
 
 namespace MovieMiner
 {
@@ -10,6 +9,10 @@ namespace MovieMiner
 	{
 		string Url { get; }
 
-		void Mine();
+		List<IMovie> Mine();
+
+		Task<List<IMovie>> MineAsync();
+
+		List<IMovie> Parse(string innerHtml);
 	}
 }
