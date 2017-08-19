@@ -29,7 +29,25 @@ namespace MovieMiner
 			var doc = web.Load(DEFAULT_URL);
 
 			// Lookup XPATH to get the right node that matches.
-			var node = doc.DocumentNode.SelectSingleNode("//body/script");
+			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
+			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
+
+			//var node = doc.DocumentNode.SelectSingleNode("body/script[@src='*/MonCompare*']");
+			var node = doc.DocumentNode.SelectSingleNode("//body/script[contains(@src, 'MonCompare')]");
+
+			if (node != null)
+			{
+				var src = node.GetAttributeValue("src", null);
+
+				if (src != null)
+				{
+					// Now retrieve the JSON (.js) page/file.
+
+					//doc = web.Load($"{DEFAULT_URL}/{src}");
+
+					var data = HttpRequestUtil.DownloadString($"{DEFAULT_URL}/{src}");
+				}
+			}
 
 			return result;
 		}
