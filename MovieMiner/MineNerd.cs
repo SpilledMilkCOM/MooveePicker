@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
+
+using HtmlAgilityPack;		// Handles crappy (NOT well formed) HTML
+
 using MoviePicker.Common.Interfaces;
+
 
 namespace MovieMiner
 {
-    public class MineNerd : Miner
+	public class MineNerd : Miner
     {
 		//private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups/MonCompare/MonCompare2017SummerWeek12.js";
 		private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups";
@@ -20,9 +24,12 @@ namespace MovieMiner
 		public override List<IMovie> Mine()
 		{
 			var result = new List<IMovie>();
-			var xml = HttpRequestUtil.DownloadString(Url);
+			var web = new HtmlWeb();
 
-			Debug.WriteLine(xml);
+			var doc = web.Load(DEFAULT_URL);
+
+			// Lookup XPATH to get the right node that matches.
+			var node = doc.DocumentNode.SelectSingleNode("//body/script");
 
 			return result;
 		}
@@ -31,15 +38,38 @@ namespace MovieMiner
 	    {
 		    var result = new List<IMovie>();
 		    var xml = await HttpRequestUtil.DownloadStringAsync(Url);
+			string dataUrl = null;
 
-			Debug.WriteLine(xml);
+			// Only match the "well formed" body.
+			//var regEx = new Regex(@"((?:.(?!<\s*body[^>]*>))+.<\s*body[^>]*>)|(<\s*/\s*body\s*\>.+)");
+			var regEx = new Regex(@"<body>*.</body>");
 
-		    return result;
-	    }
+			var match = regEx.Match(xml);
 
-	    public override List<IMovie> Parse(string innerHtml)
-	    {
-		    return null;
+			Debug.WriteLine(match.Value);
+
+			var doc = new XmlDocument();
+
+			doc.LoadXml(xml);
+
+			var scriptElements = doc.GetElementsByTagName("script");
+
+			foreach (XmlNode scriptNode in scriptElements)
+			{
+				var src = scriptNode.Attributes["src"].Value;
+
+				if (src != null && src.StartsWith("./MonCompare/"))
+				{
+					dataUrl = $"{DEFAULT_URL}/{scriptNode.Attributes["src"].Value}";
+				}
+			}
+
+			if (dataUrl != null)
+			{
+				var json = await HttpRequestUtil.DownloadStringAsync(dataUrl);
+			}
+
+			return result;
 	    }
     }
 }

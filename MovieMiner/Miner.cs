@@ -17,7 +17,5 @@ namespace MovieMiner
 		public abstract List<IMovie> Mine();
 
 		public abstract Task<List<IMovie>> MineAsync();
-
-		public virtual List<IMovie> Parse(string innerHtml) { throw new NotImplementedException(); }
 	}
 }

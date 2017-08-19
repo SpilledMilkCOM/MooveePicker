@@ -12,7 +12,5 @@ namespace MovieMiner
 		List<IMovie> Mine();
 
 		Task<List<IMovie>> MineAsync();
-
-		List<IMovie> Parse(string innerHtml);
 	}
 }
