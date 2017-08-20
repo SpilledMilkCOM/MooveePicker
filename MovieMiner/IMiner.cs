@@ -5,6 +5,8 @@ using MoviePicker.Common.Interfaces;
 
 namespace MovieMiner
 {
+	// TODO: Might want to change the interface to send in a list of movies to look for to help out the scan.
+
 	interface IMiner
 	{
 		string Url { get; }

@@ -35,6 +35,9 @@ namespace MovieMiner.Tests
 		[TestMethod]
 		public void MineNerd_Serialize()
 		{
+			// This test helps visualize the serialization to see how to massage Pete's data.
+			// His data is a hybrid of Javascript and JSON.
+
 			var test = new MinerNerdData
 			{
 				Year = 2017,
@@ -42,7 +45,7 @@ namespace MovieMiner.Tests
 				Week = 12,
 				Movies = new MinerNerdMovie[]
 				{
-					new MinerNerdMovie {Title = "Test Title", Bux = 123, Index = 0}
+					new MinerNerdMovie {Index = 0, Title = "Test Title", Bux = 123, CurrentEstimatedBoxOffice = 1230000 }
 				}
 			};
 
