@@ -45,14 +45,14 @@ namespace MovieMiner
 
 					// TODO: Parse the header for column titles for mapping.
 
-					var tableRows = node?.SelectNodes("//tbody//tr");
+					var tableRows = node?.SelectNodes("tbody/tr");
 
 					if (tableRows != null)
 					{
 						foreach (var row in tableRows)
 						{
 							Movie movie = null;
-							var rowColumns = row.SelectNodes("//td");
+							var rowColumns = row.SelectNodes("td");
 
 							if (rowColumns != null)
 							{

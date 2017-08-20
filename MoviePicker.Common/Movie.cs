@@ -73,6 +73,26 @@ namespace MoviePicker.Common
 			return new Movie(this);
 		}
 
+		public override bool Equals(object obj)
+		{
+			bool result = false;
+			var test = obj as Movie;
+			
+			if (test != null)
+			{
+				result = Name.Equals(test.Name);
+
+				if (!result)
+				{
+					// Not an exact match so try starts with (limited contains)
+
+					result = Name.StartsWith(test.Name) || test.Name.StartsWith(Name);
+				}
+			}
+
+			return result;
+		}
+
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();
