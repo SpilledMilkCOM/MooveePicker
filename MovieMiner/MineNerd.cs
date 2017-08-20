@@ -4,22 +4,23 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
-using HtmlAgilityPack;		// Handles crappy (NOT well formed) HTML
+using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
+using Newtonsoft.Json;
 
+using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
-
 
 namespace MovieMiner
 {
 	public class MineNerd : Miner
-    {
+	{
 		//private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups/MonCompare/MonCompare2017SummerWeek12.js";
 		private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups";
 
 		public MineNerd()
 			: base(DEFAULT_URL)
-	    {
-	    }
+		{
+		}
 
 		public override List<IMovie> Mine()
 		{
@@ -45,7 +46,30 @@ namespace MovieMiner
 
 					//doc = web.Load($"{DEFAULT_URL}/{src}");
 
-					var data = HttpRequestUtil.DownloadString($"{DEFAULT_URL}/{src}");
+					var jsonData = HttpRequestUtil.DownloadString($"{DEFAULT_URL}/{src}");
+
+					// The string is not really JSON, but CLOSE
+					// Might want to use Regex to change this.
+
+					jsonData = jsonData.Replace("year =", "\"year\":");
+					jsonData = jsonData.Replace("season =", "\"season\":");
+					jsonData = jsonData.Replace("week =", "\"week\":");
+					jsonData = jsonData.Replace("movies=", "\"movies\":");
+					// Adjust the "JSON" array.
+					jsonData = jsonData.Replace("'[' +", "[").Replace("';", string.Empty).Replace(";", ",");
+					jsonData = jsonData.Replace("'+", string.Empty).Replace("'{", "{");
+
+					var movieData = JsonConvert.DeserializeObject<MinerNerdData>($"{{{jsonData}}}");
+
+					foreach (var movie in movieData.Movies)
+					{
+						result.Add(new Movie
+						{
+							Name = movie.Title,
+							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
+							Cost = movie.Bux
+						});
+					}
 				}
 			}
 
@@ -53,9 +77,9 @@ namespace MovieMiner
 		}
 
 		public async override Task<List<IMovie>> MineAsync()
-	    {
-		    var result = new List<IMovie>();
-		    var xml = await HttpRequestUtil.DownloadStringAsync(Url);
+		{
+			var result = new List<IMovie>();
+			var xml = await HttpRequestUtil.DownloadStringAsync(Url);
 			string dataUrl = null;
 
 			// Only match the "well formed" body.
@@ -88,6 +112,6 @@ namespace MovieMiner
 			}
 
 			return result;
-	    }
-    }
+		}
+	}
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace MovieMiner.Tests
 {
@@ -29,6 +30,25 @@ namespace MovieMiner.Tests
 
 			Assert.IsNotNull(actual.Result);
 			Assert.IsTrue(actual.Result.Any(), "The list was empty.");
+		}
+
+		[TestMethod]
+		public void MineNerd_Serialize()
+		{
+			var test = new MinerNerdData
+			{
+				Year = 2017,
+				Season = "Summer",
+				Week = 12,
+				Movies = new MinerNerdMovie[]
+				{
+					new MinerNerdMovie {Title = "Test Title", Bux = 123, Index = 0}
+				}
+			};
+
+			var json = JsonConvert.SerializeObject(test);
+
+			Assert.IsNotNull(json);
 		}
 	}
 }
