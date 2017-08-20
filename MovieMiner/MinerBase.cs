@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using MoviePicker.Common.Interfaces;
 
 namespace MovieMiner
 {
-	public abstract class Miner : IMiner
+	public abstract class MinerBase : IMiner
 	{
-		protected Miner(string url)
+		protected MinerBase(string url)
 		{
 			Url = url;
 		}

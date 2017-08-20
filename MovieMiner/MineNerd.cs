@@ -12,7 +12,7 @@ using MoviePicker.Common.Interfaces;
 
 namespace MovieMiner
 {
-	public class MineNerd : Miner
+	public class MineNerd : MinerBase
 	{
 		//private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups/MonCompare/MonCompare2017SummerWeek12.js";
 		private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups";

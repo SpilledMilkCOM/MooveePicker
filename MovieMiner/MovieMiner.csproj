@@ -52,8 +52,9 @@
   <ItemGroup>
     <Compile Include="HttpRequestUtil.cs" />
     <Compile Include="IMiner.cs" />
+    <Compile Include="MineToddThatcher.cs" />
     <Compile Include="MineNerd.cs" />
-    <Compile Include="Miner.cs" />
+    <Compile Include="MinerBase.cs" />
     <Compile Include="MinerNerdData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationUtil.cs" />
