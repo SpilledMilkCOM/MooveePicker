@@ -38,14 +38,14 @@ namespace MovieMiner.Tests
 			// This test helps visualize the serialization to see how to massage Pete's data.
 			// His data is a hybrid of Javascript and JSON.
 
-			var test = new MinerNerdData
+			var test = new MineNerdData
 			{
 				Year = 2017,
 				Season = "Summer",
 				Week = 12,
-				Movies = new MinerNerdMovie[]
+				Movies = new MineNerdMovie[]
 				{
-					new MinerNerdMovie {Index = 0, Title = "Test Title", Bux = 123, CurrentEstimatedBoxOffice = 1230000 }
+					new MineNerdMovie {Index = 0, Title = "Test Title", Bux = 123, CurrentEstimatedBoxOffice = 1230000 }
 				}
 			};
 

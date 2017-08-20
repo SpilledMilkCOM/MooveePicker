@@ -2,7 +2,7 @@
 
 namespace MovieMiner
 {
-	public class MinerNerdMovie
+	public class MineNerdMovie
 	{
 		[JsonProperty(PropertyName = "i")]
 		public int Index { get; set; }
@@ -27,20 +27,5 @@ namespace MovieMiner
 
 		[JsonProperty(PropertyName = "img")]
 		public string ImageUrl { get; set; }
-	}
-
-	public class MinerNerdData
-	{
-		[JsonProperty(PropertyName = "year")]
-		public int Year { get; set; }
-
-		[JsonProperty(PropertyName = "season")]
-		public string Season { get; set; }
-
-		[JsonProperty(PropertyName = "week")]
-		public int Week { get; set; }
-
-		[JsonProperty(PropertyName = "movies")]
-		public MinerNerdMovie[] Movies { get; set; }
 	}
 }

@@ -59,7 +59,7 @@ namespace MovieMiner
 					jsonData = jsonData.Replace("'[' +", "[").Replace("';", string.Empty).Replace(";", ",");
 					jsonData = jsonData.Replace("'+", string.Empty).Replace("'{", "{");
 
-					var movieData = JsonConvert.DeserializeObject<MinerNerdData>($"{{{jsonData}}}");
+					var movieData = JsonConvert.DeserializeObject<MineNerdData>($"{{{jsonData}}}");
 
 					foreach (var movie in movieData.Movies)
 					{

@@ -1,8 +1,6 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using NReco.PhantomJS;
 
 namespace MovieMiner
 {
@@ -44,18 +42,6 @@ namespace MovieMiner
 			var client = new WebClient();
 
 			return await client.DownloadStringTaskAsync(uri);
-		}
-
-		public static string DownloadStringPhantomJS(string url)
-		{
-			var phantomJS = new PhantomJS();
-
-			phantomJS.OutputReceived += (sender, e) => {
-				Console.WriteLine("PhantomJS output: {0}", e.Data);
-			};
-			phantomJS.RunScript("for (var i=0; i<10; i++) console.log('hello from js '+i); phantom.exit();", null);
-
-			return null;
 		}
 	}
 }
