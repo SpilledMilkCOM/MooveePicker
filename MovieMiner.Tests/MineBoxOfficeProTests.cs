@@ -7,14 +7,14 @@ namespace MovieMiner.Tests
 {
 	[TestClass]
 	[ExcludeFromCodeCoverage]
-	public class MineToddThatcherTests
+	public class MineBoxOfficeProTests
 	{
 		private const string PRIMARY_TEST_CATEGORY = "Mining";
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
-		public void MineToddThatcher_Mine()
+		public void MineBoxOfficePro_Mine()
 		{
-			var test = new MineToddThatcher();
+			var test = new MineBoxOfficePro();
 
 			var actual = test.Mine();
 

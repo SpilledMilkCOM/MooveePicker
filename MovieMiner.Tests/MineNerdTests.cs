@@ -10,7 +10,9 @@ namespace MovieMiner.Tests
 	[ExcludeFromCodeCoverage]
 	public class MineNerdTests
 	{
-		[TestMethod]
+		private const string PRIMARY_TEST_CATEGORY = "Mining";
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineNerd_Mine()
 		{
 			var test = new MineNerd();
@@ -21,18 +23,7 @@ namespace MovieMiner.Tests
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 		}
 
-		[TestMethod]
-		public void MineNerd_MineAsync()
-		{
-			var test = new MineNerd();
-
-			var actual = test.MineAsync();
-
-			Assert.IsNotNull(actual.Result);
-			Assert.IsTrue(actual.Result.Any(), "The list was empty.");
-		}
-
-		[TestMethod]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineNerd_Serialize()
 		{
 			// This test helps visualize the serialization to see how to massage Pete's data.
