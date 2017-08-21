@@ -24,11 +24,18 @@ namespace MovieMiner
 		public override List<IMovie> Mine()
 		{
 			var result = new List<IMovie>();
+			string url = $"{Url}weekend/chart/";
 			var web = new HtmlWeb();
 
-			// TODO: Use the weekend ending to figure out the actuals.
+			if (_weekendEnding.HasValue)
+			{
+				// Might have to tweak this offset a bit to get the numbers to match.
+				var sundayOffset = (int)new DateTime(_weekendEnding.Value.Year, 1, 1).DayOfWeek;
 
-			var doc = web.Load($"{Url}weekend/chart/");
+				url = $"{Url}weekend/chart/?view={_weekendEnding.Value.Year}&yr={_weekendEnding.Value.Year}&wknd={(_weekendEnding.Value.DayOfYear - sundayOffset) / 7}&p=.htm";
+			}
+
+			var doc = web.Load(url);
 
 			// Lookup XPATH to get the right node that matches.
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
