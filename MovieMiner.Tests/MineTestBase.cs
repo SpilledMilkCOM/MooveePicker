@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 
 using Microsoft.Practices.Unity;
 
 using MoviePicker.Common.Interfaces;
+using System.Collections.Generic;
 
-namespace MoviePicker.Tests
+namespace MovieMiner.Tests
 {
-	public abstract class MoviePickerTestBase
+	public abstract class MineTestBase
 	{
 		private ILogger _logger;
 
@@ -34,22 +34,22 @@ namespace MoviePicker.Tests
 				}
 				return _logger;
 			}
-		}	
-
-		protected virtual IMoviePicker ConstructTestObject()
-		{
-			AddDefaultLogger();
-
-			return UnityContainer.Resolve<IMoviePicker>();
 		}
 
-		private void AddDefaultLogger()
+		public void AddDefaultLogger()
 		{
 			if (UnityContainer.Registrations.FirstOrDefault(registration => registration.RegisteredType == typeof(ILogger)) == null)
 			{
 				// Register the DebugLogger if the interface is not defined.
 				UnityContainer.RegisterType<ILogger, DebugLogger>();
 			}
+		}
+
+		protected virtual IMoviePicker ConstructTestObject()
+		{
+			AddDefaultLogger();
+
+			return UnityContainer.Resolve<IMoviePicker>();
 		}
 
 		protected IMovie ConstructMovie(int id, string name, decimal millions, decimal cost)
@@ -79,11 +79,14 @@ namespace MoviePicker.Tests
 			}
 		}
 
-		protected void WritePicker(IMoviePicker moviePicker)
+		protected void WriteMovies(IEnumerable<IMovie> movies)
 		{
-			Logger.WriteLine($"Picker: {moviePicker.GetType().Name}");
-			Logger.WriteLine($"Total Comparisons: {moviePicker.TotalComparisons:N0} [{moviePicker.TotalComparisons / Math.Pow(16, 8) * 100}% of {Math.Pow(16, 8):N0}]");
-			Logger.WriteLine($"Total Sub-problems: {moviePicker.TotalSubProblems:N0}");
+			foreach (var movie in movies.OrderByDescending(item => item.Earnings))
+			{
+				var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
+
+				Logger.WriteLine($"{movie.Name,-30} ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
+			}
 		}
 	}
 }

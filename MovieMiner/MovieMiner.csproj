@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="HttpRequestUtil.cs" />
     <Compile Include="IMiner.cs" />
+    <Compile Include="MineBoxOfficeMojo.cs" />
     <Compile Include="MineNerdMovie.cs" />
     <Compile Include="MineBoxOfficePro.cs" />
     <Compile Include="MineToddThatcher.cs" />

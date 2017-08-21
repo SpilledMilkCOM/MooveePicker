@@ -88,6 +88,25 @@ namespace MoviePicker.Common
 
 					result = Name.StartsWith(test.Name) || test.Name.StartsWith(Name);
 				}
+
+				if (!result)
+				{
+					// Compare the first X characters
+
+					int length = 10;
+
+					if (Name.Length < length)
+					{
+						length = Name.Length;
+					}
+
+					if (test.Name.Length < length)
+					{
+						length = test.Name.Length;
+					}
+
+					result = Name.Substring(0, length) == test.Name.Substring(0, length);
+				}
 			}
 
 			return result;
