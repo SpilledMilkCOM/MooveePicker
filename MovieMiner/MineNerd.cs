@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml;
 
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
@@ -65,7 +66,7 @@ namespace MovieMiner
 					{
 						result.Add(new Movie
 						{
-							Name = movie.Title,
+							Name = HttpUtility.HtmlDecode(movie.Title),
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
 							Cost = movie.Bux
 						});

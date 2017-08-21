@@ -1,14 +1,16 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Microsoft.Practices.Unity;
 
 using MoviePicker.Common.Interfaces;
-using System.Collections.Generic;
 
 namespace MovieMiner.Tests
 {
 	public abstract class MineTestBase
 	{
+		protected const string PRIMARY_TEST_CATEGORY = "Mining";
+
 		private ILogger _logger;
 
 		/// <summary>
@@ -85,7 +87,15 @@ namespace MovieMiner.Tests
 			{
 				var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
 
-				Logger.WriteLine($"{movie.Name,-30} {movie.Cost} Bx   ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
+				if (movie.Cost > 0)
+				{
+					Logger.WriteLine($"{movie.Name,-30} {movie.Cost} Bx   ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
+
+				}
+				else
+				{
+					Logger.WriteLine($"{movie.Name,-30} ${movie.Earnings:N2}");
+				}
 			}
 		}
 	}

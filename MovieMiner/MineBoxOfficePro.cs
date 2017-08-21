@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 
@@ -62,7 +63,7 @@ namespace MovieMiner
 								{
 									if (columnCount == 1)
 									{
-										movie = new Movie { Name = column.InnerText };
+										movie = new Movie { Name = HttpUtility.HtmlDecode(column.InnerText) };
 									}
 									else if (columnCount == 2)
 									{

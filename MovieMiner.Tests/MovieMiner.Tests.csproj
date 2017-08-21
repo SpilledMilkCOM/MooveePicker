@@ -66,6 +66,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DebugLogger.cs" />
+    <Compile Include="MineBoxOfficeMojoTests.cs" />
     <Compile Include="MineBoxOfficeProTests.cs" />
     <Compile Include="MineAllTests.cs" />
     <Compile Include="MineToddThatcherTests.cs" />

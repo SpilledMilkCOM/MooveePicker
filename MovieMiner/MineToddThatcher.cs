@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+using System.Web;
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 
 using MoviePicker.Common.Interfaces;
@@ -55,14 +55,14 @@ namespace MovieMiner
 							if (index > 0)
 							{
 								var nodeText = movieNode.InnerText;
-								var movieName = nodeText.Substring(0, index)?.Replace("&quot;", string.Empty);
+								var movieName = nodeText.Substring(0, index);
 								var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace("million", string.Empty);
 
 								if (!string.IsNullOrEmpty(movieName))
 								{
 									var movie = new Movie
 									{
-										Name = movieName,
+										Name = HttpUtility.HtmlDecode(movieName).Replace("\"", string.Empty),
 										Earnings = decimal.Parse(estimatedBoxOffice) * 1000000
 									};
 

@@ -1,14 +1,16 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using MoviePicker.Common.Interfaces;
 
 namespace MovieMiner.Tests
 {
 	[TestClass]
 	[ExcludeFromCodeCoverage]
-	public class MineToddThatcherTests : MineTestBase
+	public class MineBoxOfficeMojoTests : MineTestBase
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
@@ -24,9 +26,9 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
-		public void MineToddThatcher_Mine()
+		public void MineBoxOfficeMojo_Mine()
 		{
-			var test = new MineToddThatcher();
+			var test = new MineBoxOfficeMojo();
 
 			var actual = test.Mine();
 
