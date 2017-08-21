@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -107,16 +108,86 @@ namespace MovieMiner.Tests
 
 			var boPros = test.Mine();
 
-			// FML Nerd (Pete) should have all of the movies WITH the Bux
+			var myList = new List<IMovie>();
 
-			Logger.WriteLine("==== FML Nerd (Pete) ====");
+			// FML Nerd (Pete) should have all of the movies WITH the Bux
+			// Use the nerd data to copy the bux to each list.
+
+			int id = 1;
+
+			foreach (var movie in nerds.OrderByDescending(item => item.Cost))
+			{
+				movie.Id = id;
+
+				AssignCost(movie, todds);
+				AssignCost(movie, boPros);
+
+				// My list is based on how well I trust these sources.
+
+				myList.Add(CreateMyMovie(movie, todds, boPros));
+
+				id++;
+			}
+
+			Logger.WriteLine("\n==== FML Nerd (Pete) ====\n");
 			WriteMovies(nerds);
 
-			Logger.WriteLine("==== Todd M Thatcher ====");
+			Logger.WriteLine("\n==== Todd M Thatcher ====\n");
 			WriteMovies(todds);
 
-			Logger.WriteLine("==== Box Office Pros ====");
+			Logger.WriteLine("\n==== Box Office Pros ====\n");
 			WriteMovies(boPros);
+
+			Logger.WriteLine("\n==== Spilled Milk Cinema ====\n");
+			WriteMovies(myList);
+		}
+
+		private IMovie CreateMyMovie(IMovie nerdMovie, List<IMovie> todds, List<IMovie> boPros)
+		{
+			int nerdWeight = 4;
+			int toddWeight = 6;
+			int boProWeight = 8;
+			int totalWeight = nerdWeight;
+			var toddMovie = todds.FirstOrDefault(item => item.Name.Equals(nerdMovie.Name));
+			var boProMovie = boPros.FirstOrDefault(item => item.Name.Equals(nerdMovie.Name));
+
+			var result = new Movie
+			{
+				Id = nerdMovie.Id,
+				Name = nerdMovie.Name,
+				Cost = nerdMovie.Cost,
+				Earnings = nerdMovie.Earnings * nerdWeight
+			};
+
+			if (toddMovie != null)
+			{
+				result.Earnings += toddMovie.Earnings * toddWeight;
+				totalWeight += toddWeight;
+			}
+
+			if (boProMovie != null)
+			{
+				result.Earnings += boProMovie.Earnings * boProWeight;
+				totalWeight += boProWeight;
+			}
+
+			result.Earnings /= totalWeight;		// Weighted average.
+
+			return result;
+		}
+
+		//----==== PRIVATE ====--------------------------------------------------------------------
+
+		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)
+		{
+			var found = movies.FirstOrDefault(item => item.Name.Equals(movie.Name));
+
+			if (found != null)
+			{
+				found.Id = movie.Id;
+				found.Name = movie.Name;        // So the names aren't fuzzy anymore.
+				found.Cost = movie.Cost;
+			}
 		}
 	}
 }

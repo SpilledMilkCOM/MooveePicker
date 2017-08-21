@@ -73,6 +73,11 @@ namespace MoviePicker.Common
 			return new Movie(this);
 		}
 
+		/// <summary>
+		/// I may move this to a utility that strictly maps movies versus this generic "fuzzy" logic.
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <returns></returns>
 		public override bool Equals(object obj)
 		{
 			bool result = false;
