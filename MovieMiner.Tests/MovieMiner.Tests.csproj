@@ -84,6 +84,14 @@
       <Project>{c413ba12-dcd8-485e-b008-087ba02004cb}</Project>
       <Name>MoviePicker.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MoviePicker.Msf\MoviePicker.Msf.csproj">
+      <Project>{420fcf88-e38d-46ee-a4de-be87042d5b1b}</Project>
+      <Name>MoviePicker.Msf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MoviePicker\MoviePicker.csproj">
+      <Project>{fb01c56f-1f93-4174-9d64-154f23b92691}</Project>
+      <Name>MoviePicker</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

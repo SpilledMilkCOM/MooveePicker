@@ -16,7 +16,7 @@ namespace MovieMiner
 
 		private readonly string _articleTitle;
 
-		public MineToddThatcher(string articleTitle = "Week 12 Estimates")
+		public MineToddThatcher(string articleTitle = "Week 13 Estimates")
 			: base(DEFAULT_URL)
 		{
 			_articleTitle = articleTitle;
@@ -41,9 +41,33 @@ namespace MovieMiner
 
 				if (href != null)
 				{
+					DateTime? articleDate = null;
+
 					// Now retrieve the article page.
 
 					doc = web.Load($"{Url}/{href}");
+
+					// Get the date of the article
+
+					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='credits']/span[@class='date']");
+
+					if (node != null)
+					{
+						// Remove the first child span.
+
+						if (node.HasChildNodes)
+						{
+							string articleText = HttpUtility.HtmlDecode(node.FirstChild.InnerText).Trim();
+							DateTime parsedDateTime;
+
+							if (DateTime.TryParse(articleText, out parsedDateTime))
+							{
+								articleDate = parsedDateTime;
+							}
+						}
+					}
+
+					// Get the data
 
 					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='article__content']");
 
@@ -68,6 +92,11 @@ namespace MovieMiner
 										Name = HttpUtility.HtmlDecode(movieName).Replace("\"", string.Empty),
 										Earnings = decimal.Parse(estimatedBoxOffice) * 1000000
 									};
+
+									if (articleDate.HasValue)
+									{
+										movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+									}
 
 									result.Add(movie);
 								}

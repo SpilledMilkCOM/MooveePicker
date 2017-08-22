@@ -27,6 +27,9 @@ namespace MovieMiner.Tests
 		{
 			_unity = new UnityContainer();
 
+			_unity.RegisterType<IMovie, Movie>();
+			_unity.RegisterType<IMovieList, MovieList>();
+			_unity.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();
 			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
@@ -69,17 +72,10 @@ namespace MovieMiner.Tests
 
 			Logger.WriteLine($"================== Picking Movies for {nextSunday} ==================\n");
 
-			Logger.WriteLine("\n==== FML Nerd (Pete) ====\n");
-			WriteMovies(nerds);
-
-			Logger.WriteLine("\n==== Todd M Thatcher ====\n");
-			WriteMovies(todds);
-
-			Logger.WriteLine("\n==== Box Office Pros ====\n");
-			WriteMovies(boPros);
-
-			Logger.WriteLine("\n==== Spilled Milk Cinema ====\n");
-			WriteMovies(myList);
+			WriteMoviesAndPicks("==== FML Nerd (Pete) ====", nerds);
+			WriteMoviesAndPicks("==== Todd M Thatcher ====", todds);
+			WriteMoviesAndPicks("==== Box Office Pros ====", boPros);
+			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
@@ -145,6 +141,20 @@ namespace MovieMiner.Tests
 			}
 		}
 
+		//----==== PRIVATE ====--------------------------------------------------------------------
+
+		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)
+		{
+			var found = movies.FirstOrDefault(item => item.Name.Equals(movie.Name));
+
+			if (found != null)
+			{
+				found.Id = movie.Id;
+				found.Name = movie.Name;        // So the names aren't fuzzy anymore.
+				found.Cost = movie.Cost;
+			}
+		}
+
 		private IMovie CreateMyMovie(IMovie nerdMovie, List<IMovie> todds, List<IMovie> boPros)
 		{
 			int nerdWeight = 4;
@@ -159,7 +169,8 @@ namespace MovieMiner.Tests
 				Id = nerdMovie.Id,
 				Name = nerdMovie.Name,
 				Cost = nerdMovie.Cost,
-				Earnings = nerdMovie.Earnings * nerdWeight
+				Earnings = nerdMovie.Earnings * nerdWeight,
+				WeekendEnding = nerdMovie.WeekendEnding
 			};
 
 			if (toddMovie != null)
@@ -179,18 +190,28 @@ namespace MovieMiner.Tests
 			return result;
 		}
 
-		//----==== PRIVATE ====--------------------------------------------------------------------
-
-		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)
+		private void WriteMoviesAndPicks(string header, List<IMovie> movies)
 		{
-			var found = movies.FirstOrDefault(item => item.Name.Equals(movie.Name));
+			Logger.WriteLine($"\n{header}\n");
+			WriteMovies(movies);
 
-			if (found != null)
-			{
-				found.Id = movie.Id;
-				found.Name = movie.Name;        // So the names aren't fuzzy anymore.
-				found.Cost = movie.Cost;
-			}
+			var test = ConstructTestObject();
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+
+			Logger.WriteLine("\n==== Best Performer Disabled ====\n");
+
+			test.EnableBestPerformer = false;
+
+			best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
 		}
 	}
 }

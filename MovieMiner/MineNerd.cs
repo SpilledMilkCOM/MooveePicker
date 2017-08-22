@@ -69,7 +69,8 @@ namespace MovieMiner
 						{
 							Name = HttpUtility.HtmlDecode(movie.Title),
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
-							Cost = movie.Bux
+							Cost = movie.Bux,
+							WeekendEnding = MovieDateUtil.NextSunday()
 						});
 					}
 				}

@@ -90,14 +90,20 @@ namespace MovieMiner.Tests
 
 				if (movie.Cost > 0)
 				{
-					Logger.WriteLine($"{movie.Name,-30} {movie.Cost} Bx   ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
-
+					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} {movie.Cost} Bx   ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
 				}
 				else
 				{
-					Logger.WriteLine($"{movie.Name,-30} ${movie.Earnings:N2}");
+					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} ${movie.Earnings:N2}");
 				}
 			}
+		}
+
+		protected void WritePicker(IMoviePicker moviePicker)
+		{
+			Logger.WriteLine($"Picker: {moviePicker.GetType().Name}");
+			Logger.WriteLine($"Total Comparisons: {moviePicker.TotalComparisons:N0} [{moviePicker.TotalComparisons / Math.Pow(16, 8) * 100}% of {Math.Pow(16, 8):N0}]");
+			Logger.WriteLine($"Total Sub-problems: {moviePicker.TotalSubProblems:N0}");
 		}
 	}
 }

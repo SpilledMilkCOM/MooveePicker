@@ -30,7 +30,7 @@ namespace MovieMiner
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
-			var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'weekend-estimates')]");
+			var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'estimates-weekend')]");
 
 			if (node != null)
 			{
@@ -38,9 +38,28 @@ namespace MovieMiner
 
 				if (href != null)
 				{
+					DateTime? articleDate = null;
+
 					// Now retrieve the article page.
 
 					doc = web.Load(href);
+
+					// Get the date of the article
+
+					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post-meta']/span[@class='date']");
+
+					if (node != null)
+					{
+						string articleText = node.InnerText.Replace("Published ", string.Empty);
+						DateTime parsedDateTime;
+
+						if (DateTime.TryParse(articleText, out parsedDateTime))
+						{
+							articleDate = parsedDateTime;
+						}
+					}
+
+					// Get the data in the table.
 
 					node = doc.DocumentNode.SelectSingleNode("//body//table[@class='sdt']");
 
@@ -64,6 +83,11 @@ namespace MovieMiner
 									if (columnCount == 1)
 									{
 										movie = new Movie { Name = HttpUtility.HtmlDecode(column.InnerText) };
+
+										if (articleDate.HasValue)
+										{
+											movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+										}
 									}
 									else if (columnCount == 2)
 									{
