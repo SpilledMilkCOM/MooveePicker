@@ -12,6 +12,8 @@ namespace MoviePicker.Msf
     public class MsfMovieSolver : IMoviePicker
     {
         private readonly List<MsfMovieWrapper> _movies;
+		private IMovie _bestPerformer;
+		private List<IMovie> _bestPerformers;
 		private bool _enableBestPerformer;
 
 		public MsfMovieSolver()
@@ -22,25 +24,20 @@ namespace MoviePicker.Msf
 			AvailableFmlBux = 1000;
 			PenaltyForUnusedScreens = 2000000;
 			DisplayDebugMessage = false;
+			EnableBestPerformer = true;
 		}
 
         public bool DisplayDebugMessage { get; set; }
 
-        public IMovie BestPerformer
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+		/// <summary>
+		/// Best Performer will return a value ONLY if it is the BEST performer (and there are no ties)
+		/// </summary>
+		public IMovie BestPerformer => _bestPerformer != null && _bestPerformers == null ? _bestPerformer : null;
 
-        public IEnumerable<IMovie> BestPerformers
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+		/// <summary>
+		/// A list of TIED Best Performers.
+		/// </summary>
+		public IEnumerable<IMovie> BestPerformers => _bestPerformers;
 
 		public bool EnableBestPerformer
 		{
@@ -83,8 +80,46 @@ namespace MoviePicker.Msf
             foreach (var movie in movies)
             {
                 _movies.Add(new MsfMovieWrapper(movie));
-            }
-        }
+			}
+
+			if (EnableBestPerformer)
+			{
+				_bestPerformer = null;
+				_bestPerformers = null;
+
+				foreach (var movie in _movies.OrderByDescending(item => item.Efficiency))
+				{
+					if (_bestPerformer == null)
+					{
+						// Assign the first one as the best performer.
+
+						_bestPerformer = movie;
+						movie.IsBestPerformer = true;
+					}
+					else if (_bestPerformer.Efficiency == movie.Efficiency)
+					{
+						// Check to see if there are MANY tied Best Performers
+
+						if (_bestPerformers == null)
+						{
+							_bestPerformers = new List<IMovie> { _bestPerformer };
+						}
+
+						movie.IsBestPerformer = true;
+						_bestPerformers.Add(movie);
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+
+			if (_bestPerformers != null)
+			{
+				_bestPerformer = null;      // There is NO one best performer.
+			}
+		}
 
         public IMovieList ChooseBest()
         {

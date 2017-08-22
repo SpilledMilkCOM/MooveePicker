@@ -89,7 +89,7 @@ namespace MovieMiner
 								{
 									var movie = new Movie
 									{
-										Name = HttpUtility.HtmlDecode(movieName).Replace("\"", string.Empty),
+										Name = RemovePunctuation(HttpUtility.HtmlDecode(movieName)),
 										Earnings = decimal.Parse(estimatedBoxOffice) * 1000000
 									};
 

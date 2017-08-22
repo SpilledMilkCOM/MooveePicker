@@ -67,7 +67,7 @@ namespace MovieMiner
 					{
 						result.Add(new Movie
 						{
-							Name = HttpUtility.HtmlDecode(movie.Title),
+							Name = RemovePunctuation(HttpUtility.HtmlDecode(movie.Title)),
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
 							Cost = movie.Bux,
 							WeekendEnding = MovieDateUtil.NextSunday()

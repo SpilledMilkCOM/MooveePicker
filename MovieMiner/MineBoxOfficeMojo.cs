@@ -61,7 +61,7 @@ namespace MovieMiner
 						{
 							if (columnCount == 2)
 							{
-								movie = new Movie { Name = HttpUtility.HtmlDecode(column.InnerText) };
+								movie = new Movie { Name = RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText)) };
 							}
 							else if (columnCount == 4)
 							{

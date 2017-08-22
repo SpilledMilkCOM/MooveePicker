@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -15,8 +14,6 @@ namespace MovieMiner.Tests
 	[ExcludeFromCodeCoverage]
 	public class MineAllTests : MineTestBase
 	{
-		private const string PRIMARY_TEST_CATEGORY = "Mining";
-
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
 
@@ -29,7 +26,9 @@ namespace MovieMiner.Tests
 
 			_unity.RegisterType<IMovie, Movie>();
 			_unity.RegisterType<IMovieList, MovieList>();
-			_unity.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();
+			_unity.RegisterType<IMoviePicker, MoviePicker.Msf.MsfMovieSolver>();
+			//_unity.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();
+
 			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
@@ -76,11 +75,20 @@ namespace MovieMiner.Tests
 			WriteMoviesAndPicks("==== Todd M Thatcher ====", todds);
 			WriteMoviesAndPicks("==== Box Office Pros ====", boPros);
 			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
+
+			Logger.WriteLine("Upload for FML Analyzer Site");
+
+			foreach (var movie in myList.OrderByDescending(movie => movie.Cost))
+			{
+				Logger.WriteLine(movie.Earnings.ToString());
+			}
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_CompareMovieNames()
 		{
+			// This test is to verify that the data is synchronized with the analyzer.
+
 			IMiner test = new MineToddThatcher();
 
 			var todds = test.Mine();
@@ -115,6 +123,7 @@ namespace MovieMiner.Tests
 				else
 				{
 					counts.Add(movie.Name, 1);
+					Logger.WriteLine($"Todd's movie {movie.Name} not found.");
 				}
 			}
 
@@ -130,10 +139,11 @@ namespace MovieMiner.Tests
 				else
 				{
 					counts.Add(movie.Name, 1);
+					Logger.WriteLine($"BOPro movie {movie.Name} not found.");
 				}
 			}
 
-			var orderedCounts = from pair in counts orderby pair.Key select pair;
+			var orderedCounts = counts.OrderByDescending(movie => movie.Value).ThenBy(movie => movie.Key);
 
 			foreach (var pair in orderedCounts)
 			{
@@ -173,13 +183,13 @@ namespace MovieMiner.Tests
 				WeekendEnding = nerdMovie.WeekendEnding
 			};
 
-			if (toddMovie != null)
+			if (toddMovie != null && toddMovie.WeekendEnding == result.WeekendEnding)
 			{
 				result.Earnings += toddMovie.Earnings * toddWeight;
 				totalWeight += toddWeight;
 			}
 
-			if (boProMovie != null)
+			if (boProMovie != null && boProMovie.WeekendEnding == result.WeekendEnding)
 			{
 				result.Earnings += boProMovie.Earnings * boProWeight;
 				totalWeight += boProWeight;

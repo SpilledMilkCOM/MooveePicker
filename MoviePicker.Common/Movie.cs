@@ -7,9 +7,13 @@ namespace MoviePicker.Common
 	[DebuggerDisplay("Name = {Name}")]
 	public class Movie : IMovie
 	{
+		private const decimal BEST_PERFORMER_BONUS = 2000000;
+
 		private decimal _cost;
 		private decimal _earnings;
 		private decimal _efficiency;
+		private bool _isBestPerformer;
+		private decimal _originalEarnings;
 
 		public Movie()
 		{
@@ -30,6 +34,7 @@ namespace MoviePicker.Common
 				_cost = toCopy._cost;
 				Id = toCopy.Id;
 				Name = toCopy.Name;
+				_originalEarnings = toCopy._originalEarnings;
 				WeekendEnding = toCopy.WeekendEnding;
 
 				UpdateEfficiency();
@@ -56,13 +61,23 @@ namespace MoviePicker.Common
 			set
 			{
 				_earnings = value;
+				_originalEarnings = value;
 				UpdateEfficiency();
 			}
 		}
 
 		public int Id { get; set; }
 
-        public bool IsBestPerformer { get; set; }
+		public bool IsBestPerformer
+		{
+			get { return _isBestPerformer; }
+			set
+			{
+				_earnings = _originalEarnings + ((value) ? BEST_PERFORMER_BONUS : 0m);
+				UpdateEfficiency();
+				_isBestPerformer = value;
+			}
+		}
 
         public string Name { get; set; }
 
@@ -129,7 +144,7 @@ namespace MoviePicker.Common
 				_efficiency = Earnings / Cost;
 			}
 
-		    IsBestPerformer = false;
+		    _isBestPerformer = false;
 		}
 	}
 }

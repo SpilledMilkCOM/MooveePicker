@@ -82,7 +82,7 @@ namespace MovieMiner
 								{
 									if (columnCount == 1)
 									{
-										movie = new Movie { Name = HttpUtility.HtmlDecode(column.InnerText) };
+										movie = new Movie { Name = RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText)) };
 
 										if (articleDate.HasValue)
 										{

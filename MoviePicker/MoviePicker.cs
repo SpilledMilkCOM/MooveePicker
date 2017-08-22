@@ -82,56 +82,44 @@ namespace MooveePicker
 			foreach (var movie in movies)
 			{
 				_movies.Add(movie);
+			}
 
-				if (EnableBestPerformer)
+			if (EnableBestPerformer)
+			{
+				_bestPerformer = null;
+				_bestPerformers = null;
+
+				foreach (var movie in _movies.OrderByDescending(item => item.Efficiency))
 				{
-					// Is this quicker than just using Linq to rescan the list?
-
-					if (_bestPerformers != null)
+					if (_bestPerformer == null)
 					{
-						// Check the best performer against
+						// Assign the first one as the best performer.
 
-						if (_bestPerformer.Efficiency < movie.Efficiency)
-						{
-							// The new item is a tie breaker so get rid of the list.
-							_bestPerformers = null;
-							_bestPerformer = movie;
-						}
-					}
-					else if ((_bestPerformer == null && _bestPerformers == null)
-					|| (_bestPerformer != null && _bestPerformer.Efficiency < movie.Efficiency))
-					{
 						_bestPerformer = movie;
+						movie.IsBestPerformer = true;
 					}
-					else if (_bestPerformer?.Efficiency == movie.Efficiency)
+					else if (_bestPerformer.Efficiency == movie.Efficiency)
 					{
+						// Check to see if there are MANY tied Best Performers
+
 						if (_bestPerformers == null)
 						{
 							_bestPerformers = new List<IMovie> { _bestPerformer };
 						}
 
+						movie.IsBestPerformer = true;
 						_bestPerformers.Add(movie);
+					}
+					else
+					{
+						break;
 					}
 				}
 			}
 
-			if (EnableBestPerformer)
+			if (_bestPerformers != null)
 			{
-				foreach (var movie in _movies)
-				{
-					// Check to see if there is only ONE Best Performer
-					if (movie == BestPerformer)
-					{
-						movie.IsBestPerformer = true;
-						break;
-					}
-
-					// Check to see if there are MANY tied Best Performers
-					if (_bestPerformers != null && _bestPerformers.Contains(movie))
-					{
-						movie.IsBestPerformer = true;
-					}
-				}
+				_bestPerformer = null;		// There is NO one best performer.
 			}
 		}
 
