@@ -14,9 +14,12 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "https://fantasymovieleague.com";
 		private const string DELIMITER = " - $";
 
-		public MineToddThatcher()
+		private readonly string _articleTitle;
+
+		public MineToddThatcher(string articleTitle = "Week 12 Estimates")
 			: base(DEFAULT_URL)
 		{
+			_articleTitle = articleTitle;
 		}
 
 		public override List<IMovie> Mine()
@@ -30,7 +33,7 @@ namespace MovieMiner
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
-			var node = doc.DocumentNode.SelectSingleNode("//body//a[@title='Week 12 Estimates']");
+			var node = doc.DocumentNode.SelectSingleNode($"//body//a[@title='{_articleTitle}']");
 
 			if (node != null)
 			{

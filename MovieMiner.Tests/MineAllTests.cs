@@ -31,6 +31,58 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_BuildMyList()
+		{
+			IMiner test = new MineToddThatcher();
+			var nextSunday = MovieDateUtil.NextSunday();
+
+			var todds = test.Mine();
+
+			test = new MineNerd();
+
+			var nerds = test.Mine();
+
+			test = new MineBoxOfficePro();
+
+			var boPros = test.Mine();
+
+			var myList = new List<IMovie>();
+
+			// FML Nerd (Pete) should have all of the movies WITH the Bux
+			// Use the nerd data to copy the bux to each list.
+
+			int id = 1;
+
+			foreach (var movie in nerds.OrderByDescending(item => item.Cost))
+			{
+				movie.Id = id;
+
+				AssignCost(movie, todds);
+				AssignCost(movie, boPros);
+
+				// My list is based on how well I trust these sources.
+
+				myList.Add(CreateMyMovie(movie, todds, boPros));
+
+				id++;
+			}
+
+			Logger.WriteLine($"================== Picking Movies for {nextSunday} ==================\n");
+
+			Logger.WriteLine("\n==== FML Nerd (Pete) ====\n");
+			WriteMovies(nerds);
+
+			Logger.WriteLine("\n==== Todd M Thatcher ====\n");
+			WriteMovies(todds);
+
+			Logger.WriteLine("\n==== Box Office Pros ====\n");
+			WriteMovies(boPros);
+
+			Logger.WriteLine("\n==== Spilled Milk Cinema ====\n");
+			WriteMovies(myList);
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_CompareMovieNames()
 		{
 			IMiner test = new MineToddThatcher();
@@ -93,55 +145,6 @@ namespace MovieMiner.Tests
 			}
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
-		public void MineAll_BuildMyList()
-		{
-			IMiner test = new MineToddThatcher();
-
-			var todds = test.Mine();
-
-			test = new MineNerd();
-
-			var nerds = test.Mine();
-
-			test = new MineBoxOfficePro();
-
-			var boPros = test.Mine();
-
-			var myList = new List<IMovie>();
-
-			// FML Nerd (Pete) should have all of the movies WITH the Bux
-			// Use the nerd data to copy the bux to each list.
-
-			int id = 1;
-
-			foreach (var movie in nerds.OrderByDescending(item => item.Cost))
-			{
-				movie.Id = id;
-
-				AssignCost(movie, todds);
-				AssignCost(movie, boPros);
-
-				// My list is based on how well I trust these sources.
-
-				myList.Add(CreateMyMovie(movie, todds, boPros));
-
-				id++;
-			}
-
-			Logger.WriteLine("\n==== FML Nerd (Pete) ====\n");
-			WriteMovies(nerds);
-
-			Logger.WriteLine("\n==== Todd M Thatcher ====\n");
-			WriteMovies(todds);
-
-			Logger.WriteLine("\n==== Box Office Pros ====\n");
-			WriteMovies(boPros);
-
-			Logger.WriteLine("\n==== Spilled Milk Cinema ====\n");
-			WriteMovies(myList);
-		}
-
 		private IMovie CreateMyMovie(IMovie nerdMovie, List<IMovie> todds, List<IMovie> boPros)
 		{
 			int nerdWeight = 4;
@@ -171,7 +174,7 @@ namespace MovieMiner.Tests
 				totalWeight += boProWeight;
 			}
 
-			result.Earnings /= totalWeight;		// Weighted average.
+			result.Earnings /= totalWeight;     // Weighted average.
 
 			return result;
 		}

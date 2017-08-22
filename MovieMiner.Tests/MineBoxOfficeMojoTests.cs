@@ -42,7 +42,7 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineBoxOfficeMojo_Mine_PreviousWeek()
 		{
-			var weekendEnding = PreviousSunday(DateTime.Now);
+			var weekendEnding = MovieDateUtil.LastSunday(DateTime.Now);
 			var test = new MineBoxOfficeMojo(weekendEnding);
 
 			var actual = test.Mine();
@@ -57,7 +57,7 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineBoxOfficeMojo_Mine_Previous2Weeks()
 		{
-			var weekendEnding = PreviousSunday(DateTime.Now).AddDays(-7);
+			var weekendEnding = MovieDateUtil.LastSunday(DateTime.Now).AddDays(-7);
 			var test = new MineBoxOfficeMojo(weekendEnding);
 
 			var actual = test.Mine();
@@ -72,7 +72,7 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineBoxOfficeMojo_Mine_Previous3Weeks()
 		{
-			var weekendEnding = PreviousSunday(DateTime.Now).AddDays(-14);
+			var weekendEnding = MovieDateUtil.LastSunday(DateTime.Now).AddDays(-14);
 			var test = new MineBoxOfficeMojo(weekendEnding);
 
 			var actual = test.Mine();
@@ -84,9 +84,5 @@ namespace MovieMiner.Tests
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
-		private DateTime PreviousSunday(DateTime dateTime)
-		{
-			return dateTime.AddDays(DayOfWeek.Sunday - dateTime.DayOfWeek);
-		}
 	}
 }

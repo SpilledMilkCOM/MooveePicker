@@ -27,8 +27,9 @@ namespace MovieMiner
 		{
 			var result = new List<IMovie>();
 			var web = new HtmlWeb();
-
 			var doc = web.Load(DEFAULT_URL);
+
+			// TODO: Somehow parse the page title from "Summer Week 13" into a Sunday date for each movie.
 
 			// Lookup XPATH to get the right node that matches.
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"

@@ -33,6 +33,7 @@ namespace MovieMiner.Tests
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 
+			Logger.WriteLine("\n==== Todd M Thatcher ====\n");
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 	}

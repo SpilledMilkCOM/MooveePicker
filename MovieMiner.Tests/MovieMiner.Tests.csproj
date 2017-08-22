@@ -72,6 +72,7 @@
     <Compile Include="MineToddThatcherTests.cs" />
     <Compile Include="MineNerdTests.cs" />
     <Compile Include="MineTestBase.cs" />
+    <Compile Include="MovieDateUtilTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
