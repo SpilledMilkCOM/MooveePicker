@@ -30,7 +30,8 @@ namespace MovieMiner
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
-			var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'estimates-weekend')]");
+			//var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'estimates-weekend')]");
+			var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'weekend-forecast')]");
 
 			if (node != null)
 			{
@@ -61,11 +62,11 @@ namespace MovieMiner
 
 					// Get the data in the table.
 
-					node = doc.DocumentNode.SelectSingleNode("//body//table[@class='sdt']");
+					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post-container']/table");
 
 					// TODO: Parse the header for column titles for mapping.
 
-					var tableRows = node?.SelectNodes("tbody/tr");
+					var tableRows = node?.SelectNodes("tbody/tr[position()>1]");		// Skips the table header row (row 0)
 
 					if (tableRows != null)
 					{
@@ -80,7 +81,7 @@ namespace MovieMiner
 
 								foreach (var column in rowColumns)
 								{
-									if (columnCount == 1)
+									if (columnCount == 0)
 									{
 										movie = new Movie { Name = RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText)) };
 

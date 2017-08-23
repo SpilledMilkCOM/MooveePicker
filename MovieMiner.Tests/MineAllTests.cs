@@ -89,21 +89,9 @@ namespace MovieMiner.Tests
 		{
 			// This test is to verify that the data is synchronized with the analyzer.
 
-			IMiner test = new MineToddThatcher();
-
-			var todds = test.Mine();
-
-			test = new MineNerd();
+			IMiner test = new MineNerd();
 
 			var nerds = test.Mine();
-
-			test = new MineBoxOfficePro();
-
-			var boPros = test.Mine();
-
-			test = new MineCulturedVultures();
-
-			var cultVult = test.Mine();
 
 			// TODO: Could try to use Linq to JOIN these lists to find common movie names.
 
@@ -115,53 +103,9 @@ namespace MovieMiner.Tests
 
 			nerds.ForEach(movie => counts.Add(movie.Name, 1));
 
-			foreach (var movie in todds)
-			{
-				// Don't use contains key because we're testing the Equals() method.
-				var foundKey = counts.Keys.FirstOrDefault(item => (new Movie { Name = item }).Equals(movie));
-
-				if (foundKey != null)
-				{
-					counts[foundKey] = counts[foundKey] + 1;
-				}
-				else
-				{
-					counts.Add(movie.Name, 1);
-					Logger.WriteLine($"Todd's movie {movie.Name} not found.");
-				}
-			}
-
-			foreach (var movie in boPros)
-			{
-				// Don't use contains key because we're testing the Equals() method.
-				var foundKey = counts.Keys.FirstOrDefault(item => (new Movie { Name = item }).Equals(movie));
-
-				if (foundKey != null)
-				{
-					counts[foundKey] = counts[foundKey] + 1;
-				}
-				else
-				{
-					counts.Add(movie.Name, 1);
-					Logger.WriteLine($"BOPro movie {movie.Name} not found.");
-				}
-			}
-
-			foreach (var movie in cultVult)
-			{
-				// Don't use contains key because we're testing the Equals() method.
-				var foundKey = counts.Keys.FirstOrDefault(item => (new Movie { Name = item }).Equals(movie));
-
-				if (foundKey != null)
-				{
-					counts[foundKey] = counts[foundKey] + 1;
-				}
-				else
-				{
-					counts.Add(movie.Name, 1);
-					Logger.WriteLine($"Cultured Vultures movie {movie.Name} not found.");
-				}
-			}
+			AggregateNames(counts, new MineToddThatcher().Mine(), "Todd M Thatcher");
+			AggregateNames(counts, new MineBoxOfficePro().Mine(), "Box Office Pro");
+			//AggregateNames(counts, new MineCulturedVultures().Mine(), "Cultured Vultures");
 
 			var orderedCounts = counts.OrderByDescending(movie => movie.Value).ThenBy(movie => movie.Key);
 
@@ -172,6 +116,25 @@ namespace MovieMiner.Tests
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
+
+		private void AggregateNames(Dictionary<string, int> counts, List<IMovie> movies, string name)
+		{
+			foreach (var movie in movies)
+			{
+				// Don't use contains key because we're testing the Equals() method.
+				var foundKey = counts.Keys.FirstOrDefault(item => (new Movie { Name = item }).Equals(movie));
+
+				if (foundKey != null)
+				{
+					counts[foundKey] = counts[foundKey] + 1;
+				}
+				else
+				{
+					counts.Add(movie.Name, 1);
+					Logger.WriteLine($"{name} movie {movie.Name} not found.");
+				}
+			}
+		}
 
 		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)
 		{
