@@ -101,6 +101,10 @@ namespace MovieMiner.Tests
 
 			var boPros = test.Mine();
 
+			test = new MineCulturedVultures();
+
+			var cultVult = test.Mine();
+
 			// TODO: Could try to use Linq to JOIN these lists to find common movie names.
 
 			// Verify movie counts.
@@ -140,6 +144,22 @@ namespace MovieMiner.Tests
 				{
 					counts.Add(movie.Name, 1);
 					Logger.WriteLine($"BOPro movie {movie.Name} not found.");
+				}
+			}
+
+			foreach (var movie in cultVult)
+			{
+				// Don't use contains key because we're testing the Equals() method.
+				var foundKey = counts.Keys.FirstOrDefault(item => (new Movie { Name = item }).Equals(movie));
+
+				if (foundKey != null)
+				{
+					counts[foundKey] = counts[foundKey] + 1;
+				}
+				else
+				{
+					counts.Add(movie.Name, 1);
+					Logger.WriteLine($"Cultured Vultures movie {movie.Name} not found.");
 				}
 			}
 
