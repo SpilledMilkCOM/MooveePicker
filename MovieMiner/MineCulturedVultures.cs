@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
+using System.Web;
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 
 using MoviePicker.Common.Interfaces;
@@ -15,7 +15,7 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "https://culturedvultures.com";
 
 		public MineCulturedVultures()
-			: base(DEFAULT_URL)
+			: base("Cultured Vultures", DEFAULT_URL)
 		{
 		}
 
@@ -159,7 +159,7 @@ namespace MovieMiner
 
 											if (index > 0)
 											{
-												movie.Name = movie.Name.Substring(0, index);
+												movie.Name = RemovePunctuation(HttpUtility.HtmlDecode(movie.Name.Substring(0, index)));
 											}
 										}
 
@@ -178,7 +178,7 @@ namespace MovieMiner
 								}
 							}
 
-							if (row.Name.ToLower() == "h2" && row.InnerText.ToLower() == "holdovers")
+							if (row.Name.ToLower() == "h2" && row.InnerText.ToLower().Contains("holdover"))
 							{
 								foundHoldovers = true;
 							}

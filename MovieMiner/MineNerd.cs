@@ -19,7 +19,7 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups";
 
 		public MineNerd()
-			: base(DEFAULT_URL)
+			: base("FML Nerd (Pete Johnson)", DEFAULT_URL)
 		{
 		}
 

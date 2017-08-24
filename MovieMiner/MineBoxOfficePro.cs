@@ -15,7 +15,7 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "http://pro.boxoffice.com/";
 
 		public MineBoxOfficePro()
-			: base(DEFAULT_URL)
+			: base("Box Office Pro", DEFAULT_URL)
 		{
 		}
 
@@ -66,7 +66,7 @@ namespace MovieMiner
 
 					// TODO: Parse the header for column titles for mapping.
 
-					var tableRows = node?.SelectNodes("tbody/tr[position()>1]");		// Skips the table header row (row 0)
+					var tableRows = node?.SelectNodes("tbody/tr[position()>1]");        // Skips the table header row (row 0)
 
 					if (tableRows != null)
 					{

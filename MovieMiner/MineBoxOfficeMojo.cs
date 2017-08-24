@@ -16,7 +16,7 @@ namespace MovieMiner
 		private readonly DateTime? _weekendEnding;
 
 		public MineBoxOfficeMojo(DateTime? weekendEnding = null)
-			: base(DEFAULT_URL)
+			: base("Box Office Mojo", DEFAULT_URL)
 		{
 			_weekendEnding = weekendEnding?.Date;
 		}

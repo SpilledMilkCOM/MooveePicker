@@ -14,6 +14,8 @@ namespace MovieMiner.Tests
 	[ExcludeFromCodeCoverage]
 	public class MineAllTests : MineTestBase
 	{
+		private const int NERD_INDEX = 0;
+
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
 
@@ -35,45 +37,24 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_BuildMyList()
 		{
-			IMiner test = new MineToddThatcher();
 			var nextSunday = MovieDateUtil.NextSunday();
 
-			var todds = test.Mine();
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
 
-			test = new MineNerd();
+			// TODO: Should probably connect the mined data to the miner.
 
-			var nerds = test.Mine();
-
-			test = new MineBoxOfficePro();
-
-			var boPros = test.Mine();
-
-			var myList = new List<IMovie>();
-
-			// FML Nerd (Pete) should have all of the movies WITH the Bux
-			// Use the nerd data to copy the bux to each list.
-
-			int id = 1;
-
-			foreach (var movie in nerds.OrderByDescending(item => item.Cost))
-			{
-				movie.Id = id;
-
-				AssignCost(movie, todds);
-				AssignCost(movie, boPros);
-
-				// My list is based on how well I trust these sources.
-
-				myList.Add(CreateMyMovie(movie, todds, boPros));
-
-				id++;
-			}
+			var myList = CreateMyList(minedData, miners);
 
 			Logger.WriteLine($"================== Picking Movies for {nextSunday} ==================\n");
 
-			WriteMoviesAndPicks("==== FML Nerd (Pete) ====", nerds);
-			WriteMoviesAndPicks("==== Todd M Thatcher ====", todds);
-			WriteMoviesAndPicks("==== Box Office Pros ====", boPros);
+			for (int index = 0; index < miners.Count; index++)
+			{
+				WriteMoviesAndPicks($"==== {miners[index].Name} ====", minedData[index]);
+			}
+
+			Logger.WriteLine(string.Empty);
+
 			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
 
 			Logger.WriteLine("Upload for FML Analyzer Site");
@@ -85,13 +66,38 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_CompareEffeciencies()
+		{
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			// TODO: Should probably connect the mined data to the miner.
+
+			var myList = CreateMyList(minedData, miners);
+
+			var mostEfficient = myList.OrderByDescending(item => item.Efficiency).First();
+			int index = 1;
+
+			Logger.WriteLine("\nEffeciency Differences\n");
+
+			foreach (var movie in myList.OrderBy(item => mostEfficient.Efficiency * item.Cost - item.Earnings))
+			{
+				Logger.WriteLine($"{index}. {movie.Name,-30} -- {movie.Efficiency / 1000:F3} [${movie.Earnings:N2}] "
+								 + $"==> **${mostEfficient.Efficiency * movie.Cost:N2} "
+								 + $"++${mostEfficient.Efficiency * movie.Cost - movie.Earnings:N2}  {(mostEfficient.Efficiency * movie.Cost - movie.Earnings) / movie.Earnings * 100:F2}%");
+				index++;
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_CompareMovieNames()
 		{
 			// This test is to verify that the data is synchronized with the analyzer.
 
-			IMiner test = new MineNerd();
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
 
-			var nerds = test.Mine();
+			var nerds = minedData[NERD_INDEX];
 
 			// TODO: Could try to use Linq to JOIN these lists to find common movie names.
 
@@ -103,9 +109,15 @@ namespace MovieMiner.Tests
 
 			nerds.ForEach(movie => counts.Add(movie.Name, 1));
 
-			AggregateNames(counts, new MineToddThatcher().Mine(), "Todd M Thatcher");
-			AggregateNames(counts, new MineBoxOfficePro().Mine(), "Box Office Pro");
-			//AggregateNames(counts, new MineCulturedVultures().Mine(), "Cultured Vultures");
+			for (int index = 0; index < miners.Count; index++)
+			{
+				if (index != NERD_INDEX)
+				{
+					AggregateNames(counts, minedData[index], miners[index].Name);
+				}
+			}
+
+			Logger.WriteLine(string.Empty);
 
 			var orderedCounts = counts.OrderByDescending(movie => movie.Value).ThenBy(movie => movie.Key);
 
@@ -148,37 +160,108 @@ namespace MovieMiner.Tests
 			}
 		}
 
-		private IMovie CreateMyMovie(IMovie nerdMovie, List<IMovie> todds, List<IMovie> boPros)
+		/// <summary>
+		/// Create all of the movie miners.
+		/// </summary>
+		/// <returns></returns>
+		private List<IMiner> CreateMiners()
+		{
+			return new List<IMiner> {
+				new MineNerd(),
+				new MineToddThatcher(),
+				new MineBoxOfficePro(),
+				new MineCulturedVultures()
+			};
+		}
+
+		private List<IMovie> CreateMyList(List<List<IMovie>> movieData, List<IMiner> miners)
+		{
+			var myList = new List<IMovie>();
+
+			// FML Nerd (Pete) should have all of the movies WITH the Bux
+			// Use the nerd data to copy the bux to each list.
+
+			var nerds = movieData[NERD_INDEX];
+
+			int id = 1;
+
+			foreach (var movie in nerds.OrderByDescending(item => item.Cost))
+			{
+				movie.Id = id;
+
+				for (int index = 0; index < movieData.Count; index++)
+				{
+					if (index != NERD_INDEX)
+					{
+						AssignCost(movie, movieData[index]);
+					}
+				}
+
+				// My list is based on how well I trust these sources.
+
+				myList.Add(CreateMyMovie(movie, movieData, miners));
+
+				id++;
+			}
+
+			return myList;
+		}
+
+		/// <summary>
+		/// Create a single movie with the Earnings calculated from the mined data.
+		/// </summary>
+		/// <param name="baseMovie">The movie being matched (from FML Nerd)</param>
+		/// <param name="movieData">All of the movie lists.</param>
+		/// <param name="miners">All of the movie miners.</param>
+		/// <returns></returns>
+		private IMovie CreateMyMovie(IMovie baseMovie, List<List<IMovie>> movieData, List<IMiner> miners)
 		{
 			int nerdWeight = 4;
 			int toddWeight = 6;
 			int boProWeight = 8;
 			int totalWeight = nerdWeight;
-			var toddMovie = todds.FirstOrDefault(item => item.Name.Equals(nerdMovie.Name));
-			var boProMovie = boPros.FirstOrDefault(item => item.Name.Equals(nerdMovie.Name));
 
 			var result = new Movie
 			{
-				Id = nerdMovie.Id,
-				Name = nerdMovie.Name,
-				Cost = nerdMovie.Cost,
-				Earnings = nerdMovie.Earnings * nerdWeight,
-				WeekendEnding = nerdMovie.WeekendEnding
+				Id = baseMovie.Id,
+				Name = baseMovie.Name,
+				Cost = baseMovie.Cost,
+				Earnings = baseMovie.Earnings * nerdWeight,
+				WeekendEnding = baseMovie.WeekendEnding
 			};
 
-			if (toddMovie != null && toddMovie.WeekendEnding == result.WeekendEnding)
+			for (int index = 0; index < movieData.Count; index++)
 			{
-				result.Earnings += toddMovie.Earnings * toddWeight;
-				totalWeight += toddWeight;
-			}
+				if (index != NERD_INDEX)
+				{
+					var foundMovie = movieData[index].FirstOrDefault(item => item.Name.Equals(baseMovie.Name) && item.WeekendEnding == result.WeekendEnding);
 
-			if (boProMovie != null && boProMovie.WeekendEnding == result.WeekendEnding)
-			{
-				result.Earnings += boProMovie.Earnings * boProWeight;
-				totalWeight += boProWeight;
+					if (foundMovie != null)
+					{
+						result.Earnings += foundMovie.Earnings * miners[index].Weight;
+						totalWeight += miners[index].Weight;
+					}
+				}
 			}
 
 			result.Earnings /= totalWeight;     // Weighted average.
+
+			return result;
+		}
+
+		/// <summary>
+		/// Mine all of the miner movie data.
+		/// </summary>
+		/// <param name="miners"></param>
+		/// <returns></returns>
+		private List<List<IMovie>> MineMiners(IEnumerable<IMiner> miners)
+		{
+			var result = new List<List<IMovie>>();
+
+			foreach (var miner in miners)
+			{
+				result.Add(miner.Mine());
+			}
 
 			return result;
 		}
@@ -194,6 +277,7 @@ namespace MovieMiner.Tests
 
 			var best = test.ChooseBest();
 
+			Logger.WriteLine(string.Empty);
 			WritePicker(test);
 			WriteMovies(best);
 

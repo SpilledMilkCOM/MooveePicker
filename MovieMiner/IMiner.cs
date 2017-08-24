@@ -9,7 +9,20 @@ namespace MovieMiner
 
 	public interface IMiner
 	{
+		/// <summary>
+		/// Name of the Miner
+		/// </summary>
+		string Name { get; }
+
+		/// <summary>
+		/// Typically the root Url for the initial page.
+		/// </summary>
 		string Url { get; }
+
+		/// <summary>
+		/// Used for weighted average.
+		/// </summary>
+		int Weight { get; }
 
 		List<IMovie> Mine();
 

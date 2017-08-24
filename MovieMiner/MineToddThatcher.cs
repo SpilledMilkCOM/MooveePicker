@@ -17,7 +17,7 @@ namespace MovieMiner
 		private readonly string _articleTitle;
 
 		public MineToddThatcher(string articleTitle = "Week 13 Estimates")
-			: base(DEFAULT_URL)
+			: base("Todd M. Thatcher", DEFAULT_URL)
 		{
 			_articleTitle = articleTitle;
 		}

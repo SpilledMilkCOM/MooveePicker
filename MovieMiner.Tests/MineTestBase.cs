@@ -90,7 +90,7 @@ namespace MovieMiner.Tests
 
 				if (movie.Cost > 0)
 				{
-					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} {movie.Cost} Bx   ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
+					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} {movie.Cost,3} Bx   ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
 				}
 				else
 				{

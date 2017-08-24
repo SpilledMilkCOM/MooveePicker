@@ -28,6 +28,8 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineBoxOfficePro_Mine()
 		{
+			// 
+
 			var test = new MineBoxOfficePro();
 
 			var actual = test.Mine();

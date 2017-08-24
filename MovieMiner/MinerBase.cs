@@ -8,12 +8,18 @@ namespace MovieMiner
 {
 	public abstract class MinerBase : IMiner
 	{
-		protected MinerBase(string url)
+		protected MinerBase(string name, string url)
 		{
+			Name = name;
 			Url = url;
+			Weight = 1;
 		}
 
+		public string Name { get; private set; }
+
 		public string Url { get; private set; }
+
+		public int Weight { get; private set; }
 
 		public abstract List<IMovie> Mine();
 

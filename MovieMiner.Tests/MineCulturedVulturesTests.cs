@@ -29,6 +29,8 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineCulturedVultures_Mine()
 		{
+			// https://culturedvultures.com/?s=weekend+box+office+predictions
+
 			var test = new MineCulturedVultures();
 
 			var actual = test.Mine();
