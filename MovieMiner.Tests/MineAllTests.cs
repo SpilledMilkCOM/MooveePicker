@@ -66,7 +66,7 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
-		public void MineAll_CompareEffeciencies()
+		public void MineAll_CompareEfficiencies()
 		{
 			var miners = CreateMiners();
 			var minedData = MineMiners(miners);
@@ -78,13 +78,13 @@ namespace MovieMiner.Tests
 			var mostEfficient = myList.OrderByDescending(item => item.Efficiency).First();
 			int index = 1;
 
-			Logger.WriteLine("\nEffeciency Differences\n");
+			Logger.WriteLine("\nEfficiency Differences\n");
 
 			foreach (var movie in myList.OrderBy(item => mostEfficient.Efficiency * item.Cost - item.Earnings))
 			{
-				Logger.WriteLine($"{index}. {movie.Name,-30} -- {movie.Efficiency / 1000:F3} [${movie.Earnings:N2}] "
-								 + $"==> **${mostEfficient.Efficiency * movie.Cost:N2} "
-								 + $"++${mostEfficient.Efficiency * movie.Cost - movie.Earnings:N2}  {(mostEfficient.Efficiency * movie.Cost - movie.Earnings) / movie.Earnings * 100:F2}%");
+				Logger.WriteLine($"{index,2}. {movie.Name,-30} -- ${movie.Efficiency:N2} [${movie.Earnings:N2}] "
+								 + $"==> **${mostEfficient.Efficiency * movie.Cost,14:N2} "
+								 + $"++ ${mostEfficient.Efficiency * movie.Cost - movie.Earnings,12:N2}  {(mostEfficient.Efficiency * movie.Cost - movie.Earnings) / movie.Earnings * 100,6:F2}%");
 				index++;
 			}
 		}
