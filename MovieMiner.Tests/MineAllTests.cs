@@ -150,7 +150,7 @@ namespace MovieMiner.Tests
 
 		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)
 		{
-			var found = movies.FirstOrDefault(item => item.Name.Equals(movie.Name));
+			var found = movies.FirstOrDefault(item => item.Equals(movie));
 
 			if (found != null)
 			{
@@ -216,17 +216,14 @@ namespace MovieMiner.Tests
 		/// <returns></returns>
 		private IMovie CreateMyMovie(IMovie baseMovie, List<List<IMovie>> movieData, List<IMiner> miners)
 		{
-			int nerdWeight = 4;
-			int toddWeight = 6;
-			int boProWeight = 8;
-			int totalWeight = nerdWeight;
+			int totalWeight = miners[NERD_INDEX].Weight;
 
 			var result = new Movie
 			{
 				Id = baseMovie.Id,
 				Name = baseMovie.Name,
 				Cost = baseMovie.Cost,
-				Earnings = baseMovie.Earnings * nerdWeight,
+				Earnings = baseMovie.Earnings * miners[NERD_INDEX].Weight,
 				WeekendEnding = baseMovie.WeekendEnding
 			};
 
@@ -234,7 +231,7 @@ namespace MovieMiner.Tests
 			{
 				if (index != NERD_INDEX)
 				{
-					var foundMovie = movieData[index].FirstOrDefault(item => item.Name.Equals(baseMovie.Name) && item.WeekendEnding == result.WeekendEnding);
+					var foundMovie = movieData[index].FirstOrDefault(item => item.Equals(baseMovie) && item.WeekendEnding == result.WeekendEnding);
 
 					if (foundMovie != null)
 					{

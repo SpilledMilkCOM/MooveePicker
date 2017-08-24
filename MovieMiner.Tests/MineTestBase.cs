@@ -74,12 +74,7 @@ namespace MovieMiner.Tests
 			Logger.WriteLine($"Total Cost (Bux): {movies.TotalCost}");
 			Logger.WriteLine($"Total Earnings  : ${movies.TotalEarnings:N0}");
 
-			foreach (var movie in movies.Movies.OrderByDescending(item => item.Earnings))
-			{
-			    var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
-
-				Logger.WriteLine($"{screen++} - {movie.Name,-30} ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
-			}
+			WriteMovies(movies.Movies);
 		}
 
 		protected void WriteMovies(IEnumerable<IMovie> movies)
@@ -90,7 +85,7 @@ namespace MovieMiner.Tests
 
 				if (movie.Cost > 0)
 				{
-					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} {movie.Cost,3} Bx   ${movie.Earnings:N2} - [${movie.Efficiency:N2}]{isBestBonus}");
+					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} {movie.Cost,3} Bx   ${movie.Earnings,13:N2} - [${movie.Efficiency,10:N2}]{isBestBonus}");
 				}
 				else
 				{
