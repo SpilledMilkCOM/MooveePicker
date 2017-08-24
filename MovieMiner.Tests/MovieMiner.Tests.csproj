@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="DebugLogger.cs" />
     <Compile Include="MineBoxOfficeMojoTests.cs" />
+    <Compile Include="MineBoxOfficeProphetTests.cs" />
     <Compile Include="MineCulturedVulturesTests.cs" />
     <Compile Include="MineBoxOfficeProTests.cs" />
     <Compile Include="MineAllTests.cs" />

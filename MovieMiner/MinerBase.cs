@@ -19,7 +19,7 @@ namespace MovieMiner
 
 		public string Url { get; private set; }
 
-		public int Weight { get; private set; }
+		public int Weight { get; set; }
 
 		public abstract List<IMovie> Mine();
 
@@ -27,7 +27,7 @@ namespace MovieMiner
 
 		protected string RemovePunctuation(string text)
 		{
-			return Regex.Replace(text, "[^\\w\\s]", string.Empty).Replace("-", string.Empty);
+			return Regex.Replace(text, "[^\\w\\s]", string.Empty).Replace("-", string.Empty).Trim();
 		}
 	}
 }

@@ -57,7 +57,7 @@ namespace MovieMiner.Tests
 
 			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
 
-			Logger.WriteLine("Upload for FML Analyzer Site");
+			Logger.WriteLine("\nUpload for FML Analyzer Site");
 
 			foreach (var movie in myList.OrderByDescending(movie => movie.Cost))
 			{
@@ -167,10 +167,10 @@ namespace MovieMiner.Tests
 		private List<IMiner> CreateMiners()
 		{
 			return new List<IMiner> {
-				new MineNerd(),
-				new MineToddThatcher(),
-				new MineBoxOfficePro(),
-				new MineCulturedVultures()
+				new MineNerd { Weight = 2 },
+				new MineToddThatcher { Weight = 3 },
+				new MineBoxOfficePro { Weight = 4 },
+				new MineCulturedVultures { Weight = 3 }
 			};
 		}
 
