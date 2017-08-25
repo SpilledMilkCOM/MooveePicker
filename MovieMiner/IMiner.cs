@@ -22,7 +22,7 @@ namespace MovieMiner
 		/// <summary>
 		/// Used for weighted average.
 		/// </summary>
-		int Weight { get; }
+		int Weight { get; set; }
 
 		List<IMovie> Mine();
 

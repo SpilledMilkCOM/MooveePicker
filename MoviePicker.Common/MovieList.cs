@@ -172,11 +172,6 @@ namespace MoviePicker.Common
                 _totalCount++;
                 _totalCost += item.Cost;
                 _totalEarnings += item.Earnings;
-
-                if (item.IsBestPerformer)
-                {
-                    _totalEarnings += TOP_PERFORMER_BONUS;
-                }
             }
 
             _totalEarnings -= (MOVIE_MAX - _totalCount) * MISSING_THEATER_EARNINGS;
