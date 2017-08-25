@@ -15,7 +15,7 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "https://culturedvultures.com";
 
 		public MineCulturedVultures()
-			: base("Cultured Vultures", DEFAULT_URL)
+			: base("Cultured Vultures", "CultVult", DEFAULT_URL)
 		{
 		}
 

@@ -15,7 +15,7 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "http://www.boxofficeprophets.com/";
 
 		public MineBoxOfficeProphet()
-			: base("Box Office Prophet", DEFAULT_URL)
+			: base("Box Office Prophet", "Prophet", DEFAULT_URL)
 		{
 		}
 

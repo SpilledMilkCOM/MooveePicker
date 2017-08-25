@@ -19,7 +19,7 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups";
 
 		public MineNerd()
-			: base("FML Nerd (Pete Johnson)", DEFAULT_URL)
+			: base("FML Nerd (Pete Johnson)", "FML Nerd", DEFAULT_URL)
 		{
 		}
 
@@ -70,7 +70,7 @@ namespace MovieMiner
 							Name = RemovePunctuation(HttpUtility.HtmlDecode(movie.Title)),
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
 							Cost = movie.Bux,
-							WeekendEnding = MovieDateUtil.NextSunday()
+							WeekendEnding = MovieDateUtil.NextSunday().Date
 						});
 					}
 				}

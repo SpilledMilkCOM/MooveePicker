@@ -10,6 +10,11 @@ namespace MovieMiner
 	public interface IMiner
 	{
 		/// <summary>
+		/// Abbreviation of the Miner name
+		/// </summary>
+		string Abbreviation { get; }
+
+		/// <summary>
 		/// Name of the Miner
 		/// </summary>
 		string Name { get; }
@@ -26,6 +31,6 @@ namespace MovieMiner
 
 		List<IMovie> Mine();
 
-		Task<List<IMovie>> MineAsync();
+		//Task<List<IMovie>> MineAsync();			// Not just yet.
 	}
 }
