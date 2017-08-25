@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -62,6 +63,76 @@ namespace MovieMiner.Tests
 			foreach (var movie in myList.OrderByDescending(movie => movie.Cost))
 			{
 				Logger.WriteLine(movie.Earnings.ToString());
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_BuildMyList_NumbersOnly()
+		{
+			var nextSunday = MovieDateUtil.NextSunday();
+
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			// TODO: Should probably connect the mined data to the miner.
+
+			var myList = CreateMyList(minedData, miners);
+
+			Logger.WriteLine($"================== All Estimates for {nextSunday} ==================\n");
+
+			// Build rows of movies, each column is a miner's mined value.
+
+			var nerdsMovies = minedData[NERD_INDEX];
+			var rowData = new StringBuilder();
+
+			rowData.Append("Title                          |  Actuals");
+
+			foreach (var miner in miners)
+			{
+				rowData.Append($" | {miner.Name}");
+			}
+
+			rowData.Append($" | SM Cinema");
+
+			Logger.WriteLine(rowData.ToString());
+
+			foreach (var movie in nerdsMovies)
+			{
+				rowData.Clear();
+
+				foreach (var movieList in minedData)
+				{
+					if (movieList == nerdsMovies)
+					{
+						rowData.Append($"{movie.Name,-30} | {0m,5} | {movie.Earnings,12:N0}");
+					}
+					else
+					{
+						var foundMovie = movieList.FirstOrDefault(item => item.Equals(movie));
+
+						if (foundMovie != null)
+						{
+							rowData.Append($" | {foundMovie.Earnings,12:N0}");
+						}
+						else
+						{
+							rowData.Append($" | {0m,12:N0}");
+						}
+					}
+				}
+
+				var myMovie = myList.FirstOrDefault(item => item.Equals(movie));
+
+				if (myMovie != null)
+				{
+					rowData.Append($" | {myMovie.Earnings,12:N0}");
+				}
+				else
+				{
+					rowData.Append($" | {0m,12:N0}");
+				}
+
+				Logger.WriteLine(rowData.ToString());
 			}
 		}
 
