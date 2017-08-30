@@ -127,6 +127,52 @@ namespace MovieMiner.Tests
 			}
 		}
 
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_CompareMovieNames_SameDate()
+		{
+			// This test is to verify that the data is synchronized with the analyzer.
+
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			var nerds = minedData[NERD_INDEX];
+			var restrictDate = nerds[0].WeekendEnding;
+
+			// TODO: Could try to use Linq to JOIN these lists to find common movie names.
+
+			// Verify movie counts.
+
+			var counts = new Dictionary<string, int>();
+
+			// Add nerds movies.
+
+			nerds.ForEach(movie => counts.Add(movie.Name, 1));
+
+			for (int index = 0; index < miners.Count; index++)
+			{
+				if (index != NERD_INDEX)
+				{
+					if (minedData[index][0].WeekendEnding.Date == restrictDate.Date)
+					{
+						AggregateNames(counts, minedData[index], miners[index].Name);
+					}
+					else
+					{
+						Logger.WriteLine($"\nOmitted \"{miners[index].Name}\" due to mismatched date. [{minedData[index][0].WeekendEnding.Date.ToString("d")}]");
+					}
+				}
+			}
+
+			Logger.WriteLine(string.Empty);
+
+			var orderedCounts = counts.OrderByDescending(movie => movie.Value).ThenBy(movie => movie.Key);
+
+			foreach (var pair in orderedCounts)
+			{
+				Logger.WriteLine($"{pair.Key} -- {pair.Value}");
+			}
+		}
+
 		//----==== PRIVATE ====--------------------------------------------------------------------
 
 		private void AggregateNames(Dictionary<string, int> counts, List<IMovie> movies, string name)
@@ -170,7 +216,8 @@ namespace MovieMiner.Tests
 				new MineNerd { Weight = 2 },
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
-				new MineCulturedVultures { Weight = 3 }
+				new MineCulturedVultures { Weight = 2 },
+				new MineBoxOfficeProphet { Weight = 2 }
 			};
 		}
 
