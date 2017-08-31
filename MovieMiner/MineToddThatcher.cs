@@ -108,10 +108,5 @@ namespace MovieMiner
 
 			return result;
 		}
-
-		public async override Task<List<IMovie>> MineAsync()
-		{
-			throw new NotImplementedException();
-		}
 	}
 }

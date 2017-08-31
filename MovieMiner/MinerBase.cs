@@ -27,8 +27,6 @@ namespace MovieMiner
 
 		public abstract List<IMovie> Mine();
 
-		public abstract Task<List<IMovie>> MineAsync();
-
 		protected string RemovePunctuation(string text)
 		{
 			return Regex.Replace(text, "[^\\w\\s]", string.Empty).Replace("-", string.Empty).Trim();
