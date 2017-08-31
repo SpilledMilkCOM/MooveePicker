@@ -16,7 +16,7 @@ namespace MovieMiner
 
 		private readonly string _articleTitle;
 
-		public MineToddThatcher(string articleTitle = "Week 13 Estimates")
+		public MineToddThatcher(string articleTitle = "Week 1 Estimates")
 			: base("Todd M. Thatcher", "Todd", DEFAULT_URL)
 		{
 			_articleTitle = articleTitle;
@@ -83,7 +83,18 @@ namespace MovieMiner
 							{
 								var nodeText = movieNode.InnerText;
 								var movieName = nodeText.Substring(0, index);
+
+								// Might switch this to RegEx...
+
 								var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace("million", string.Empty);
+
+								var parenIndex = estimatedBoxOffice.IndexOf("(");
+
+								if (parenIndex > 0)
+								{
+									// Trim out the FML bux.
+									estimatedBoxOffice = estimatedBoxOffice.Substring(0, parenIndex - 1);
+								}
 
 								if (!string.IsNullOrEmpty(movieName))
 								{
