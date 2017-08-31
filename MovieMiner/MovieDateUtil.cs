@@ -32,6 +32,22 @@ namespace MovieMiner
 			return result;
 		}
 
+
+		public static string DateToWeek(DateTime? dateTime = null)
+		{
+			DateTime reference = dateTime ?? DateTime.Now;
+			var diff = reference.Subtract(StartOfSeason);
+			var index = diff.Days / (DAYS_IN_WEEK * WEEKS_IN_SEASON);
+			string result = null;
+
+			if (index < _seasons.Count)
+			{
+				result = _seasons[index];
+			}
+
+			return result;
+		}
+
 		public static DateTime LastSunday(DateTime? dateTime = null)
 		{
 			DateTime reference = dateTime ?? DateTime.Now;

@@ -28,7 +28,7 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineBoxOfficePro_Mine()
 		{
-			// 
+			// http://pro.boxoffice.com/
 
 			var test = new MineBoxOfficePro();
 
