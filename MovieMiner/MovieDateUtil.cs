@@ -19,7 +19,7 @@ namespace MovieMiner
 
 		public static string DateToSeason(DateTime? dateTime = null)
 		{
-			DateTime reference = dateTime ?? DateTime.Now;
+			DateTime reference = dateTime ?? DateTime.Now.Date;
 			var diff = reference.Subtract(StartOfSeason);
 			var index = diff.Days / (DAYS_IN_WEEK * WEEKS_IN_SEASON);
 			string result = null;
@@ -34,14 +34,14 @@ namespace MovieMiner
 
 		public static DateTime LastSunday(DateTime? dateTime = null)
 		{
-			DateTime reference = dateTime ?? DateTime.Now;
+			DateTime reference = dateTime ?? DateTime.Now.Date;
 
 			return reference.AddDays(DayOfWeek.Sunday - reference.DayOfWeek);
 		}
 
 		public static DateTime NextSunday(DateTime? dateTime = null)
 		{
-			DateTime reference = dateTime ?? DateTime.Now;
+			DateTime reference = dateTime ?? DateTime.Now.Date;
 
 			return reference.AddDays(7 - (int)reference.DayOfWeek);
 		}

@@ -121,7 +121,12 @@ namespace MovieMiner.Tests
 
 			for (int index = 0; index < miners.Count; index++)
 			{
-				WriteMoviesAndPicks($"==== {miners[index].Name} ====", minedData[index]);
+				if (minedData[index][0].WeekendEnding == nextSunday)
+				{
+					// Only show data that will be used.
+
+					WriteMoviesAndPicks($"==== {miners[index].Name} ====", minedData[index]);
+				}
 			}
 
 			Logger.WriteLine(string.Empty);
