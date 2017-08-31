@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -35,7 +36,77 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
-		public void MineAll_BuildMyList()
+		public void MineAll_BuildAllLists_EstimatesOnly_ForHistory()
+		{
+			var nextSunday = MovieDateUtil.NextSunday();
+
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			// TODO: Should probably connect the mined data to the miner.
+
+			var myList = CreateMyList(minedData, miners);
+
+			Logger.WriteLine($"================== All Estimates for {nextSunday} ==================\n");
+
+			// Build rows of movies, each column is a miner's mined value.
+
+			var nerdsMovies = minedData[NERD_INDEX];
+			var rowData = new StringBuilder();
+
+			rowData.Append("Title                          |  Actuals");
+
+			foreach (var miner in miners)
+			{
+				rowData.Append($" | {miner.Name}");
+			}
+
+			rowData.Append($" | SM Cinema");
+
+			Logger.WriteLine(rowData.ToString());
+
+			foreach (var movie in nerdsMovies)
+			{
+				rowData.Clear();
+
+				foreach (var movieList in minedData)
+				{
+					if (movieList == nerdsMovies)
+					{
+						rowData.Append($"{movie.Name,-30} | {0m,5} | {movie.Earnings / 1000000,5:F3}");
+					}
+					else
+					{
+						var foundMovie = movieList.FirstOrDefault(item => item.Equals(movie));
+
+						if (foundMovie != null)
+						{
+							rowData.Append($" | {foundMovie.Earnings / 1000000,5:F3}");
+						}
+						else
+						{
+							rowData.Append(" | ");
+						}
+					}
+				}
+
+				var myMovie = myList.FirstOrDefault(item => item.Equals(movie));
+
+				if (myMovie != null)
+				{
+					rowData.Append($" | {myMovie.Earnings / 1000000,5:F5}");
+				}
+				else
+				{
+					rowData.Append(" | ");
+				}
+
+				Logger.WriteLine(rowData.ToString());
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_BuildAllLists_WithPicks()
 		{
 			var nextSunday = MovieDateUtil.NextSunday();
 
@@ -50,7 +121,12 @@ namespace MovieMiner.Tests
 
 			for (int index = 0; index < miners.Count; index++)
 			{
-				WriteMoviesAndPicks($"==== {miners[index].Name} ====", minedData[index]);
+				if (minedData[index][0].WeekendEnding == nextSunday)
+				{
+					// Only show data that will be used.
+
+					WriteMoviesAndPicks($"==== {miners[index].Name} ====", minedData[index]);
+				}
 			}
 
 			Logger.WriteLine(string.Empty);

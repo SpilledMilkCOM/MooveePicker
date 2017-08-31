@@ -19,7 +19,7 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups";
 
 		public MineNerd()
-			: base("FML Nerd (Pete Johnson)", DEFAULT_URL)
+			: base("FML Nerd (Pete Johnson)", "FML Nerd", DEFAULT_URL)
 		{
 		}
 
@@ -70,48 +70,10 @@ namespace MovieMiner
 							Name = RemovePunctuation(HttpUtility.HtmlDecode(movie.Title)),
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
 							Cost = movie.Bux,
-							WeekendEnding = MovieDateUtil.NextSunday()
+							WeekendEnding = MovieDateUtil.NextSunday().Date
 						});
 					}
 				}
-			}
-
-			return result;
-		}
-
-		public async override Task<List<IMovie>> MineAsync()
-		{
-			var result = new List<IMovie>();
-			var xml = await HttpRequestUtil.DownloadStringAsync(Url);
-			string dataUrl = null;
-
-			// Only match the "well formed" body.
-			//var regEx = new Regex(@"((?:.(?!<\s*body[^>]*>))+.<\s*body[^>]*>)|(<\s*/\s*body\s*\>.+)");
-			var regEx = new Regex(@"<body>*.</body>");
-
-			var match = regEx.Match(xml);
-
-			Debug.WriteLine(match.Value);
-
-			var doc = new XmlDocument();
-
-			doc.LoadXml(xml);
-
-			var scriptElements = doc.GetElementsByTagName("script");
-
-			foreach (XmlNode scriptNode in scriptElements)
-			{
-				var src = scriptNode.Attributes["src"].Value;
-
-				if (src != null && src.StartsWith("./MonCompare/"))
-				{
-					dataUrl = $"{DEFAULT_URL}/{scriptNode.Attributes["src"].Value}";
-				}
-			}
-
-			if (dataUrl != null)
-			{
-				var json = await HttpRequestUtil.DownloadStringAsync(dataUrl);
 			}
 
 			return result;

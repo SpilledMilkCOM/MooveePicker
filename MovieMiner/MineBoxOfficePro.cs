@@ -15,7 +15,7 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "http://pro.boxoffice.com/";
 
 		public MineBoxOfficePro()
-			: base("Box Office Pro", DEFAULT_URL)
+			: base("Box Office Pro", "BO Pro", DEFAULT_URL)
 		{
 		}
 
@@ -109,11 +109,6 @@ namespace MovieMiner
 			}
 
 			return result;
-		}
-
-		public async override Task<List<IMovie>> MineAsync()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

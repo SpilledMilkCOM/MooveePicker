@@ -69,8 +69,6 @@ namespace MovieMiner.Tests
 
 		protected void WriteMovies(IMovieList movies)
 		{
-			int screen = 1;
-
 			Logger.WriteLine($"Total Cost (Bux): {movies.TotalCost}");
 			Logger.WriteLine($"Total Earnings  : ${movies.TotalEarnings:N0}");
 

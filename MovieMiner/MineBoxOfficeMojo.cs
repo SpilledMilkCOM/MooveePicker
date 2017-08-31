@@ -16,7 +16,7 @@ namespace MovieMiner
 		private readonly DateTime? _weekendEnding;
 
 		public MineBoxOfficeMojo(DateTime? weekendEnding = null)
-			: base("Box Office Mojo", DEFAULT_URL)
+			: base("Box Office Mojo", "BO Mojo", DEFAULT_URL)
 		{
 			_weekendEnding = weekendEnding?.Date;
 		}
@@ -81,11 +81,6 @@ namespace MovieMiner
 			}
 
 			return result;
-		}
-
-		public async override Task<List<IMovie>> MineAsync()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }
