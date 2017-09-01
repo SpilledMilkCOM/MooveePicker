@@ -58,7 +58,7 @@ namespace MovieMiner.Tests
 
 			foreach (var miner in miners)
 			{
-				rowData.Append($" | {miner.Name}");
+				rowData.Append($" | {miner.Abbreviation}");
 			}
 
 			rowData.Append($" | SM Cinema");
@@ -239,6 +239,35 @@ namespace MovieMiner.Tests
 		{
 			var miners = CreateMiners();
 			var minedData = MineMiners(miners);
+
+			// TODO: Should probably connect the mined data to the miner.
+
+			var myList = CreateMyList(minedData, miners);
+
+			var mostEfficient = myList.OrderByDescending(item => item.Efficiency).First();
+			int index = 1;
+
+			Logger.WriteLine("\nEfficiency Differences\n");
+
+			Logger.WriteLine($"____Title______________________________Box_Office_____Efficiency___________New_Box_Office____Difference_____Pct__");
+
+			foreach (var movie in myList.OrderBy(item => mostEfficient.Efficiency * item.Cost - item.Earnings))
+			{
+				Logger.WriteLine($"{index,2}. {movie.Name,-30} --  ${movie.Earnings:N2}  [${movie.Efficiency:N2}]"
+								 + $"==> **${mostEfficient.Efficiency * movie.Cost,14:N2} "
+								 + $"++ ${mostEfficient.Efficiency * movie.Cost - movie.Earnings,12:N2}  {(mostEfficient.Efficiency * movie.Cost - movie.Earnings) / movie.Earnings * 100,6:F2}%");
+				index++;
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_CompareEfficiencies_NoCultVult_NoBOProphet()
+		{
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			FindMiner<MineBoxOfficeProphet>(miners).Weight = 0;
+			FindMiner<MineCulturedVultures>(miners).Weight = 0;
 
 			// TODO: Should probably connect the mined data to the miner.
 
@@ -504,16 +533,6 @@ namespace MovieMiner.Tests
 
 			foreach (var movie in nerds.OrderByDescending(item => item.Cost))
 			{
-				movie.Id = id;
-
-				for (int index = 0; index < movieData.Count; index++)
-				{
-					if (index != NERD_INDEX)
-					{
-						AssignCost(movie, movieData[index]);
-					}
-				}
-
 				// My list is based on how well I trust these sources.
 
 				myList.Add(CreateMyMovie(movie, movieData, miners));
