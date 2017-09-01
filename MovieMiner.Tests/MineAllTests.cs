@@ -249,6 +249,99 @@ namespace MovieMiner.Tests
 			}
 		}
 
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_MojoHistory()
+		{
+			var nerdMiner = new MineNerd();
+			var nerdMovies = nerdMiner.Mine();
+			var referenceDate = nerdMovies[0].WeekendEnding.AddDays(-7);
+			var movieHistory = new Dictionary<int, List<IMovie>>();
+			bool foundHistory = false;
+			bool firstPass = true;
+
+			do
+			{
+				var mojoMiner = new MineBoxOfficeMojo(referenceDate);
+				var mojoMovies = mojoMiner.Mine();
+
+				foundHistory = false;
+
+				foreach (var movie in nerdMovies)
+				{
+					IMovie foundMovie = (firstPass) ? mojoMovies.FirstOrDefault(item => item.Equals(movie))     // Use fuzzy search on first pass.
+													: mojoMovies.FirstOrDefault(item => item.Name == movie.Name);
+
+					if (foundMovie != null)
+					{
+						if (movieHistory.ContainsKey(movie.Id))
+						{
+							movieHistory[movie.Id].Add(foundMovie);
+						}
+						else
+						{
+							movieHistory.Add(movie.Id, new List<IMovie> { foundMovie });
+						}
+
+						foundHistory = true;
+
+						if (firstPass)
+						{
+							// Use Mojo's name (hopefully) they don't change mid-stream.
+							movie.Name = foundMovie.Name;
+						}
+					}
+				}
+
+				firstPass = false;
+
+				referenceDate = referenceDate.AddDays(-7);
+
+			} while (foundHistory);
+
+			foreach (var movie in nerdMovies)
+			{
+				List<IMovie> movies = movieHistory.ContainsKey(movie.Id) ? movieHistory[movie.Id] : null;
+				string history = null;
+
+				if (movies != null)
+				{
+					foreach (var hist in movies)
+					{
+						if (history != null)
+						{
+							history += ", ";
+						}
+
+						history += hist.Earnings.ToString("N0");
+					}
+				}
+
+				Logger.WriteLine($"{movie.Name,-30} {history}");
+			}
+
+			foreach (var movie in nerdMovies)
+			{
+				List<IMovie> movies = movieHistory.ContainsKey(movie.Id) ? movieHistory[movie.Id] : null;
+				string history = null;
+
+				if (movies != null)
+				{
+					foreach (var hist in movies)
+					{
+						if (history != null)
+						{
+							history += ", ";
+						}
+
+						history += hist.Earnings.ToString("N0");
+					}
+				}
+
+				Logger.WriteLine($"{movie.Name,-30} {history}");
+			}
+		}
+
 		//----==== PRIVATE ====--------------------------------------------------------------------
 
 		private void AggregateNames(Dictionary<string, int> counts, List<IMovie> movies, string name)

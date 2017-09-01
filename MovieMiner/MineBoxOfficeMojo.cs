@@ -65,7 +65,7 @@ namespace MovieMiner
 							}
 							else if (columnCount == 4)
 							{
-								movie.Earnings = decimal.Parse(column.InnerText?.Replace("$", string.Empty));
+								movie.Earnings = decimal.Parse(column.InnerText?.Replace("$", string.Empty).Replace("-", "0"));
 								break;
 							}
 

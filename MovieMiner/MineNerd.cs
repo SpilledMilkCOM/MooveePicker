@@ -62,11 +62,13 @@ namespace MovieMiner
 					jsonData = jsonData.Replace("'+", string.Empty).Replace("'{", "{");
 
 					var movieData = JsonConvert.DeserializeObject<MineNerdData>($"{{{jsonData}}}");
+					int id = 1;
 
 					foreach (var movie in movieData.Movies)
 					{
 						result.Add(new Movie
 						{
+							Id = id++,
 							Name = RemovePunctuation(HttpUtility.HtmlDecode(movie.Title)),
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
 							Cost = movie.Bux,
