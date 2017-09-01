@@ -121,7 +121,10 @@ namespace MovieMiner.Tests
 
 			for (int index = 0; index < miners.Count; index++)
 			{
-				if (minedData[index][0].WeekendEnding == nextSunday)
+				if (minedData[index] != null
+				&& minedData[index].Any()
+				&& minedData[index][0].WeekendEnding == nextSunday
+				&& miners[index].Weight > 0)
 				{
 					// Only show data that will be used.
 
@@ -142,6 +145,96 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_BuildAllLists_WithPicks_NoCultVult_NoBOProphet()
+		{
+			var nextSunday = MovieDateUtil.NextSunday();
+
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			FindMiner<MineBoxOfficeProphet>(miners).Weight = 0;
+			FindMiner<MineCulturedVultures>(miners).Weight = 0;
+
+			// TODO: Should probably connect the mined data to the miner.
+
+			var myList = CreateMyList(minedData, miners);
+
+			Logger.WriteLine($"================== Picking Movies for {nextSunday} ==================\n");
+
+			for (int index = 0; index < miners.Count; index++)
+			{
+				if (minedData[index] != null
+				&& minedData[index].Any()
+				&& minedData[index][0].WeekendEnding == nextSunday
+				&& miners[index].Weight > 0)
+				{
+					// Only show data that will be used.
+
+					WriteMoviesAndPicks($"==== {miners[index].Name} ====", minedData[index]);
+				}
+			}
+
+			Logger.WriteLine(string.Empty);
+
+			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
+
+			Logger.WriteLine("\nUpload for FML Analyzer Site");
+
+			foreach (var movie in myList.OrderByDescending(movie => movie.Cost))
+			{
+				Logger.WriteLine(movie.Earnings.ToString());
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_BuildAllLists_ComparePickNumbers()
+		{
+			var nextSunday = MovieDateUtil.NextSunday();
+
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			// TODO: Should probably connect the mined data to the miner.
+
+			var myList = CreateMyList(minedData, miners);
+			var picker = ConstructTestObject();
+
+			picker.AddMovies(myList);
+
+			var best = picker.ChooseBest();
+
+			var header = "\n__Name____________________________SM Cine";
+
+			for (int index = 0; index < miners.Count; index++)
+			{
+				header += $"    {miners[index].Abbreviation}*{miners[index].Weight}";
+			}
+
+			Logger.WriteLine(header);
+
+			foreach (var movie in best.Movies)
+			{
+				string row = $"{movie.Name,-30}  {movie.Earnings:N0}";
+
+				for (int index = 0; index < miners.Count; index++)
+				{
+					var foundMovie = minedData[index].FirstOrDefault(item => item.Equals(movie));
+
+					if (foundMovie != null)
+					{
+						row += $" | {foundMovie.Earnings:N0}";
+					}
+					else
+					{
+						row += " | -----";
+					}
+				}
+
+				Logger.WriteLine(row);
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_CompareEfficiencies()
 		{
 			var miners = CreateMiners();
@@ -156,9 +249,11 @@ namespace MovieMiner.Tests
 
 			Logger.WriteLine("\nEfficiency Differences\n");
 
+			Logger.WriteLine($"____Title______________________________Box_Office_____Efficiency___________New_Box_Office____Difference_____Pct__");
+
 			foreach (var movie in myList.OrderBy(item => mostEfficient.Efficiency * item.Cost - item.Earnings))
 			{
-				Logger.WriteLine($"{index,2}. {movie.Name,-30} -- ${movie.Efficiency:N2} [${movie.Earnings:N2}] "
+				Logger.WriteLine($"{index,2}. {movie.Name,-30} --  ${movie.Earnings:N2}  [${movie.Efficiency:N2}]"
 								 + $"==> **${mostEfficient.Efficiency * movie.Cost,14:N2} "
 								 + $"++ ${mostEfficient.Efficiency * movie.Cost - movie.Earnings,12:N2}  {(mostEfficient.Efficiency * movie.Cost - movie.Earnings) / movie.Earnings * 100,6:F2}%");
 				index++;
@@ -371,7 +466,7 @@ namespace MovieMiner.Tests
 
 		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)
 		{
-			var found = movies.FirstOrDefault(item => item.Equals(movie));
+			var found = movies?.FirstOrDefault(item => item.Equals(movie));
 
 			if (found != null)
 			{
@@ -388,7 +483,7 @@ namespace MovieMiner.Tests
 		private List<IMiner> CreateMiners()
 		{
 			return new List<IMiner> {
-				new MineNerd { Weight = 2 },
+				new MineNerd { Weight = 1 },
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
 				new MineCulturedVultures { Weight = 2 },
@@ -453,7 +548,7 @@ namespace MovieMiner.Tests
 			{
 				if (index != NERD_INDEX)
 				{
-					var foundMovie = movieData[index].FirstOrDefault(item => item.Equals(baseMovie) && item.WeekendEnding == result.WeekendEnding);
+					var foundMovie = movieData[index]?.FirstOrDefault(item => item.Equals(baseMovie) && item.WeekendEnding == result.WeekendEnding);
 
 					if (foundMovie != null)
 					{
@@ -468,6 +563,11 @@ namespace MovieMiner.Tests
 			return result;
 		}
 
+		private IMiner FindMiner<TMiner>(List<IMiner> miners)
+		{
+			return miners.FirstOrDefault(miner => miner.GetType() == typeof(TMiner));
+		}
+
 		/// <summary>
 		/// Mine all of the miner movie data.
 		/// </summary>
@@ -476,10 +576,34 @@ namespace MovieMiner.Tests
 		private List<List<IMovie>> MineMiners(IEnumerable<IMiner> miners)
 		{
 			var result = new List<List<IMovie>>();
+			List<IMovie> nerdList = null;
 
 			foreach (var miner in miners)
 			{
-				result.Add(miner.Mine());
+				if (nerdList == null)
+				{
+					// Nerd list is first.
+
+					nerdList = miner.Mine();
+					result.Add(nerdList);
+				}
+				else
+				{
+					// Still need a placeholder for the list.
+					var movieList =  (miner.Weight > 0) ? miner.Mine() : null;
+
+					result.Add(movieList);
+
+					if (movieList != null)
+					{
+						// Assign the id, name, and cost to each movie.
+
+						foreach (var movie in nerdList)
+						{
+							AssignCost(movie, movieList);
+						}
+					}
+				}
 			}
 
 			return result;
