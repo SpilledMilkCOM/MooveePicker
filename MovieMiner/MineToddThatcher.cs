@@ -16,10 +16,10 @@ namespace MovieMiner
 
 		private readonly string _articleTitle;
 
-		public MineToddThatcher(string articleTitle = "Week 1 Estimates")
+		public MineToddThatcher(string articleTitle = null)
 			: base("Todd M. Thatcher", "Todd", DEFAULT_URL)
 		{
-			_articleTitle = articleTitle;
+			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()} Estimates";
 		}
 
 		public override List<IMovie> Mine()

@@ -41,11 +41,29 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MovieDateUtil_DateToWeek_StartOfSummer()
+		{
+			Assert.AreEqual(1, MovieDateUtil.DateToWeek(new DateTime(2017, 6, 4)));
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MovieDateUtil_DateToWeek_StartOfSummerPlusTwoWeeks()
+		{
+			Assert.AreEqual(3, MovieDateUtil.DateToWeek(new DateTime(2017, 6, 4).AddDays(14)));
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MovieDateUtil_DateToWeek_StartOfFall()
+		{
+			Assert.AreEqual(1, MovieDateUtil.DateToWeek(new DateTime(2017, 9, 3)));
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MovieDateUtil_DisplayCurrentSeason()
 		{
 			var nextSunday = MovieDateUtil.NextSunday();
 
-			Logger.WriteLine($"Year: {nextSunday.Year}");
+			Logger.WriteLine($"Year: {nextSunday.Year}  Season:  {MovieDateUtil.DateToSeason(nextSunday)}  Week:  {MovieDateUtil.DateToWeek(nextSunday)}");
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
