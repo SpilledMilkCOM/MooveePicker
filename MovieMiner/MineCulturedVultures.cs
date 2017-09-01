@@ -30,7 +30,7 @@ namespace MovieMiner
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
-			var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'weekend-box-office-predictions')]");
+			var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'weekend-box-office-predictions-')]");
 
 			if (node != null)
 			{

@@ -228,13 +228,20 @@ namespace MovieMiner.Tests
 			{
 				if (index != NERD_INDEX)
 				{
-					if (minedData[index][0].WeekendEnding.Date == restrictDate.Date)
+					if (minedData[index] != null && minedData[index].Any())
 					{
-						AggregateNames(counts, minedData[index], miners[index].Name);
+						if (minedData[index][0].WeekendEnding.Date == restrictDate.Date)
+						{
+							AggregateNames(counts, minedData[index], miners[index].Name);
+						}
+						else
+						{
+							Logger.WriteLine($"\nOmitted \"{miners[index].Name}\" due to mismatched date. [{minedData[index][0].WeekendEnding.Date.ToString("d")}]");
+						}
 					}
 					else
 					{
-						Logger.WriteLine($"\nOmitted \"{miners[index].Name}\" due to mismatched date. [{minedData[index][0].WeekendEnding.Date.ToString("d")}]");
+						Logger.WriteLine($"\nOmitted \"{miners[index].Name}\" due to empty list.");
 					}
 				}
 			}
@@ -248,7 +255,6 @@ namespace MovieMiner.Tests
 				Logger.WriteLine($"{pair.Key} -- {pair.Value}");
 			}
 		}
-
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_MojoHistory()
