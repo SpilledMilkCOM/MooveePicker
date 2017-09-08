@@ -502,7 +502,7 @@ namespace MovieMiner.Tests
 			if (found != null)
 			{
 				found.Id = movie.Id;
-				found.Name = movie.Name;        // So the names aren't fuzzy anymore.
+				found.MovieName = movie.MovieName;        // So the names aren't fuzzy anymore.
 				found.Cost = movie.Cost;
 			}
 		}
@@ -598,6 +598,7 @@ namespace MovieMiner.Tests
 		{
 			var result = new List<List<IMovie>>();
 			List<IMovie> nerdList = null;
+			List<IMovie> compoundMovies = null;
 
 			foreach (var miner in miners)
 			{
@@ -608,57 +609,48 @@ namespace MovieMiner.Tests
 					nerdList = miner.Mine();
 					result.Add(nerdList);
 
-					//ChangeMovieName(nerdList, "FRI It", "It Friday");
-					//ChangeMovieName(nerdList, "SAT It", "It Saturday");
-					//ChangeMovieName(nerdList, "SUN It", "It Sunday");
+					compoundMovies = nerdList.Where(movie => movie.Day.HasValue).ToList();
 				}
 				else
 				{
 					// Still need a placeholder for the list.
-					var movieList =  (miner.Weight > 0) ? miner.Mine() : null;
+					var movieList = (miner.Weight > 0) ? miner.Mine() : null;
 
 					result.Add(movieList);
 
 					if (movieList != null)
 					{
-						if (miner.Name == "Box Office Pro")
+						if (compoundMovies.Any())
 						{
-							// Adjust Box Office Pro's IT
-
-							var toddList = result[1];
-
-							var itMovie = movieList.FirstOrDefault(movie => movie.Name == "IT");
-
-							if (itMovie != null)
+							if (miner.Abbreviation == "Todd")
 							{
-								movieList.Remove(itMovie);
+								// Prefer Todd's breakdown if it's available.
 
-								var toddItFriday = toddList.First(movie => movie.Equals(itMovie) && movie.Day == DayOfWeek.Friday);
-								var toddItSaturday = toddList.First(movie => movie.Equals(itMovie) && movie.Day == DayOfWeek.Saturday);
-								var toddItSunday = toddList.First(movie => movie.Equals(itMovie) && movie.Day == DayOfWeek.Sunday);
-								var toddTotal = toddItFriday.Earnings + toddItSaturday.Earnings + toddItSunday.Earnings;
+								compoundMovies = movieList.Where(movie => movie.Day.HasValue).ToList();
+							}
 
-								movieList.Add(new Movie
+							if (!movieList.Any(movie => movie.Day.HasValue))
+							{
+								// The list has no compound movies so they need to be built
+
+								var rootMovie = movieList.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
+								var compoundTotal = compoundMovies.Sum(movie => movie.Earnings);
+
+								if (rootMovie != null)
 								{
-									Name = toddItFriday.MovieName,
-									Day = toddItFriday.Day,
-									WeekendEnding = toddItFriday.WeekendEnding,
-									Earnings = itMovie.Earnings * toddItFriday.Earnings / toddTotal
-								});
-								movieList.Add(new Movie
-								{
-									Name = toddItSaturday.MovieName,
-									Day = toddItSaturday.Day,
-									WeekendEnding = toddItSaturday.WeekendEnding,
-									Earnings = itMovie.Earnings * toddItSaturday.Earnings / toddTotal
-								});
-								movieList.Add(new Movie
-								{
-									Name = toddItSunday.MovieName,
-									Day = toddItSunday.Day,
-									WeekendEnding = toddItSunday.WeekendEnding,
-									Earnings = itMovie.Earnings * toddItSunday.Earnings / toddTotal
-								});
+									movieList.Remove(rootMovie);
+
+									foreach (var movieDay in compoundMovies)
+									{
+										movieList.Add(new Movie
+													{
+														Name = movieDay.MovieName,
+														Day = movieDay.Day,
+														Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
+														WeekendEnding = movieDay.WeekendEnding
+													});
+									}
+								}
 							}
 						}
 

@@ -111,7 +111,7 @@ namespace MovieMiner
 									var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
 									var movie = new Movie
 									{
-										Name = ParseName(name),
+										MovieName = ParseName(name),
 										Day = ParseDayOfWeek(name),
 										Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
 									};
