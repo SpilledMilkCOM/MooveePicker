@@ -15,11 +15,19 @@ namespace MovieMiner
 		private const string DELIMITER = " - $";
 
 		private readonly string _articleTitle;
+		private readonly Dictionary<string, DayOfWeek> _daysOfWeek;
 
 		public MineToddThatcher(string articleTitle = null)
 			: base("Todd M. Thatcher", "Todd", DEFAULT_URL)
 		{
 			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()} Estimates";
+
+			_daysOfWeek = new Dictionary<string, DayOfWeek>
+			{
+				{" Friday", DayOfWeek.Friday},
+				{" Saturday", DayOfWeek.Saturday},
+				{" Sunday", DayOfWeek.Sunday}
+			};
 		}
 
 		public override List<IMovie> Mine()
@@ -100,26 +108,72 @@ namespace MovieMiner
 
 								if (!string.IsNullOrEmpty(movieName))
 								{
+									var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
 									var movie = new Movie
 									{
-										Name = RemovePunctuation(HttpUtility.HtmlDecode(movieName)),
+										Name = ParseName(name),
+										Day = ParseDayOfWeek(name),
 										Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
-								};
+									};
 
-								if (articleDate.HasValue)
-								{
-									movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+									if (articleDate.HasValue)
+									{
+										movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+									}
+
+									result.Add(movie);
 								}
-
-								result.Add(movie);
 							}
 						}
 					}
 				}
 			}
-		}
 
 			return result;
 		}
-}
+
+		//----==== PRIVATE ====--------------------------------------------------------------------
+
+		private DayOfWeek? ParseDayOfWeek(string name)
+		{
+			DayOfWeek? result = null;
+
+			if (name != null)
+			{
+				foreach (var pair in _daysOfWeek)
+				{
+					if (name.EndsWith(pair.Key))
+					{
+						// Remove the key
+
+						result = pair.Value;
+						break;
+					}
+				}
+			}
+
+			return result;
+		}
+
+		private string ParseName(string name)
+		{
+			var result = name;
+
+			if (result != null)
+			{
+				foreach (var key in _daysOfWeek.Keys)
+				{
+					if (result.EndsWith(key))
+					{
+						// Remove the key
+
+						result = result.Substring(0, result.Length - key.Length);
+						break;
+					}
+				}
+			}
+
+			return result;
+		}
+	}
 }

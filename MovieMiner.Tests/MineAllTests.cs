@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -607,9 +608,9 @@ namespace MovieMiner.Tests
 					nerdList = miner.Mine();
 					result.Add(nerdList);
 
-					ChangeMovieName(nerdList, "FRI It", "It Friday");
-					ChangeMovieName(nerdList, "SAT It", "It Saturday");
-					ChangeMovieName(nerdList, "SUN It", "It Sunday");
+					//ChangeMovieName(nerdList, "FRI It", "It Friday");
+					//ChangeMovieName(nerdList, "SAT It", "It Saturday");
+					//ChangeMovieName(nerdList, "SUN It", "It Sunday");
 				}
 				else
 				{
@@ -632,14 +633,32 @@ namespace MovieMiner.Tests
 							{
 								movieList.Remove(itMovie);
 
-								var toddItFriday = toddList.First(movie => movie.Name == "It Friday");
-								var toddItSaturday = toddList.First(movie => movie.Name == "It Saturday");
-								var toddItSunday = toddList.First(movie => movie.Name == "It Sunday");
+								var toddItFriday = toddList.First(movie => movie.Equals(itMovie) && movie.Day == DayOfWeek.Friday);
+								var toddItSaturday = toddList.First(movie => movie.Equals(itMovie) && movie.Day == DayOfWeek.Saturday);
+								var toddItSunday = toddList.First(movie => movie.Equals(itMovie) && movie.Day == DayOfWeek.Sunday);
 								var toddTotal = toddItFriday.Earnings + toddItSaturday.Earnings + toddItSunday.Earnings;
 
-								movieList.Add(new Movie { Name = toddItFriday.Name, WeekendEnding = toddItFriday.WeekendEnding, Earnings = itMovie.Earnings * toddItFriday.Earnings / toddTotal });
-								movieList.Add(new Movie { Name = toddItSaturday.Name, WeekendEnding = toddItSaturday.WeekendEnding, Earnings = itMovie.Earnings * toddItSaturday.Earnings / toddTotal });
-								movieList.Add(new Movie { Name = toddItSunday.Name, WeekendEnding = toddItSunday.WeekendEnding, Earnings = itMovie.Earnings * toddItSunday.Earnings / toddTotal });
+								movieList.Add(new Movie
+								{
+									Name = toddItFriday.MovieName,
+									Day = toddItFriday.Day,
+									WeekendEnding = toddItFriday.WeekendEnding,
+									Earnings = itMovie.Earnings * toddItFriday.Earnings / toddTotal
+								});
+								movieList.Add(new Movie
+								{
+									Name = toddItSaturday.MovieName,
+									Day = toddItSaturday.Day,
+									WeekendEnding = toddItSaturday.WeekendEnding,
+									Earnings = itMovie.Earnings * toddItSaturday.Earnings / toddTotal
+								});
+								movieList.Add(new Movie
+								{
+									Name = toddItSunday.MovieName,
+									Day = toddItSunday.Day,
+									WeekendEnding = toddItSunday.WeekendEnding,
+									Earnings = itMovie.Earnings * toddItSunday.Earnings / toddTotal
+								});
 							}
 						}
 

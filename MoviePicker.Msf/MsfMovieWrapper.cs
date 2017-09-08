@@ -40,6 +40,12 @@ namespace MoviePicker.Msf
 			set { _movie.Cost = (decimal)value; }
 		}
 
+		public DayOfWeek? Day
+		{
+			get { return _movie.Day; }
+			set { _movie.Day = value; }
+		}
+
 		public decimal Efficiency => _movie.Efficiency;
 
 		public DateTime WeekendEnding
@@ -75,6 +81,12 @@ namespace MoviePicker.Msf
 		{
 			get { return _movie.IsBestPerformer; }
 			set { _movie.IsBestPerformer = value; }
+		}
+
+		public string MovieName
+		{
+			get { return _movie.MovieName; }
+			set { _movie.MovieName = value; }
 		}
 
 		public string Name
