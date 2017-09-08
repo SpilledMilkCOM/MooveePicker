@@ -96,7 +96,7 @@ namespace MoviePicker.Common
 		public override bool Equals(object obj)
 		{
 			bool result = false;
-			var test = obj as Movie;
+			var test = obj as IMovie;
 			
 			if (test != null)
 			{

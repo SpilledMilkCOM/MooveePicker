@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
+using MoviePicker.Msf;
 
 namespace MovieMiner.Tests
 {
