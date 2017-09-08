@@ -636,9 +636,9 @@ namespace MovieMiner.Tests
 								var toddItSunday = toddList.First(movie => movie.Name == "It Sunday");
 								var toddTotal = toddItFriday.Earnings + toddItSaturday.Earnings + toddItSunday.Earnings;
 
-								movieList.Add(new Movie { Name = toddItFriday.Name, Earnings = itMovie.Earnings * toddItFriday.Earnings / toddTotal });
-								movieList.Add(new Movie { Name = toddItSaturday.Name, Earnings = itMovie.Earnings * toddItSaturday.Earnings / toddTotal });
-								movieList.Add(new Movie { Name = toddItSunday.Name, Earnings = itMovie.Earnings * toddItSunday.Earnings / toddTotal });
+								movieList.Add(new Movie { Name = toddItFriday.Name, WeekendEnding = toddItFriday.WeekendEnding, Earnings = itMovie.Earnings * toddItFriday.Earnings / toddTotal });
+								movieList.Add(new Movie { Name = toddItSaturday.Name, WeekendEnding = toddItSaturday.WeekendEnding, Earnings = itMovie.Earnings * toddItSaturday.Earnings / toddTotal });
+								movieList.Add(new Movie { Name = toddItSunday.Name, WeekendEnding = toddItSunday.WeekendEnding, Earnings = itMovie.Earnings * toddItSunday.Earnings / toddTotal });
 							}
 						}
 
