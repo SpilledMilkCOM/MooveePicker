@@ -86,6 +86,8 @@ namespace MovieMiner
 
 								// Might switch this to RegEx...
 
+								var valueInMillions = nodeText.Substring(index, nodeText.Length - index)?.Contains("million");
+
 								var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace("million", string.Empty);
 
 								var parenIndex = estimatedBoxOffice.IndexOf("(");
@@ -101,23 +103,23 @@ namespace MovieMiner
 									var movie = new Movie
 									{
 										Name = RemovePunctuation(HttpUtility.HtmlDecode(movieName)),
-										Earnings = decimal.Parse(estimatedBoxOffice) * 1000000
-									};
+										Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
+								};
 
-									if (articleDate.HasValue)
-									{
-										movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
-									}
-
-									result.Add(movie);
+								if (articleDate.HasValue)
+								{
+									movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
 								}
+
+								result.Add(movie);
 							}
 						}
 					}
 				}
 			}
+		}
 
 			return result;
 		}
-	}
+}
 }

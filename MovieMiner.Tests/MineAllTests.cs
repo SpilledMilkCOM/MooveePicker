@@ -605,6 +605,10 @@ namespace MovieMiner.Tests
 
 					nerdList = miner.Mine();
 					result.Add(nerdList);
+
+					ChangeMovieName(nerdList, "FRI It", "It Friday");
+					ChangeMovieName(nerdList, "SAT It", "It Saturday");
+					ChangeMovieName(nerdList, "SUN It", "It Sunday");
 				}
 				else
 				{
@@ -615,6 +619,29 @@ namespace MovieMiner.Tests
 
 					if (movieList != null)
 					{
+						if (miner.Name == "Box Office Pro")
+						{
+							// Adjust Box Office Pro's IT
+
+							var toddList = result[1];
+
+							var itMovie = movieList.FirstOrDefault(movie => movie.Name == "IT");
+
+							if (itMovie != null)
+							{
+								movieList.Remove(itMovie);
+
+								var toddItFriday = toddList.First(movie => movie.Name == "It Friday");
+								var toddItSaturday = toddList.First(movie => movie.Name == "It Saturday");
+								var toddItSunday = toddList.First(movie => movie.Name == "It Sunday");
+								var toddTotal = toddItFriday.Earnings + toddItSaturday.Earnings + toddItSunday.Earnings;
+
+								movieList.Add(new Movie { Name = toddItFriday.Name, Earnings = itMovie.Earnings * toddItFriday.Earnings / toddTotal });
+								movieList.Add(new Movie { Name = toddItSaturday.Name, Earnings = itMovie.Earnings * toddItSaturday.Earnings / toddTotal });
+								movieList.Add(new Movie { Name = toddItSunday.Name, Earnings = itMovie.Earnings * toddItSunday.Earnings / toddTotal });
+							}
+						}
+
 						// Assign the id, name, and cost to each movie.
 
 						foreach (var movie in nerdList)
@@ -626,6 +653,16 @@ namespace MovieMiner.Tests
 			}
 
 			return result;
+		}
+
+		private void ChangeMovieName(List<IMovie> list, string fromName, string toName)
+		{
+			var found = list.FirstOrDefault(movie => movie.Name == fromName);
+
+			if (found != null)
+			{
+				found.Name = toName;
+			}
 		}
 
 		private void WriteMoviesAndPicks(string header, List<IMovie> movies)
