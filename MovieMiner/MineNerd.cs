@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
 using System.Web;
-using System.Xml;
 
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 using Newtonsoft.Json;
@@ -17,10 +14,20 @@ namespace MovieMiner
 	{
 		//private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups/MonCompare/MonCompare2017SummerWeek12.js";
 		private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups";
+		private const int DAY_KEY_LENGTH = 4;
+
+		private readonly Dictionary<string, DayOfWeek> _daysOfWeek;
 
 		public MineNerd()
 			: base("FML Nerd (Pete Johnson)", "FML Nerd", DEFAULT_URL)
 		{
+			_daysOfWeek = new Dictionary<string, DayOfWeek>
+			{
+				{"FRI ", DayOfWeek.Friday},
+				{"SAT ", DayOfWeek.Saturday},
+				{"SUN ", DayOfWeek.Sunday}
+			};
+
 		}
 
 		public override List<IMovie> Mine()
@@ -66,14 +73,53 @@ namespace MovieMiner
 
 					foreach (var movie in movieData.Movies)
 					{
+						var name = RemovePunctuation(HttpUtility.HtmlDecode(movie.Title));
+
 						result.Add(new Movie
 						{
 							Id = id++,
-							Name = RemovePunctuation(HttpUtility.HtmlDecode(movie.Title)),
+							Name = ParseName(name),
+							Day = ParseDayOfWeek(name),
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
 							Cost = movie.Bux,
 							WeekendEnding = MovieDateUtil.NextSunday().Date
 						});
+					}
+				}
+			}
+
+			return result;
+		}
+
+		//----==== PRIVATE ====--------------------------------------------------------------------
+
+		private DayOfWeek? ParseDayOfWeek(string name)
+		{
+			DayOfWeek? result = null;
+			DayOfWeek dayOfWeek;
+
+			if (name.Length > DAY_KEY_LENGTH && _daysOfWeek.TryGetValue(name.Substring(0, DAY_KEY_LENGTH), out dayOfWeek))
+			{
+				result = dayOfWeek;
+			}
+
+			return result;
+		}
+
+		private string ParseName(string name)
+		{
+			var result = name;
+
+			if (result != null)
+			{
+				foreach (var key in _daysOfWeek.Keys)
+				{
+					if (result.StartsWith(key))
+					{
+						// Remove the key
+
+						result = result.Substring(DAY_KEY_LENGTH, result.Length - DAY_KEY_LENGTH);
+						break;
 					}
 				}
 			}

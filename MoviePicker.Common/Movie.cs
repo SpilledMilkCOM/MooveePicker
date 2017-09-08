@@ -30,6 +30,7 @@ namespace MoviePicker.Common
 			if (!ReferenceEquals(this, toCopy))
 			{
 				AdjustEarnings = toCopy.AdjustEarnings;
+				Day = toCopy.Day;
 				_earnings = toCopy._earnings;
 				_cost = toCopy._cost;
 				Id = toCopy.Id;
@@ -52,6 +53,8 @@ namespace MoviePicker.Common
 				UpdateEfficiency();
 			}
 		}
+
+		public DayOfWeek? Day { get; set; }
 
 		public decimal Efficiency => _efficiency;
 
@@ -79,7 +82,18 @@ namespace MoviePicker.Common
 			}
 		}
 
-        public string Name { get; set; }
+		public string MovieName { get; set; }
+
+		public string Name
+		{
+			get { return (Day.HasValue) ? $"{MovieName} [{Day.Value}]" : MovieName; }
+			set
+			{
+				// TODO: Possibly parse the name to find DayOfWeek.
+
+				MovieName = value;
+			}
+		}
 
 		public DateTime WeekendEnding { get; set; }
 
@@ -100,13 +114,18 @@ namespace MoviePicker.Common
 			
 			if (test != null)
 			{
-				result = Name.Equals(test.Name);
+				// Make all the tests case insensitive.
+
+				var movieName = MovieName.ToLower();
+				var testMovieName = test.MovieName.ToLower();
+
+				result = movieName.Equals(testMovieName);
 
 				if (!result)
 				{
 					// Not an exact match so try starts with (limited contains)
 
-					result = Name.StartsWith(test.Name) || test.Name.StartsWith(Name);
+					result = movieName.StartsWith(testMovieName) || testMovieName.StartsWith(movieName);
 				}
 
 				if (!result)
@@ -115,17 +134,24 @@ namespace MoviePicker.Common
 
 					int length = 10;
 
-					if (Name.Length < length)
+					if (movieName.Length < length)
 					{
-						length = Name.Length;
+						length = movieName.Length;
 					}
 
-					if (test.Name.Length < length)
+					if (testMovieName.Length < length)
 					{
-						length = test.Name.Length;
+						length = testMovieName.Length;
 					}
 
-					result = Name.Substring(0, length) == test.Name.Substring(0, length);
+					result = movieName.Substring(0, length) == testMovieName.Substring(0, length);
+				}
+
+				if (result && Day.HasValue && test.Day.HasValue)
+				{
+					// If both days have values then they HAVE TO MATCH.
+
+					result = Day.Value == test.Day.Value;
 				}
 			}
 
