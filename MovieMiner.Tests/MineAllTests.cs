@@ -147,6 +147,49 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_BuildAllLists_WithPicks_TrackDuringWeekend()
+		{
+			var nextSunday = MovieDateUtil.NextSunday();
+
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			// TODO: Should probably connect the mined data to the miner.
+
+			var myList = CreateMyList(minedData, miners);
+
+			// Adjust based on known values...
+
+			UpdateWithWeekendValues(myList);
+
+			Logger.WriteLine($"================== Picking Movies for {nextSunday} ==================\n");
+
+			for (int index = 0; index < miners.Count; index++)
+			{
+				if (minedData[index] != null
+				&& minedData[index].Any()
+				&& minedData[index][0].WeekendEnding == nextSunday
+				&& miners[index].Weight > 0)
+				{
+					// Only show data that will be used.
+
+					WriteMoviesAndPicks($"==== {miners[index].Name} ====", minedData[index]);
+				}
+			}
+
+			Logger.WriteLine(string.Empty);
+
+			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
+
+			Logger.WriteLine("\nUpload for FML Analyzer Site");
+
+			foreach (var movie in myList.OrderByDescending(movie => movie.Cost))
+			{
+				Logger.WriteLine(movie.Earnings.ToString());
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_BuildAllLists_WithPicks_NoCultVult_NoBOProphet()
 		{
 			var nextSunday = MovieDateUtil.NextSunday();
@@ -289,6 +332,34 @@ namespace MovieMiner.Tests
 			// TODO: Should probably connect the mined data to the miner.
 
 			var myList = CreateMyList(minedData, miners);
+
+			var mostEfficient = myList.OrderByDescending(item => item.Efficiency).First();
+			int index = 1;
+
+			Logger.WriteLine("\nEfficiency Differences\n");
+
+			Logger.WriteLine("____Title______________________________Box_Office________Efficiency________New_Box_Office____Difference_____Pct__");
+
+			foreach (var movie in myList.OrderBy(item => mostEfficient.Efficiency * item.Cost - item.Earnings))
+			{
+				Logger.WriteLine($"{index,2}. {movie.Name,-30} --  ${movie.Earnings,13:N2}  [${movie.Efficiency:N2}]"
+								 + $"==> **${mostEfficient.Efficiency * movie.Cost,13:N2} "
+								 + $"++ ${mostEfficient.Efficiency * movie.Cost - movie.Earnings,13:N2}  {(mostEfficient.Efficiency * movie.Cost - movie.Earnings) / movie.Earnings * 100,6:F2}%");
+				index++;
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_CompareEfficiencies_TrackingDuringWeekend()
+		{
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			// TODO: Should probably connect the mined data to the miner.
+
+			var myList = CreateMyList(minedData, miners);
+
+			UpdateWithWeekendValues(myList);
 
 			var mostEfficient = myList.OrderByDescending(item => item.Efficiency).First();
 			int index = 1;
@@ -551,6 +622,26 @@ namespace MovieMiner.Tests
 			}
 		}
 
+		private void ChangeMovieEarnings(List<IMovie> list, string name, decimal earnings)
+		{
+			var found = list.FirstOrDefault(movie => movie.Name == name);
+
+			if (found != null)
+			{
+				found.Earnings = earnings;
+			}
+		}
+
+		private void ChangeMovieName(List<IMovie> list, string fromName, string toName)
+		{
+			var found = list.FirstOrDefault(movie => movie.Name == fromName);
+
+			if (found != null)
+			{
+				found.Name = toName;
+			}
+		}
+
 		/// <summary>
 		/// Create all of the movie miners.
 		/// </summary>
@@ -711,16 +802,6 @@ namespace MovieMiner.Tests
 			return result;
 		}
 
-		private void ChangeMovieName(List<IMovie> list, string fromName, string toName)
-		{
-			var found = list.FirstOrDefault(movie => movie.Name == fromName);
-
-			if (found != null)
-			{
-				found.Name = toName;
-			}
-		}
-
 		private void WriteMoviesAndPicks(string header, List<IMovie> movies)
 		{
 			Logger.WriteLine($"\n{header}\n");
@@ -744,6 +825,13 @@ namespace MovieMiner.Tests
 
 			WritePicker(test);
 			WriteMovies(best);
+		}
+
+
+		private void UpdateWithWeekendValues(List<IMovie> myList)
+		{
+			ChangeMovieEarnings(myList, "Dunkirk", 1900000);
+			ChangeMovieEarnings(myList, "It [Friday]", 51000000);
 		}
 	}
 }
