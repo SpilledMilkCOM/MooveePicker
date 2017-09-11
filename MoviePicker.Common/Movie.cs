@@ -34,7 +34,7 @@ namespace MoviePicker.Common
 				_earnings = toCopy._earnings;
 				_cost = toCopy._cost;
 				Id = toCopy.Id;
-				Name = toCopy.Name;
+				MovieName = toCopy.MovieName;
 				_originalEarnings = toCopy._originalEarnings;
 				WeekendEnding = toCopy.WeekendEnding;
 

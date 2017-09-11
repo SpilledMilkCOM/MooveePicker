@@ -209,14 +209,14 @@ namespace MovieMiner.Tests
 
 			for (int index = 0; index < miners.Count; index++)
 			{
-				header += $"    {miners[index].Abbreviation}*{miners[index].Weight}";
+				header += $"______{miners[index].Abbreviation}*{miners[index].Weight}";
 			}
 
 			Logger.WriteLine(header);
 
 			foreach (var movie in best.Movies)
 			{
-				string row = $"{movie.Name,-30}  {movie.Earnings:N0}";
+				string row = $"{movie.Name,-30}  {movie.Earnings,11:N0}";
 
 				for (int index = 0; index < miners.Count; index++)
 				{
@@ -224,11 +224,11 @@ namespace MovieMiner.Tests
 
 					if (foundMovie != null)
 					{
-						row += $" | {foundMovie.Earnings:N0}";
+						row += $" | {foundMovie.Earnings,11:N0}";
 					}
 					else
 					{
-						row += " | -----";
+						row += " |  --------";
 					}
 				}
 
@@ -559,7 +559,8 @@ namespace MovieMiner.Tests
 			var result = new Movie
 			{
 				Id = baseMovie.Id,
-				Name = baseMovie.Name,
+				MovieName = baseMovie.MovieName,
+				Day = baseMovie.Day,
 				Cost = baseMovie.Cost,
 				Earnings = baseMovie.Earnings * miners[NERD_INDEX].Weight,
 				WeekendEnding = baseMovie.WeekendEnding
