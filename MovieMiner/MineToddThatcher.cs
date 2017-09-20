@@ -12,7 +12,7 @@ namespace MovieMiner
 	public class MineToddThatcher : MinerBase
 	{
 		private const string DEFAULT_URL = "https://fantasymovieleague.com";
-		private const string DELIMITER = " - $";
+		private const string DELIMITER = "- $";
 
 		private readonly string _articleTitle;
 		private readonly Dictionary<string, DayOfWeek> _daysOfWeek;
@@ -20,7 +20,9 @@ namespace MovieMiner
 		public MineToddThatcher(string articleTitle = null)
 			: base("Todd M. Thatcher", "Todd", DEFAULT_URL)
 		{
-			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()} Estimates";
+			// TODO: Use Regex for estimates.
+
+			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()} Box Office Estimates";
 
 			_daysOfWeek = new Dictionary<string, DayOfWeek>
 			{

@@ -38,6 +38,30 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_Actuals_WithBestPick()
+		{
+			var lastSunday = MovieDateUtil.LastSunday();
+
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			Logger.WriteLine($"================== Picking Movies for {lastSunday} ==================\n");
+
+			for (int index = 0; index < miners.Count; index++)
+			{
+				if (minedData[index] != null
+				&& minedData[index].Any()
+				&& minedData[index][0].WeekendEnding == lastSunday
+				&& miners[index].Weight > 0)
+				{
+					// Only show data that will be used.
+
+					WriteMoviesAndPicks($"==== {miners[index].Name} ====", minedData[index]);
+				}
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_BuildAllLists_EstimatesOnly_ForHistory()
 		{
 			var nextSunday = MovieDateUtil.NextSunday();
