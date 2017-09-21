@@ -162,12 +162,7 @@ namespace MovieMiner.Tests
 
 			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
 
-			Logger.WriteLine("\nUpload for FML Analyzer Site");
-
-			foreach (var movie in myList.OrderByDescending(movie => movie.Cost))
-			{
-				Logger.WriteLine(movie.Earnings.ToString());
-			}
+			WriteFMLNerdLink(myList);
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
@@ -205,12 +200,7 @@ namespace MovieMiner.Tests
 
 			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
 
-			Logger.WriteLine("\nUpload for FML Analyzer Site");
-
-			foreach (var movie in myList.OrderByDescending(movie => movie.Cost))
-			{
-				Logger.WriteLine(movie.Earnings.ToString());
-			}
+			WriteFMLNerdLink(myList);
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
@@ -247,12 +237,7 @@ namespace MovieMiner.Tests
 
 			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
 
-			Logger.WriteLine("\nUpload for FML Analyzer Site");
-
-			foreach (var movie in myList.OrderByDescending(movie => movie.Cost))
-			{
-				Logger.WriteLine(movie.Earnings.ToString());
-			}
+			WriteFMLNerdLink(myList);
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
@@ -283,7 +268,8 @@ namespace MovieMiner.Tests
 
 			foreach (var movie in best.Movies)
 			{
-				string row = $"{movie.Name,-30}  {movie.Earnings,11:N0}";
+				string isBestPerformer = movie.IsBestPerformer ? "*" : string.Empty;
+				string row = $"{movie.Name + isBestPerformer,-30}  {movie.Earnings,11:N0}";
 
 				for (int index = 0; index < miners.Count; index++)
 				{
@@ -827,6 +813,26 @@ namespace MovieMiner.Tests
 			return result;
 		}
 
+		private void WriteFMLNerdLink(IEnumerable<IMovie> list)
+		{
+			string url = "http://analyzer.fmlnerd.com/lineups/?ests=";
+			string movieList = null;
+
+			Logger.WriteLine("\nUpload for FML Analyzer Site");
+
+			foreach (var movie in list.OrderByDescending(movie => movie.Cost))
+			{
+				if (movieList != null)
+				{
+					movieList += ",";
+				}
+
+				movieList += movie.Earnings.ToString();
+			}
+
+			Logger.WriteLine(url + movieList);
+		}
+
 		private void WriteMoviesAndPicks(string header, List<IMovie> movies)
 		{
 			Logger.WriteLine($"\n{header}\n");
@@ -851,7 +857,6 @@ namespace MovieMiner.Tests
 			WritePicker(test);
 			WriteMovies(best);
 		}
-
 
 		private void UpdateWithWeekendValues(List<IMovie> myList)
 		{
