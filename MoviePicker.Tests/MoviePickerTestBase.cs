@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using Microsoft.Practices.Unity;
@@ -7,6 +8,7 @@ using MoviePicker.Common.Interfaces;
 
 namespace MoviePicker.Tests
 {
+	[ExcludeFromCodeCoverage]
 	public abstract class MoviePickerTestBase
 	{
 		private ILogger _logger;
