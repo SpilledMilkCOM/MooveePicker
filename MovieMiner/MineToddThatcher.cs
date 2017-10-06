@@ -22,7 +22,8 @@ namespace MovieMiner
 		{
 			// TODO: Use Regex for estimates.
 
-			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()} Box Office Estimates";
+			//_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()} Box Office Estimates";
+			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()} Estimates";
 
 			_daysOfWeek = new Dictionary<string, DayOfWeek>
 			{
@@ -42,6 +43,8 @@ namespace MovieMiner
 			// Lookup XPATH to get the right node that matches.
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
+
+			//TODO - Put contains in here.
 
 			var node = doc.DocumentNode.SelectSingleNode($"//body//a[@title='{_articleTitle}']");
 

@@ -29,6 +29,9 @@ namespace MovieMiner
 
 		protected string RemovePunctuation(string text)
 		{
+			// Map possible punctuation within words.
+			text = text.Replace(" and ", " & ");
+
 			return Regex.Replace(text, "[^\\w\\s]", string.Empty).Replace("-", string.Empty).Trim();
 		}
 	}
