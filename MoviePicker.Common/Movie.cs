@@ -147,6 +147,31 @@ namespace MoviePicker.Common
 					result = movieName.Substring(0, length) == testMovieName.Substring(0, length);
 				}
 
+				//if (!result)
+				//{
+				//	char[] delimiters = " ".ToCharArray();
+
+				//	// Compare words.
+				//	var movieWords = MovieName.Split(delimiters);
+				//	var testWords = testMovieName.Split(delimiters);
+				//	int matches = 0;
+
+				//	for (int index = 0; index < movieWords.Length; index++)
+				//	{
+				//		for (int i = 0; i < testWords.Length; i++)
+				//		{
+				//			if(movieWords[index] != null && movieWords[index] == testWords[i])
+				//			{
+				//				// Only needs to match once.
+				//				matches++;
+				//				break;
+				//			}
+				//		}
+				//	}
+
+				//	result = movieWords.Length > 0 && matches / movieWords.Length >= 0.666666;
+				//}
+
 				if (result && Day.HasValue && test.Day.HasValue)
 				{
 					// If both days have values then they HAVE TO MATCH.

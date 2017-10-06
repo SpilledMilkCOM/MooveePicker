@@ -239,6 +239,50 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MineAll_BuildAllLists_CompareAllNumbers()
+		{
+			var nextSunday = MovieDateUtil.NextSunday();
+
+			var miners = CreateMiners();
+			var minedData = MineMiners(miners);
+
+			// TODO: Should probably connect the mined data to the miner.
+
+			var myList = CreateMyList(minedData, miners);
+
+			var header = "\n__Name____________________________SM Cine";
+
+			for (int index = 0; index < miners.Count; index++)
+			{
+				header += $"______{miners[index].Abbreviation}*{miners[index].Weight}";
+			}
+
+			Logger.WriteLine(header);
+
+			foreach (var movie in myList)
+			{
+				string isBestPerformer = movie.IsBestPerformer ? "*" : string.Empty;
+				string row = $"{movie.Name + isBestPerformer,-30}  {movie.Earnings,11:N0}";
+
+				for (int index = 0; index < miners.Count; index++)
+				{
+					var foundMovie = minedData[index].FirstOrDefault(item => item.Equals(movie));
+
+					if (foundMovie != null)
+					{
+						row += $" | {foundMovie.Earnings,11:N0}";
+					}
+					else
+					{
+						row += " |  --------";
+					}
+				}
+
+				Logger.WriteLine(row);
+			}
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_BuildAllLists_ComparePickNumbers()
 		{
 			var nextSunday = MovieDateUtil.NextSunday();
