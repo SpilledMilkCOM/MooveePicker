@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -9,7 +8,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
-using MoviePicker.Msf;
 
 namespace MovieMiner.Tests
 {
