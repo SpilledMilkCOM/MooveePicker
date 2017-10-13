@@ -1,15 +1,16 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using MoviePicker.Common.Interfaces;
-using Newtonsoft.Json;
 
 namespace MovieMiner.Tests
 {
 	[TestClass]
 	[ExcludeFromCodeCoverage]
-	public class MineNerdTests : MineTestBase
+	public class MineFantasyMovieLeagueBoxOfficeTests : MineTestBase
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
@@ -25,9 +26,9 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
-		public void MineNerd_Mine()
+		public void MineFantasyMovieLeagueBoxOffice_Mine()
 		{
-			var test = new MineNerd();
+			var test = new MineFantasyMovieLeagueBoxOffice();
 
 			var actual = test.Mine();
 
@@ -36,28 +37,6 @@ namespace MovieMiner.Tests
 
 			Logger.WriteLine($"\n==== {test.Name} ====\n");
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
-		}
-
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
-		public void MineNerd_Serialize()
-		{
-			// This test helps visualize the serialization to see how to massage Pete's data.
-			// His data is a hybrid of Javascript and JSON.
-
-			var test = new MineNerdData
-			{
-				Year = 2017,
-				Season = "Summer",
-				Week = 12,
-				Movies = new MineNerdMovie[]
-				{
-					new MineNerdMovie {Index = 0, Title = "Test Title", Bux = 123, CurrentEstimatedBoxOffice = 1230000 }
-				}
-			};
-
-			var json = JsonConvert.SerializeObject(test);
-
-			Assert.IsNotNull(json);
 		}
 	}
 }

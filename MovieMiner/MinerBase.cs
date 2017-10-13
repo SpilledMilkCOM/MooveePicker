@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -16,7 +17,6 @@ namespace MovieMiner
 			Weight = 1;
 		}
 
-
 		public string Abbreviation { get; private set; }
 
 		public string Name { get; private set; }
@@ -26,6 +26,40 @@ namespace MovieMiner
 		public int Weight { get; set; }
 
 		public abstract List<IMovie> Mine();
+
+		protected decimal ParseEarnings(string earnings)
+		{
+			decimal result = 0m;
+			decimal multiplier = 1m;
+
+			earnings = earnings.ToLower();
+
+			if (earnings.Contains("m"))
+			{
+				multiplier = 1000000m;
+
+				earnings = earnings.Replace("m", string.Empty);
+			}
+			else if(earnings.Contains("k"))
+			{
+				multiplier = 1000m;
+
+				earnings = earnings.Replace("k", string.Empty);
+			}
+
+			earnings = earnings.Replace("$", string.Empty);
+
+			if (decimal.TryParse(earnings, out result))
+			{
+				result *= multiplier;
+			}
+			else
+			{
+				result = 0;
+			}
+
+			return result;
+		}
 
 		protected string RemovePunctuation(string text)
 		{
