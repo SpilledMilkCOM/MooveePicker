@@ -1,5 +1,8 @@
 ﻿namespace MoviePicker.Common
 {
+	/// <summary>
+	/// This class is used for a "fuzzy" match for movie titles.
+	/// </summary>
 	public class TitleMatch
 	{
 		public decimal Match(string title1, string title2)
@@ -17,6 +20,7 @@
 			if (!comparison)
 			{
 				// Not an exact match so try starts with (limited contains)
+				// (If contains is used the smaller titles like "It" may match where you don't want it to.)
 
 				if (title1.StartsWith(title2))
 				{

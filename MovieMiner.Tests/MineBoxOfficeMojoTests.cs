@@ -26,7 +26,7 @@ namespace MovieMiner.Tests
 			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineBoxOfficeMojo_Mine()
 		{
 			var test = new MineBoxOfficeMojo();
@@ -39,7 +39,7 @@ namespace MovieMiner.Tests
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineBoxOfficeMojo_Mine_PreviousWeek()
 		{
 			var weekendEnding = MovieDateUtil.LastSunday(DateTime.Now);
@@ -54,7 +54,7 @@ namespace MovieMiner.Tests
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineBoxOfficeMojo_Mine_Previous2Weeks()
 		{
 			var weekendEnding = MovieDateUtil.LastSunday(DateTime.Now).AddDays(-7);
@@ -69,7 +69,7 @@ namespace MovieMiner.Tests
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineBoxOfficeMojo_Mine_Previous3Weeks()
 		{
 			var weekendEnding = MovieDateUtil.LastSunday(DateTime.Now).AddDays(-14);
@@ -83,6 +83,5 @@ namespace MovieMiner.Tests
 			Logger.WriteLine($"Weekend Ending: {weekendEnding}");
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
-
 	}
 }

@@ -92,7 +92,8 @@ namespace MovieMiner
 									}
 									else if (columnCount == 2)
 									{
-										movie.Earnings = decimal.Parse(column.InnerText?.Replace("$", string.Empty));
+										//movie.Earnings = decimal.Parse(column.InnerText?.Replace("$", string.Empty));
+										movie.Earnings = decimal.Parse(RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText)));
 									}
 
 									columnCount++;

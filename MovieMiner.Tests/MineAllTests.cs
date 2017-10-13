@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -137,6 +138,8 @@ namespace MovieMiner.Tests
 			var miners = CreateMiners();
 			var minedData = MineMiners(miners);
 
+			FilterMiners(minedData);
+
 			// TODO: Should probably connect the mined data to the miner.
 
 			var myList = CreateMyList(minedData, miners);
@@ -241,10 +244,10 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_BuildAllLists_CompareAllNumbers()
 		{
-			var nextSunday = MovieDateUtil.NextSunday();
-
 			var miners = CreateMiners();
 			var minedData = MineMiners(miners);
+
+			FilterMiners(minedData);
 
 			// TODO: Should probably connect the mined data to the miner.
 
@@ -266,7 +269,7 @@ namespace MovieMiner.Tests
 
 				for (int index = 0; index < miners.Count; index++)
 				{
-					var foundMovie = minedData[index].FirstOrDefault(item => item.Equals(movie));
+					var foundMovie = minedData[index]?.FirstOrDefault(item => item.Equals(movie));
 
 					if (foundMovie != null)
 					{
@@ -274,7 +277,7 @@ namespace MovieMiner.Tests
 					}
 					else
 					{
-						row += " |  --------";
+						row += " |  ----------";
 					}
 				}
 
@@ -772,6 +775,19 @@ namespace MovieMiner.Tests
 			return result;
 		}
 
+		void FilterMiners(List<List<IMovie>> minerData)
+		{
+			DateTime? weekendEnding = minerData[NERD_INDEX].FirstOrDefault()?.WeekendEnding;
+
+			for (int index = NERD_INDEX + 1; index < minerData.Count; index++)
+			{
+				if (minerData[index].FirstOrDefault()?.WeekendEnding != weekendEnding)
+				{
+					minerData[index] = null;
+				}
+			}
+		}
+
 		private IMiner FindMiner<TMiner>(List<IMiner> miners)
 		{
 			return miners.FirstOrDefault(miner => miner.GetType() == typeof(TMiner));
@@ -801,7 +817,6 @@ namespace MovieMiner.Tests
 				}
 				else
 				{
-					// Still need a placeholder for the list.
 					var movieList = (miner.Weight > 0) ? miner.Mine() : null;
 
 					result.Add(movieList);
@@ -831,12 +846,12 @@ namespace MovieMiner.Tests
 									foreach (var movieDay in compoundMovies)
 									{
 										movieList.Add(new Movie
-													{
-														Name = movieDay.MovieName,
-														Day = movieDay.Day,
-														Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
-														WeekendEnding = movieDay.WeekendEnding
-													});
+										{
+											Name = movieDay.MovieName,
+											Day = movieDay.Day,
+											Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
+											WeekendEnding = movieDay.WeekendEnding
+										});
 									}
 								}
 							}

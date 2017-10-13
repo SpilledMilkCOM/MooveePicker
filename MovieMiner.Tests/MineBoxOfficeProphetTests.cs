@@ -25,7 +25,7 @@ namespace MovieMiner.Tests
 			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineBoxOfficeProphet_Mine()
 		{
 			// http://www.boxofficeprophets.com

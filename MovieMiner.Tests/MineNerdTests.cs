@@ -24,7 +24,7 @@ namespace MovieMiner.Tests
 			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineNerd_Mine()
 		{
 			var test = new MineNerd();
@@ -38,7 +38,7 @@ namespace MovieMiner.Tests
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineNerd_Serialize()
 		{
 			// This test helps visualize the serialization to see how to massage Pete's data.

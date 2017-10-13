@@ -26,7 +26,7 @@ namespace MovieMiner.Tests
 			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineCulturedVultures_Mine()
 		{
 			// https://culturedvultures.com/?s=weekend+box+office+predictions
@@ -41,7 +41,7 @@ namespace MovieMiner.Tests
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineCulturedVultures_ParseHoldovers()
 		{
 			string innerText = "2. Annabelle: Creation (Warner Bros.) – $15.8 million (-55%), $64.3m cume 4. Dunkirk (Warner Bros.) – $7.6 million (-30%), $166.3m cume 5. The Nut Job 2: Nutty by Nature (Open Road) – $4.4 million (-47%), $16.6m cume 6. Girls Trip (Universal) – $3.9 million (-40%), $103.8m cume 7. Spider-Man: Homecoming (Sony) – $3.7 million (-39%), $313.5m cume 8. The Dark Tower (Sony) – $3.3 million (-58%), $40.7m cume 9. The Emoji Movie (Sony) – $3.2 million (-51%), $69.9m cume 10. The Glass Castle (Lionsgate) – $2.7 million (-42%), $9.7m cume";

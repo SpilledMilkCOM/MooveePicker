@@ -9,7 +9,7 @@ namespace MoviePicker.Tests
     [ExcludeFromCodeCoverage]
     public class TitleMatchTests
 	{
-		[TestMethod]
+		[TestMethod, TestCategory("Mock")]
 		public void TitleMatch_Match_Exact()
 		{
 			var test = ConstructTestObject();
@@ -18,7 +18,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(1.0m, actual);
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory("Mock")]
 		public void TitleMatch_Match_FirstContainsSecond()
 		{
 			var test = ConstructTestObject();
@@ -29,7 +29,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(0.4m, actual);
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory("Mock")]
 		public void TitleMatch_Match_SecondContainsFirst()
 		{
 			var test = ConstructTestObject();
@@ -40,7 +40,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(0.4m, actual);
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory("Mock")]
 		public void TitleMatch_Match_MatchFirst3Characters()
 		{
 			var test = ConstructTestObject();
@@ -51,7 +51,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(0.75m, actual);
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory("Mock")]
 		public void TitleMatch_Match_MatchFirst3Characters_Title2()
 		{
 			var test = ConstructTestObject();

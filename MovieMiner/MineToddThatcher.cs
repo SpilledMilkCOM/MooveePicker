@@ -20,10 +20,7 @@ namespace MovieMiner
 		public MineToddThatcher(string articleTitle = null)
 			: base("Todd M. Thatcher", "Todd", DEFAULT_URL)
 		{
-			// TODO: Use Regex for estimates.
-
-			//_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()} Box Office Estimates";
-			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()} Estimates";
+			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()}";
 
 			_daysOfWeek = new Dictionary<string, DayOfWeek>
 			{
@@ -44,9 +41,7 @@ namespace MovieMiner
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
-			//TODO - Put contains in here.
-
-			var node = doc.DocumentNode.SelectSingleNode($"//body//a[@title='{_articleTitle}']");
+			var node = doc.DocumentNode.SelectSingleNode($"//body//a[contains(@title, '{_articleTitle}')]");
 
 			if (node != null)
 			{

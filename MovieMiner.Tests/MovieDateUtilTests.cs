@@ -11,6 +11,8 @@ namespace MovieMiner.Tests
 	[ExcludeFromCodeCoverage]
 	public class MovieDateUtilTests : MineTestBase
 	{
+		protected new const string PRIMARY_TEST_CATEGORY = "Mock";
+
 		private static List<string> _seasons;
 
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
