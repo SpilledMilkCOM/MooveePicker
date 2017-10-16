@@ -552,6 +552,19 @@ namespace MovieMiner.Tests
 			}
 		}
 
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineAll_FML_PerfectPick()
+		{
+			var test = new MineFantasyMovieLeagueBoxOffice();
+
+			var actual = test.Mine();
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			WriteMoviesAndPicks($"==== {test.Name} ====", actual);
+		}
+
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MineAll_MojoHistory()
 		{

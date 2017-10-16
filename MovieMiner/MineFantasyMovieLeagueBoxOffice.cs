@@ -54,6 +54,15 @@ namespace MovieMiner
 					movie.Earnings = ParseEarnings(earningsNode.InnerText);
 				}
 
+				// Might as well grab the bux so the pick can be determined stand-alone
+
+				var buxNode = tableRow?.SelectSingleNode("td[contains(@class, 'movie-title')]//span[contains(@class, 'cost')]");
+
+				if (buxNode != null)
+				{
+					movie.Cost = ParseEarnings(HttpUtility.HtmlDecode(buxNode.InnerText).Replace("FB", string.Empty));
+				}
+
 				result.Add(movie);
 			}
 
