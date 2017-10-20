@@ -130,6 +130,13 @@ namespace MoviePicker.Common
 
 				if (!result)
 				{
+					// Not an exact match so try ends with (limited contains)
+
+					result = movieName.EndsWith(testMovieName) || testMovieName.EndsWith(movieName);
+				}
+
+				if (!result)
+				{
 					// Compare the first X characters
 
 					int length = 10;
