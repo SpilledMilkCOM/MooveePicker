@@ -819,64 +819,73 @@ namespace MovieMiner.Tests
 
 			foreach (var miner in miners)
 			{
-				if (nerdList == null)
+				try
 				{
-					// Nerd list is first.
-
-					nerdList = miner.Mine();
-					result.Add(nerdList);
-
-					compoundMovies = nerdList.Where(movie => movie.Day.HasValue).ToList();
-				}
-				else
-				{
-					var movieList = (miner.Weight > 0) ? miner.Mine() : null;
-
-					result.Add(movieList);
-
-					if (movieList != null)
+					if (nerdList == null)
 					{
-						if (compoundMovies.Any())
+						// Nerd list is first.
+
+						nerdList = miner.Mine();
+						result.Add(nerdList);
+
+						compoundMovies = nerdList.Where(movie => movie.Day.HasValue).ToList();
+					}
+					else
+					{
+						var movieList = (miner.Weight > 0) ? miner.Mine() : null;
+
+						result.Add(movieList);
+
+						if (movieList != null)
 						{
-							if (miner.Abbreviation == "Todd")
+							if (compoundMovies.Any())
 							{
-								// Prefer Todd's breakdown if it's available.
-
-								compoundMovies = movieList.Where(movie => movie.Day.HasValue).ToList();
-							}
-
-							if (!movieList.Any(movie => movie.Day.HasValue))
-							{
-								// The list has no compound movies so they need to be built
-
-								var rootMovie = movieList.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
-								var compoundTotal = compoundMovies.Sum(movie => movie.Earnings);
-
-								if (rootMovie != null)
+								if (miner.Abbreviation == "Todd")
 								{
-									movieList.Remove(rootMovie);
+									// Prefer Todd's breakdown if it's available.
 
-									foreach (var movieDay in compoundMovies)
+									compoundMovies = movieList.Where(movie => movie.Day.HasValue).ToList();
+								}
+
+								if (!movieList.Any(movie => movie.Day.HasValue))
+								{
+									// The list has no compound movies so they need to be built
+
+									var rootMovie = movieList.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
+									var compoundTotal = compoundMovies.Sum(movie => movie.Earnings);
+
+									if (rootMovie != null)
 									{
-										movieList.Add(new Movie
+										movieList.Remove(rootMovie);
+
+										foreach (var movieDay in compoundMovies)
 										{
-											Name = movieDay.MovieName,
-											Day = movieDay.Day,
-											Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
-											WeekendEnding = movieDay.WeekendEnding
-										});
+											movieList.Add(new Movie
+											{
+												Name = movieDay.MovieName,
+												Day = movieDay.Day,
+												Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
+												WeekendEnding = movieDay.WeekendEnding
+											});
+										}
 									}
 								}
 							}
-						}
 
-						// Assign the id, name, and cost to each movie.
+							// Assign the id, name, and cost to each movie.
 
-						foreach (var movie in nerdList)
-						{
-							AssignCost(movie, movieList);
+							foreach (var movie in nerdList)
+							{
+								AssignCost(movie, movieList);
+							}
 						}
 					}
+				}
+				catch (Exception ex)
+				{
+					result.Add(new List<IMovie>());		// Add a placeholder.
+
+					Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
 				}
 			}
 
