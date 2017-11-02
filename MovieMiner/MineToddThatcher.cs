@@ -6,6 +6,7 @@ using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Common;
+using System.Linq;
 
 namespace MovieMiner
 {
@@ -83,45 +84,64 @@ namespace MovieMiner
 					{
 						var movieNodes = node.SelectNodes($"//p[contains(., '{DELIMITER}')]");     // Find all of the estimate paragraphs
 
-						foreach (var movieNode in movieNodes)
+						// As of 11/2/2017 Todd is separating things with <br /> now.
+
+						if (movieNodes.Count == 1)
 						{
-							int index = movieNode.InnerText.IndexOf(DELIMITER);
+							var innerHtml = HttpUtility.HtmlDecode(movieNodes.First().InnerHtml);
+							var delimiters = new string[] { "<br><br>" };
+							var tokens = innerHtml.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
-							if (index > 0)
+							foreach (var token in tokens)
 							{
-								var nodeText = movieNode.InnerText;
-								var movieName = nodeText.Substring(0, index);
-
-								// Might switch this to RegEx...
-
-								var valueInMillions = nodeText.Substring(index, nodeText.Length - index)?.Contains("million");
-
-								var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace("million", string.Empty);
-
-								var parenIndex = estimatedBoxOffice.IndexOf("(");
-
-								if (parenIndex > 0)
+								if (token.StartsWith("\"") && token.EndsWith("million"))
 								{
-									// Trim out the FML bux.
-									estimatedBoxOffice = estimatedBoxOffice.Substring(0, parenIndex - 1);
+									AddMovie(token, articleDate, result);
 								}
+							}
+						}
+						else
+						{
+							foreach (var movieNode in movieNodes)
+							{
+								int index = movieNode.InnerText.IndexOf(DELIMITER);
 
-								if (!string.IsNullOrEmpty(movieName))
+								if (index > 0)
 								{
-									var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
-									var movie = new Movie
-									{
-										MovieName = ParseName(name),
-										Day = ParseDayOfWeek(name),
-										Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
-									};
+									var nodeText = movieNode.InnerText;
+									var movieName = nodeText.Substring(0, index);
 
-									if (articleDate.HasValue)
+									// Might switch this to RegEx...
+
+									var valueInMillions = nodeText.Substring(index, nodeText.Length - index)?.Contains("million");
+
+									var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace("million", string.Empty);
+
+									var parenIndex = estimatedBoxOffice.IndexOf("(");
+
+									if (parenIndex > 0)
 									{
-										movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+										// Trim out the FML bux.
+										estimatedBoxOffice = estimatedBoxOffice.Substring(0, parenIndex - 1);
 									}
 
-									result.Add(movie);
+									if (!string.IsNullOrEmpty(movieName))
+									{
+										var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
+										var movie = new Movie
+										{
+											MovieName = ParseName(name),
+											Day = ParseDayOfWeek(name),
+											Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
+										};
+
+										if (articleDate.HasValue)
+										{
+											movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+										}
+
+										result.Add(movie);
+									}
 								}
 							}
 						}
@@ -133,6 +153,44 @@ namespace MovieMiner
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
+
+		private void AddMovie(string nodeText, DateTime? articleDate, List<IMovie> result)
+		{
+			int index = nodeText.IndexOf(DELIMITER);
+			var movieName = nodeText.Substring(0, index);
+
+			// Might switch this to RegEx...
+
+			var valueInMillions = nodeText.Substring(index, nodeText.Length - index)?.Contains("million");
+
+			var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace("million", string.Empty);
+
+			var parenIndex = estimatedBoxOffice.IndexOf("(");
+
+			if (parenIndex > 0)
+			{
+				// Trim out the FML bux.
+				estimatedBoxOffice = estimatedBoxOffice.Substring(0, parenIndex - 1);
+			}
+
+			if (!string.IsNullOrEmpty(movieName))
+			{
+				var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
+				var movie = new Movie
+				{
+					MovieName = ParseName(name),
+					Day = ParseDayOfWeek(name),
+					Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
+				};
+
+				if (articleDate.HasValue)
+				{
+					movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+				}
+
+				result.Add(movie);
+			}
+		}
 
 		private DayOfWeek? ParseDayOfWeek(string name)
 		{

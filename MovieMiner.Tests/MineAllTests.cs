@@ -663,8 +663,7 @@ namespace MovieMiner.Tests
 		{
 			foreach (var movie in movies)
 			{
-				// Don't use contains key because we're testing the Equals() method.
-				var foundKey = counts.Keys.FirstOrDefault(item => (new Movie { Name = item }).Equals(movie));
+				var foundKey = counts.Keys.FirstOrDefault(item => item == movie.Name);
 
 				if (foundKey != null)
 				{
