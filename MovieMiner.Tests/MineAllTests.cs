@@ -253,7 +253,7 @@ namespace MovieMiner.Tests
 
 			var myList = CreateMyList(minedData, miners);
 
-			var header = "\n__Name____________________________SM Cine";
+			var header = "\n\n__Name____________________________SM Cine";
 
 			for (int index = 0; index < miners.Count; index++)
 			{
