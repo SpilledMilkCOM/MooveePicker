@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker", "MoviePicker\MoviePicker.csproj", "{FB01C56F-1F93-4174-9D64-154F23B92691}"
 EndProject
@@ -25,6 +25,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRunner", "TestRunner\TestRunner.csproj", "{EAF16F79-E857-4DD7-8DEF-6937A8140DFD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieMiner.Tests", "MovieMiner.Tests\MovieMiner.Tests.csproj", "{8A196C39-2AB8-4A6C-8094-BCFDABD6827C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.WebApp", "MoviePicker.WebApp\MoviePicker.WebApp.csproj", "{1953654A-9A04-42A0-94F8-99E9E72C0097}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.WebApp.Tests", "MoviePicker.WebApp.Tests\MoviePicker.WebApp.Tests.csproj", "{52473B04-56A5-432E-AB0F-CCD6C533F4FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -182,6 +186,38 @@ Global
 		{8A196C39-2AB8-4A6C-8094-BCFDABD6827C}.Release|x64.Build.0 = Release|Any CPU
 		{8A196C39-2AB8-4A6C-8094-BCFDABD6827C}.Release|x86.ActiveCfg = Release|Any CPU
 		{8A196C39-2AB8-4A6C-8094-BCFDABD6827C}.Release|x86.Build.0 = Release|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Debug|ARM.Build.0 = Debug|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Debug|x64.Build.0 = Debug|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Debug|x86.Build.0 = Debug|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Release|ARM.ActiveCfg = Release|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Release|ARM.Build.0 = Release|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Release|x64.ActiveCfg = Release|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Release|x64.Build.0 = Release|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Release|x86.ActiveCfg = Release|Any CPU
+		{1953654A-9A04-42A0-94F8-99E9E72C0097}.Release|x86.Build.0 = Release|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Debug|x64.Build.0 = Debug|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Debug|x86.Build.0 = Debug|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|ARM.Build.0 = Release|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|x64.ActiveCfg = Release|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|x64.Build.0 = Release|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|x86.ActiveCfg = Release|Any CPU
+		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
