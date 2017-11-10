@@ -719,6 +719,7 @@ namespace MovieMiner.Tests
 				new MineNerd { Weight = 1 },
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
+				new MineBoxOfficeMojo { Weight = 1 },
 				new MineCulturedVultures { Weight = 2 },
 				new MineBoxOfficeProphet { Weight = 2 }
 			};
@@ -882,7 +883,7 @@ namespace MovieMiner.Tests
 				}
 				catch (Exception ex)
 				{
-					result.Add(new List<IMovie>());		// Add a placeholder.
+					result.Add(new List<IMovie>());     // Add a placeholder.
 
 					Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
 				}
