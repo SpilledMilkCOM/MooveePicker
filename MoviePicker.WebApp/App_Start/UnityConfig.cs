@@ -1,6 +1,9 @@
+using MoviePicker.WebApp.Interfaces;
+using MoviePicker.WebApp.Models;
 using System;
 
 using Unity;
+using Unity.Lifetime;
 
 namespace MoviePicker.WebApp
 {
@@ -36,12 +39,20 @@ namespace MoviePicker.WebApp
         /// </remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-            // NOTE: To load from web.config uncomment the line below.
-            // Make sure to add a Unity.Configuration to the using statements.
-            // container.LoadConfiguration();
+			// NOTE: To load from web.config uncomment the line below.
+			// Make sure to add a Unity.Configuration to the using statements.
+			// container.LoadConfiguration();
 
-            // TODO: Register your type's mappings here.
-            // container.RegisterType<IProductRepository, ProductRepository>();
-        }
-    }
+			// TODO: Register your type's mappings here.
+			// container.RegisterType<IProductRepository, ProductRepository>();
+
+			// Understanding Lifetime Managers
+			// https://msdn.microsoft.com/en-us/library/ff660872(v=pandp.20).aspx
+
+			// Since the MinerModel will contain mined data then I probably want to keep this around longer than a single call.
+			// But if everything else is manipulated through Angular then it might not be a big deal.
+			container.RegisterType<IMinerModel, MinerModel>();
+			container.RegisterType<IHomeViewModel, HomeViewModel>();
+		}
+	}
 }

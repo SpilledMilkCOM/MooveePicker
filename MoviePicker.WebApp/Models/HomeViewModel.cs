@@ -1,11 +1,11 @@
-﻿using System;
+﻿using MovieMiner;
+using MoviePicker.WebApp.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace MoviePicker.WebApp.Models
 {
-	public class HomeViewModel
+	public class HomeViewModel : IHomeViewModel
 	{
+		public IEnumerable<IMiner> Miners { get; set; }
 	}
 }

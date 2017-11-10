@@ -34,7 +34,7 @@ namespace MovieMiner
 
 			// Figure out which column to mine from the column title.
 
-			int columnToMine = 0;
+			//int columnToMine = 0;
 
 			//tableRows = tableNode?.SelectNodes("tbody//td[contains(@class, 'movie-title')]//span[contains(@class, 'title')]");
 			tableRows = tableNode?.SelectNodes("tbody//tr[contains(@class, 'group-')]");
