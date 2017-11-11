@@ -187,6 +187,8 @@ namespace MovieMiner
 				}
 			}
 
+			Movies = result;
+
 			return result;
 		}
 	}

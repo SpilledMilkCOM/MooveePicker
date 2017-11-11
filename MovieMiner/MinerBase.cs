@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 using MoviePicker.Common.Interfaces;
 
@@ -18,6 +16,8 @@ namespace MovieMiner
 		}
 
 		public string Abbreviation { get; private set; }
+
+		public List<IMovie> Movies { get; protected set; }
 
 		public string Name { get; private set; }
 

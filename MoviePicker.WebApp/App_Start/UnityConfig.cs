@@ -52,7 +52,7 @@ namespace MoviePicker.WebApp
 			// Since the MinerModel will contain mined data then I probably want to keep this around longer than a single call.
 			// But if everything else is manipulated through Angular then it might not be a big deal.
 			container.RegisterType<IMinerModel, MinerModel>();
-			container.RegisterType<IHomeViewModel, HomeViewModel>();
+			container.RegisterType<IIndexViewModel, IndexViewModel>();
 		}
 	}
 }

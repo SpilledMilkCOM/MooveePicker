@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MoviePicker.WebApp.Models
 {
-	public class HomeViewModel : IHomeViewModel
+	public class IndexViewModel : IIndexViewModel
 	{
 		public IEnumerable<IMiner> Miners { get; set; }
 	}

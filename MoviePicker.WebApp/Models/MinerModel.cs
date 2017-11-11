@@ -15,13 +15,15 @@ namespace MoviePicker.WebApp.Models
 			Miners = CreateMinersWithData();
 		}
 
-		public List<IMiner> Miners { get; set; }
+		public List<IMiner> Miners { get; private set; }
 
 		public List<IMiner> CreateMinersWithData()
 		{
 			var miners = CreateMiners();
 
-			return null;
+			MineMiners(miners);
+
+			return miners;
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
@@ -54,7 +56,6 @@ namespace MoviePicker.WebApp.Models
 			};
 		}
 
-
 		/// <summary>
 		/// Mine all of the miner movie data.
 		/// </summary>
@@ -65,6 +66,8 @@ namespace MoviePicker.WebApp.Models
 			var result = new List<List<IMovie>>();
 			List<IMovie> nerdList = null;
 			List<IMovie> compoundMovies = null;
+
+			//TODO: Thread these calls out...
 
 			foreach (var miner in miners)
 			{

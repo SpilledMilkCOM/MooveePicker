@@ -21,7 +21,7 @@ namespace MovieMiner
 
 		public override List<IMovie> Mine()
 		{
-			var result = new List<IMovie>();
+			Movies = new List<IMovie>();
 			var web = new HtmlWeb();
 
 			var doc = web.Load(Url);
@@ -102,14 +102,14 @@ namespace MovieMiner
 
 							if (movie != null)
 							{
-								result.Add(movie);
+								Movies.Add(movie);
 							}
 						}
 					}
 				}
 			}
 
-			return result;
+			return Movies;
 		}
 	}
 }

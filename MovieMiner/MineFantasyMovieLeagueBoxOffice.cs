@@ -72,6 +72,8 @@ namespace MovieMiner
 				var columns = tableNode?.SelectNodes($"tbody//tr[//span[text() = '{movie.Name}']]");
 			}
 
+			Movies = result;
+
 			return result;
 		}
 

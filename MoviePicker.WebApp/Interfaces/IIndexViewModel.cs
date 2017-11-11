@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MoviePicker.WebApp.Interfaces
 {
-	public interface IHomeViewModel
+	public interface IIndexViewModel
 	{
 		IEnumerable<IMiner> Miners { get; set; }
 	}

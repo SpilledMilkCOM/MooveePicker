@@ -1,6 +1,4 @@
-﻿using MovieMiner;
-using MoviePicker.WebApp.Interfaces;
-using System.Collections.Generic;
+﻿using MoviePicker.WebApp.Interfaces;
 using System.Web.Mvc;
 
 namespace MoviePicker.WebApp.Controllers
@@ -8,17 +6,18 @@ namespace MoviePicker.WebApp.Controllers
 	public class HomeController : Controller
 	{
 		private IMinerModel _minerModel;
-		private IHomeViewModel _viewModel;
+		private IIndexViewModel _viewModel;
 
-		public HomeController(IHomeViewModel viewModel, IMinerModel minerModel)
+		public HomeController(IIndexViewModel viewModel, IMinerModel minerModel)
 		{
 			_minerModel = minerModel;
 			_viewModel = viewModel;
+			_viewModel.Miners = minerModel.Miners;
 		}
 
 		public ActionResult Index()
 		{
-			return View();
+			return View(_viewModel);
 		}
 
 		public ActionResult About()

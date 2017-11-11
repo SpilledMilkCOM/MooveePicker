@@ -14,6 +14,8 @@ namespace MovieMiner
 		/// </summary>
 		string Abbreviation { get; }
 
+		List<IMovie> Movies { get; }
+
 		/// <summary>
 		/// Name of the Miner
 		/// </summary>
