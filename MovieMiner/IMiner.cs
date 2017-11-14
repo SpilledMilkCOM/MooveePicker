@@ -31,6 +31,8 @@ namespace MovieMiner
 		/// </summary>
 		int Weight { get; set; }
 
+		void Clear();
+
 		List<IMovie> Mine();
 
 		//Task<List<IMovie>> MineAsync();			// Not just yet.

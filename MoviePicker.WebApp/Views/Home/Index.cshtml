@@ -1,33 +1,65 @@
 ﻿@model  MoviePicker.WebApp.Models.IndexViewModel
 
 @{
-    ViewBag.Title = "Home Page";
+	ViewBag.Title = "Home Page";
 }
 
-<table class="table">
-	<thead>
-		<tr>
-			<th>Movie</th>
-			@foreach (var miner in Model.Miners)
-			{
-				<th>@miner.Abbreviation</th>
-			}
-		</tr>
-	</thead>
+<h2>Box Office Forecasts</h2>
+<h5>weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString()</h5>
 
-	<tbody>
-		@foreach (var movie in Model.Miners.First().Movies)
-		{
+@using (Html.BeginForm("Picks", "Home", null, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
+{
+	<table class="table">
+		<thead>
 			<tr>
-				<td>@movie.Name</td>
+				<th>BUX</th>
+				<th>Movie</th>
+				@foreach (var miner in Model.Miners)
+				{
+					<th><a href="@miner.Url">@miner.Abbreviation</a></th>
+				}
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				@foreach (var miner in Model.Miners)
+				{
+					<td><a href="@Model.GetFMLNerdLink(miner)">Analyze</a></td>
+				}
+			</tr>
+		</thead>
+
+		<tbody>
+			@foreach (var movie in Model.Miners.First().Movies)
+			{
+				<tr>
+					<td>@movie.Cost</td>
+					<td>@movie.Name</td>
+
+					@foreach (var miner in Model.Miners)
+					{
+						var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
+
+						<td>@string.Format("{0:N0}", minerMovie?.Earnings)</td>
+					}
+				</tr>
+			}
+
+			<tr>
+				<td></td>
+				<th>Weights</th>
 
 				@foreach (var miner in Model.Miners)
 				{
-					var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
-
-					<td>@string.Format("{0:N0}", minerMovie?.Earnings)</td>
+				<td>
+					<input id="@string.Format("{0}Id", miner.GetType().Name)" class="form-control" type="text" value="@miner.Weight" width="50" />
+				</td>
 				}
+
 			</tr>
-		}
-	</tbody>
-</table>
+		</tbody>
+	</table>
+
+	<input class="btn btn-default" type="submit" value="Picks" />
+
+}

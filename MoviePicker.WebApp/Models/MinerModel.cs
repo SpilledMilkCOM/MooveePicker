@@ -10,6 +10,8 @@ namespace MoviePicker.WebApp.Models
 {
 	public class MinerModel : IMinerModel
 	{
+		private const int NERD_INDEX = 0;
+
 		public MinerModel()
 		{
 			Miners = CreateMinersWithData();
@@ -22,6 +24,8 @@ namespace MoviePicker.WebApp.Models
 			var miners = CreateMiners();
 
 			MineMiners(miners);
+
+			FilterMinerMovies(miners);
 
 			return miners;
 		}
@@ -54,6 +58,23 @@ namespace MoviePicker.WebApp.Models
 				new MineCulturedVultures { Weight = 2 },
 				new MineBoxOfficeProphet { Weight = 2 }
 			};
+		}
+
+		/// <summary>
+		/// Filter out the data that does not match the base date.
+		/// </summary>
+		/// <param name="minerData"></param>
+		void FilterMinerMovies(List<IMiner> minerData)
+		{
+			DateTime? weekendEnding = minerData[NERD_INDEX].Movies?.FirstOrDefault()?.WeekendEnding;
+
+			for (int index = NERD_INDEX + 1; index < minerData.Count; index++)
+			{
+				if (minerData[index].Movies?.FirstOrDefault()?.WeekendEnding != weekendEnding)
+				{
+					minerData[index].Clear();
+				}
+			}
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
 ﻿using MoviePicker.WebApp.Interfaces;
+using MoviePicker.WebApp.Models;
 using System.Web.Mvc;
 
 namespace MoviePicker.WebApp.Controllers
@@ -32,6 +33,17 @@ namespace MoviePicker.WebApp.Controllers
 			ViewBag.Message = "Your contact page.";
 
 			return View();
+		}
+
+		public ActionResult Picks()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		public ActionResult Picks(IndexViewModel viewModel)
+		{
+			return RedirectToAction("Picks");
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------

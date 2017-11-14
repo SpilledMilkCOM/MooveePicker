@@ -25,6 +25,11 @@ namespace MovieMiner
 
 		public int Weight { get; set; }
 
+		public void Clear()
+		{
+			Movies = new List<IMovie>();
+		}
+
 		public abstract List<IMovie> Mine();
 
 		protected decimal ParseEarnings(string earnings)
