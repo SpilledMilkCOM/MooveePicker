@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using MovieMiner;
-using MoviePicker.WebApp.Interfaces;
-using MoviePicker.Common.Interfaces;
-using System.Linq;
+﻿using MovieMiner;
 using MoviePicker.Common;
+using MoviePicker.Common.Interfaces;
+using MoviePicker.WebApp.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MoviePicker.WebApp.Models
 {
@@ -88,22 +89,20 @@ namespace MoviePicker.WebApp.Models
 			List<IMovie> nerdList = null;
 			List<IMovie> compoundMovies = null;
 
+			// Nerd list is first.
+
+			nerdList = miners.First().Mine();
+			result.Add(nerdList);
+
+			compoundMovies = nerdList.Where(movie => movie.Day.HasValue).ToList();
+
 			//TODO: Thread these calls out...
 
-			foreach (var miner in miners)
+			Parallel.ForEach(miners, miner =>
 			{
 				try
 				{
-					if (nerdList == null)
-					{
-						// Nerd list is first.
-
-						nerdList = miner.Mine();
-						result.Add(nerdList);
-
-						compoundMovies = nerdList.Where(movie => movie.Day.HasValue).ToList();
-					}
-					else
+					if (miner != nerdList)
 					{
 						var movieList = (miner.Weight > 0) ? miner.Mine() : null;
 
@@ -160,7 +159,7 @@ namespace MoviePicker.WebApp.Models
 
 					//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
 				}
-			}
+			});
 
 			return result;
 		}
