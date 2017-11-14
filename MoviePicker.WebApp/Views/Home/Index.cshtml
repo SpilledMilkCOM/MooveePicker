@@ -48,13 +48,19 @@
 			<tr>
 				<td></td>
 				<th>Weights</th>
-
-				@foreach (var miner in Model.Miners)
+				<td>
+					@Html.TextBoxFor(model => model.NerdWeight, new { @class = "form-control" })
+				</td>
+				<td>
+					@Html.TextBoxFor(model => model.ToddWeight, new { @class = "form-control" })
+				</td>
+				@*@foreach (var miner in Model.Miners)
 				{
 				<td>
+					@Html.TextBoxFor(model => model.Miners.First(item => item.Name == miner.Name).Weight, new { @class = "form-control" })
 					<input id="@string.Format("{0}Id", miner.GetType().Name)" class="form-control" type="text" value="@miner.Weight" width="50" />
 				</td>
-				}
+				}*@
 
 			</tr>
 		</tbody>

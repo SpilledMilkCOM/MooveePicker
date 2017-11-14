@@ -1,5 +1,6 @@
 ﻿using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace MoviePicker.WebApp.Controllers
@@ -14,6 +15,9 @@ namespace MoviePicker.WebApp.Controllers
 			_minerModel = minerModel;
 			_viewModel = viewModel;
 			_viewModel.Miners = minerModel.Miners;
+
+			_viewModel.NerdWeight = minerModel.Miners[0].Weight;
+			_viewModel.ToddWeight = minerModel.Miners[1].Weight;
 		}
 
 		public ActionResult Index()
@@ -35,6 +39,7 @@ namespace MoviePicker.WebApp.Controllers
 			return View();
 		}
 
+		[HttpGet]
 		public ActionResult Picks()
 		{
 			return View();

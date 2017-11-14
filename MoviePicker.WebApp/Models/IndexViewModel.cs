@@ -9,6 +9,10 @@ namespace MoviePicker.WebApp.Models
 	{
 		public IEnumerable<IMiner> Miners { get; set; }
 
+		public int NerdWeight { get; set; }
+
+		public int ToddWeight { get; set; }
+
 		public string GetFMLNerdLink(IMiner miner)
 		{
 			string url = "http://analyzer.fmlnerd.com/lineups/?ests=";

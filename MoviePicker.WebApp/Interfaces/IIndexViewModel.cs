@@ -7,6 +7,10 @@ namespace MoviePicker.WebApp.Interfaces
 	{
 		IEnumerable<IMiner> Miners { get; set; }
 
+		int NerdWeight { get; set; }
+
+		int ToddWeight { get; set; }
+
 		string GetFMLNerdLink(IMiner miner);
 	}
 }
