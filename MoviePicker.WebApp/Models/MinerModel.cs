@@ -119,6 +119,8 @@ namespace MoviePicker.WebApp.Models
 									compoundMovies = movieList.Where(movie => movie.Day.HasValue).ToList();
 								}
 
+								// TODO: Move this creation outside of the thread so the compound movie list is set.
+
 								if (!movieList.Any(movie => movie.Day.HasValue))
 								{
 									// The list has no compound movies so they need to be built
