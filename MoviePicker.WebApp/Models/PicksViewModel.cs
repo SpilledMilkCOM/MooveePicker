@@ -20,6 +20,31 @@ namespace MoviePicker.WebApp.Models
 		/// </summary>
 		/// <param name="miner"></param>
 		/// <returns></returns>
+		public string GetFMLNerdLink()
+		{
+			// TODO: Consolidate
+
+			string url = "http://analyzer.fmlnerd.com/lineups/?ests=";
+			string movieList = null;
+
+			foreach (var movie in Movies)
+			{
+				if (movieList != null)
+				{
+					movieList += ",";
+				}
+
+				movieList += movie == null ? "0" : movie.Earnings.ToString();
+			}
+
+			return url + movieList;
+		}
+
+		/// <summary>
+		/// TODO: Consolidate
+		/// </summary>
+		/// <param name="miner"></param>
+		/// <returns></returns>
 		public string GetFMLNerdLink(IMiner miner)
 		{
 			// TODO: Consolidate

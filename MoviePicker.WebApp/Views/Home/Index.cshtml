@@ -7,6 +7,8 @@
 <h2>Box Office Forecasts</h2>
 <h5>weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString()</h5>
 
+@* Showing the data from ALL of the sources/miners *@
+
 @using (Html.BeginForm("Picks", "Home", null, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
 {
 	<table class="table">
@@ -74,14 +76,6 @@
 				<td>
 					@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control" })
 				</td>
-				@*@foreach (var miner in Model.Miners)
-				{
-				<td>
-					@Html.TextBoxFor(model => model.Miners.First(item => item.Name == miner.Name).Weight, new { @class = "form-control" })
-					<input id="@string.Format("{0}Id", miner.GetType().Name)" class="form-control" type="text" value="@miner.Weight" width="50" />
-				</td>
-				}*@
-
 			</tr>
 		</tbody>
 	</table>
