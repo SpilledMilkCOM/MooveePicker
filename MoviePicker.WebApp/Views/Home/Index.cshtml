@@ -56,7 +56,10 @@
 				<td></td>
 				<th>Weights</th>
 
-				@* Use reflection to loop through these "flat" properties. *@
+				@* 
+					This is pretty brute force to get the values through to the Post.
+					TODO: Use reflection to loop through these "flat" properties.
+				*@
 
 				<td>
 					@Html.TextBoxFor(model => model.Weight1, new { @class = "form-control" })

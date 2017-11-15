@@ -20,7 +20,7 @@
 		@foreach (var pick in Model.Movies)
 			{
 			<tr>
-				<td>@pick.Cost</td>
+				<td style="text-align: right">@pick.Cost</td>
 				<td>@pick.Name</td>
 				<td style="text-align: right">$@pick.Earnings.ToString("N0")</td>
 			</tr>

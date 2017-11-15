@@ -67,5 +67,23 @@ namespace MoviePicker.WebApp.Models
 
 			return url + movieList;
 		}
+
+		public string Rank(IMovie movie)
+		{
+			string result = string.Empty;
+			int rank = 1;
+
+			foreach (var ranked in Movies.OrderByDescending(item => item.Efficiency))
+			{
+				if (movie == ranked)
+				{
+					result = rank.ToString();
+				}
+
+				rank++;
+			}
+
+			return result;
+		}
 	}
 }
