@@ -24,7 +24,12 @@
 				<td></td>
 				@foreach (var miner in Model.Miners)
 				{
-					<td><a href="@Model.GetFMLNerdLink(miner)">Analyze</a></td>
+					<td>
+						@if (miner.Movies?.Count > 0)
+						{
+							<a href="@Model.GetFMLNerdLink(miner)" class="btn btn-info btn-sm">Analyze</a>
+						}
+					</td>
 				}
 			</tr>
 		</thead>
@@ -48,11 +53,26 @@
 			<tr>
 				<td></td>
 				<th>Weights</th>
+
+				@* Use reflection to loop through these "flat" properties. *@
+
 				<td>
-					@Html.TextBoxFor(model => model.NerdWeight, new { @class = "form-control" })
+					@Html.TextBoxFor(model => model.Weight1, new { @class = "form-control" })
 				</td>
 				<td>
-					@Html.TextBoxFor(model => model.ToddWeight, new { @class = "form-control" })
+					@Html.TextBoxFor(model => model.Weight2, new { @class = "form-control" })
+				</td>
+				<td>
+					@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control" })
+				</td>
+				<td>
+					@Html.TextBoxFor(model => model.Weight4, new { @class = "form-control" })
+				</td>
+				<td>
+					@Html.TextBoxFor(model => model.Weight5, new { @class = "form-control" })
+				</td>
+				<td>
+					@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control" })
 				</td>
 				@*@foreach (var miner in Model.Miners)
 				{

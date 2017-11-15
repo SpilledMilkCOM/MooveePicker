@@ -31,6 +31,25 @@ namespace MoviePicker.WebApp.Models
 			return miners;
 		}
 
+		public List<IMovie> CreateWeightedList()
+		{
+			var result = new List<IMovie>();
+
+			// FML Nerd (Pete) should have all of the movies WITH the Bux
+			// Use the nerd data to copy the bux to each list.
+
+			var nerdMovies = Miners[NERD_INDEX].Movies;
+
+			foreach (var movie in nerdMovies.OrderByDescending(item => item.Cost))
+			{
+				// My list is based on how well I trust these sources.
+
+				result.Add(CreateWeightedMovie(movie));
+			}
+
+			return result;
+		}
+
 		//----==== PRIVATE ====--------------------------------------------------------------------
 
 		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)
@@ -59,6 +78,46 @@ namespace MoviePicker.WebApp.Models
 				new MineCulturedVultures { Weight = 2 },
 				new MineBoxOfficeProphet { Weight = 2 }
 			};
+		}
+
+		/// <summary>
+		/// Create a single movie with the Earnings calculated from the mined data.
+		/// </summary>
+		/// <param name="baseMovie">The movie being matched (from FML Nerd)</param>
+		/// <param name="movieData">All of the movie lists.</param>
+		/// <param name="miners">All of the movie miners.</param>
+		/// <returns></returns>
+		private IMovie CreateWeightedMovie(IMovie baseMovie)
+		{
+			int totalWeight = Miners[NERD_INDEX].Weight;
+
+			var result = new Movie
+			{
+				Id = baseMovie.Id,
+				MovieName = baseMovie.MovieName,
+				Day = baseMovie.Day,
+				Cost = baseMovie.Cost,
+				Earnings = baseMovie.Earnings * totalWeight,
+				WeekendEnding = baseMovie.WeekendEnding
+			};
+
+			for (int index = 0; index < Miners.Count; index++)
+			{
+				if (index != NERD_INDEX)
+				{
+					var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => item.Equals(baseMovie) && item.WeekendEnding == result.WeekendEnding);
+
+					if (foundMovie != null)
+					{
+						result.Earnings += foundMovie.Earnings * Miners[index].Weight;
+						totalWeight += Miners[index].Weight;
+					}
+				}
+			}
+
+			result.Earnings /= totalWeight;     // Weighted average.
+
+			return result;
 		}
 
 		/// <summary>

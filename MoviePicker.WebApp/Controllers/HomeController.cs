@@ -1,6 +1,6 @@
-﻿using MoviePicker.WebApp.Interfaces;
+﻿using MoviePicker.Common.Interfaces;
+using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace MoviePicker.WebApp.Controllers
@@ -9,15 +9,21 @@ namespace MoviePicker.WebApp.Controllers
 	{
 		private IMinerModel _minerModel;
 		private IIndexViewModel _viewModel;
+		private IMoviePicker _moviePicker;
 
-		public HomeController(IIndexViewModel viewModel, IMinerModel minerModel)
+		public HomeController(IIndexViewModel viewModel, IMinerModel minerModel, IMoviePicker moviePicker)
 		{
 			_minerModel = minerModel;
+			_moviePicker = moviePicker;
 			_viewModel = viewModel;
 			_viewModel.Miners = minerModel.Miners;
 
-			_viewModel.NerdWeight = minerModel.Miners[0].Weight;
-			_viewModel.ToddWeight = minerModel.Miners[1].Weight;
+			_viewModel.Weight1 = minerModel.Miners[0].Weight;
+			_viewModel.Weight2 = minerModel.Miners[1].Weight;
+			_viewModel.Weight3 = minerModel.Miners[2].Weight;
+			_viewModel.Weight4 = minerModel.Miners[3].Weight;
+			_viewModel.Weight5 = minerModel.Miners[4].Weight;
+			_viewModel.Weight6 = minerModel.Miners[5].Weight;
 		}
 
 		public ActionResult Index()
@@ -42,16 +48,43 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Picks()
 		{
-			return View();
+			return View(ConstructPicksViewModel());
 		}
 
 		[HttpPost]
 		public ActionResult Picks(IndexViewModel viewModel)
 		{
-			return RedirectToAction("Picks");
+			// Transfer the posted data to the actual ViewModel
+
+			_minerModel.Miners[0].Weight = viewModel.Weight1;
+			_minerModel.Miners[1].Weight = viewModel.Weight2;
+			_minerModel.Miners[2].Weight = viewModel.Weight3;
+			_minerModel.Miners[3].Weight = viewModel.Weight4;
+			_minerModel.Miners[4].Weight = viewModel.Weight5;
+			_minerModel.Miners[5].Weight = viewModel.Weight6;
+
+			//return RedirectToAction("Picks");
+			return View(ConstructPicksViewModel());
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
 
+		private PicksViewModel ConstructPicksViewModel()
+		{
+			var result = new PicksViewModel();
+
+			result.Miners = _minerModel.Miners;
+			result.Movies = _minerModel.CreateWeightedList();
+
+			_moviePicker.AddMovies(result.Movies);
+
+			result.MovieList = _moviePicker.ChooseBest();
+
+			_moviePicker.EnableBestPerformer = false;
+
+			result.MovieListBonusOff = _moviePicker.ChooseBest();
+
+			return result;
+		}
 	}
 }

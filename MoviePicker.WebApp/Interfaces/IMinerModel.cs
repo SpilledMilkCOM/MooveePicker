@@ -1,4 +1,5 @@
 ﻿using MovieMiner;
+using MoviePicker.Common.Interfaces;
 using System.Collections.Generic;
 
 namespace MoviePicker.WebApp.Interfaces
@@ -8,5 +9,7 @@ namespace MoviePicker.WebApp.Interfaces
 		List<IMiner> Miners { get; }
 
 		List<IMiner> CreateMinersWithData();
+
+		List<IMovie> CreateWeightedList();
 	}
 }

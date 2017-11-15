@@ -166,6 +166,7 @@
     <Compile Include="Interfaces\IIndexViewModel.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\MinerModel.cs" />
+    <Compile Include="Models\PicksViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +242,10 @@
     <ProjectReference Include="..\MoviePicker.Common\MoviePicker.Common.csproj">
       <Project>{c413ba12-dcd8-485e-b008-087ba02004cb}</Project>
       <Name>MoviePicker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MoviePicker.Msf\MoviePicker.Msf.csproj">
+      <Project>{420fcf88-e38d-46ee-a4de-be87042d5b1b}</Project>
+      <Name>MoviePicker.Msf</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

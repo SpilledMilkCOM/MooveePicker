@@ -1,3 +1,5 @@
+using MoviePicker.Common.Interfaces;
+using MoviePicker.Msf;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
 using System;
@@ -51,8 +53,9 @@ namespace MoviePicker.WebApp
 
 			// Since the MinerModel will contain mined data then I probably want to keep this around longer than a single call.
 			// But if everything else is manipulated through Angular then it might not be a big deal.
-			container.RegisterType<IMinerModel, MinerModel>();
-			container.RegisterType<IIndexViewModel, IndexViewModel>();
+			container.RegisterType<IMinerModel, MinerModel>(new PerThreadLifetimeManager());
+			container.RegisterType<IIndexViewModel, IndexViewModel>(new PerThreadLifetimeManager());
+			container.RegisterType<IMoviePicker, MsfMovieSolver>();
 		}
 	}
 }

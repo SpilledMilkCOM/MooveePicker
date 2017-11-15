@@ -1,37 +1,29 @@
 ﻿using MovieMiner;
-using MoviePicker.WebApp.Interfaces;
+using MoviePicker.Common.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace MoviePicker.WebApp.Models
 {
-	/// <summary>
-	/// The ViewModel for the Index page.  Flattening out the data seems to help with the Post back to the controller.
-	/// </summary>
-	public class IndexViewModel : IIndexViewModel
+	public class PicksViewModel
 	{
-		/// <summary>
-		/// Display the Miners on the page.
-		/// </summary>
 		public IEnumerable<IMiner> Miners { get; set; }
 
+		public IMovieList MovieList { get; set; }
+
+		public IMovieList MovieListBonusOff { get; set; }
+
+		public IEnumerable<IMovie> Movies { get; set; }
+
 		/// <summary>
-		/// Post the Weight back to the controller.
+		/// TODO: Consolidate
 		/// </summary>
-		public int Weight1 { get; set; }
-
-		public int Weight2 { get; set; }
-
-		public int Weight3 { get; set; }
-
-		public int Weight4 { get; set; }
-
-		public int Weight5 { get; set; }
-
-		public int Weight6 { get; set; }
-
+		/// <param name="miner"></param>
+		/// <returns></returns>
 		public string GetFMLNerdLink(IMiner miner)
 		{
+			// TODO: Consolidate
+
 			string url = "http://analyzer.fmlnerd.com/lineups/?ests=";
 			string movieList = null;
 			var nerdList = Miners.First();
