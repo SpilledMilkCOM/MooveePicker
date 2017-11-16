@@ -23,6 +23,8 @@ namespace MovieMiner
 
 		public string Url { get; private set; }
 
+		public string UrlSource { get; protected set; }
+
 		public int Weight { get; set; }
 
 		public void Clear()

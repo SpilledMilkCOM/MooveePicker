@@ -22,9 +22,14 @@ namespace MovieMiner
 		string Name { get; }
 
 		/// <summary>
-		/// Typically the root Url for the initial page.
+		/// Typically the root Url for the root page.
 		/// </summary>
 		string Url { get; }
+
+		/// <summary>
+		/// Typically the root Url for the initial page.
+		/// </summary>
+		string UrlSource { get; }
 
 		/// <summary>
 		/// Used for weighted average.

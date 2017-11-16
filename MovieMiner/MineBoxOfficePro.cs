@@ -41,9 +41,11 @@ namespace MovieMiner
 				{
 					DateTime? articleDate = null;
 
+					UrlSource = href;
+
 					// Now retrieve the article page.
 
-					doc = web.Load(href);
+					doc = web.Load(UrlSource);
 
 					// Get the date of the article
 

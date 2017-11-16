@@ -28,6 +28,7 @@ namespace MovieMiner
 				{"SUN ", DayOfWeek.Sunday}
 			};
 
+			UrlSource = DEFAULT_URL;
 		}
 
 		public override List<IMovie> Mine()

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 
@@ -40,9 +39,11 @@ namespace MovieMiner
 				{
 					DateTime? articleDate = null;
 
+					UrlSource = href;
+
 					// Now retrieve the article page.
 
-					doc = web.Load(href);
+					doc = web.Load(UrlSource);
 
 					// Get the date of the article
 
@@ -88,7 +89,7 @@ namespace MovieMiner
 
 								if (index > 0)
 								{
-									currentValue = currentValue.Substring(0, index).Replace("$", string.Empty);
+									currentValue = currentValue.Substring(0, index).Replace("$", string.Empty).Trim();
 								}
 
 								if (decimal.TryParse(currentValue, out earnings))
@@ -142,7 +143,8 @@ namespace MovieMiner
 									foreach (Match match in matches)
 									{
 										var movie = new Movie();
-										var titleMatch = Regex.Match(match.Value, @"\s.*\s.\s\$");
+										//var titleMatch = Regex.Match(match.Value, @"\s.*\s.\s\$");
+										var titleMatch = Regex.Match(match.Value, @"\s(.*?)\$");
 										//var earningsMatch = Regex.Match(match.Value, @"\$\d+\smillion");
 										var earningsMatch = Regex.Match(match.Value, @"\$\d+\.*\d*");
 

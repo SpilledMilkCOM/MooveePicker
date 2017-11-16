@@ -25,7 +25,9 @@ namespace MovieMiner
 			var result = new List<IMovie>();
 			var web = new HtmlWeb();
 
-			var doc = web.Load($"{Url}/researchvault?section=box-office");
+			UrlSource = $"{Url}/researchvault?section=box-office";
+
+			var doc = web.Load(UrlSource);
 
 			// Get the data in the table.
 

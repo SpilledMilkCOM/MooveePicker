@@ -54,6 +54,8 @@ namespace MovieMiner
 
 			var doc = web.Load(url);
 
+			UrlSource = url;
+
 			// Lookup XPATH to get the right node that matches.
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
