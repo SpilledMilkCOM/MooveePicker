@@ -12,6 +12,7 @@ namespace MovieMiner
 			Abbreviation = abbr;
 			Name = name;
 			Url = url;
+			UrlSource = url;
 			Weight = 1;
 		}
 

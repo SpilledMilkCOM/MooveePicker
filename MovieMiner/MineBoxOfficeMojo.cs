@@ -126,7 +126,9 @@ namespace MovieMiner
 
 					// Now retrieve the article page.
 
-					doc = web.Load($"{Url}/{href}");
+					UrlSource = $"{Url}/{href}";
+
+					doc = web.Load(UrlSource);
 
 					// Get the date of the article (hoping that the date is the ONLY thing in such a small font)
 
