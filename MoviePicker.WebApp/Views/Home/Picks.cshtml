@@ -62,7 +62,7 @@
 	</div>
 </div>
 
-<h4>Box Office Weighted Averages <a href="@Model.GetFMLNerdLink()" class="btn btn-info btn-sm">Analyze</a></h4>
+<h4>Box Office Weighted Averages <a href="@Model.GetFMLNerdLink()" class="btn btn-info btn-sm">Analyze My Numbers</a></h4>
 
 <div class="row">
 	<div class="col-lg-12">
@@ -88,27 +88,34 @@
 					{
 						var rank = Model.Rank(movie);
 						var rankStyle = rank <= 5 ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+						var rankStyle1 = rank == 1 ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 
 						<tr>
 							<td style="text-align: right">@movie.Cost</td>
 							<td>@movie.Name</td>
 							<td style="text-align: right">@movie.Earnings.ToString("N0")</td>
-							<td style="text-align: right">@movie.Efficiency.ToString("N2")</td>
+							<td style="@rankStyle1">@string.Format("{0}{1:N0}", rank == 1 ? "* " : string.Empty, movie.Efficiency)</td>
 							<td style="@rankStyle">@rank</td>
-							<td style="text-align: right">@string.Format("{0:N2}", mostEfficient.Efficiency * movie.Cost)</td>
-							<td style="text-align: right">@string.Format("{0:N2}", mostEfficient.Efficiency * movie.Cost - movie.Earnings)</td>
+							<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost)</td>
+							<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.Earnings)</td>
 							<td style="@rankStyle">@string.Format("{0:N2}%", (mostEfficient.Efficiency * movie.Cost - movie.Earnings) / movie.Earnings * 100)</td>
 						</tr>
 					}
 				}
-
 			</tbody>
 
-
-			@*Logger.WriteLine($"{index,2}. {movie.Name,-30} --  ${movie.Earnings,13:N2}  [${movie.Efficiency:N2}]"
-				+ $"==> **${mostEfficient.Efficiency * movie.Cost,13:N2} "
-				+ $"++ ${mostEfficient.Efficiency * movie.Cost - movie.Earnings,13:N2}  {(mostEfficient.Efficiency * movie.Cost - movie.Earnings) / movie.Earnings * 100,6:F2}%");*@
-
+			<tfoot>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td style="font-weight: bold; color: #33cc33; text-align: right">* Most Efficient</td>
+					<td style="font-weight: bold; color: #33cc33; text-align: right">Top 5</td>
+					<td></td>
+					<td></td>
+					<td style="font-weight: bold; color: #33cc33; text-align: right">Top 5</td>
+				</tr>
+			</tfoot>
 		</table>
 	</div>
 </div>
