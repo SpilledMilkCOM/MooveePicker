@@ -14,11 +14,11 @@
 	<table class="table">
 		<thead>
 			<tr>
-				<th>BUX</th>
-				<th>Movie</th>
+				<th style="text-align: center">BUX</th>
+				<th style="text-align: center">Movie</th>
 				@foreach (var miner in Model.Miners)
 				{
-					<th><a href="@miner.UrlSource">@miner.Abbreviation</a></th>
+					<th style="text-align: center"><a href="@miner.UrlSource">@miner.Abbreviation</a></th>
 				}
 			</tr>
 			<tr>
@@ -26,7 +26,7 @@
 				<td></td>
 				@foreach (var miner in Model.Miners)
 				{
-					<td>
+					<td style="text-align: center">
 						@if (miner.Movies?.Count > 0)
 						{
 							<a href="@Model.GetFMLNerdLink(miner)" class="btn btn-info btn-sm">Analyze</a>
@@ -47,7 +47,7 @@
 					{
 						var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
 
-						<td>@string.Format("{0:N0}", minerMovie?.Earnings)</td>
+						<td style="text-align: right">@string.Format("{0}{1:N0}", minerMovie?.Earnings > 0 ? "$ " : string.Empty, minerMovie?.Earnings)</td>
 					}
 				</tr>
 			}
