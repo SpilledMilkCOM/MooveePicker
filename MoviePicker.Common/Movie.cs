@@ -39,6 +39,8 @@ namespace MoviePicker.Common
 				WeekendEnding = toCopy.WeekendEnding;
 
 				UpdateEfficiency();
+
+				IsBestPerformer = toCopy.IsBestPerformer;
 			}
 		}
 
@@ -97,7 +99,7 @@ namespace MoviePicker.Common
 
 		public DateTime WeekendEnding { get; set; }
 
-        public IMovie Clone()
+		public IMovie Clone()
 		{
 			return new Movie(this);
 		}
@@ -111,7 +113,7 @@ namespace MoviePicker.Common
 		{
 			bool result = false;
 			var test = obj as IMovie;
-			
+
 			if (test != null)
 			{
 				// Make all the tests case insensitive.
@@ -202,7 +204,7 @@ namespace MoviePicker.Common
 				_efficiency = Earnings / Cost;
 			}
 
-		    _isBestPerformer = false;
+			_isBestPerformer = false;
 		}
 	}
 }

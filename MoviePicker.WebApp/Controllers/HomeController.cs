@@ -1,6 +1,8 @@
 ﻿using MoviePicker.Common.Interfaces;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace MoviePicker.WebApp.Controllers
@@ -79,6 +81,17 @@ namespace MoviePicker.WebApp.Controllers
 			_moviePicker.AddMovies(result.Movies);
 
 			result.MovieList = _moviePicker.ChooseBest();
+
+			// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
+
+			var clonedList = new List<IMovie>();
+
+			foreach (var movie in result.Movies)
+			{
+				clonedList.Add(movie.Clone());
+			}
+
+			_moviePicker.AddMovies(clonedList);
 
 			_moviePicker.EnableBestPerformer = false;
 

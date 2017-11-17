@@ -18,11 +18,13 @@
 
 	<tbody>
 		@foreach (var pick in Model.Movies)
-			{
+		{
+			var rankStyle1 = pick.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+
 			<tr>
 				<td style="text-align: right">@pick.Cost</td>
 				<td>@pick.Name</td>
-				<td style="text-align: right">$@pick.Earnings.ToString("N0")</td>
+				<td style="@rankStyle1">@string.Format("$ {0:N0}{1}", pick.Earnings, pick.IsBestPerformer ? " *" : string.Empty)</td>
 			</tr>
 			}
 	</tbody>
