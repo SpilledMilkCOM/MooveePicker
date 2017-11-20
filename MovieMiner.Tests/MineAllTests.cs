@@ -719,7 +719,7 @@ namespace MovieMiner.Tests
 				new MineNerd { Weight = 1 },
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
-				new MineBoxOfficeMojo { Weight = 1 },
+				new MineBoxOfficeMojo { Weight = 3},
 				new MineCulturedVultures { Weight = 2 },
 				new MineBoxOfficeProphet { Weight = 2 }
 			};

@@ -34,7 +34,7 @@ namespace MoviePicker.WebApp.Models
 					movieList += ",";
 				}
 
-				movieList += movie == null ? "0" : movie.Earnings.ToString();
+				movieList += movie == null ? "0" : ((int)movie.Earnings).ToString("D");
 			}
 
 			return url + movieList;
