@@ -906,7 +906,7 @@ namespace MovieMiner.Tests
 					movieList += ",";
 				}
 
-				movieList += movie.Earnings.ToString();
+				movieList += ((int)movie.Earnings).ToString();
 			}
 
 			Logger.WriteLine(url + movieList);

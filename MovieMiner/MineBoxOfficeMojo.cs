@@ -195,7 +195,10 @@ namespace MovieMiner
 										movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
 									}
 
-									result.Add(movie);
+									if (movie != null && !result.Contains(movie))
+									{
+										result.Add(movie);
+									}
 								}
 							}
 						}
