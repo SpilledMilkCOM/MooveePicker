@@ -71,6 +71,11 @@ namespace MoviePicker.Common
 			}
 		}
 
+		public decimal EarningsBase
+		{
+			get { return _originalEarnings; }
+		}
+
 		public int Id { get; set; }
 
 		public bool IsBestPerformer

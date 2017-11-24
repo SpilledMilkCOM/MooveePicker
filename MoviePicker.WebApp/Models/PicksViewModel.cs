@@ -34,7 +34,7 @@ namespace MoviePicker.WebApp.Models
 					movieList += ",";
 				}
 
-				movieList += movie == null ? "0" : ((int)movie.Earnings).ToString("D");
+				movieList += movie == null ? "0" : ((int)movie.EarningsBase).ToString("D");
 			}
 
 			return url + movieList;
@@ -62,7 +62,7 @@ namespace MoviePicker.WebApp.Models
 					movieList += ",";
 				}
 
-				movieList += minerMovie == null ? "0" : minerMovie.Earnings.ToString();
+				movieList += minerMovie == null ? "0" : minerMovie.EarningsBase.ToString();
 			}
 
 			return url + movieList;

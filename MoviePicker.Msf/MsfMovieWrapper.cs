@@ -60,6 +60,11 @@ namespace MoviePicker.Msf
 			set { _movie.Earnings = value; }
 		}
 
+		public decimal EarningsBase
+		{
+			get { return _movie.EarningsBase; }
+		}
+
 		public double EarningsAsDouble
 		{
 			get { return (double)_movie.Earnings; }

@@ -35,9 +35,14 @@ namespace MoviePicker.Common.Interfaces
         decimal Earnings { get; set; }
 
 		/// <summary>
+		/// The Box Office earnings without any bonuses
+		/// </summary>
+		decimal EarningsBase { get; }
+
+		/// <summary>
 		/// An arbitrary Id for the movie
 		/// </summary>
-        int Id { get; set; }
+		int Id { get; set; }
 
 		/// <summary>
 		/// Set to true if the Efficiency is the best out of all the other movies.
