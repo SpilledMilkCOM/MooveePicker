@@ -543,6 +543,7 @@ namespace MovieMiner.Tests
 			}
 
 			Logger.WriteLine(string.Empty);
+			Logger.WriteLine(miners[NERD_INDEX].Movies.First().WeekendEnding.ToShortDateString());
 
 			var orderedCounts = counts.OrderByDescending(movie => movie.Value).ThenBy(movie => movie.Key);
 
@@ -719,7 +720,7 @@ namespace MovieMiner.Tests
 				new MineNerd { Weight = 1 },
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
-				new MineBoxOfficeMojo { Weight = 1 },
+				new MineBoxOfficeMojo { Weight = 3},
 				new MineCulturedVultures { Weight = 2 },
 				new MineBoxOfficeProphet { Weight = 2 }
 			};
@@ -906,7 +907,7 @@ namespace MovieMiner.Tests
 					movieList += ",";
 				}
 
-				movieList += movie.Earnings.ToString();
+				movieList += ((int)movie.Earnings).ToString();
 			}
 
 			Logger.WriteLine(url + movieList);

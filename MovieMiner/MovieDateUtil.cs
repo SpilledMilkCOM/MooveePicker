@@ -54,6 +54,13 @@ namespace MovieMiner
 			return reference.AddDays(7 - (int)reference.DayOfWeek);
 		}
 
+		public static DateTime ThisSunday(DateTime? dateTime = null)
+		{
+			DateTime reference = dateTime ?? Now;
+
+			return reference.AddDays((int)reference.DayOfWeek);
+		}
+
 		private static DateTime Now => DateTime.Now.Date;
 	}
 }

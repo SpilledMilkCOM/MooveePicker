@@ -188,7 +188,7 @@ namespace MovieMiner
 
 								if (!string.IsNullOrEmpty(movieName))
 								{
-									var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
+									var name = MapName(RemovePunctuation(HttpUtility.HtmlDecode(movieName)));
 									var movie = new Movie
 									{
 										MovieName = name,
@@ -200,7 +200,10 @@ namespace MovieMiner
 										movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
 									}
 
-									result.Add(movie);
+									if (movie != null && !result.Contains(movie))
+									{
+										result.Add(movie);
+									}
 								}
 							}
 						}

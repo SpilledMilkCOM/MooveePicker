@@ -132,7 +132,7 @@ namespace MovieMiner
 										var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
 										var movie = new Movie
 										{
-											MovieName = ParseName(name),
+											MovieName = MapName(ParseName(name)),
 											Day = ParseDayOfWeek(name),
 											Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
 										};
@@ -182,7 +182,7 @@ namespace MovieMiner
 				var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
 				var movie = new Movie
 				{
-					MovieName = ParseName(name),
+					MovieName = MapName(ParseName(name)),
 					Day = ParseDayOfWeek(name),
 					Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
 				};

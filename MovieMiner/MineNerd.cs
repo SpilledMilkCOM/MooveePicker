@@ -75,16 +75,17 @@ namespace MovieMiner
 					foreach (var movie in movieData.Movies)
 					{
 						var name = RemovePunctuation(HttpUtility.HtmlDecode(movie.Title));
-
-						result.Add(new Movie
+						var newMovie = new Movie
 						{
 							Id = id++,
-							Name = ParseName(name),
+							Name = MapName(ParseName(name)),
 							Day = ParseDayOfWeek(name),
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
 							Cost = movie.Bux,
 							WeekendEnding = MovieDateUtil.NextSunday().Date
-						});
+						};
+
+						result.Add(newMovie);
 					}
 				}
 			}

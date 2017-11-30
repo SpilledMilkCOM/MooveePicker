@@ -96,7 +96,7 @@ namespace MovieMiner
 								{
 									currentMovie = new Movie
 									{
-										Name = currentName,
+										Name = MapName(currentName),
 										Earnings = earnings * 1000000
 									};
 
