@@ -81,6 +81,11 @@ namespace MovieMiner
 							if (columnCount == 2)
 							{
 								movie = new Movie { Name = RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText)) };
+
+								if (_weekendEnding.HasValue)
+								{
+									movie.WeekendEnding = _weekendEnding.Value;
+								}
 							}
 							else if (columnCount == 4)
 							{

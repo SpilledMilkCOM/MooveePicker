@@ -70,7 +70,7 @@ namespace MoviePicker.WebApp.Models
 		/// <returns></returns>
 		private List<IMiner> CreateMiners()
 		{
-			return new List<IMiner> {
+			var result = new List<IMiner> {
 				new MineNerd { Weight = 1 },
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
@@ -78,6 +78,12 @@ namespace MoviePicker.WebApp.Models
 				new MineCulturedVultures { Weight = 2 },
 				new MineBoxOfficeProphet { Weight = 2 }
 			};
+
+			// Grab last weeks results for comparisons.
+
+			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday()) { Weight = 0 });
+
+			return result;
 		}
 
 		/// <summary>
