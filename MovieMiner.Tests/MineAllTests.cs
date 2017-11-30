@@ -543,6 +543,7 @@ namespace MovieMiner.Tests
 			}
 
 			Logger.WriteLine(string.Empty);
+			Logger.WriteLine(miners[NERD_INDEX].Movies.First().WeekendEnding.ToShortDateString());
 
 			var orderedCounts = counts.OrderByDescending(movie => movie.Value).ThenBy(movie => movie.Key);
 

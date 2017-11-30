@@ -183,7 +183,7 @@ namespace MovieMiner
 
 								if (!string.IsNullOrEmpty(movieName))
 								{
-									var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
+									var name = MapName(RemovePunctuation(HttpUtility.HtmlDecode(movieName)));
 									var movie = new Movie
 									{
 										MovieName = name,

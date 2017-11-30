@@ -35,6 +35,20 @@ namespace MovieMiner
 
 		public abstract List<IMovie> Mine();
 
+		protected string MapName(string name)
+		{
+			var result = name;
+
+			if (name.ToLower() == "wonder wheel")
+			{
+				// This will prevent "Wonder" from matching this movie.  Yes, a hack, but I want the damn data.
+
+				result = "A Wonder Wheel";
+			}
+
+			return result;
+		}
+
 		protected decimal ParseEarnings(string earnings)
 		{
 			decimal result = 0m;
