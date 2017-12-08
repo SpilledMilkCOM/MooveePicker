@@ -44,6 +44,11 @@ namespace MovieMiner
 
 			var node = doc.DocumentNode.SelectSingleNode($"//body//a[contains(@title, '{_articleTitle}')]");
 
+			if (node == null)
+			{
+				node = doc.DocumentNode.SelectSingleNode($"//body//a[contains(@title, 'Weekend box office')]");
+			}
+
 			if (node != null)
 			{
 				var href = node.GetAttributeValue("href", null);
@@ -91,7 +96,7 @@ namespace MovieMiner
 						if (movieNodes.Count == 1)
 						{
 							var innerHtml = HttpUtility.HtmlDecode(movieNodes.First().InnerHtml);
-							var delimiters = new string[] { "<br><br>" };
+							var delimiters = new string[] { "<br>", "<br><br>" };
 							var tokens = innerHtml.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
 							foreach (var token in tokens)
