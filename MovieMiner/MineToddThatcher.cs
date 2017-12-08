@@ -96,14 +96,14 @@ namespace MovieMiner
 						if (movieNodes.Count == 1)
 						{
 							var innerHtml = HttpUtility.HtmlDecode(movieNodes.First().InnerHtml);
-							var delimiters = new string[] { "<br>", "<br><br>" };
+							var delimiters = new string[] { "<br>\n", "<br><br>" };
 							var tokens = innerHtml.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
 							foreach (var token in tokens)
 							{
-								if (token.StartsWith("\"") && token.EndsWith("million"))
+								if (token.StartsWith("\""))// && token.EndsWith("million"))
 								{
-									AddMovie(token, articleDate, result);
+									AddMovie(token.Replace("<br>", string.Empty), articleDate, result);
 								}
 							}
 						}
