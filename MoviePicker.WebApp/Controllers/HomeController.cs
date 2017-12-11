@@ -2,7 +2,9 @@
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web.Mvc;
 
 namespace MoviePicker.WebApp.Controllers
@@ -45,6 +47,46 @@ namespace MoviePicker.WebApp.Controllers
 			ViewBag.Message = "Your contact page.";
 
 			return View();
+		}
+
+		[HttpGet]
+		public FileStreamResult ExtractToCSV()
+		{
+			StringBuilder builder = new StringBuilder();
+
+			// Column headers are FIRST!
+
+			builder.Append("BUX,Movie");
+
+			foreach (var miner in _minerModel.Miners)
+			{
+				builder.Append(",");
+				builder.Append(miner.Abbreviation);
+			}
+
+			builder.AppendLine();
+
+			foreach (var movie in _minerModel.Miners.First().Movies)
+			{
+				builder.Append(movie.Cost);
+				builder.Append(",");
+				builder.Append(movie.Name);
+
+				foreach (var miner in _minerModel.Miners)
+				{
+					var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
+
+					builder.Append(",");
+					builder.Append(minerMovie?.Earnings);
+				}
+
+				builder.AppendLine();
+			}
+
+			var byteArray = Encoding.ASCII.GetBytes(builder.ToString());
+			var stream = new MemoryStream(byteArray);
+
+			return File(stream, "text/plain", "MyStuffCSV.txt");
 		}
 
 		[HttpGet]
