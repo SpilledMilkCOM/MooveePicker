@@ -7,17 +7,19 @@ namespace MoviePicker.WebApp.Interfaces
 	{
 		IEnumerable<IMiner> Miners { get; set; }
 
-		int Weight1 { get; set; }
+		decimal Weight1 { get; set; }
 
-		int Weight2 { get; set; }
+		decimal Weight2 { get; set; }
 
-		int Weight3 { get; set; }
+		decimal Weight3 { get; set; }
 
-		int Weight4 { get; set; }
+		decimal Weight4 { get; set; }
 
-		int Weight5 { get; set; }
+		decimal Weight5 { get; set; }
 
-		int Weight6 { get; set; }
+		decimal Weight6 { get; set; }
+
+		decimal Weight7 { get; set; }
 
 		string GetFMLNerdLink(IMiner miner);
 	}

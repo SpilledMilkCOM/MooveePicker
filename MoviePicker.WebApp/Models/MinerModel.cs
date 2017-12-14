@@ -76,7 +76,8 @@ namespace MoviePicker.WebApp.Models
 				new MineBoxOfficePro { Weight = 4 },
 				new MineBoxOfficeMojo { Weight = 3 },
 				new MineCulturedVultures { Weight = 2 },
-				new MineBoxOfficeProphet { Weight = 2 }
+				new MineBoxOfficeProphet { Weight = 2 },
+				new MineBoxOfficeReport { Weight = 3 }
 			};
 
 			// Grab last weeks results for comparisons.
@@ -95,7 +96,7 @@ namespace MoviePicker.WebApp.Models
 		/// <returns></returns>
 		private IMovie CreateWeightedMovie(IMovie baseMovie)
 		{
-			int totalWeight = Miners[NERD_INDEX].Weight;
+			decimal totalWeight = Miners[NERD_INDEX].Weight;
 
 			var result = new Movie
 			{

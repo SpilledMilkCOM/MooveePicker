@@ -66,8 +66,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DebugLogger.cs" />
+    <Compile Include="MineAllSimulationTests.cs" />
     <Compile Include="MineBoxOfficeMojoTests.cs" />
     <Compile Include="MineBoxOfficeProphetTests.cs" />
+    <Compile Include="MineBoxOfficeReportTests.cs" />
     <Compile Include="MineCulturedVulturesTests.cs" />
     <Compile Include="MineBoxOfficeProTests.cs" />
     <Compile Include="MineAllTests.cs" />
@@ -90,6 +92,10 @@
     <ProjectReference Include="..\MoviePicker.Msf\MoviePicker.Msf.csproj">
       <Project>{420fcf88-e38d-46ee-a4de-be87042d5b1b}</Project>
       <Name>MoviePicker.Msf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MoviePicker.Simulations\MoviePicker.Simulations.csproj">
+      <Project>{c337051a-a8d2-4a45-91a5-9d3074a14313}</Project>
+      <Name>MoviePicker.Simulations</Name>
     </ProjectReference>
     <ProjectReference Include="..\MoviePicker\MoviePicker.csproj">
       <Project>{fb01c56f-1f93-4174-9d64-154f23b92691}</Project>

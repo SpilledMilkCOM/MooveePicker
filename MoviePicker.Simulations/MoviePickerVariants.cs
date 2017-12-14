@@ -21,14 +21,14 @@ namespace MooveePicker
 		private readonly List<IMovie> _baselineMovies;
 		private readonly Dictionary<int, int> _bestListCounts;          // Keyed using the hash code.
 		private readonly Dictionary<int, IMovieList> _bestLists;        // Keyed using the hash code.
-		private readonly IMovieList _movieListPrototype;
+		private readonly IMovieList _movieListPrototype;				// The prototype allows for construction on this object.
 		private readonly IMoviePicker _moviePicker;
 
-		public MoviePickerVariants(IMovieList movieListPrototype)
+		public MoviePickerVariants(IMoviePicker moviePicker, IMovieList movieListPrototype)
 		{
 			_bestListCounts = new Dictionary<int, int>();
 			_bestLists = new Dictionary<int, IMovieList>();
-			_moviePicker = new MsfMovieSolver();
+			_moviePicker = moviePicker;
 			//_moviePicker = new MoviePicker(new MovieList());
 			_baselineMovies = new List<IMovie>();
 

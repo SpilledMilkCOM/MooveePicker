@@ -28,6 +28,7 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.Weight4 = minerModel.Miners[3].Weight;
 			_viewModel.Weight5 = minerModel.Miners[4].Weight;
 			_viewModel.Weight6 = minerModel.Miners[5].Weight;
+			_viewModel.Weight7 = minerModel.Miners[6].Weight;
 		}
 
 		public ActionResult Index()
@@ -43,6 +44,13 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		public ActionResult Contact()
+		{
+			ViewBag.Message = "Your contact page.";
+
+			return View();
+		}
+
+		public ActionResult Simuation()
 		{
 			ViewBag.Message = "Your contact page.";
 
@@ -106,6 +114,7 @@ namespace MoviePicker.WebApp.Controllers
 			_minerModel.Miners[3].Weight = viewModel.Weight4;
 			_minerModel.Miners[4].Weight = viewModel.Weight5;
 			_minerModel.Miners[5].Weight = viewModel.Weight6;
+			_minerModel.Miners[6].Weight = viewModel.Weight7;
 
 			//return RedirectToAction("Picks");
 			return View(ConstructPicksViewModel());

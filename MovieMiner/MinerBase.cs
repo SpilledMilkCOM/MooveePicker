@@ -26,7 +26,7 @@ namespace MovieMiner
 
 		public string UrlSource { get; protected set; }
 
-		public int Weight { get; set; }
+		public decimal Weight { get; set; }
 
 		public void Clear()
 		{
