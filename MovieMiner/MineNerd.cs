@@ -14,7 +14,7 @@ namespace MovieMiner
 	{
 		//private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups/MonCompare/MonCompare2017SummerWeek12.js";
 		private const string DEFAULT_URL = "http://analyzer.fmlnerd.com/lineups";
-		private const int DAY_KEY_LENGTH = 4;
+		private const int DAY_KEY_LENGTH = 3;
 
 		private readonly Dictionary<string, DayOfWeek> _daysOfWeek;
 
@@ -23,9 +23,12 @@ namespace MovieMiner
 		{
 			_daysOfWeek = new Dictionary<string, DayOfWeek>
 			{
-				{"FRI ", DayOfWeek.Friday},
-				{"SAT ", DayOfWeek.Saturday},
-				{"SUN ", DayOfWeek.Sunday}
+				//{"FRI ", DayOfWeek.Friday},
+				//{"SAT ", DayOfWeek.Saturday},
+				//{"SUN ", DayOfWeek.Sunday}
+				{"FRI", DayOfWeek.Friday},
+				{"SAT", DayOfWeek.Saturday},
+				{"SUN", DayOfWeek.Sunday}
 			};
 
 			UrlSource = DEFAULT_URL;
@@ -102,7 +105,7 @@ namespace MovieMiner
 			DayOfWeek? result = null;
 			DayOfWeek dayOfWeek;
 
-			if (name.Length > DAY_KEY_LENGTH && _daysOfWeek.TryGetValue(name.Substring(0, DAY_KEY_LENGTH), out dayOfWeek))
+			if (name.Length >= DAY_KEY_LENGTH && _daysOfWeek.TryGetValue(name.Substring(0, DAY_KEY_LENGTH), out dayOfWeek))
 			{
 				result = dayOfWeek;
 			}
