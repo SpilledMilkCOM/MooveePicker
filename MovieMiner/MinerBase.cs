@@ -39,11 +39,11 @@ namespace MovieMiner
 		{
 			var result = name;
 
-			if (name.ToLower() == "wonder wheel")
+			if (string.IsNullOrEmpty(name))
 			{
-				// This will prevent "Wonder" from matching this movie.  Yes, a hack, but I want the damn data.
+				// FML Nerd only filled in the DAYS and NOT the movie name.  Yes, a hack, but I want the damn data.
 
-				result = "A Wonder Wheel";
+				result = "Star Wars";
 			}
 
 			return result;

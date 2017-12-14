@@ -65,7 +65,8 @@ namespace MovieMiner
 
 					// Get the date of the article
 
-					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='credits']/span[@class='date']");
+					//node = doc.DocumentNode.SelectSingleNode("//body//div[@class='credits']/span[@class='date']");
+					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post__credits']/div[@class='post__date-time']");
 
 					if (node != null)
 					{
