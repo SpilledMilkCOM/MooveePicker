@@ -82,6 +82,21 @@ namespace MovieMiner
 					//var tableRows = node?.SelectNodes("//tr[position()>2]");
 					var tableRows = node?.SelectNodes("//tr[@bgcolor='eeeeee']");
 
+					if (tableRows == null)
+					{
+						// Try page 2
+
+						UrlSource += "&columnpage=2";
+
+						doc = web.Load(UrlSource);
+
+						// Get the data in the table.
+
+						node = doc.DocumentNode.SelectSingleNode("//body//div[@id='EchoTopic']//table[@width='100%']");
+
+						tableRows = node?.SelectNodes("//tr[@bgcolor='eeeeee']");
+					}
+
 					if (tableRows != null)
 					{
 						foreach (var row in tableRows)
