@@ -20,7 +20,7 @@ namespace MovieMiner
 		/// </summary>
 		/// <param name="weekendEnding">If this is null then the forecast will be mined.</param>
 		public MineBoxOfficeMojo(DateTime? weekendEnding = null)
-			: base("Box Office Mojo", "BO Mojo", DEFAULT_URL)
+			: base($"Box Office Mojo {weekendEnding?.ToShortDateString()}", $"BO Mojo {weekendEnding?.ToShortDateString()}", DEFAULT_URL)
 		{
 			_weekendEnding = weekendEnding?.Date;
 		}
@@ -103,6 +103,8 @@ namespace MovieMiner
 					}
 				}
 			}
+
+			Movies = result;
 
 			return result;
 		}

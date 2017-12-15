@@ -27,7 +27,7 @@
 				@foreach (var miner in Model.Miners)
 				{
 					<td style="text-align: center">
-						@if (miner.Movies?.Count > 0)
+						@if (miner.Movies?.Count > 0 && miner != Model.Miners.Last())
 						{
 							<a href="@Model.GetFMLNerdLink(miner)" class="btn btn-info btn-sm">Analyze</a>
 						}
@@ -45,9 +45,26 @@
 
 					@foreach (var miner in Model.Miners)
 					{
-						var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
+						var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
 
-						<td style="text-align: right">@string.Format("{0}{1:N0}", minerMovie?.Earnings > 0 ? "$ " : string.Empty, minerMovie?.Earnings)</td>
+						if (miner != Model.Miners.Last())
+						{
+							var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
+
+							<td style="text-align: right">
+								@string.Format("{0}{1:N0}{2}", minerMovie?.Earnings > 0 ? "$ " : string.Empty
+													, minerMovie?.Earnings
+													, lastWeek != null && minerMovie != null && minerMovie.EarningsBase > 0
+														? " " + ((minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100).ToString("N0") + "% "
+														: string.Empty)
+							</td>
+						}
+						else
+						{
+							<td style="text-align: right">
+								@string.Format("{0}{1:N0}", minerMovie?.Earnings > 0 ? "$ " : string.Empty, minerMovie?.Earnings)
+							</td>
+						}
 					}
 				</tr>
 			}

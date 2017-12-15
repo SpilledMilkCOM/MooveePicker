@@ -758,7 +758,7 @@ namespace MovieMiner.Tests
 		/// <returns></returns>
 		private IMovie CreateMyMovie(IMovie baseMovie, List<List<IMovie>> movieData, List<IMiner> miners)
 		{
-			int totalWeight = miners[NERD_INDEX].Weight;
+			var totalWeight = miners[NERD_INDEX].Weight;
 
 			var result = new Movie
 			{

@@ -80,9 +80,9 @@ namespace MoviePicker.WebApp.Models
 				new MineBoxOfficeReport { Weight = 3 }
 			};
 
-			// Grab last weeks results for comparisons.
+			// Grab last weeks results for comparisons.  Always put this list last.
 
-			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday()) { Weight = 0 });
+			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday()) { Weight = 0.00001m });
 
 			return result;
 		}
@@ -135,13 +135,39 @@ namespace MoviePicker.WebApp.Models
 		{
 			DateTime? weekendEnding = minerData[NERD_INDEX].Movies?.FirstOrDefault()?.WeekendEnding;
 
-			for (int index = NERD_INDEX + 1; index < minerData.Count; index++)
+			for (int index = NERD_INDEX + 1; index < minerData.Count - 1; index++)
 			{
 				if (minerData[index].Movies?.FirstOrDefault()?.WeekendEnding != weekendEnding)
 				{
 					minerData[index].Clear();
 				}
 			}
+
+			// BO Mojo has a HUGE list of movies that were mined
+
+			var moviesToRemove = new List<IMovie>();
+			var lastWeekMovies = minerData.Last().Movies;
+			var nerdMovies = minerData.First().Movies;
+
+			foreach (var movie in lastWeekMovies)
+			{
+				var found = nerdMovies.FirstOrDefault(item => movie.Equals(item));		// Use the fuzzy logic to match the movie name.
+
+				if (found == null)
+				{
+					moviesToRemove.Add(movie);
+				}
+				else
+				{
+					movie.MovieName = found.MovieName;
+				}
+			}
+
+			foreach (var movie in moviesToRemove)
+			{
+				lastWeekMovies.Remove(movie);
+			}
+
 		}
 
 		/// <summary>
