@@ -26,7 +26,7 @@ namespace MovieMiner
 
 		public string UrlSource { get; protected set; }
 
-		public int Weight { get; set; }
+		public decimal Weight { get; set; }
 
 		public void Clear()
 		{
@@ -41,7 +41,7 @@ namespace MovieMiner
 
 			if (string.IsNullOrEmpty(name))
 			{
-				// FML Nerd only filled in the DAYS and NOT the movie name.  Yes, a hack, but I want the damn data.
+				// @nerdguru didn't include the NAME! (only the day abbr.).  Yes, a hack, but I want the damn data.
 
 				result = "Star Wars";
 			}

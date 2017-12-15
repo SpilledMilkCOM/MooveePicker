@@ -34,7 +34,7 @@ namespace MovieMiner
 		/// <summary>
 		/// Used for weighted average.
 		/// </summary>
-		int Weight { get; set; }
+		decimal Weight { get; set; }
 
 		void Clear();
 

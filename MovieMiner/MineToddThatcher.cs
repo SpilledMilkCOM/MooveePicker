@@ -46,7 +46,7 @@ namespace MovieMiner
 
 			if (node == null)
 			{
-				node = doc.DocumentNode.SelectSingleNode($"//body//a[contains(@title, 'Weekend box office')]");
+				node = doc.DocumentNode.SelectSingleNode($"//body//a[contains(@title, 'Box Office Estimates')]");
 			}
 
 			if (node != null)
@@ -66,7 +66,7 @@ namespace MovieMiner
 					// Get the date of the article
 
 					//node = doc.DocumentNode.SelectSingleNode("//body//div[@class='credits']/span[@class='date']");
-					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post__credits']/div[@class='post__date-time']");
+					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post__credits']/div[@class='post__date-time']/div");
 
 					if (node != null)
 					{
@@ -86,7 +86,7 @@ namespace MovieMiner
 
 					// Get the data
 
-					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='article__content']");
+					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post__content']");
 
 					if (node != null)
 					{

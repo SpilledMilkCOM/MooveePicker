@@ -18,17 +18,19 @@ namespace MoviePicker.WebApp.Models
 		/// <summary>
 		/// Post the Weight back to the controller.
 		/// </summary>
-		public int Weight1 { get; set; }
+		public decimal Weight1 { get; set; }
 
-		public int Weight2 { get; set; }
+		public decimal Weight2 { get; set; }
 
-		public int Weight3 { get; set; }
+		public decimal Weight3 { get; set; }
 
-		public int Weight4 { get; set; }
+		public decimal Weight4 { get; set; }
 
-		public int Weight5 { get; set; }
+		public decimal Weight5 { get; set; }
 
-		public int Weight6 { get; set; }
+		public decimal Weight6 { get; set; }
+
+		public decimal Weight7 { get; set; }
 
 		public string GetFMLNerdLink(IMiner miner)
 		{
