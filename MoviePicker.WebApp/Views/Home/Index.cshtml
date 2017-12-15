@@ -11,7 +11,7 @@
 
 @using (Html.BeginForm("Picks", "Home", null, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
 {
-	<table class="table">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th style="text-align: center">BUX</th>
@@ -56,11 +56,18 @@
 						if (miner != Model.Miners.Last())
 						{
 							var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
+							decimal percent = 0;
 
-							<td style="text-align: right">
-								@string.Format("{0}", lastWeek != null && minerMovie != null && minerMovie.EarningsBase > 0
-														? " " + ((minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100).ToString("N0") + "% "
-														: string.Empty)
+							if (lastWeek != null && minerMovie != null && minerMovie.EarningsBase > 0)
+							{
+								percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+							}
+
+							var bootstrapClass = percent <= -20 ? (percent <= -40 ? "table-danger" : "table-warning")
+													: (percent > 0 ? "table-success" : "table-info");
+
+							<td class="@bootstrapClass" style="text-align: right">
+								@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "% " : string.Empty)
 							</td>
 						}
 						else
@@ -83,24 +90,31 @@
 				<td>
 					@Html.TextBoxFor(model => model.Weight1, new { @class = "form-control" })
 				</td>
+				<td></td>
 				<td>
 					@Html.TextBoxFor(model => model.Weight2, new { @class = "form-control" })
 				</td>
+				<td></td>
 				<td>
 					@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control" })
 				</td>
+				<td></td>
 				<td>
 					@Html.TextBoxFor(model => model.Weight4, new { @class = "form-control" })
 				</td>
+				<td></td>
 				<td>
 					@Html.TextBoxFor(model => model.Weight5, new { @class = "form-control" })
 				</td>
+				<td></td>
 				<td>
 					@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control" })
 				</td>
+				<td></td>
 				<td>
 					@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control" })
 				</td>
+				<td></td>
 			</tr>
 		</tbody>
 	</table>
