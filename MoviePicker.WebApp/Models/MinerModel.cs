@@ -82,7 +82,7 @@ namespace MoviePicker.WebApp.Models
 
 			// Grab last weeks results for comparisons.  Always put this list last.
 
-			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday()) { Weight = 0.00001m });
+			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday(MovieDateUtil.ThisSunday().AddDays(-1))) { Weight = 0.00001m });
 
 			return result;
 		}
@@ -151,7 +151,7 @@ namespace MoviePicker.WebApp.Models
 
 			foreach (var movie in lastWeekMovies)
 			{
-				var found = nerdMovies.FirstOrDefault(item => movie.Equals(item));		// Use the fuzzy logic to match the movie name.
+				var found = nerdMovies.FirstOrDefault(item => movie.Equals(item));      // Use the fuzzy logic to match the movie name.
 
 				if (found == null)
 				{

@@ -85,7 +85,8 @@ namespace MovieMiner
 							Day = ParseDayOfWeek(name),
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
 							Cost = movie.Bux,
-							WeekendEnding = MovieDateUtil.NextSunday().Date
+							//WeekendEnding = MovieDateUtil.NextSunday().Date
+							WeekendEnding = MovieDateUtil.ThisSunday().Date
 						};
 
 						result.Add(newMovie);
