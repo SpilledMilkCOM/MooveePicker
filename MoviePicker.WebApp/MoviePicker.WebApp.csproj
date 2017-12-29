@@ -164,9 +164,11 @@
     </Compile>
     <Compile Include="Interfaces\IMinerModel.cs" />
     <Compile Include="Interfaces\IIndexViewModel.cs" />
+    <Compile Include="Interfaces\ISimulationModel.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\MinerModel.cs" />
     <Compile Include="Models\PicksViewModel.cs" />
+    <Compile Include="Models\SimulationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +250,10 @@
     <ProjectReference Include="..\MoviePicker.Msf\MoviePicker.Msf.csproj">
       <Project>{420fcf88-e38d-46ee-a4de-be87042d5b1b}</Project>
       <Name>MoviePicker.Msf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MoviePicker.Simulations\MoviePicker.Simulations.csproj">
+      <Project>{c337051a-a8d2-4a45-91a5-9d3074a14313}</Project>
+      <Name>MoviePicker.Simulations</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

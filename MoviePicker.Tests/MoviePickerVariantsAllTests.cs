@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MooveePicker;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
+using MooveePicker.Simulations;
 
 namespace MoviePicker.Tests
 {

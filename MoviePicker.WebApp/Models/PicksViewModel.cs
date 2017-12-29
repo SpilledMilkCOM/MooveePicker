@@ -7,6 +7,10 @@ namespace MoviePicker.WebApp.Models
 {
 	public class PicksViewModel
 	{
+		public long Duration { get; set; }
+
+		public int ListCount { get; set; }
+
 		public IEnumerable<IMiner> Miners { get; set; }
 
 		public IMovieList MovieList { get; set; }

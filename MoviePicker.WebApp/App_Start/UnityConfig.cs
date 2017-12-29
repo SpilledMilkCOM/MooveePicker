@@ -1,3 +1,4 @@
+using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
 using MoviePicker.WebApp.Interfaces;
@@ -56,6 +57,8 @@ namespace MoviePicker.WebApp
 			container.RegisterType<IMinerModel, MinerModel>(new PerThreadLifetimeManager());
 			container.RegisterType<IIndexViewModel, IndexViewModel>(new PerThreadLifetimeManager());
 			container.RegisterType<IMoviePicker, MsfMovieSolver>();
+			container.RegisterType<IMovieList, MovieList>();
+			container.RegisterType<ISimulationModel, SimulationModel>();
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,11 +15,13 @@ namespace MoviePicker.WebApp.Controllers
 		private IMinerModel _minerModel;
 		private IIndexViewModel _viewModel;
 		private IMoviePicker _moviePicker;
+		private ISimulationModel _simulationModel;
 
-		public HomeController(IIndexViewModel viewModel, IMinerModel minerModel, IMoviePicker moviePicker)
+		public HomeController(IIndexViewModel viewModel, IMinerModel minerModel, IMoviePicker moviePicker, ISimulationModel simulationModel)
 		{
 			_minerModel = minerModel;
 			_moviePicker = moviePicker;
+			_simulationModel = simulationModel;
 			_viewModel = viewModel;
 			_viewModel.Miners = minerModel.Miners;
 
@@ -47,18 +50,6 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			ViewBag.Message = "Your contact page.";
 
-			return View();
-		}
-
-		public ActionResult Simuation()
-		{
-			ViewBag.Message = "Your contact page.";
-
-			return View();
-		}
-
-		public ActionResult WeekBack()
-		{
 			return View();
 		}
 
@@ -125,11 +116,28 @@ namespace MoviePicker.WebApp.Controllers
 			return View(ConstructPicksViewModel());
 		}
 
+		public ActionResult Simulation()
+		{
+			var picksViewModel = ConstructPicksViewModel();
+
+			RunSimulation(picksViewModel);
+
+			return View(picksViewModel);
+		}
+
+		public ActionResult WeekBack()
+		{
+			return View();
+		}
+
 		//----==== PRIVATE ====--------------------------------------------------------------------
 
 		private PicksViewModel ConstructPicksViewModel()
 		{
 			var result = new PicksViewModel();
+			var stopWatch = new Stopwatch();
+
+			stopWatch.Start();
 
 			result.Miners = _minerModel.Miners;
 			result.Movies = _minerModel.CreateWeightedList();
@@ -153,7 +161,41 @@ namespace MoviePicker.WebApp.Controllers
 
 			result.MovieListBonusOff = _moviePicker.ChooseBest();
 
+			stopWatch.Stop();
+
+			result.Duration = stopWatch.ElapsedMilliseconds;
+
 			return result;
+		}
+
+		private void RunSimulation(PicksViewModel picksViewModel)
+		{
+			var stopwatch = new Stopwatch();
+
+			// Add picked movies.
+			var movies = picksViewModel.MovieList.Movies.Distinct().ToList();
+
+			// Add most efficient.
+
+			foreach (var movie in picksViewModel.Movies.OrderByDescending(item => item.Efficiency))
+			{
+				// Can't use Contains
+				if (movies.FirstOrDefault(item => item.Name == movie.Name) == null)
+				{
+					movies.Add(movie);
+
+					if (movies.Count >= 8)
+					{
+						break;
+					}
+				}
+			}
+
+			_simulationModel.AddMovies(movies);
+
+			picksViewModel.MovieList = _simulationModel.ChooseBest();
+
+			picksViewModel.Duration += stopwatch.ElapsedMilliseconds;
 		}
 	}
 }

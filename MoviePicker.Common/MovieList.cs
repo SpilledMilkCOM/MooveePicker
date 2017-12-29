@@ -8,8 +8,9 @@ namespace MoviePicker.Common
     public class MovieList : IMovieList
     {
         private const decimal COST_MAX = 1000;
-        private const int MOVIE_MAX = 8;
-        private const int MISSING_THEATER_EARNINGS = 2000000;       // 2 million for each missing theater.
+		private const int MOVIE_MAX = 8;
+		//private const int MOVIE_MAX = 15;		// Out of memory.
+		private const int MISSING_THEATER_EARNINGS = 2000000;       // 2 million for each missing theater.
         private const int TOP_PERFORMER_BONUS = 2000000;            // 2 million for each top performer.
 
         private int _hashCode;

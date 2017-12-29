@@ -40,6 +40,23 @@ namespace MovieMiner
 			return (diff.Days / DAYS_IN_WEEK) % WEEKS_IN_SEASON + 1;
 		}
 
+
+		public static DateTime GameSunday(DateTime? dateTime = null)
+		{
+			DateTime result = dateTime ?? Now;
+
+			if (result.DayOfWeek == DayOfWeek.Monday)
+			{
+				result = result.AddDays(-1);
+			}
+			else
+			{
+				result = ThisSunday(result);
+			}
+
+			return result;
+		}
+
 		public static DateTime LastSunday(DateTime? dateTime = null)
 		{
 			DateTime reference = dateTime ?? Now;
@@ -56,9 +73,15 @@ namespace MovieMiner
 
 		public static DateTime ThisSunday(DateTime? dateTime = null)
 		{
-			DateTime reference = dateTime ?? Now;
+			DateTime result = dateTime ?? Now;
 
-			return reference.AddDays((int)reference.DayOfWeek);
+			if (result.DayOfWeek != DayOfWeek.Sunday)
+			{
+				// Sunday = 0 --> Saturday = 6
+				result = result.AddDays(7 - (int)result.DayOfWeek);
+			}
+
+			return result;
 		}
 
 		private static DateTime Now => DateTime.Now.Date;

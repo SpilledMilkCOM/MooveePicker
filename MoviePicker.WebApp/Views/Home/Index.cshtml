@@ -58,7 +58,7 @@
 							var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
 							decimal percent = 0;
 
-							if (lastWeek != null && minerMovie != null && minerMovie.EarningsBase > 0)
+							if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
 							{
 								percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
 							}
@@ -120,5 +120,4 @@
 	</table>
 
 	<input class="btn btn-default" type="submit" value="Picks" />
-
 }

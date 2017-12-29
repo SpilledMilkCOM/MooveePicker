@@ -82,7 +82,7 @@ namespace MoviePicker.WebApp.Models
 
 			// Grab last weeks results for comparisons.  Always put this list last.
 
-			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday(MovieDateUtil.ThisSunday().AddDays(-1))) { Weight = 0.00001m });
+			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday(MovieDateUtil.GameSunday().AddDays(-1))) { Weight = 0.00001m });
 
 			return result;
 		}

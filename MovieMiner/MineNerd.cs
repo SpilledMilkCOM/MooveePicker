@@ -23,9 +23,6 @@ namespace MovieMiner
 		{
 			_daysOfWeek = new Dictionary<string, DayOfWeek>
 			{
-				//{"FRI ", DayOfWeek.Friday},
-				//{"SAT ", DayOfWeek.Saturday},
-				//{"SUN ", DayOfWeek.Sunday}
 				{"FRI", DayOfWeek.Friday},
 				{"SAT", DayOfWeek.Saturday},
 				{"SUN", DayOfWeek.Sunday}
@@ -86,7 +83,7 @@ namespace MovieMiner
 							Earnings = movie.OriginalEstimatedBoxOffice * 1000,
 							Cost = movie.Bux,
 							//WeekendEnding = MovieDateUtil.NextSunday().Date
-							WeekendEnding = MovieDateUtil.ThisSunday().Date
+							WeekendEnding = MovieDateUtil.GameSunday().Date
 						};
 
 						result.Add(newMovie);

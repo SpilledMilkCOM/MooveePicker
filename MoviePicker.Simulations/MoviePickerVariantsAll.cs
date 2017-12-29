@@ -6,7 +6,7 @@ using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
 using SM.Common.Utils;
 
-namespace MooveePicker
+namespace MooveePicker.Simulations
 {
     /// <summary>
     /// Vary the earnings by some offsets and compute the BEST out of how many of that list WINS.

@@ -4,4 +4,26 @@
 	ViewBag.Title = "Simulation";
 }
 <h2>@ViewBag.Title</h2>
+<h5>weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString() (@Model.Duration.ToString("N0") ms)</h5>
 
+<div class="row">
+	<div class="col-lg-6">
+
+		<div class="col-sm-3">
+			<h4>Bonus is ON</h4>
+		</div>
+
+		@Html.Partial("MovieList", Model.MovieList)
+	</div>
+
+	@*<div class="col-lg-6">
+		<div class="col-sm-3">
+			<h4>Bonus is OFF</h4>
+		</div>
+
+		@if (Model.MovieListBonusOff != null)
+		{
+			@Html.Partial("MovieList", Model.MovieListBonusOff);
+		}
+	</div>*@
+</div>

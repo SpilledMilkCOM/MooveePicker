@@ -10,11 +10,11 @@ namespace MoviePicker.Msf
 	[DebuggerDisplay("Id = {Id} - Name = {Name}")]
 	public class MsfMovieWrapper : IMovie
 	{
-		private readonly IMovie _movie;
+		private IMovie _movie;
 
 		public MsfMovieWrapper(IMovie movie)
 		{
-			_movie = movie;
+			_movie = movie ?? throw new ArgumentNullException(nameof(movie));
 		}
 
 		public bool AdjustEarnings
@@ -25,7 +25,7 @@ namespace MoviePicker.Msf
 
 		public IMovie Clone()
 		{
-			throw new NotImplementedException();
+			return _movie = _movie.Clone();
 		}
 
 		public decimal Cost
