@@ -38,3 +38,6 @@ http://www.programminglogic.com/knapsack-problem-dynamic-programming-algorithm/
 
 Reference for many of the knapsack algorithms.
 https://en.wikipedia.org/wiki/Knapsack_problem
+
+Actual published website:
+http://mooveepicker.azurewebsites.net/
