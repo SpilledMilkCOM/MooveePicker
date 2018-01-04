@@ -11,7 +11,8 @@ namespace MoviePicker.WebApp.Models
 {
 	public class MinerModel : IMinerModel
 	{
-		private const int NERD_INDEX = 0;
+		private const int NERD_INDEX = 1;
+		private const int FML_INDEX = 0;
 
 		public MinerModel()
 		{
@@ -35,10 +36,10 @@ namespace MoviePicker.WebApp.Models
 		{
 			var result = new List<IMovie>();
 
-			// FML Nerd (Pete) should have all of the movies WITH the Bux
-			// Use the nerd data to copy the bux to each list.
+			// FML should have all of the movies WITH the Bux
+			// Use the FML data to copy the bux to each list.
 
-			var nerdMovies = Miners[NERD_INDEX].Movies;
+			var nerdMovies = Miners[FML_INDEX].Movies;
 
 			foreach (var movie in nerdMovies.OrderByDescending(item => item.Cost))
 			{
@@ -71,6 +72,7 @@ namespace MoviePicker.WebApp.Models
 		private List<IMiner> CreateMiners()
 		{
 			var result = new List<IMiner> {
+				new MineFantasyMovieLeagueBoxOffice { IsHidden = true, Weight = 0 },
 				new MineNerd { Weight = 1 },
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
@@ -82,7 +84,7 @@ namespace MoviePicker.WebApp.Models
 
 			// Grab last weeks results for comparisons.  Always put this list last.
 
-			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday(MovieDateUtil.GameSunday().AddDays(-1))) { Weight = 0.00001m });
+			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday(MovieDateUtil.GameSunday().AddDays(-1))) { Weight = 0 });
 
 			return result;
 		}
@@ -96,7 +98,9 @@ namespace MoviePicker.WebApp.Models
 		/// <returns></returns>
 		private IMovie CreateWeightedMovie(IMovie baseMovie)
 		{
-			decimal totalWeight = Miners[NERD_INDEX].Weight;
+			decimal totalWeight = Miners[FML_INDEX].Weight;
+
+			// Initialize the first movie
 
 			var result = new Movie
 			{
@@ -108,21 +112,23 @@ namespace MoviePicker.WebApp.Models
 				WeekendEnding = baseMovie.WeekendEnding
 			};
 
-			for (int index = 0; index < Miners.Count; index++)
+			for (int index = NERD_INDEX; index < Miners.Count; index++)
 			{
-				if (index != NERD_INDEX)
-				{
-					var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => item.Equals(baseMovie) && item.WeekendEnding == result.WeekendEnding);
+				var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => item.Equals(baseMovie) && item.WeekendEnding == result.WeekendEnding);
 
-					if (foundMovie != null)
-					{
-						result.Earnings += foundMovie.Earnings * Miners[index].Weight;
-						totalWeight += Miners[index].Weight;
-					}
+				if (foundMovie != null)
+				{
+					result.Earnings += foundMovie.Earnings * Miners[index].Weight;
+					totalWeight += Miners[index].Weight;
 				}
 			}
 
-			result.Earnings /= totalWeight;     // Weighted average.
+			// Verify that this movie was even picked within the other miners.
+
+			if (totalWeight > 0)
+			{
+				result.Earnings /= totalWeight;     // Weighted average.
+			}
 
 			return result;
 		}
@@ -178,25 +184,25 @@ namespace MoviePicker.WebApp.Models
 		private List<List<IMovie>> MineMiners(IEnumerable<IMiner> miners)
 		{
 			var result = new List<List<IMovie>>();
-			List<IMovie> nerdList = null;
+			List<IMovie> baseList = null;
 			List<IMovie> compoundMovies = null;
 
 			// Nerd list is first.
 
-			nerdList = miners.First().Mine();
-			result.Add(nerdList);
+			baseList = miners.First().Mine();
+			result.Add(baseList);
 
-			compoundMovies = nerdList.Where(movie => movie.Day.HasValue).ToList();
+			// TODO: Fix this for the FML base list.  This will break when another compound movie (multi-day) comes into play.
 
-			//TODO: Thread these calls out...
+			compoundMovies = baseList.Where(movie => movie.Day.HasValue).ToList();
 
 			Parallel.ForEach(miners, miner =>
 			{
 				try
 				{
-					if (miner != nerdList)
+					if (miner != baseList)
 					{
-						var movieList = (miner.Weight > 0) ? miner.Mine() : null;
+						var movieList = (miner.OkToMine) ? miner.Mine() : null;
 
 						result.Add(movieList);
 
@@ -240,7 +246,7 @@ namespace MoviePicker.WebApp.Models
 
 							// Assign the id, name, and cost to each movie.
 
-							foreach (var movie in nerdList)
+							foreach (var movie in baseList)
 							{
 								AssignCost(movie, movieList);
 							}

@@ -14,12 +14,19 @@ namespace MovieMiner
 		/// </summary>
 		string Abbreviation { get; }
 
+		bool IsHidden { get; set; }
+
 		List<IMovie> Movies { get; }
 
 		/// <summary>
 		/// Name of the Miner
 		/// </summary>
 		string Name { get; }
+
+		/// <summary>
+		/// By default this is set to true.
+		/// </summary>
+		bool OkToMine { get; set; }
 
 		/// <summary>
 		/// Typically the root Url for the root page.

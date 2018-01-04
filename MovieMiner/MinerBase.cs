@@ -10,6 +10,8 @@ namespace MovieMiner
 		protected MinerBase(string name, string abbr, string url)
 		{
 			Abbreviation = abbr;
+			IsHidden = false;
+			OkToMine = true;
 			Name = name;
 			Url = url;
 			UrlSource = url;
@@ -18,9 +20,13 @@ namespace MovieMiner
 
 		public string Abbreviation { get; private set; }
 
+		public bool IsHidden { get; set; }
+
 		public List<IMovie> Movies { get; protected set; }
 
 		public string Name { get; private set; }
+
+		public bool OkToMine { get; set; }
 
 		public string Url { get; private set; }
 

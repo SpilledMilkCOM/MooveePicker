@@ -17,7 +17,7 @@
 	</thead>
 
 	<tbody>
-		@foreach (var pick in Model.Movies)
+		@foreach (var pick in Model.Movies.OrderByDescending(movie => movie.Cost))
 		{
 			var rankStyle1 = pick.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 

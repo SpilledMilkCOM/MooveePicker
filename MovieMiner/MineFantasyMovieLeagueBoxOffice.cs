@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
@@ -24,6 +26,7 @@ namespace MovieMiner
 		{
 			var result = new List<IMovie>();
 			var web = new HtmlWeb();
+			DateTime? weekendEnding = null;
 
 			UrlSource = $"{Url}/researchvault?section=box-office";
 
@@ -35,6 +38,30 @@ namespace MovieMiner
 			var tableRows = tableNode?.SelectNodes("thead//th[contains(@class, 'group')]");
 
 			// Figure out which column to mine from the column title.
+
+			if (tableRows != null)
+			{
+				foreach (var tableHeader in tableRows)
+				{
+					// Grab the first one for now.
+
+					var dateText = tableHeader.InnerText;
+
+					if (dateText != null)
+					{
+						char[] delimiter = { '-' };
+						var dateChunks = dateText.Split(delimiter);
+
+						if (dateChunks.Length > 0)
+						{
+							weekendEnding = Convert.ToDateTime(dateChunks[0]);
+							weekendEnding = MovieDateUtil.ThisSunday(weekendEnding);
+						}
+					}
+
+					break;
+				}
+			}
 
 			//int columnToMine = 0;
 
@@ -65,6 +92,12 @@ namespace MovieMiner
 					movie.Cost = ParseEarnings(HttpUtility.HtmlDecode(buxNode.InnerText).Replace("FB", string.Empty));
 				}
 
+				if (weekendEnding.HasValue)
+				{
+					//movie.WeekendEnding = weekendEnding.Value;
+					movie.WeekendEnding = MovieDateUtil.GameSunday();
+				}
+
 				result.Add(movie);
 			}
 
@@ -74,11 +107,11 @@ namespace MovieMiner
 				var columns = tableNode?.SelectNodes($"tbody//tr[//span[text() = '{movie.Name}']]");
 			}
 
+			result = result.OrderByDescending(movie => movie.Cost).ToList();
+
 			Movies = result;
 
 			return result;
 		}
-
-		//----==== PRIVATE ====--------------------------------------------------------------------
 	}
 }

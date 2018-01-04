@@ -25,13 +25,15 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel = viewModel;
 			_viewModel.Miners = minerModel.Miners;
 
-			_viewModel.Weight1 = minerModel.Miners[0].Weight;
-			_viewModel.Weight2 = minerModel.Miners[1].Weight;
-			_viewModel.Weight3 = minerModel.Miners[2].Weight;
-			_viewModel.Weight4 = minerModel.Miners[3].Weight;
-			_viewModel.Weight5 = minerModel.Miners[4].Weight;
-			_viewModel.Weight6 = minerModel.Miners[5].Weight;
-			_viewModel.Weight7 = minerModel.Miners[6].Weight;
+			int index = 1;
+
+			_viewModel.Weight1 = minerModel.Miners[index++].Weight;
+			_viewModel.Weight2 = minerModel.Miners[index++].Weight;
+			_viewModel.Weight3 = minerModel.Miners[index++].Weight;
+			_viewModel.Weight4 = minerModel.Miners[index++].Weight;
+			_viewModel.Weight5 = minerModel.Miners[index++].Weight;
+			_viewModel.Weight6 = minerModel.Miners[index++].Weight;
+			_viewModel.Weight7 = minerModel.Miners[index++].Weight;
 		}
 
 		public ActionResult Index()
@@ -102,15 +104,16 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpPost]
 		public ActionResult Picks(IndexViewModel viewModel)
 		{
+			int index = 1;
 			// Transfer the posted data to the actual ViewModel
 
-			_minerModel.Miners[0].Weight = viewModel.Weight1;
-			_minerModel.Miners[1].Weight = viewModel.Weight2;
-			_minerModel.Miners[2].Weight = viewModel.Weight3;
-			_minerModel.Miners[3].Weight = viewModel.Weight4;
-			_minerModel.Miners[4].Weight = viewModel.Weight5;
-			_minerModel.Miners[5].Weight = viewModel.Weight6;
-			_minerModel.Miners[6].Weight = viewModel.Weight7;
+			_minerModel.Miners[index++].Weight = viewModel.Weight1;
+			_minerModel.Miners[index++].Weight = viewModel.Weight2;
+			_minerModel.Miners[index++].Weight = viewModel.Weight3;
+			_minerModel.Miners[index++].Weight = viewModel.Weight4;
+			_minerModel.Miners[index++].Weight = viewModel.Weight5;
+			_minerModel.Miners[index++].Weight = viewModel.Weight6;
+			_minerModel.Miners[index++].Weight = viewModel.Weight7;
 
 			//return RedirectToAction("Picks");
 			return View(ConstructPicksViewModel());
