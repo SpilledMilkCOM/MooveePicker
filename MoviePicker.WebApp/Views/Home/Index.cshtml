@@ -25,7 +25,10 @@
 			<tr>
 				<td></td>
 				<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })</td>
-				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+
+				@*Pete's site has been taken down.*@
+
+				@*@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 				{
 					<td style="text-align: center">
 						@if (miner.Movies?.Count > 0 && miner != Model.Miners.Last())
@@ -34,7 +37,7 @@
 						}
 					</td>
 					<td></td>
-				}
+				}*@
 			</tr>
 		</thead>
 
@@ -111,9 +114,9 @@
 					@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control" })
 				</td>
 				<td></td>
-				<td>
+				@*<td>
 					@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control" })
-				</td>
+				</td>*@
 				<td></td>
 			</tr>
 		</tbody>

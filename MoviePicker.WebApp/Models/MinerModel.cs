@@ -11,7 +11,7 @@ namespace MoviePicker.WebApp.Models
 {
 	public class MinerModel : IMinerModel
 	{
-		private const int NERD_INDEX = 1;
+		//private const int NERD_INDEX = 1;
 		private const int FML_INDEX = 0;
 
 		public MinerModel()
@@ -73,7 +73,7 @@ namespace MoviePicker.WebApp.Models
 		{
 			var result = new List<IMiner> {
 				new MineFantasyMovieLeagueBoxOffice { IsHidden = true, Weight = 0 },
-				new MineNerd { Weight = 1 },
+//				new MineNerd { Weight = 1 },
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
 				new MineBoxOfficeMojo { Weight = 3 },
@@ -112,7 +112,7 @@ namespace MoviePicker.WebApp.Models
 				WeekendEnding = baseMovie.WeekendEnding
 			};
 
-			for (int index = NERD_INDEX; index < Miners.Count; index++)
+			for (int index = FML_INDEX + 1; index < Miners.Count; index++)
 			{
 				var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => item.Equals(baseMovie) && item.WeekendEnding == result.WeekendEnding);
 
@@ -139,9 +139,9 @@ namespace MoviePicker.WebApp.Models
 		/// <param name="minerData"></param>
 		void FilterMinerMovies(List<IMiner> minerData)
 		{
-			DateTime? weekendEnding = minerData[NERD_INDEX].Movies?.FirstOrDefault()?.WeekendEnding;
+			DateTime? weekendEnding = minerData[FML_INDEX].Movies?.FirstOrDefault()?.WeekendEnding;
 
-			for (int index = NERD_INDEX + 1; index < minerData.Count - 1; index++)
+			for (int index = FML_INDEX + 1; index < minerData.Count - 1; index++)
 			{
 				if (minerData[index].Movies?.FirstOrDefault()?.WeekendEnding != weekendEnding)
 				{
@@ -153,11 +153,11 @@ namespace MoviePicker.WebApp.Models
 
 			var moviesToRemove = new List<IMovie>();
 			var lastWeekMovies = minerData.Last().Movies;
-			var nerdMovies = minerData.First().Movies;
+			var baseMovies = minerData.First().Movies;
 
 			foreach (var movie in lastWeekMovies)
 			{
-				var found = nerdMovies.FirstOrDefault(item => movie.Equals(item));      // Use the fuzzy logic to match the movie name.
+				var found = baseMovies.FirstOrDefault(item => movie.Equals(item));      // Use the fuzzy logic to match the movie name.
 
 				if (found == null)
 				{
@@ -173,7 +173,6 @@ namespace MoviePicker.WebApp.Models
 			{
 				lastWeekMovies.Remove(movie);
 			}
-
 		}
 
 		/// <summary>

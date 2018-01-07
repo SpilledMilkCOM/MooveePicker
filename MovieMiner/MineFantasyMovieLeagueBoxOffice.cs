@@ -45,7 +45,7 @@ namespace MovieMiner
 				{
 					// Grab the first one for now.
 
-					var dateText = tableHeader.InnerText;
+					var dateText = tableHeader.InnerText.Replace("Estimated", string.Empty);
 
 					if (dateText != null)
 					{
