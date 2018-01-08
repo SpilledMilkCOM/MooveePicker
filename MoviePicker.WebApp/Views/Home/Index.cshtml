@@ -29,21 +29,23 @@
 				@*Pete's site has been taken down.*@
 
 				@*@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
-				{
-					<td style="text-align: center">
-						@if (miner.Movies?.Count > 0 && miner != Model.Miners.Last())
-						{
-							<a href="@Model.GetFMLNerdLink(miner)" class="btn btn-info btn-sm">Analyze</a>
-						}
-					</td>
-					<td></td>
-				}*@
+					{
+						<td style="text-align: center">
+							@if (miner.Movies?.Count > 0 && miner != Model.Miners.Last())
+							{
+								<a href="@Model.GetFMLNerdLink(miner)" class="btn btn-info btn-sm">Analyze</a>
+							}
+						</td>
+						<td></td>
+					}*@
 			</tr>
 		</thead>
 
 		<tbody>
 			@foreach (var movie in Model.Miners.First().Movies)
 			{
+				bool isFirst = true;
+
 				<tr>
 					<td>@movie.Cost</td>
 					<td>@movie.Name</td>
@@ -52,9 +54,23 @@
 					{
 						var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
 
-						<td style="text-align: right">
-							@string.Format("{0:N0}", minerMovie?.Earnings)
-						</td>
+
+						if (isFirst)
+						{
+							isFirst = false;
+
+							<td style="text-align: right">
+								@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control" })
+								
+							</td>
+						}
+						else
+						{
+							<td style="text-align: right">
+								@string.Format("{0:N0}", minerMovie?.Earnings)
+							</td>
+						}
+
 
 						if (miner != Model.Miners.Last())
 						{
@@ -115,8 +131,8 @@
 				</td>
 				<td></td>
 				@*<td>
-					@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control" })
-				</td>*@
+						@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control" })
+					</td>*@
 				<td></td>
 			</tr>
 		</tbody>

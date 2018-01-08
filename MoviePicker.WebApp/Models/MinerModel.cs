@@ -74,6 +74,7 @@ namespace MoviePicker.WebApp.Models
 			var result = new List<IMiner> {
 				new MineFantasyMovieLeagueBoxOffice { IsHidden = true, Weight = 0 },
 //				new MineNerd { Weight = 1 },
+				new MineMine {Weight = 4},
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
 				new MineBoxOfficeMojo { Weight = 3 },

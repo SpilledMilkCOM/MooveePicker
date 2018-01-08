@@ -53,6 +53,7 @@
     <Compile Include="MineBoxOfficeMojo.cs" />
     <Compile Include="MineBoxOfficeProphet.cs" />
     <Compile Include="MineCulturedVultures.cs" />
+    <Compile Include="MineMine.cs" />
     <Compile Include="MineNerdMovie.cs" />
     <Compile Include="MineBoxOfficePro.cs" />
     <Compile Include="MineFantasyMovieLeagueBoxOffice.cs" />
