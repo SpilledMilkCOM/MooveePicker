@@ -12,6 +12,8 @@ namespace MoviePicker.WebApp.Controllers
 {
 	public class HomeController : Controller
 	{
+		private const int MY_MINER_IDX = 1;
+
 		private IMinerModel _minerModel;
 		private IIndexViewModel _viewModel;
 		private IMoviePicker _moviePicker;
@@ -25,6 +27,8 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel = viewModel;
 			_viewModel.Miners = minerModel.Miners;
 
+			// TODO: Use reflection...
+
 			int index = 1;
 
 			_viewModel.Weight1 = minerModel.Miners[index++].Weight;
@@ -34,6 +38,26 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.Weight5 = minerModel.Miners[index++].Weight;
 			_viewModel.Weight6 = minerModel.Miners[index++].Weight;
 			_viewModel.Weight7 = minerModel.Miners[index++].Weight;
+
+			var myBoxOffice = minerModel.Miners[1].Movies;
+
+			index = 0;
+
+			_viewModel.BoxOffice1 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice2 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice3 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice4 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice5 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice6 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice7 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice8 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice9 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice10 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice11 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice12 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice13 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice14 = myBoxOffice[index++].EarningsBase;
+			_viewModel.BoxOffice15 = myBoxOffice[index++].EarningsBase;
 		}
 
 		public ActionResult Index()
@@ -105,7 +129,9 @@ namespace MoviePicker.WebApp.Controllers
 		public ActionResult Picks(IndexViewModel viewModel)
 		{
 			int index = 1;
+
 			// Transfer the posted data to the actual ViewModel
+			// TODO: Use reflection...
 
 			_minerModel.Miners[index++].Weight = viewModel.Weight1;
 			_minerModel.Miners[index++].Weight = viewModel.Weight2;
@@ -114,6 +140,24 @@ namespace MoviePicker.WebApp.Controllers
 			_minerModel.Miners[index++].Weight = viewModel.Weight5;
 			_minerModel.Miners[index++].Weight = viewModel.Weight6;
 			_minerModel.Miners[index++].Weight = viewModel.Weight7;
+
+			index = 0;
+
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice1;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice2;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice3;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice4;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice5;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice6;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice7;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice8;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice9;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice10;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice11;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice12;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice13;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice14;
+			_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice15;
 
 			//return RedirectToAction("Picks");
 			return View(ConstructPicksViewModel());

@@ -25,6 +25,10 @@ namespace MoviePicker.WebApp.Models
 		{
 			var miners = CreateMiners();
 
+			// Need this set BEFORE mining.
+
+			Miners = miners;
+
 			MineMiners(miners);
 
 			FilterMinerMovies(miners);
@@ -36,17 +40,20 @@ namespace MoviePicker.WebApp.Models
 		{
 			var result = new List<IMovie>();
 
-			// FML should have all of the movies WITH the Bux
-			// Use the FML data to copy the bux to each list.
-
-			var nerdMovies = Miners[FML_INDEX].Movies;
-
-			foreach (var movie in nerdMovies.OrderByDescending(item => item.Cost))
+			if (Miners != null)
 			{
-				// My list is based on how well I trust these sources.
+				// FML should have all of the movies WITH the Bux
+				// Use the FML data to copy the bux to each list.
 
-				result.Add(CreateWeightedMovie(movie));
-			}
+				var nerdMovies = Miners[FML_INDEX].Movies;
+
+				foreach (var movie in nerdMovies.OrderByDescending(item => item.Cost))
+				{
+					// My list is based on how well I trust these sources.
+
+					result.Add(CreateWeightedMovie(movie));
+				}
+			}	
 
 			return result;
 		}
@@ -74,7 +81,7 @@ namespace MoviePicker.WebApp.Models
 			var result = new List<IMiner> {
 				new MineFantasyMovieLeagueBoxOffice { IsHidden = true, Weight = 0 },
 //				new MineNerd { Weight = 1 },
-				new MineMine {Weight = 4},
+				new MineMine(this) {Weight = 4},
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
 				new MineBoxOfficeMojo { Weight = 3 },
@@ -187,7 +194,7 @@ namespace MoviePicker.WebApp.Models
 			List<IMovie> baseList = null;
 			List<IMovie> compoundMovies = null;
 
-			// Nerd list is first.
+			// FML Base list is first.
 
 			baseList = miners.First().Mine();
 			result.Add(baseList);
@@ -260,6 +267,10 @@ namespace MoviePicker.WebApp.Models
 					//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
 				}
 			});
+
+			// Mine my movies LAST because they are based on all of the other miners.
+
+			miners.ToList()[1].Mine();
 
 			return result;
 		}

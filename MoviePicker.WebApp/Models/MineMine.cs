@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MoviePicker.Common.Interfaces;
+using MoviePicker.WebApp.Models;
 
 namespace MovieMiner
 {
@@ -8,16 +9,19 @@ namespace MovieMiner
 	/// </summary>
 	public class MineMine : MinerBase
 	{
-		public MineMine()
+		private readonly MinerModel _model;
+
+		public MineMine(MinerModel model)
 			: base("My Predictions", "Mine", null)
 		{
+			_model = model;
 		}
 
 		public override List<IMovie> Mine()
 		{
 			var result = new List<IMovie>();
 
-			Movies = result;
+			Movies = _model.CreateWeightedList();
 
 			return result;
 		}

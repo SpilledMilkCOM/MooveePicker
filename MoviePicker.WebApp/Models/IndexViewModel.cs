@@ -11,6 +11,25 @@ namespace MoviePicker.WebApp.Models
 	public class IndexViewModel : IIndexViewModel
 	{
 		/// <summary>
+		/// Post the Box Office values back to the controller.
+		/// </summary>
+		public decimal BoxOffice1 { get; set; }
+		public decimal BoxOffice2 { get; set; }
+		public decimal BoxOffice3 { get; set; }
+		public decimal BoxOffice4 { get; set; }
+		public decimal BoxOffice5 { get; set; }
+		public decimal BoxOffice6 { get; set; }
+		public decimal BoxOffice7 { get; set; }
+		public decimal BoxOffice8 { get; set; }
+		public decimal BoxOffice9 { get; set; }
+		public decimal BoxOffice10 { get; set; }
+		public decimal BoxOffice11{ get; set; }
+		public decimal BoxOffice12 { get; set; }
+		public decimal BoxOffice13 { get; set; }
+		public decimal BoxOffice14 { get; set; }
+		public decimal BoxOffice15 { get; set; }
+
+		/// <summary>
 		/// Display the Miners on the page.
 		/// </summary>
 		public IEnumerable<IMiner> Miners { get; set; }

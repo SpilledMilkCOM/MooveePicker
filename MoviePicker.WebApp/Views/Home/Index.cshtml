@@ -11,6 +11,8 @@
 
 @using (Html.BeginForm("Picks", "Home", null, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
 {
+	int movieCount = 1;		// This scope is pretty far, sorry  :(
+
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -44,6 +46,7 @@
 		<tbody>
 			@foreach (var movie in Model.Miners.First().Movies)
 			{
+				const string myColumnStyle = "width: 100px;";
 				bool isFirst = true;
 
 				<tr>
@@ -54,15 +57,121 @@
 					{
 						var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
 
-
 						if (isFirst)
 						{
 							isFirst = false;
 
-							<td style="text-align: right">
-								@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control" })
-								
-							</td>
+							switch (movieCount)
+							{
+								case 1:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice1, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 2:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice2, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 3:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice3, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 4:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice4, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 5:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice5, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 6:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice6, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 7:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice7, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 8:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice8, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 9:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice9, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 10:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice10, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 11:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice11, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 12:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice12, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 13:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice13, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 14:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice14, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+								case 15:
+									{
+										<td style="text-align: right">
+											@Html.TextBoxFor(model => model.BoxOffice15, new { @class = "form-control", style = myColumnStyle })
+										</td>
+									}
+									break;
+							}
+							@*<td style="text-align: right">
+									@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control" })
+								</td>*@
 						}
 						else
 						{
@@ -70,7 +179,6 @@
 								@string.Format("{0:N0}", minerMovie?.Earnings)
 							</td>
 						}
-
 
 						if (miner != Model.Miners.Last())
 						{
@@ -95,6 +203,8 @@
 						}
 					}
 				</tr>
+
+				movieCount++;
 			}
 
 			<tr>
@@ -109,7 +219,6 @@
 				<td>
 					@Html.TextBoxFor(model => model.Weight1, new { @class = "form-control" })
 				</td>
-				<td></td>
 				<td>
 					@Html.TextBoxFor(model => model.Weight2, new { @class = "form-control" })
 				</td>
@@ -130,9 +239,9 @@
 					@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control" })
 				</td>
 				<td></td>
-				@*<td>
-						@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control" })
-					</td>*@
+				<td>
+					@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control" })
+				</td>
 				<td></td>
 			</tr>
 		</tbody>

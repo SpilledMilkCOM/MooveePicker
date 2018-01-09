@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.SolverFoundation.Services;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
 
 namespace MoviePicker.Msf
 {
-    public class MsfMovieSolver : IMoviePicker
+	public class MsfMovieSolver : IMoviePicker
     {
         private readonly List<MsfMovieWrapper> _movies;
 		private IMovie _bestPerformer;
