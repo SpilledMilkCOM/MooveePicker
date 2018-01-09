@@ -4,14 +4,22 @@
 	ViewBag.Title = "Home Page";
 }
 
-<h2>Box Office Forecasts</h2>
+<h2>WELCOME Fantasy Movie League Family</h2>
+
+<p>
+	Not sure how you found the site.  Could have been from a post or a tweet. 
+	Make sure you follow me on Twitter, that can be found on the @Html.ActionLink("Contact", "Contact") page.
+	Other information is on the @Html.ActionLink("About", "About") page.
+</p>
+
+<h3>Box Office Forecasts</h3>
 <h5>@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" }) weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString()</h5>
 
 @* Showing the data from ALL of the sources/miners *@
 
 @using (Html.BeginForm("Picks", "Home", null, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
 {
-	int movieCount = 1;		// This scope is pretty far, sorry  :(
+	int movieCount = 1;     // This scope is pretty far, sorry  :(
 
 	<table class="table table-striped">
 		<thead>
