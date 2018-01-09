@@ -13,7 +13,7 @@ namespace MoviePicker.WebApp.Models
 	{
 		//private const int NERD_INDEX = 1;
 		private const int FML_INDEX = 0;
-
+		private const int MY_INDEX = FML_INDEX + 1;
 		public MinerModel()
 		{
 			Miners = CreateMinersWithData();
@@ -45,9 +45,9 @@ namespace MoviePicker.WebApp.Models
 				// FML should have all of the movies WITH the Bux
 				// Use the FML data to copy the bux to each list.
 
-				var nerdMovies = Miners[FML_INDEX].Movies;
+				var baseMovies = Miners[FML_INDEX].Movies;
 
-				foreach (var movie in nerdMovies.OrderByDescending(item => item.Cost))
+				foreach (var movie in baseMovies.OrderByDescending(item => item.Cost))
 				{
 					// My list is based on how well I trust these sources.
 
@@ -106,9 +106,9 @@ namespace MoviePicker.WebApp.Models
 		/// <returns></returns>
 		private IMovie CreateWeightedMovie(IMovie baseMovie)
 		{
-			decimal totalWeight = Miners[FML_INDEX].Weight;
+			decimal totalWeight = 0;
 
-			// Initialize the first movie
+			// Initialize the result movie with base data (excluding the earnings)
 
 			var result = new Movie
 			{
@@ -116,18 +116,24 @@ namespace MoviePicker.WebApp.Models
 				MovieName = baseMovie.MovieName,
 				Day = baseMovie.Day,
 				Cost = baseMovie.Cost,
-				Earnings = baseMovie.Earnings * totalWeight,
 				WeekendEnding = baseMovie.WeekendEnding
 			};
 
-			for (int index = FML_INDEX + 1; index < Miners.Count; index++)
+			// The scan includes "My" data.
+
+			for (int index = MY_INDEX; index < Miners.Count; index++)
 			{
 				var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => item.Equals(baseMovie) && item.WeekendEnding == result.WeekendEnding);
 
 				if (foundMovie != null)
 				{
-					result.Earnings += foundMovie.Earnings * Miners[index].Weight;
-					totalWeight += Miners[index].Weight;
+					// Apply weights to all the miners, but only to "My" data if there are earnings. (don't factor in a zero)
+
+					if (index != MY_INDEX || foundMovie.Earnings > 0)
+					{
+						result.Earnings += foundMovie.Earnings * Miners[index].Weight;
+						totalWeight += Miners[index].Weight;
+					}
 				}
 			}
 
