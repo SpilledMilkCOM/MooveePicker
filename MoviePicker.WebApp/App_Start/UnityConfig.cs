@@ -56,6 +56,9 @@ namespace MoviePicker.WebApp
 			// But if everything else is manipulated through Angular then it might not be a big deal.
 			container.RegisterType<IMinerModel, MinerModel>(new PerThreadLifetimeManager());
 			container.RegisterType<IIndexViewModel, IndexViewModel>(new PerThreadLifetimeManager());
+
+			// Each of these will construct each time injected into the controller.
+
 			container.RegisterType<IMoviePicker, MsfMovieSolver>();
 			container.RegisterType<IMovieList, MovieList>();
 			container.RegisterType<ISimulationModel, SimulationModel>();

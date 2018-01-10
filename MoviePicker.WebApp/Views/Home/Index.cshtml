@@ -35,19 +35,6 @@
 			<tr>
 				<td></td>
 				<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })</td>
-
-				@*Pete's site has been taken down.*@
-
-				@*@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
-					{
-						<td style="text-align: center">
-							@if (miner.Movies?.Count > 0 && miner != Model.Miners.Last())
-							{
-								<a href="@Model.GetFMLNerdLink(miner)" class="btn btn-info btn-sm">Analyze</a>
-							}
-						</td>
-						<td></td>
-					}*@
 			</tr>
 		</thead>
 

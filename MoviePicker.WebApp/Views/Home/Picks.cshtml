@@ -22,20 +22,6 @@
 
 	</thead>
 	<tbody>
-
-		@*Pete's site is gone.*@
-
-		@*<tr>
-				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
-				{
-					<td>
-						@if (miner.Movies?.Count > 0)
-					{
-							<a href="@Model.GetFMLNerdLink(miner)" class="btn btn-info btn-sm">Analyze</a>
-					}
-					</td>
-				}
-			</tr>*@
 		<tr>
 			@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 			{
