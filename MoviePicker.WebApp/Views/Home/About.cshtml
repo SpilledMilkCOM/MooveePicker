@@ -6,13 +6,16 @@
 <p>
 	This website is used to mine box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
 	The site will also use a bin-packing algorithm (<a href="https://msdn.microsoft.com/en-us/library/microsoft.solverfoundation.services(v=vs.93).aspx">Microsoft.SolverFoundation.Services</a>)
-	Since I have <strong>NO</strong> idea how to pick movies I figured I would rely on the "experts" and weigh their data so I can make my own guess on the weekend box office.
-	I'll update this site and these comments when I can.  If the site is <strong>DOWN</strong>, I'll know soon enough so you don't have to call me.  ;)
-	I built this site for me and my friends at NCM when we found out about FML (YEAH, gotta love that abbreviation).  As developers we are LAZY, but we'll BUILD things in our spare time
-	so we have MORE of it!
+	to efficiently create your movie lineup based on the rules of the Fantasy Movie League.
+	Since I have <strong>NO</strong> idea how to pick movies I figured I would rely on the "experts" and aggregate their data so I can make my own guess on the weekend box office predictions.
+	I'll update this site and these comments when I can.  If the site is <strong>DOWN</strong>, I'll know soon enough (so you don't have to call me).  ;)
+	I built this site for my friends and I at NCM when we found out about FML (YEAH, gotta love that abbreviation).  We didn't know that NCM was going to buy Fantasy Movie League.
+	As developers we are <strong>LAZY</strong>, but we'll <strong>BUILD</strong> things in our spare time so we have MORE of it!
 </p>
 
 <div class="row">
+	<div class="col-md-1">
+	</div>
 	<div class="col-md-1">
 		<a class="btn btn-default btn-lg" href="https://github.com/SpilledMilkCOM/MooveePicker" target="_blank">
 			<img src="~/Images/GitHub-Mark-32px.png">
@@ -32,12 +35,16 @@
 	Not sure IF they paid him or how much.
 </p>
 
+<p>
+	Another thank you to the support of the Fantasy Movie League family
+</p>
+
 <h3>Summary / Home Page</h3>
 
 <p>
 	I wish I had the time to make this site pretty like Pete's site, but I keep thinking up functionality and implementing it.
 	I'll have to double check my numbers to make sure the "Mine" column didn't break things.
-	The column titles are clickable with the column's source.  (Always up for new sources, so let me know if you feel like sharing.)
+	The column titles are clickable with the column's source (they do not sort the columns).  I'm always up for new sources, so let me know if you feel like sharing.
 	If you just want to go with the industry numbers then put a weight of 0 at the bottom of the Mine column.
 	If you want only <strong>YOUR</strong> numbers, then put zeros at the bottom of all of the industry weight fields.
 	Or you can mix and match and tweak the defaults and feed those numbers back into the calculations (kind of like a feedback loop).
@@ -46,18 +53,22 @@
 <h3>Deciphering Picks</h3>
 
 <p>
-	Again, this is NOT Pete's site and I never really needed what was in the 2nd, 3rd, etc. slots so only the winner is posted.
+	Again, this is <strong>NOT</strong> Pete's site and I never really needed what was in the 2nd, 3rd, etc. slots so only the winner is posted.
+	Oh sure, the loser places are somewhat interesting, but if you're confident with your numbers then that's all they are...  Lineups that will lose.
 	There are two tables that show the picks WITH the bonus ON and with it turned off.
 	The third table shows how the effeciencies stack up.  <strong>REMEMBER</strong>, these are <strong>YOUR</strong> numbers.
 	The last table only takes the top 5 ranked by efficiency and shows in red what percentage that movie has to drop in order to be overtaken by second place.
 	The other percentages are the values that those movies would have to GAIN if the top ranked movie held its number.
 </p>
 
-<h4>Backlog</h4>
+<h4>Backlog (TODO list)</h4>
 
 <ul>
+	<li>Separate the shared memory with the request memory (only mine data once to reduce requests on the source sites).</li>
 	<li>Refresh page with NEW weights so the feedback respects user's weights and not just the defaults.</li>
 	<li>Find more data to aggregate.  (Before the 10:00 am MST cutoff for picks.)</li>
 	<li>Keep a history of data to figure out which "experts" are the best at what they do and then choose the weights accordingly</li>
 	<li>Add a view for the simulation code which is already built.</li>
+	<li>Add asynchronous feedback when mining the data.  It's fast enough that it's not really NEEDED.</li>
+	<li>If you're looking for what's BEEN DONE then look at the GitHub history (link above).</li>
 </ul>
