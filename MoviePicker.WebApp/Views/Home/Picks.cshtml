@@ -26,16 +26,16 @@
 		@*Pete's site is gone.*@
 
 		@*<tr>
-			@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
-			{
-				<td>
-					@if (miner.Movies?.Count > 0)
+				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 				{
-						<a href="@Model.GetFMLNerdLink(miner)" class="btn btn-info btn-sm">Analyze</a>
+					<td>
+						@if (miner.Movies?.Count > 0)
+					{
+							<a href="@Model.GetFMLNerdLink(miner)" class="btn btn-info btn-sm">Analyze</a>
+					}
+					</td>
 				}
-				</td>
-			}
-		</tr>*@
+			</tr>*@
 		<tr>
 			@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 			{
@@ -105,21 +105,26 @@
 							<td style="@rankStyle">@rank</td>
 							<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost)</td>
 
-							@if (rank == 1)
+							@if (movie.EarningsBase > 0)	// Dividing by zero is BAD!
 							{
-								var nextRankedMovie = Model.Movies.FirstOrDefault(item => Model.Rank(item) == 2);
+								// Compute difference columns.
 
-								if (nextRankedMovie != null)
+								@if (rank == 1)
 								{
-									//How much does the top rank have to LOSE before it's no longer the TOP
-									<td style="text-align: right">@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)</td>
-									<td style="text-align: right; font-weight: bold; color: #cc3333">@string.Format("{0:N2}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+									var nextRankedMovie = Model.Movies.FirstOrDefault(item => Model.Rank(item) == 2);
+
+									if (nextRankedMovie != null && movie.EarningsBase > 0)
+									{
+										//How much does the top rank have to LOSE before it's no longer the TOP
+										<td style="text-align: right">@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)</td>
+										<td style="text-align: right; font-weight: bold; color: #cc3333">@string.Format("{0:N2}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+									}
 								}
-							}
-							else
-							{
-								<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)</td>
-								<td style="@rankStyle">@string.Format("{0:N2}%", (movie.EarningsBase > 0) ? (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100 : 0)</td>
+								else
+								{
+									<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)</td>
+									<td style="@rankStyle">@string.Format("{0:N2}%", (movie.EarningsBase > 0) ? (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100 : 0)</td>
+								}
 							}
 						</tr>
 					}
@@ -176,21 +181,26 @@
 							<td style="@rankStyle">@rank</td>
 							<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost)</td>
 
-							@if (rank == 1)
+							@if (movie.EarningsBase > 0)
 							{
-								var nextRankedMovie = Model.Movies.FirstOrDefault(item => Model.Rank(item) == 2);
+								// Compute difference columns.
 
-								if (nextRankedMovie != null)
+								if (rank == 1)
 								{
-									//How much does the top rank have to LOSE before it's no longer the TOP
-									<td style="text-align: right">@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)</td>
-									<td style="text-align: right; font-weight: bold; color: #cc3333">@string.Format("{0:N2}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+									var nextRankedMovie = Model.Movies.FirstOrDefault(item => Model.Rank(item) == 2);
+
+									if (nextRankedMovie != null)
+									{
+										//How much does the top rank have to LOSE before it's no longer the TOP
+										<td style="text-align: right">@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)</td>
+										<td style="text-align: right; font-weight: bold; color: #cc3333">@string.Format("{0:N2}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+									}
 								}
-							}
-							else
-							{
-								<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)</td>
-								<td style="@rankStyle">@string.Format("{0:N2}%", (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+								else
+								{
+									<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)</td>
+									<td style="@rankStyle">@string.Format("{0:t's noN2}%", (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+								}
 							}
 						</tr>
 					}
