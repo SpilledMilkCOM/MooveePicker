@@ -199,10 +199,10 @@ namespace MoviePicker.WebApp.Controllers
 			}
 
 			_moviePicker.AddMovies(clonedList);
-
 			_moviePicker.EnableBestPerformer = false;
 
 			result.MovieListBonusOff = _moviePicker.ChooseBest();
+			result.SharedPicksUrl = SharedPicksFromModels();
 
 			stopWatch.Stop();
 
@@ -298,6 +298,60 @@ namespace MoviePicker.WebApp.Controllers
 			picksViewModel.MovieList = _simulationModel.ChooseBest();
 
 			picksViewModel.Duration += stopwatch.ElapsedMilliseconds;
+		}
+
+		private string SharedPicksFromModels()
+		{
+			var stringBuilder = new StringBuilder();
+			bool first = true;
+
+			stringBuilder.Append(TrimParameters(Request.Url.ToString()));
+			stringBuilder.Append("?bo=");
+
+			foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
+			{
+				if (!first)
+				{
+					stringBuilder.Append(",");
+				}
+				else
+				{
+					first = false;
+				}
+
+				stringBuilder.Append(movie.EarningsBase.ToString("F0"));
+			}
+
+			first = true;
+			stringBuilder.Append("&wl=");
+
+			for (int idx = MY_MINER_IDX; idx < _minerModel.Miners.Count; idx++)
+			{
+				if (!first)
+				{
+					stringBuilder.Append(",");
+				}
+				else
+				{
+					first = false;
+				}
+
+				stringBuilder.Append(_minerModel.Miners[idx].Weight.ToString("F0"));
+			}
+
+			return stringBuilder.ToString();
+		}
+
+		private string TrimParameters(string request)
+		{
+			var paramsIdx = request.IndexOf("?");
+
+			if (paramsIdx > 0)
+			{
+				request = request.Substring(0, paramsIdx);
+			}
+
+			return request;
 		}
 	}
 }

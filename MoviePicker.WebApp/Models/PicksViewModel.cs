@@ -19,6 +19,8 @@ namespace MoviePicker.WebApp.Models
 
 		public IEnumerable<IMovie> Movies { get; set; }
 
+		public string SharedPicksUrl { get; set; }
+
 		/// <summary>
 		/// TODO: Consolidate
 		/// </summary>
