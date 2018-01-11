@@ -18,7 +18,7 @@
 				boList += ","
 			}
 
-			boList += $("#boId" + idx).val()
+			boList += $("#boId" + idx).val().replace(",", "").replace("$", "")
 		}
 
 		for (idx = 1; idx <= 7; idx++) {
@@ -26,7 +26,9 @@
 				weightList += ","
 			}
 
-			weightList += $("#weightId" + idx).val()
+			// TODO: Request encode this.
+
+			weightList += $("#weightId" + idx).val().replace(",", "").replace("$", "")
 		}
 
 		var url = "/home/index?bo=" + boList + "&wl=" + weightList
