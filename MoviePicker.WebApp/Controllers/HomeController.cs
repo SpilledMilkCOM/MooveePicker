@@ -204,6 +204,11 @@ namespace MoviePicker.WebApp.Controllers
 			result.MovieListBonusOff = _moviePicker.ChooseBest();
 			result.SharedPicksUrl = SharedPicksFromModels();
 
+			var leadMovie = result.MovieList.Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
+
+			// Needs to be put in the ViewBag since this value is on the footer.
+			ViewBag.TwitterTweetUrl = $"https://twitter.com/intent/tweet?text={leadMovie} leads my lineup @fml_movies {result.SharedPicksUrl.Replace("?", "%3F")}";
+
 			stopWatch.Stop();
 
 			result.Duration = stopWatch.ElapsedMilliseconds;

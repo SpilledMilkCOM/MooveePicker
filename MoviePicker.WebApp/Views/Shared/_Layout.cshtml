@@ -53,7 +53,15 @@
 				</div>
 
 				<div class="col-sm-2">
-					<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
+
+					@if (string.IsNullOrEmpty(ViewBag.TwitterTweetUrl))
+					{
+						<a class="twitter-share-button" href="https://twitter.com/share">Tweet</a>
+					}
+					else
+					{
+						<a class="twitter-share-button" href="@ViewBag.TwitterTweetUrl" >Tweet</a>
+					}
 				</div>
 			</div>
 		</footer>
