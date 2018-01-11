@@ -4,6 +4,55 @@
 	ViewBag.Title = "Home Page";
 }
 
+<script type="text/javascript">
+	function clickRecalc() {
+		//alert("clickRecalc")
+
+		var boList = ""
+		var weightList = ""
+
+		for (idx = 1; idx <= 15; idx++) 
+		{
+			if (idx != 1)
+			{
+				boList += ","
+			}
+
+			boList += $("#boId" + idx).val().replace(",", "").replace("$", "")
+		}
+
+		for (idx = 1; idx <= 7; idx++) {
+			if (idx != 1) {
+				weightList += ","
+			}
+
+			// TODO: Request encode this.
+
+			weightList += $("#weightId" + idx).val().replace(",", "").replace("$", "")
+		}
+
+		var url = "/home/index?bo=" + boList + "&wl=" + weightList
+
+		var baseUrl = window.location.href
+
+		if (baseUrl != null)
+		{
+			var slashIdx = baseUrl.indexOf("/", "https://".length)
+
+			if (slashIdx > 0)
+			{
+				baseUrl = baseUrl.substring(0, slashIdx)
+			}
+		}
+
+		//alert(baseUrl)
+
+		//alert(url)
+
+		window.location.href = baseUrl + url
+	}
+</script>
+
 <h2>WELCOME Fantasy Movie League Family</h2>
 
 <p>
@@ -13,7 +62,7 @@
 </p>
 
 <h3>Box Office Forecasts</h3>
-<h5>@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" }) weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString()</h5>
+<h5>@*@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })*@ weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString()</h5>
 
 @* Showing the data from ALL of the sources/miners *@
 
@@ -42,6 +91,7 @@
 			@foreach (var movie in Model.Miners.First().Movies)
 			{
 				const string myColumnStyle = "width: 100px;";
+				//const string myColumnFormat = "{0:N0}";
 				const string myColumnFormat = "{0:F0}";
 				bool isFirst = true;
 
@@ -62,105 +112,105 @@
 								case 1:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice1, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice1, myColumnFormat, new { @class = "form-control", id = "boId1", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 2:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice2, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice2, myColumnFormat, new { @class = "form-control", id = "boId2", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 3:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice3, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice3, myColumnFormat, new { @class = "form-control", id = "boId3", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 4:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice4, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice4, myColumnFormat, new { @class = "form-control", id = "boId4", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 5:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice5, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice5, myColumnFormat, new { @class = "form-control", id = "boId5", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 6:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice6, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice6, myColumnFormat, new { @class = "form-control", id = "boId6", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 7:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice7, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice7, myColumnFormat, new { @class = "form-control", id = "boId7", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 8:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice8, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice8, myColumnFormat, new { @class = "form-control", id = "boId8", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 9:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice9, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice9, myColumnFormat, new { @class = "form-control", id = "boId9", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 10:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice10, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice10, myColumnFormat, new { @class = "form-control", id = "boId10", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 11:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice11, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice11, myColumnFormat, new { @class = "form-control", id = "boId11", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 12:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice12, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice12, myColumnFormat, new { @class = "form-control", id = "boId12", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 13:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice13, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice13, myColumnFormat, new { @class = "form-control", id = "boId13", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 14:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice14, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice14, myColumnFormat, new { @class = "form-control", id = "boId14", style = myColumnStyle })
 										</td>
 									}
 									break;
 								case 15:
 									{
 										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice15, myColumnFormat, new { @class = "form-control", style = myColumnStyle })
+											@Html.TextBoxFor(model => model.BoxOffice15, myColumnFormat, new { @class = "form-control", id = "boId15", style = myColumnStyle })
 										</td>
 									}
 									break;
@@ -213,35 +263,38 @@
 				*@
 
 				<td>
-					@Html.TextBoxFor(model => model.Weight1, new { @class = "form-control" })
-				</td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight2, new { @class = "form-control" })
+					@Html.TextBoxFor(model => model.Weight1, new { @class = "form-control", id = "weightId1" })
 				</td>
 				<td></td>
 				<td>
-					@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control" })
+					@Html.TextBoxFor(model => model.Weight2, new { @class = "form-control", id = "weightId2" })
 				</td>
 				<td></td>
 				<td>
-					@Html.TextBoxFor(model => model.Weight4, new { @class = "form-control" })
+					@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control", id = "weightId3" })
 				</td>
 				<td></td>
 				<td>
-					@Html.TextBoxFor(model => model.Weight5, new { @class = "form-control" })
+					@Html.TextBoxFor(model => model.Weight4, new { @class = "form-control", id = "weightId4" })
 				</td>
 				<td></td>
 				<td>
-					@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control" })
+					@Html.TextBoxFor(model => model.Weight5, new { @class = "form-control", id = "weightId5" })
 				</td>
 				<td></td>
 				<td>
-					@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control" })
+					@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control", id = "weightId6" })
+				</td>
+				<td></td>
+				<td>
+					@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control", id = "weightId7" })
 				</td>
 				<td></td>
 			</tr>
 		</tbody>
 	</table>
+
+	<input class="btn btn-default" onclick="clickRecalc()" type="button" value="Apply Weights" />
 
 	<input class="btn btn-default" type="submit" value="Picks" />
 }

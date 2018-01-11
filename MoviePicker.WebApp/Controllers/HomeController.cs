@@ -1,6 +1,7 @@
 ﻿using MoviePicker.Common.Interfaces;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -27,19 +28,24 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel = viewModel;
 			_viewModel.Miners = minerModel.Miners;
 
+			UpdateViewModel();
+		}
+
+		private void UpdateViewModel()
+		{
 			// TODO: Use reflection...
 
 			int index = 1;
 
-			_viewModel.Weight1 = minerModel.Miners[index++].Weight;
-			_viewModel.Weight2 = minerModel.Miners[index++].Weight;
-			_viewModel.Weight3 = minerModel.Miners[index++].Weight;
-			_viewModel.Weight4 = minerModel.Miners[index++].Weight;
-			_viewModel.Weight5 = minerModel.Miners[index++].Weight;
-			_viewModel.Weight6 = minerModel.Miners[index++].Weight;
-			_viewModel.Weight7 = minerModel.Miners[index++].Weight;
+			_viewModel.Weight1 = _minerModel.Miners[index++].Weight;
+			_viewModel.Weight2 = _minerModel.Miners[index++].Weight;
+			_viewModel.Weight3 = _minerModel.Miners[index++].Weight;
+			_viewModel.Weight4 = _minerModel.Miners[index++].Weight;
+			_viewModel.Weight5 = _minerModel.Miners[index++].Weight;
+			_viewModel.Weight6 = _minerModel.Miners[index++].Weight;
+			_viewModel.Weight7 = _minerModel.Miners[index++].Weight;
 
-			var myBoxOffice = minerModel.Miners[1].Movies;
+			var myBoxOffice = _minerModel.Miners[1].Movies;
 
 			index = 0;
 
@@ -62,6 +68,62 @@ namespace MoviePicker.WebApp.Controllers
 
 		public ActionResult Index()
 		{
+			char[] listDelimiter = { ',' };
+			bool hasParams = false;
+
+			// Attempt to parse the request.
+
+			var parms = Request.Params;
+
+			if (parms["bo"] != null)
+			{
+				var boList = parms["bo"].Split(listDelimiter);
+
+				if (boList.Length >= 15)
+				{
+					int idx = 0;
+
+					foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
+					{
+						movie.Earnings = Convert.ToDecimal(boList[idx++]);
+					}
+
+					hasParams = true;
+				}
+			}
+
+			if (parms["wl"] != null)
+			{
+				var weightList = parms["wl"].Split(listDelimiter);
+
+				if (weightList.Length >= 7)
+				{
+					int idx = 0;
+					bool isFirst = true;
+
+					foreach (var miner in _minerModel.Miners)
+					{
+						if (!isFirst && idx < weightList.Length)
+						{
+							miner.Weight = Convert.ToDecimal(weightList[idx++]);
+						}
+
+						isFirst = false;
+					}
+
+					hasParams = true;
+				}
+			}
+
+			if (hasParams)
+			{
+				// Refresh my picks based on the weights.
+
+				_minerModel.Miners[MY_MINER_IDX].Mine();
+			}
+
+			UpdateViewModel();
+
 			return View(_viewModel);
 		}
 
@@ -153,7 +215,7 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			var picksViewModel = ConstructPicksViewModel();
 
-			RunSimulation(picksViewModel);
+			//RunSimulation(picksViewModel);
 
 			return View(picksViewModel);
 		}
