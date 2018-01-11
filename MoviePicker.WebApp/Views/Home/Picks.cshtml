@@ -6,7 +6,11 @@
 
 <h2>@ViewBag.Title</h2>
 <h5>weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString() (@Model.Duration.ToString("N0") ms)</h5>
-<h5>@Html.ActionLink("Sim", "Simulation", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })</h5>
+@*
+	Remove sim button for now since this affects the response time and does NOT return in a timely manner.
+
+	<h5>@Html.ActionLink("Sim", "Simulation", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })</h5>
+*@
 
 <table class="table">
 	<thead>

@@ -215,7 +215,7 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			var picksViewModel = ConstructPicksViewModel();
 
-			RunSimulation(picksViewModel);
+			//RunSimulation(picksViewModel);
 
 			return View(picksViewModel);
 		}
