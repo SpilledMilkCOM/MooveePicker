@@ -11,10 +11,8 @@
 		var boList = ""
 		var weightList = ""
 
-		for (idx = 1; idx <= 15; idx++) 
-		{
-			if (idx != 1)
-			{
+		for (idx = 1; idx <= 15; idx++) {
+			if (idx != 1) {
 				boList += ","
 			}
 
@@ -35,12 +33,10 @@
 
 		var baseUrl = window.location.href
 
-		if (baseUrl != null)
-		{
+		if (baseUrl != null) {
 			var slashIdx = baseUrl.indexOf("/", "https://".length)
 
-			if (slashIdx > 0)
-			{
+			if (slashIdx > 0) {
 				baseUrl = baseUrl.substring(0, slashIdx)
 			}
 		}
@@ -56,7 +52,7 @@
 <h2>WELCOME Fantasy Movie League Family</h2>
 
 <p>
-	Not sure how you found the site.  Could have been from a post or a tweet. 
+	Not sure how you found the site.  Could have been from a post or a tweet.
 	Make sure you follow me on Twitter, that can be found on the @Html.ActionLink("Contact", "Contact") page.
 	Other information is on the @Html.ActionLink("About", "About") page.
 </p>
@@ -84,6 +80,20 @@
 			<tr>
 				<td></td>
 				<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })</td>
+
+				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+				{
+
+					if (!string.IsNullOrEmpty(miner.Error))
+					{
+						<td style="text-align: center; color: #cc3333">Error</td>
+					}
+					else
+					{
+						<td></td>
+					}
+					<td></td>
+				}
 			</tr>
 		</thead>
 

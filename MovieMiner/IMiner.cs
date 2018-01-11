@@ -18,6 +18,8 @@ namespace MovieMiner
 
 		List<IMovie> Movies { get; }
 
+		string Error { get; set; }
+
 		/// <summary>
 		/// Name of the Miner
 		/// </summary>

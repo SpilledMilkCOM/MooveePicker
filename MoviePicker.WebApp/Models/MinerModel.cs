@@ -270,6 +270,8 @@ namespace MoviePicker.WebApp.Models
 				{
 					result.Add(new List<IMovie>());     // Add a placeholder.
 
+					miner.Error = "Error";
+
 					//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
 				}
 			});

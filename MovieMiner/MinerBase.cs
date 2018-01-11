@@ -20,6 +20,8 @@ namespace MovieMiner
 
 		public string Abbreviation { get; private set; }
 
+		public string Error { get; set; }
+
 		public bool IsHidden { get; set; }
 
 		public List<IMovie> Movies { get; protected set; }
@@ -33,6 +35,8 @@ namespace MovieMiner
 		public string UrlSource { get; protected set; }
 
 		public decimal Weight { get; set; }
+
+		//----==== PUBLIC METHODS ====-------------------------------------------------------------
 
 		public void Clear()
 		{
