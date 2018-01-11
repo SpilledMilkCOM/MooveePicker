@@ -65,21 +65,38 @@
 @using (Html.BeginForm("Picks", "Home", null, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
 {
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
+	bool first = true;
 
 	<table class="table table-striped">
 		<thead>
 			<tr>
-				<th style="text-align: center"> <a href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)">BUX</a></th>
+				<th style="text-align: center">
+					<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML BUX source page...">BUX</a>
+				</th>
+
 				<th style="text-align: center">Movie</th>
+
 				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 				{
-					<th style="text-align: center"><a href="@miner.UrlSource">@miner.Abbreviation</a></th>
+					<th style="text-align: center">
+						@if (first)
+						{
+							first = false;
+
+							<input class="btn btn-info btn-xs" onclick="clickRecalc()" type="button" value="Custom" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Mine column..." />
+						}
+						else
+						{
+							<a class="btn btn-info btn-xs" href="@miner.UrlSource" data-toggle="tooltip" data-placement="bottom" title="Click for '@miner.Abbreviation' source page...">@miner.Abbreviation</a>
+
+						}
+					</th>
 					<th></th>
 				}
 			</tr>
 			<tr>
 				<td></td>
-				<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })</td>
+				<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "Click to extract as CSV text file..." })</td>
 
 				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 				{
@@ -265,7 +282,9 @@
 
 			<tr>
 				<td></td>
-				<th>Weights</th>
+				<th>
+					<input class="btn btn-info" onclick="clickRecalc()" type="button" value="Apply Weights" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Mine column..." />
+				</th>
 
 				@*
 					This is pretty brute force to get the values through to the Post.
@@ -304,7 +323,11 @@
 		</tbody>
 	</table>
 
-	<input class="btn btn-default" onclick="clickRecalc()" type="button" value="Apply Weights" />
+	<div class="row">
+		<div class="col-sm-1"> </div>
 
-	<input class="btn btn-default" type="submit" value="Picks" />
+		<div class="col-sm-3">
+			<input class="btn btn-success" type="submit" value="Calculate Picks..." />
+		</div>
+	</div>
 }

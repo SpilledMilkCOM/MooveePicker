@@ -53,7 +53,7 @@ namespace MoviePicker.WebApp.Models
 
 					result.Add(CreateWeightedMovie(movie));
 				}
-			}	
+			}
 
 			return result;
 		}
@@ -81,7 +81,7 @@ namespace MoviePicker.WebApp.Models
 			var result = new List<IMiner> {
 				new MineFantasyMovieLeagueBoxOffice { IsHidden = true, Weight = 0 },
 //				new MineNerd { Weight = 1 },
-				new MineMine(this) {Weight = 4},
+				new MineMine(this) {Weight = 0},
 				new MineToddThatcher { Weight = 3 },
 				new MineBoxOfficePro { Weight = 4 },
 				new MineBoxOfficeMojo { Weight = 3 },
