@@ -202,9 +202,26 @@ namespace MovieMiner
 										movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
 									}
 
-									if (movie != null && !result.Contains(movie))
+									if (movie != null)
 									{
-										result.Add(movie);
+										if (!result.Contains(movie))
+										{
+											result.Add(movie);
+										}
+										else
+										{
+											var found = result.Find(item => item.Equals(movie));
+
+											if (found != null && found.EarningsBase < movie.EarningsBase)
+											{
+												// Replace the movie if a larger value was found. (4 day weekend versus 3 day)
+
+												result.Remove(found);
+												result.Add(movie);
+
+												Error = "4-day";
+											}
+										}
 									}
 								}
 							}
