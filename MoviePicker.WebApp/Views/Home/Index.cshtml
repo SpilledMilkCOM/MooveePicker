@@ -65,278 +65,304 @@
 		More to come on the picks page and feel free to head to the @Html.ActionLink("About", "About") page for even MORE detail.
 	</p>
 
-<h3>Box Office Forecasts</h3>
-<h5>@*@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })*@ weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString()</h5>
+	<h3>Box Office Forecasts</h3>
+	<h5>@*@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })*@ weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString()</h5>
 
-@* Showing the data from ALL of the sources/miners *@
+	@* Showing the data from ALL of the sources/miners *@
 
-@using (Html.BeginForm("Picks", "Home", null, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
-{
-	int movieCount = 1;     // This scope is pretty far, sorry  :(
-	bool first = true;
+	@using (Html.BeginForm("Picks", "Home", null, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))
+	{
+		int movieCount = 1;     // This scope is pretty far, sorry  :(
+		bool first = true;
 
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th style="text-align: center">
-					<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML BUX source page...">BUX</a>
-				</th>
-
-				<th style="text-align: center">Movie</th>
-
-				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
-				{
-					<th style="text-align: center">
-						@if (first)
-						{
-							first = false;
-
-							<input class="btn btn-info btn-xs" onclick="clickRecalc()" type="button" value="Custom" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Custom column..." />
-						}
-						else
-						{
-							<a class="btn btn-info btn-xs" href="@miner.UrlSource" data-toggle="tooltip" data-placement="bottom" title="Click for '@miner.Name' source page...">@miner.Abbreviation</a>
-
-						}
-					</th>
-					<th></th>
-				}
-			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-
-				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
-				{
-
-					if (!string.IsNullOrEmpty(miner.Error))
-					{
-						<td style="text-align: center; color: #cc3333">@miner.Error</td>
-					}
-					else
-					{
-						<td></td>
-					}
-					<td></td>
-				}
-			</tr>
-		</thead>
-
-		<tbody>
-			@foreach (var movie in Model.Miners.First().Movies)
-			{
-				const string myColumnStyle = "width: 100px;";
-				//const string myColumnFormat = "{0:N0}";
-				const string myColumnFormat = "{0:F0}";
-				bool isFirst = true;
-
+		<table class="table table-striped">
+			<thead>
 				<tr>
-					<td>@movie.Cost</td>
-					<td>@movie.Name</td>
+					<th style="text-align: center">
+						<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML BUX source page...">BUX</a>
+					</th>
+
+					<th style="text-align: center">Movie</th>
 
 					@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 					{
-						var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
-
-						if (isFirst)
-						{
-							isFirst = false;
-
-							switch (movieCount)
+						<th style="text-align: center">
+							@if (first)
 							{
-								case 1:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice1, myColumnFormat, new { @class = "form-control", id = "boId1", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 2:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice2, myColumnFormat, new { @class = "form-control", id = "boId2", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 3:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice3, myColumnFormat, new { @class = "form-control", id = "boId3", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 4:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice4, myColumnFormat, new { @class = "form-control", id = "boId4", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 5:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice5, myColumnFormat, new { @class = "form-control", id = "boId5", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 6:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice6, myColumnFormat, new { @class = "form-control", id = "boId6", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 7:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice7, myColumnFormat, new { @class = "form-control", id = "boId7", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 8:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice8, myColumnFormat, new { @class = "form-control", id = "boId8", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 9:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice9, myColumnFormat, new { @class = "form-control", id = "boId9", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 10:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice10, myColumnFormat, new { @class = "form-control", id = "boId10", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 11:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice11, myColumnFormat, new { @class = "form-control", id = "boId11", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 12:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice12, myColumnFormat, new { @class = "form-control", id = "boId12", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 13:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice13, myColumnFormat, new { @class = "form-control", id = "boId13", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 14:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice14, myColumnFormat, new { @class = "form-control", id = "boId14", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 15:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice15, myColumnFormat, new { @class = "form-control", id = "boId15", style = myColumnStyle })
-										</td>
-									}
-									break;
+								first = false;
+
+								<input class="btn btn-info btn-xs" onclick="clickRecalc()" type="button" value="Custom" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Custom column..." />
 							}
-							@*<td style="text-align: right">
-									@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control" })
-								</td>*@
-						}
-						else
-						{
-							<td style="text-align: right">
-								@string.Format("{0:N0}", minerMovie?.Earnings)
-							</td>
-						}
-
-						if (miner != Model.Miners.Last())
-						{
-							var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
-							decimal percent = 0;
-
-							if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
+							else
 							{
-								percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+								<a class="btn btn-info btn-xs" href="@miner.UrlSource" data-toggle="tooltip" data-placement="bottom" title="Click for '@miner.Name' source page...">@miner.Abbreviation</a>
+
 							}
+						</th>
+						<th></th>
+					}
+				</tr>
+				<tr>
+					<td></td>
+					<td></td>
 
-							var bootstrapClass = percent <= -20 ? (percent <= -40 ? "table-danger" : "table-warning")
-													: (percent > 0 ? "table-success" : "table-info");
+					@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+					{
 
-							<td class="@bootstrapClass" style="text-align: right">
-								@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "% " : string.Empty)
-							</td>
+						if (!string.IsNullOrEmpty(miner.Error))
+						{
+							<td style="text-align: center; color: #cc3333">@miner.Error</td>
 						}
 						else
 						{
 							<td></td>
 						}
+						<td></td>
+					}
+				</tr>
+			</thead>
+
+			<tbody>
+				@foreach (var movie in Model.Miners.First().Movies)
+				{
+					const string myColumnStyle = "width: 100px;";
+					//const string myColumnFormat = "{0:N0}";
+					const string myColumnFormat = "{0:F0}";
+					bool isFirst = true;
+
+					<tr>
+						<td>@movie.Cost</td>
+						<td>@movie.Name</td>
+
+						@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+						{
+							var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
+
+							if (isFirst)
+							{
+								isFirst = false;
+
+								switch (movieCount)
+								{
+									case 1:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice1, myColumnFormat, new { @class = "form-control", id = "boId1", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 2:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice2, myColumnFormat, new { @class = "form-control", id = "boId2", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 3:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice3, myColumnFormat, new { @class = "form-control", id = "boId3", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 4:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice4, myColumnFormat, new { @class = "form-control", id = "boId4", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 5:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice5, myColumnFormat, new { @class = "form-control", id = "boId5", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 6:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice6, myColumnFormat, new { @class = "form-control", id = "boId6", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 7:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice7, myColumnFormat, new { @class = "form-control", id = "boId7", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 8:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice8, myColumnFormat, new { @class = "form-control", id = "boId8", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 9:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice9, myColumnFormat, new { @class = "form-control", id = "boId9", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 10:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice10, myColumnFormat, new { @class = "form-control", id = "boId10", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 11:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice11, myColumnFormat, new { @class = "form-control", id = "boId11", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 12:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice12, myColumnFormat, new { @class = "form-control", id = "boId12", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 13:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice13, myColumnFormat, new { @class = "form-control", id = "boId13", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 14:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice14, myColumnFormat, new { @class = "form-control", id = "boId14", style = myColumnStyle })
+											</td>
+										}
+										break;
+									case 15:
+										{
+											<td style="text-align: right">
+												@Html.TextBoxFor(model => model.BoxOffice15, myColumnFormat, new { @class = "form-control", id = "boId15", style = myColumnStyle })
+											</td>
+										}
+										break;
+								}
+								@*<td style="text-align: right">
+										@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control" })
+									</td>*@
+							}
+							else
+							{
+								<td style="text-align: right">
+									@string.Format("{0:N0}", minerMovie?.Earnings)
+								</td>
+							}
+
+							if (miner != Model.Miners.Last())
+							{
+								var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
+								decimal percent = 0;
+
+								if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
+								{
+									percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+								}
+
+								var bootstrapClass = percent <= -20 ? (percent <= -40 ? "table-danger" : "table-warning")
+														: (percent > 0 ? "table-success" : "table-info");
+
+								<td class="@bootstrapClass" style="text-align: right">
+									@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "% " : string.Empty)
+								</td>
+							}
+							else
+							{
+								<td></td>
+							}
+						}
+					</tr>
+
+					movieCount++;
+				}
+
+				<tr>
+					<td></td>
+					<td></td>
+
+					@{ 
+						first = true;
+					}
+
+					@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+					{
+						<td style="text-align: center">
+							@if (first)
+							{
+								first = false;
+							}
+							else
+							{
+								<a class="btn btn-info btn-xs" href="@miner.UrlSource" data-toggle="tooltip" data-placement="bottom" title="Click for '@miner.Name' source page...">@miner.Abbreviation</a>
+							}
+						</td>
+						<td></td>
 					}
 				</tr>
 
-				movieCount++;
-			}
+				<tr>
+					<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "Click to extract as CSV text file..." })</td>
 
-			<tr>
-				<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "Click to extract as CSV text file..." })</td>
+					<td>
+						<input class="btn btn-info" onclick="clickRecalc()" type="button" value="Apply Weights" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Mine column..." />
+					</td>
 
-				<td>
-					<input class="btn btn-info" onclick="clickRecalc()" type="button" value="Apply Weights" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Mine column..." />
-				</td>
+					@*
+		This is pretty brute force to get the values through to the Post.
+		TODO: Use reflection to loop through these "flat" properties.
+					*@
 
-				@*
-					This is pretty brute force to get the values through to the Post.
-					TODO: Use reflection to loop through these "flat" properties.
-				*@
+					<td>
+						@Html.TextBoxFor(model => model.Weight1, new { @class = "form-control", id = "weightId1" })
+					</td>
+					<td></td>
+					<td>
+						@Html.TextBoxFor(model => model.Weight2, new { @class = "form-control", id = "weightId2" })
+					</td>
+					<td></td>
+					<td>
+						@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control", id = "weightId3" })
+					</td>
+					<td></td>
+					<td>
+						@Html.TextBoxFor(model => model.Weight4, new { @class = "form-control", id = "weightId4" })
+					</td>
+					<td></td>
+					<td>
+						@Html.TextBoxFor(model => model.Weight5, new { @class = "form-control", id = "weightId5" })
+					</td>
+					<td></td>
+					<td>
+						@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control", id = "weightId6" })
+					</td>
+					<td></td>
+					<td>
+						@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control", id = "weightId7" })
+					</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
 
-				<td>
-					@Html.TextBoxFor(model => model.Weight1, new { @class = "form-control", id = "weightId1" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight2, new { @class = "form-control", id = "weightId2" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control", id = "weightId3" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight4, new { @class = "form-control", id = "weightId4" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight5, new { @class = "form-control", id = "weightId5" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control", id = "weightId6" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control", id = "weightId7" })
-				</td>
-				<td></td>
-			</tr>
-		</tbody>
-	</table>
+		<div class="row">
+			<div class="col-sm-1"> </div>
 
-	<div class="row">
-		<div class="col-sm-1"> </div>
-
-		<div class="col-sm-3">
-			<input class="btn btn-success" type="submit" value="Calculate Picks..." />
+			<div class="col-sm-3">
+				<input class="btn btn-success" type="submit" value="Calculate Picks..." />
+			</div>
 		</div>
-	</div>
-}
+	}

@@ -14,6 +14,7 @@ namespace MoviePicker.WebApp.Models
 		//private const int NERD_INDEX = 1;
 		private const int FML_INDEX = 0;
 		private const int MY_INDEX = FML_INDEX + 1;
+
 		public MinerModel()
 		{
 			Miners = CreateMinersWithData();
