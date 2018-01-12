@@ -1,14 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 using MoviePicker.Common.Interfaces;
 
 namespace MovieMiner
 {
-	public abstract class MinerBase : IMiner
+	public abstract class MinerBase : IMiner, ICache
 	{
+		/// <summary>
+		/// To make this thread safe so the miners can become singletons and shared across threads/requests.
+		/// </summary>
+		private readonly object _loadLock;
+		private volatile bool _isLoading;
+
 		protected MinerBase(string name, string abbr, string url)
 		{
+			_isLoading = false;
+			_loadLock = new object();
+
 			Abbreviation = abbr;
 			IsHidden = false;
 			OkToMine = true;
@@ -20,9 +30,18 @@ namespace MovieMiner
 
 		public string Abbreviation { get; private set; }
 
+		public ICacheConfiguration CacheConfiguration { get; private set; }
+
+		/// <summary>
+		/// A thread safe version of 
+		/// </summary>
 		public string Error { get; set; }
 
+		public DateTime? Expiration { get; private set; }
+
 		public bool IsHidden { get; set; }
+
+		public DateTime? LastLoaded { get; private set; }
 
 		public List<IMovie> Movies { get; protected set; }
 
@@ -43,7 +62,62 @@ namespace MovieMiner
 			Movies = new List<IMovie>();
 		}
 
+		public abstract IMiner Clone();
+
+		/// <summary>
+		/// Only load the data if it has expired.
+		/// </summary>
+		public void Load()
+		{
+			if (DateTime.Now > Expiration)
+			{
+				lock (_loadLock)
+				{
+					if (DateTime.Now > Expiration)
+					{
+						_isLoading = true;
+
+						try
+						{
+							Mine();
+						}
+						finally
+						{
+							_isLoading = false;
+						}
+
+						LastLoaded = DateTime.Now;
+						Expiration = LastLoaded.Value.Add(CacheConfiguration.Duration);
+					}
+				}
+			}
+		}
+
 		public abstract List<IMovie> Mine();
+
+		//----==== PROTECTED METHODS ====----------------------------------------------------------
+
+		/// <summary>
+		/// Copy all of the base stuff into the concrete clone passed in.
+		/// </summary>
+		/// <param name="clone"></param>
+		/// <returns></returns>
+		protected IMiner Clone(MinerBase clone)
+		{
+			// Copy and fill in all of the base goodness.
+
+			// If the object is loading then you need to wait before you clone it.
+			// TODO: Return stale data if loading.
+
+			lock (_loadLock)
+			{
+				clone.Error = Error;
+
+				clone.Movies = Movies;
+			}
+
+			return clone;
+		}
 
 		protected string MapName(string name)
 		{
@@ -72,7 +146,7 @@ namespace MovieMiner
 
 				earnings = earnings.Replace("m", string.Empty);
 			}
-			else if(earnings.Contains("k"))
+			else if (earnings.Contains("k"))
 			{
 				multiplier = 1000m;
 

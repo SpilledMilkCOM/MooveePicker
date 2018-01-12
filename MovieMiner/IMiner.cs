@@ -47,6 +47,13 @@ namespace MovieMiner
 
 		void Clear();
 
+		/// <summary>
+		/// Since the main object is singleton then you need to be able to return copies to the views,
+		/// because this contains the data and its state (Error/Status)
+		/// </summary>
+		/// <returns></returns>
+		IMiner Clone();
+
 		List<IMovie> Mine();
 
 		//Task<List<IMovie>> MineAsync();			// Not just yet.

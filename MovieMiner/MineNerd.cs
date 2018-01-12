@@ -31,6 +31,15 @@ namespace MovieMiner
 			UrlSource = DEFAULT_URL;
 		}
 
+		public override IMiner Clone()
+		{
+			var result = new MineNerd();
+
+			Clone(result);
+
+			return result;
+		}
+
 		public override List<IMovie> Mine()
 		{
 			var result = new List<IMovie>();

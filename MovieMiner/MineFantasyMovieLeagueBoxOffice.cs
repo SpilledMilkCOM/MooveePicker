@@ -22,6 +22,15 @@ namespace MovieMiner
 			_columnTitle = columnTitle;
 		}
 
+		public override IMiner Clone()
+		{
+			var result = new MineFantasyMovieLeagueBoxOffice();
+
+			Clone(result);
+
+			return result;
+		}
+
 		public override List<IMovie> Mine()
 		{
 			var result = new List<IMovie>();

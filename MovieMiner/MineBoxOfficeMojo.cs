@@ -25,6 +25,15 @@ namespace MovieMiner
 			_weekendEnding = weekendEnding?.Date;
 		}
 
+		public override IMiner Clone()
+		{
+			var result = new MineBoxOfficeMojo();
+
+			Clone(result);
+
+			return result;
+		}
+
 		public override List<IMovie> Mine()
 		{
 			Movies = new List<IMovie>();

@@ -19,6 +19,15 @@ namespace MovieMiner
 		{
 		}
 
+		public override IMiner Clone()
+		{
+			var result = new MineBoxOfficePro();
+
+			Clone(result);
+
+			return result;
+		}
+
 		public override List<IMovie> Mine()
 		{
 			Movies = new List<IMovie>();

@@ -9,12 +9,22 @@ namespace MovieMiner
 	/// </summary>
 	public class MineMine : MinerBase
 	{
+		// A collection of ALL of the miners including this one.
 		private readonly MinerModel _model;
 
 		public MineMine(MinerModel model)
 			: base("My Predictions", "Mine", null)
 		{
 			_model = model;
+		}
+
+		public override IMiner Clone()
+		{
+			var result = new MineMine(_model);
+
+			Clone(result);
+
+			return result;
 		}
 
 		public override List<IMovie> Mine()

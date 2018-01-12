@@ -18,6 +18,15 @@ namespace MovieMiner
 		{
 		}
 
+		public override IMiner Clone()
+		{
+			var result = new MineCulturedVultures();
+
+			Clone(result);
+
+			return result;
+		}
+
 		public override List<IMovie> Mine()
 		{
 			var result = new List<IMovie>();
