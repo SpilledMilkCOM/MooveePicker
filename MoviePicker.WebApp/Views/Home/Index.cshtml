@@ -104,7 +104,7 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "Click to extract as CSV text file..." })</td>
+				<td></td>
 
 				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 				{
@@ -289,10 +289,11 @@
 			}
 
 			<tr>
-				<td></td>
-				<th>
+				<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "Click to extract as CSV text file..." })</td>
+
+				<td>
 					<input class="btn btn-info" onclick="clickRecalc()" type="button" value="Apply Weights" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Mine column..." />
-				</th>
+				</td>
 
 				@*
 					This is pretty brute force to get the values through to the Post.
