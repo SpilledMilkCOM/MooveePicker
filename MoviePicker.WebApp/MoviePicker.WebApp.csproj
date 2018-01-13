@@ -215,7 +215,6 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\utilGoogle.js" />
     <Content Include="Scripts\utilities.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
