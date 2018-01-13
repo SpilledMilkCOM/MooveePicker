@@ -13,7 +13,8 @@ namespace MoviePicker.WebApp.Controllers
 {
 	public class HomeController : Controller
 	{
-		private const int MY_MINER_IDX = 1;
+		private const int FML_INDEX = 0;
+		private const int MY_MINER_IDX = FML_INDEX + 1;
 
 		private IMinerModel _minerModel;
 		private IIndexViewModel _viewModel;
@@ -71,6 +72,9 @@ namespace MoviePicker.WebApp.Controllers
 			ViewBag.IsGoogleAdValid = true;
 
 			ParseBoxOfficeWeightRequest();
+
+			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
+			//_viewModel.IsTracking = true;
 
 			return View(_viewModel);
 		}

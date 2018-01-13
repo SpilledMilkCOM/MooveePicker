@@ -29,6 +29,8 @@ namespace MoviePicker.WebApp.Models
 		public decimal BoxOffice14 { get; set; }
 		public decimal BoxOffice15 { get; set; }
 
+		public bool IsTracking { get; set; }
+
 		/// <summary>
 		/// Display the Miners on the page.
 		/// </summary>

@@ -1,7 +1,10 @@
 ﻿@model  MoviePicker.WebApp.Models.IndexViewModel
 
+@using MoviePicker.Common.Interfaces
+
 @{
 	ViewBag.Title = "Home Page";
+	const string myColumnFormat = "{0:F0}";
 }
 
 <script type="text/javascript">
@@ -70,6 +73,76 @@
 	</div>
 </div>
 
+@if (Model.IsTracking)
+{
+	<h3>Tracking Estimates</h3>
+
+	<div class="row">
+		<div class="col-sm-6">
+			The estimates are IN!  Below is a table that compares your Custom value to the estimates.  Were you close?
+			There's still time as these estimates change over the weekend, but typically not by much since the "experts" are pretty good once the data starts rolling in.
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-8">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th style="text-align: center">BUX</th>
+						<th style="text-align: center">Movie</th>
+						<th style="text-align: center">Estimate</th>
+						<th style="text-align: center">Custom</th>
+						<th style="text-align: center">Difference</th>
+						<th style="text-align: center">% Difference</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var movie in Model.Miners.First().Movies)
+					{
+						var minerCount = 0;
+						IMovie fmlMovie = null;
+						IMovie customMovie = null;
+
+						<tr>
+							<td>@movie.Cost</td>
+							<td>@movie.Name</td>
+
+							@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+							{
+								// The first two miners are FML and Custom (MineMine)
+
+								var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
+
+								<td>@minerMovie.Earnings.ToString("N0")</td>
+
+								if (++minerCount == 2)
+								{
+									customMovie = minerMovie;
+
+									break;
+								}
+								else
+								{
+									fmlMovie = minerMovie;
+								}
+							}
+
+							<td>@string.Format("{0:N0}", fmlMovie.EarningsBase - customMovie.EarningsBase)</td>
+
+							@if (customMovie.EarningsBase > 0)
+							{
+								<td>@string.Format("{0:F2}%", (fmlMovie.EarningsBase - customMovie.EarningsBase) / customMovie.EarningsBase * 100)</td>
+							}
+
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+}
+
 <h3>Box Office Forecasts</h3>
 <h5>@*@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })*@ weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString()</h5>
 
@@ -78,7 +151,6 @@
 		The following table is an aggregation of data for the "play" week ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString() for the Fantasy Movie League website.
 		Currently the site aggregates box office data from Todd Thatcher's post on FML, Box Office Pro, Box Office Mojo, Box Office Report, Culture Vulture, and Box Office Prophet.
 		These are the "experts" in the field.  YOUR job is to determine who you trust and by how much and apply a weighting mechanism before you make your game picks.
-		More to come on the picks page and feel free to head to the @Html.ActionLink("About", "About") page for even MORE detail.
 	</div>
 </div>
 
@@ -141,7 +213,6 @@
 			{
 				const string myColumnStyle = "width: 100px;";
 				//const string myColumnFormat = "{0:N0}";
-				const string myColumnFormat = "{0:F0}";
 				bool isFirst = true;
 
 				<tr>
@@ -299,8 +370,8 @@
 					}
 				</tr>
 
-					movieCount++;
-				}
+				movieCount++;
+			}
 
 			<tr>
 				<td></td>

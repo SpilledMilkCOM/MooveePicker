@@ -21,6 +21,8 @@ namespace MoviePicker.WebApp.Interfaces
 		decimal BoxOffice14 { get; set; }
 		decimal BoxOffice15 { get; set; }
 
+		bool IsTracking { get; set; }
+
 		IEnumerable<IMiner> Miners { get; set; }
 
 		decimal Weight1 { get; set; }

@@ -36,6 +36,7 @@ namespace MovieMiner
 			var result = new List<IMovie>();
 			var web = new HtmlWeb();
 			DateTime? weekendEnding = null;
+			bool isEstimate = false;
 
 			UrlSource = $"{Url}/researchvault?section=box-office";
 
@@ -54,6 +55,7 @@ namespace MovieMiner
 				{
 					// Grab the first one for now.
 
+					isEstimate = tableHeader.InnerText.IndexOf("Estimated") > 0;
 					var dateText = tableHeader.InnerText.Replace("Estimated", string.Empty);
 
 					if (dateText != null)
@@ -87,7 +89,7 @@ namespace MovieMiner
 
 				var earningsNode = tableRow?.SelectSingleNode("td[@class='movie-earnings numeric stat']");
 
-				if (earningsNode != null)
+				if (earningsNode != null && isEstimate)
 				{
 					movie.Earnings = ParseEarnings(earningsNode.InnerText);
 				}
