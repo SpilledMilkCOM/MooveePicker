@@ -166,6 +166,7 @@
     <Compile Include="Interfaces\IMinerModel.cs" />
     <Compile Include="Interfaces\IIndexViewModel.cs" />
     <Compile Include="Interfaces\ISimulationModel.cs" />
+    <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\MineMine.cs" />
     <Compile Include="Models\MinerModel.cs" />
@@ -214,6 +215,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\utilGoogle.js" />
     <Content Include="Scripts\utilities.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

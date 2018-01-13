@@ -7,14 +7,17 @@ namespace MoviePicker.WebApp.Controllers
 	/// </summary>
 	public class LowMemController : Controller
 	{
-
 		public ActionResult About()
 		{
+			ViewBag.IsGoogleAdValid = true;
+
 			return View();
 		}
 
 		public ActionResult Contact()
 		{
+			ViewBag.IsGoogleAdValid = false;
+
 			return View();
 		}
 	}

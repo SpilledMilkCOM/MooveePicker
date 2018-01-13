@@ -68,6 +68,8 @@ namespace MoviePicker.WebApp.Controllers
 
 		public ActionResult Index()
 		{
+			ViewBag.IsGoogleAdValid = true;
+
 			ParseBoxOfficeWeightRequest();
 
 			return View(_viewModel);
@@ -116,6 +118,8 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Picks()
 		{
+			ViewBag.IsGoogleAdValid = true;
+
 			ParseBoxOfficeWeightRequest();
 
 			return View(ConstructPicksViewModel());
