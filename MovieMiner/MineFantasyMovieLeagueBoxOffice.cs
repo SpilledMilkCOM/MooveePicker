@@ -55,7 +55,7 @@ namespace MovieMiner
 				{
 					// Grab the first one for now.
 
-					isEstimate = tableHeader.InnerText.IndexOf("Estimated") > 0;
+					isEstimate = tableHeader.InnerText.IndexOf("Estimated") >= 0;
 					var dateText = tableHeader.InnerText.Replace("Estimated", string.Empty);
 
 					if (dateText != null)

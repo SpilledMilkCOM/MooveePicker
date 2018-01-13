@@ -89,9 +89,13 @@
 			<table class="table table-striped">
 				<thead>
 					<tr>
-						<th style="text-align: center">BUX</th>
+						<th style="text-align: center">
+							<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML BUX source page...">BUX</a>
+						</th>
 						<th style="text-align: center">Movie</th>
-						<th style="text-align: center">Estimate</th>
+						<th style="text-align: center">
+							<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML Estimate source page...">Estimate</a>
+						</th>
 						<th style="text-align: center">Custom</th>
 						<th style="text-align: center">Difference</th>
 						<th style="text-align: center">% Difference</th>
@@ -108,13 +112,13 @@
 							<td>@movie.Cost</td>
 							<td>@movie.Name</td>
 
-							@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+							@foreach (var miner in Model.Miners)
 							{
 								// The first two miners are FML and Custom (MineMine)
 
 								var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
 
-								<td>@minerMovie.Earnings.ToString("N0")</td>
+								<td>@string.Format("{0:N0}", minerMovie?.Earnings)</td>
 
 								if (++minerCount == 2)
 								{
@@ -128,9 +132,9 @@
 								}
 							}
 
-							<td>@string.Format("{0:N0}", fmlMovie.EarningsBase - customMovie.EarningsBase)</td>
+							<td>@string.Format("{0:N0}", fmlMovie.EarningsBase - (customMovie?.EarningsBase ?? 0))</td>
 
-							@if (customMovie.EarningsBase > 0)
+							@if (customMovie?.EarningsBase > 0)
 							{
 								<td>@string.Format("{0:F2}%", (fmlMovie.EarningsBase - customMovie.EarningsBase) / customMovie.EarningsBase * 100)</td>
 							}

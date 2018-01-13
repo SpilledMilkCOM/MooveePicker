@@ -134,6 +134,8 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			int index = 1;
 
+			ViewBag.IsGoogleAdValid = true;
+
 			// Transfer the posted data to the actual ViewModel
 			// TODO: Use reflection...
 
