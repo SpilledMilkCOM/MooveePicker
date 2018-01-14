@@ -48,6 +48,8 @@
 	</div>
 </div>
 
+@* ========================================================================================== FORECAST WEIGHTS*@
+
 <table class="table">
 	<thead>
 		<tr><th>Forecast Weights</th></tr>
@@ -94,6 +96,20 @@
 		}
 	</div>
 </div>
+
+@if (Model.IsTracking)
+{
+	<div class="row">
+		<div class="col-lg-6">
+
+			<div class="col-sm-3">
+				<h4>FML Perfect Pick (estimated)</h4>
+			</div>
+
+			@Html.Partial("MovieList", Model.MovieListPerfectPick)
+		</div>
+	</div>
+}
 
 <div class="row">
 	<div class="col-sm-1"> </div>

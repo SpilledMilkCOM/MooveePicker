@@ -9,6 +9,11 @@ namespace MoviePicker.WebApp.Models
 	{
 		public long Duration { get; set; }
 
+		/// <summary>
+		/// The estimated values are in (typically on a Saturday)
+		/// </summary>
+		public bool IsTracking { get; set; }
+
 		public int ListCount { get; set; }
 
 		public IEnumerable<IMiner> Miners { get; set; }
@@ -16,6 +21,8 @@ namespace MoviePicker.WebApp.Models
 		public IMovieList MovieList { get; set; }
 
 		public IMovieList MovieListBonusOff { get; set; }
+
+		public IMovieList MovieListPerfectPick { get; set; }
 
 		public IEnumerable<IMovie> Movies { get; set; }
 

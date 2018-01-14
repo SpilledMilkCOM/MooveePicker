@@ -192,6 +192,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			stopWatch.Start();
 
+			result.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
+
 			result.Miners = _minerModel.Miners;
 			result.Movies = _minerModel.CreateWeightedList();
 
@@ -212,6 +214,15 @@ namespace MoviePicker.WebApp.Controllers
 			_moviePicker.EnableBestPerformer = false;
 
 			result.MovieListBonusOff = _moviePicker.ChooseBest();
+
+			if (result.IsTracking)
+			{
+				_moviePicker.EnableBestPerformer = true;
+				_moviePicker.AddMovies(_minerModel.Miners[FML_INDEX].Movies);
+
+				result.MovieListPerfectPick = _moviePicker.ChooseBest();
+			}
+
 			result.SharedPicksUrl = SharedPicksFromModels();
 
 			var leadMovie = result.MovieList.Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
