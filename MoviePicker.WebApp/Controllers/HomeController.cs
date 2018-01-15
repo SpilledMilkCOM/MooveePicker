@@ -199,7 +199,12 @@ namespace MoviePicker.WebApp.Controllers
 
 			_moviePicker.AddMovies(result.Movies);
 
-			result.MovieList = _moviePicker.ChooseBest();
+			result.MovieList = new MovieListModel()
+			{
+				ComparisonHeader = result.IsTracking ? "Estimated" : null,
+				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
+				Picks = _moviePicker.ChooseBest()
+			};
 
 			// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
 
@@ -213,19 +218,31 @@ namespace MoviePicker.WebApp.Controllers
 			_moviePicker.AddMovies(clonedList);
 			_moviePicker.EnableBestPerformer = false;
 
-			result.MovieListBonusOff = _moviePicker.ChooseBest();
+			result.MovieListBonusOff = new MovieListModel()
+			{
+				ComparisonHeader = result.IsTracking ? "Estimated" : null,
+				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
+				Picks = _moviePicker.ChooseBest()
+			};
 
 			if (result.IsTracking)
 			{
+				// Don't need to use clones, because the BONUS is always used for best possible values.
+
 				_moviePicker.EnableBestPerformer = true;
 				_moviePicker.AddMovies(_minerModel.Miners[FML_INDEX].Movies);
 
-				result.MovieListPerfectPick = _moviePicker.ChooseBest();
+				result.MovieListPerfectPick = new MovieListModel()
+				{
+					ComparisonHeader = "Custom",
+					ComparisonMovies = result.Movies,
+					Picks = _moviePicker.ChooseBest()
+				};
 			}
 
 			result.SharedPicksUrl = SharedPicksFromModels();
 
-			var leadMovie = result.MovieList.Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
+			var leadMovie = result.MovieList.Picks.Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
 
 			// Needs to be put in the ViewBag since this value is on the footer.
 			ViewBag.TwitterTweetUrl = $"https://twitter.com/intent/tweet?text={leadMovie} leads my lineup @fml_movies {result.SharedPicksUrl.Replace("?", "%3F")}";
@@ -301,7 +318,7 @@ namespace MoviePicker.WebApp.Controllers
 			var stopwatch = new Stopwatch();
 
 			// Add picked movies.
-			var movies = picksViewModel.MovieList.Movies.Distinct().ToList();
+			var movies = picksViewModel.MovieList.Picks.Movies.Distinct().ToList();
 
 			// Add most efficient.
 
@@ -321,7 +338,10 @@ namespace MoviePicker.WebApp.Controllers
 
 			_simulationModel.AddMovies(movies);
 
-			picksViewModel.MovieList = _simulationModel.ChooseBest();
+			picksViewModel.MovieList = new MovieListModel()
+			{
+				Picks = _moviePicker.ChooseBest()
+			};
 
 			picksViewModel.Duration += stopwatch.ElapsedMilliseconds;
 		}

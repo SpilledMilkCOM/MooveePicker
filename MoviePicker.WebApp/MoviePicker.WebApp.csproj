@@ -166,10 +166,12 @@
     <Compile Include="Interfaces\IMinerModel.cs" />
     <Compile Include="Interfaces\IIndexViewModel.cs" />
     <Compile Include="Interfaces\ISimulationModel.cs" />
+    <Compile Include="Interfaces\IMovieListModel.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\IndexViewModel.cs" />
     <Compile Include="Models\MineMine.cs" />
     <Compile Include="Models\MinerModel.cs" />
+    <Compile Include="Models\MovieListModel.cs" />
     <Compile Include="Models\PicksViewModel.cs" />
     <Compile Include="Models\SimulationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

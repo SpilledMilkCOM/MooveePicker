@@ -108,6 +108,33 @@
 
 			@Html.Partial("MovieList", Model.MovieListPerfectPick)
 		</div>
+
+		<div class="col-lg-6">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Your Pick</th>
+						<th>Estimated</th>
+						<th>PP Diff</th>
+						<th>PP Diff %</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Bonus ON</td>
+						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieList.Picks.TotalEarnings * 100)</td>
+					</tr>
+					<tr>
+						<td>Bonus OFF</td>
+						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieListBonusOff.Picks.TotalEarnings * 100)</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 }
 

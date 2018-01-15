@@ -1,23 +1,28 @@
-﻿@model MoviePicker.Common.MovieList
+﻿@model MoviePicker.WebApp.Models.MovieListModel
 
 <div class="col-sm-3">
-	<h4>Total Cost (BUX): @Model.TotalCost</h4>
+	<h4>Total Cost (BUX): @Model.Picks.TotalCost</h4>
 </div>
 <div class="col-sm-6">
-	<h4>Total Earnings: $@Model.TotalEarnings.ToString("N0")</h4>
+	<h4>Total Earnings: $@Model.Picks.TotalEarnings.ToString("N0")</h4>
+	@*<h5>@Model.ComparisonHeader: $@Model.TotalPicksFromComparison.ToString("N0")</h5>*@
 </div>
 
 <table class="table table-striped">
 	<thead>
 		<tr>
-			<th>BUX</th>
-			<th>Movie</th>
-			<th style="text-align: right">Earnings</th>
+			<th style="text-align: center">BUX</th>
+			<th style="text-align: center">Movie</th>
+			<th style="text-align: center">Earnings</th>
+			@if(Model.ComparisonMovies != null)
+			{
+				<th style="text-align: center">@Model.ComparisonHeader</th>
+			}
 		</tr>
 	</thead>
 
 	<tbody>
-		@foreach (var pick in Model.Movies.OrderByDescending(movie => movie.Cost))
+		@foreach (var pick in Model.Picks.Movies.OrderByDescending(movie => movie.Cost))
 		{
 			var rankStyle1 = pick.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 
@@ -25,7 +30,29 @@
 				<td style="text-align: right">@pick.Cost</td>
 				<td>@pick.Name</td>
 				<td style="@rankStyle1">@string.Format("$ {0:N0}{1}", pick.Earnings, pick.IsBestPerformer ? " *" : string.Empty)</td>
+
+				@if (Model.ComparisonMovies != null)
+				{
+					var foundMovie = Model.ComparisonMovies.FirstOrDefault(movie => movie.Name == pick.Name);
+					var rankStyle2 = foundMovie.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+
+					<td style="@rankStyle2">@string.Format("$ {0:N0}{1}", foundMovie?.Earnings, foundMovie.IsBestPerformer ? " *" : string.Empty)</td>
+					@*<td style="@rankStyle2">@string.Format("{0:N0}", foundMovie?.Earnings)</td>*@
+				}
 			</tr>
 			}
+
 	</tbody>
+
+	@if (Model.ComparisonMovies != null)
+	{
+		<tfoot>
+			<tr>
+				<td></td>
+				<td></td>
+				<th style="text-align: right">Total</th>
+				<td style="text-align: right">$ @Model.TotalPicksFromComparison.ToString("N0")</td>
+			</tr>
+		</tfoot>
+	}
 </table>

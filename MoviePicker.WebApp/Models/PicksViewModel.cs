@@ -18,11 +18,11 @@ namespace MoviePicker.WebApp.Models
 
 		public IEnumerable<IMiner> Miners { get; set; }
 
-		public IMovieList MovieList { get; set; }
+		public IMovieListModel MovieList { get; set; }
 
-		public IMovieList MovieListBonusOff { get; set; }
+		public IMovieListModel MovieListBonusOff { get; set; }
 
-		public IMovieList MovieListPerfectPick { get; set; }
+		public IMovieListModel MovieListPerfectPick { get; set; }
 
 		public IEnumerable<IMovie> Movies { get; set; }
 
