@@ -173,6 +173,7 @@
     <Compile Include="Models\MinerModel.cs" />
     <Compile Include="Models\MovieListModel.cs" />
     <Compile Include="Models\PicksViewModel.cs" />
+    <Compile Include="Models\ReflectionUtility.cs" />
     <Compile Include="Models\SimulationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -232,117 +232,27 @@
 						{
 							isFirst = false;
 
-							switch (movieCount)
+							if (1 <= movieCount && movieCount <= 15)
 							{
-								case 1:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice1, myColumnFormat, new { @class = "form-control", id = "boId1", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 2:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice2, myColumnFormat, new { @class = "form-control", id = "boId2", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 3:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice3, myColumnFormat, new { @class = "form-control", id = "boId3", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 4:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice4, myColumnFormat, new { @class = "form-control", id = "boId4", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 5:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice5, myColumnFormat, new { @class = "form-control", id = "boId5", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 6:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice6, myColumnFormat, new { @class = "form-control", id = "boId6", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 7:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice7, myColumnFormat, new { @class = "form-control", id = "boId7", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 8:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice8, myColumnFormat, new { @class = "form-control", id = "boId8", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 9:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice9, myColumnFormat, new { @class = "form-control", id = "boId9", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 10:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice10, myColumnFormat, new { @class = "form-control", id = "boId10", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 11:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice11, myColumnFormat, new { @class = "form-control", id = "boId11", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 12:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice12, myColumnFormat, new { @class = "form-control", id = "boId12", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 13:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice13, myColumnFormat, new { @class = "form-control", id = "boId13", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 14:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice14, myColumnFormat, new { @class = "form-control", id = "boId14", style = myColumnStyle })
-										</td>
-									}
-									break;
-								case 15:
-									{
-										<td style="text-align: right">
-											@Html.TextBoxFor(model => model.BoxOffice15, myColumnFormat, new { @class = "form-control", id = "boId15", style = myColumnStyle })
-										</td>
-									}
-									break;
+								var id = string.Format("boId{0}", movieCount);
+								var name = string.Format("BoxOffice{0}", movieCount);
+								// TODO: May want to use a utility to speed up the reflection.
+								var value = string.Format("{0:N0}", Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model));
+
+								<td>
+									@*The majority of this input was taken from Html.TextBoxFor*@
+
+									<input name="@name"
+										   class="form-control"
+										   id="@id"
+										   style="width: 100px;"
+										   type="text"
+										   value="@value"
+										   data-val-required="The Box Office @movieCount field is required."
+										   data-val-number="The field Box Office @movieCount must be a number."
+										   data-val="true">
+								</td>
 							}
-							@*<td style="text-align: right">
-									@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control" })
-								</td>*@
 						}
 						else
 						{
