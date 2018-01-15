@@ -319,38 +319,32 @@
 					<input class="btn btn-info" onclick="clickRecalc()" type="button" value="Apply Weights" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Mine column..." />
 				</td>
 
-				@*
-					This is pretty brute force to get the values through to the Post.
-					TODO: Use reflection to loop through these "flat" properties.
-				*@
+				@for (int minerCount = 1; minerCount <= 7; minerCount++)
+				{
+					if (1 <= minerCount && minerCount <= 15)
+					{
+						var id = string.Format("weightId{0}", minerCount);
+						var name = string.Format("Weight{0}", minerCount);
+						// TODO: May want to use a utility to speed up the reflection.
+						var value = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
 
-				<td>
-					@Html.TextBoxFor(model => model.Weight1, new { @class = "form-control", id = "weightId1" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight2, new { @class = "form-control", id = "weightId2" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight3, new { @class = "form-control", id = "weightId3" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight4, new { @class = "form-control", id = "weightId4" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight5, new { @class = "form-control", id = "weightId5" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight6, new { @class = "form-control", id = "weightId6" })
-				</td>
-				<td></td>
-				<td>
-					@Html.TextBoxFor(model => model.Weight7, new { @class = "form-control", id = "weightId7" })
-				</td>
+						<td>
+							@*The majority of this input was taken from Html.TextBoxFor*@
+
+							<input name="@name"
+								   class="form-control"
+								   id="@id"
+								   style="width: 50px;"
+								   type="text"
+								   value="@value"
+								   data-val-required="The Weight @minerCount field is required."
+								   data-val-number="The field Weight @minerCount must be a number."
+								   data-val="true">
+						</td>
+						<td></td>
+					}
+				}
+
 				<td></td>
 				<td></td>
 				<td></td>
