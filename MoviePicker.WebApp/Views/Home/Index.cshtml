@@ -8,6 +8,19 @@
 }
 
 <script type="text/javascript">
+	function clickClearWeights(idxStart)
+	{
+		if (idxStart == 2)
+		{
+			$("#weightId1").val(1)
+		}
+
+		for (idx = idxStart; idx <= 7; idx++)
+		{
+			$("#weightId" + idx).val(0)
+		}
+	}
+
 	function clickRecalc() {
 		//alert("clickRecalc")
 
@@ -19,7 +32,8 @@
 				boList += ","
 			}
 
-			boList += $("#boId" + idx).val().replace(",", "").replace("$", "")
+			// Replace all commas (global g parameter on regular expression)
+			boList += $("#boId" + idx).val().replace(/\,/g, "").replace("$", "")
 		}
 
 		for (idx = 1; idx <= 7; idx++) {
@@ -345,8 +359,7 @@
 					}
 				}
 
-				<td></td>
-				<td></td>
+				<td><input class="btn btn-info" onclick="clickClearWeights(2)" type="button" value="Clear" data-toggle="tooltip" data-placement="bottom" title="Click to clear the miners' weights." /></td>
 				<td></td>
 			</tr>
 		</tbody>

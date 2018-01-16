@@ -124,13 +124,13 @@
 						<td>Bonus ON</td>
 						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
 						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
-						<td>@string.Format("{0:F2} %", (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieList.Picks.TotalEarnings * 100)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieList.Picks.TotalEarnings > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieList.Picks.TotalEarnings * 100 : 0)</td>
 					</tr>
 					<tr>
 						<td>Bonus OFF</td>
 						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
 						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
-						<td>@string.Format("{0:F2} %", (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieListBonusOff.Picks.TotalEarnings * 100)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks.TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieListBonusOff.Picks.TotalEarnings * 100 : 0)</td>
 					</tr>
 				</tbody>
 			</table>
