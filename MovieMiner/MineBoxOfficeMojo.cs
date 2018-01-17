@@ -172,7 +172,11 @@ namespace MovieMiner
 
 					var movieNodes = doc.DocumentNode?.SelectNodes("//body//table//li");
 
-					if (movieNodes != null)
+					if (movieNodes == null)
+					{
+						Error = "No Data";
+					}
+					else
 					{
 						foreach (var movieNode in movieNodes)
 						{

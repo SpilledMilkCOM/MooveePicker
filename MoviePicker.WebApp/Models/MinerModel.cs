@@ -158,8 +158,16 @@ namespace MoviePicker.WebApp.Models
 
 			for (int index = FML_INDEX + 1; index < minerData.Count - 1; index++)
 			{
+				var hasData = minerData[index].Movies?.Count > 0;
+
 				if (minerData[index].Movies?.FirstOrDefault()?.WeekendEnding != weekendEnding)
 				{
+					if (hasData && (string.IsNullOrEmpty(minerData[index].Error) || minerData[index].Error?.IndexOf("Error") < 0))
+					{
+						// Only set this if there was data and there's no error.
+						minerData[index].Error = "Old Data";
+					}
+
 					minerData[index].Clear();
 				}
 			}
@@ -226,18 +234,18 @@ namespace MoviePicker.WebApp.Models
 							{
 								if (miner.Abbreviation == "Todd")
 								{
-									// Prefer Todd's breakdown if it's available.
+							// Prefer Todd's breakdown if it's available.
 
-									compoundMovies = movieList.Where(movie => movie.Day.HasValue).ToList();
+							compoundMovies = movieList.Where(movie => movie.Day.HasValue).ToList();
 								}
 
-								// TODO: Move this creation outside of the thread so the compound movie list is set.
+						// TODO: Move this creation outside of the thread so the compound movie list is set.
 
-								if (!movieList.Any(movie => movie.Day.HasValue))
+						if (!movieList.Any(movie => movie.Day.HasValue))
 								{
-									// The list has no compound movies so they need to be built
+							// The list has no compound movies so they need to be built
 
-									var rootMovie = movieList.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
+							var rootMovie = movieList.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
 									var compoundTotal = compoundMovies.Sum(movie => movie.Earnings);
 
 									if (rootMovie != null)
@@ -258,9 +266,9 @@ namespace MoviePicker.WebApp.Models
 								}
 							}
 
-							// Assign the id, name, and cost to each movie.
+					// Assign the id, name, and cost to each movie.
 
-							foreach (var movie in baseList)
+					foreach (var movie in baseList)
 							{
 								AssignCost(movie, movieList);
 							}
@@ -271,10 +279,10 @@ namespace MoviePicker.WebApp.Models
 				{
 					result.Add(new List<IMovie>());     // Add a placeholder.
 
-					miner.Error = "Error";
+			miner.Error = "Error";
 
-					//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
-				}
+			//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
+		}
 			});
 
 			// Mine my movies LAST because they are based on all of the other miners.
