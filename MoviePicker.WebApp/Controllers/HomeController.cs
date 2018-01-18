@@ -256,7 +256,9 @@ namespace MoviePicker.WebApp.Controllers
 
 					foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
 					{
-						movie.Earnings = Convert.ToDecimal(boList[idx++]);
+						decimal value = 0;
+
+						movie.Earnings = decimal.TryParse(boList[idx++], out value) ? value : 0;
 					}
 
 					hasParams = true;
@@ -276,7 +278,9 @@ namespace MoviePicker.WebApp.Controllers
 					{
 						if (!isFirst && idx < weightList.Length)
 						{
-							miner.Weight = Convert.ToDecimal(weightList[idx++]);
+							decimal value = 0;
+
+							miner.Weight = decimal.TryParse(weightList[idx++], out value) ? value : 0;
 						}
 
 						isFirst = false;
