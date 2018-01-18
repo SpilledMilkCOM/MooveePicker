@@ -1,10 +1,8 @@
-﻿using System;
-
-using Microsoft.Practices.Unity;
-
-using MoviePicker.Common.Interfaces;
+﻿using MoviePicker.Common.Interfaces;
 using MoviePicker.Tests;
 using SM.Common.Utils;
+using System;
+using Unity.Lifetime;
 
 namespace TestRunner
 {

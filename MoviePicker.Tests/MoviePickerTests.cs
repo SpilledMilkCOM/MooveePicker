@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-
-using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using MooveePicker;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Unity;
 
 namespace MoviePicker.Tests
 {

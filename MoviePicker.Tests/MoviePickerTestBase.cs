@@ -1,10 +1,8 @@
-﻿using System;
+﻿using MoviePicker.Common.Interfaces;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-
-using Microsoft.Practices.Unity;
-
-using MoviePicker.Common.Interfaces;
+using Unity;
 
 namespace MoviePicker.Tests
 {

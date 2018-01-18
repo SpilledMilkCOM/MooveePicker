@@ -1,10 +1,8 @@
-﻿using System;
+﻿using MoviePicker.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Microsoft.Practices.Unity;
-
-using MoviePicker.Common.Interfaces;
+using Unity;
 
 namespace MovieMiner.Tests
 {

@@ -1,13 +1,10 @@
-﻿using System;
+﻿using MoviePicker.Common.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
-using MoviePicker.Common.Interfaces;
 using Xunit;
 using Xunit.Abstractions;
+using Unity;
 
 namespace XUnitTests
 {

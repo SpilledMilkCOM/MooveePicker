@@ -1,8 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Common.Interfaces;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using Unity;
 
 namespace MovieMiner.Tests
 {

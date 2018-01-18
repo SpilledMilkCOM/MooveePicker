@@ -1,6 +1,6 @@
-using Microsoft.Practices.Unity;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
+using Unity;
 
 namespace XUnitTests
 {

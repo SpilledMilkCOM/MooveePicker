@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MoviePicker.Common;
+using MoviePicker.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-
-using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using MoviePicker.Common;
-using MoviePicker.Common.Interfaces;
+using Unity;
 
 namespace MovieMiner.Tests
 {

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using MooveePicker;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Tests;
+using Unity;
 
 namespace MooviePicker.Tests
 {
