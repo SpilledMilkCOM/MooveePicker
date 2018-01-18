@@ -8,18 +8,26 @@ namespace MovieMiner
 {
 	public abstract class MinerBase : IMiner, ICache
 	{
-		/// <summary>
-		/// To make this thread safe so the miners can become singletons and shared across threads/requests.
-		/// </summary>
-		private readonly object _loadLock;
+		// To make this thread safe so the miners can become singletons and shared across threads/requests.
+		private readonly object _isLoadingLock;
+		private readonly object _errorLock;
+		private readonly object _movieLock;
+
+		// The list of movies could be loaded on another thread.
 		private volatile bool _isLoading;
+		private volatile List<IMovie> _movies;
+		private volatile string _error;
 
 		protected MinerBase(string name, string abbr, string url)
 		{
-			_isLoading = false;
-			_loadLock = new object();
+			_errorLock = new object();
+			_isLoadingLock = new object();
+			_movieLock = new object();
+			_movies = new List<IMovie>();
 
 			Abbreviation = abbr;
+			CacheConfiguration = new CacheConfiguration();				// Just take the default for now.
+			Expiration = DateTime.Now.Subtract(new TimeSpan(1));        // This will trigger the first load.
 			IsHidden = false;
 			OkToMine = true;
 			Name = name;
@@ -30,12 +38,33 @@ namespace MovieMiner
 
 		public string Abbreviation { get; private set; }
 
-		public ICacheConfiguration CacheConfiguration { get; private set; }
+		public ICacheConfiguration CacheConfiguration { get; protected set; }
 
 		/// <summary>
-		/// A thread safe version of 
+		/// A thread safe version of setting the Error (the Error can be set in the Loading thread or when filtering)
 		/// </summary>
-		public string Error { get; set; }
+		public string Error
+		{
+			get
+			{
+				string result = null;
+
+				lock (_errorLock)
+				{
+					// Return a copy of the error
+					result = _error;
+				}
+
+				return result;
+			}
+			set
+			{
+				lock (_errorLock)
+				{
+					_error = value;
+				}
+			}
+		}
 
 		public DateTime? Expiration { get; private set; }
 
@@ -43,7 +72,35 @@ namespace MovieMiner
 
 		public DateTime? LastLoaded { get; private set; }
 
-		public List<IMovie> Movies { get; protected set; }
+		/// <summary>
+		/// The list of movies is a critical path so there are locks around the get/set
+		/// </summary>
+		public List<IMovie> Movies
+		{
+			get
+			{
+				List<IMovie> result = null;
+
+				lock (_movieLock)
+				{
+					// Return a copy of the movie list so that list cannot be messed with.
+
+					if (_movies != null)
+					{
+						result = new List<IMovie>(_movies);
+					}
+				}
+
+				return result;
+			}
+			private set
+			{
+				lock (_movieLock)
+				{
+					_movies = value;
+				}
+			}
+		}
 
 		public string Name { get; private set; }
 
@@ -66,28 +123,37 @@ namespace MovieMiner
 
 		/// <summary>
 		/// Only load the data if it has expired.
+		/// This is thread safe and WON'T mine any data if not needed or already in the process of being mined.
 		/// </summary>
 		public void Load()
 		{
-			if (DateTime.Now > Expiration)
+			if (ShouldLoad())
 			{
-				lock (_loadLock)
+				// _isLoading was set to true in the above thread safe method.
+
+				try
 				{
-					if (DateTime.Now > Expiration)
+					Movies = Mine();
+
+					LastLoaded = DateTime.Now;
+				}
+				finally
+				{
+					if (CacheConfiguration != null)
 					{
-						_isLoading = true;
-
-						try
+						if (Movies.Count > 0)
 						{
-							Mine();
+							Expiration = LastLoaded.Value.Add(CacheConfiguration.Duration);
 						}
-						finally
+						else
 						{
-							_isLoading = false;
+							Expiration = LastLoaded.Value.Add(CacheConfiguration.EmptyDuration);
 						}
+					}
 
-						LastLoaded = DateTime.Now;
-						Expiration = LastLoaded.Value.Add(CacheConfiguration.Duration);
+					lock (_isLoadingLock)
+					{
+						_isLoading = false;
 					}
 				}
 			}
@@ -104,17 +170,33 @@ namespace MovieMiner
 		/// <returns></returns>
 		protected IMiner Clone(MinerBase clone)
 		{
+			// Make sure the source data is all up to date.
+			// If this is the thread loading then you will wait before you clone it.
+			// TODO: Possibly thread out the loading of the data.
+
+			Load();
+
 			// Copy and fill in all of the base goodness.
 
-			// If the object is loading then you need to wait before you clone it.
-			// TODO: Return stale data if loading.
+			clone.Abbreviation = Abbreviation;
+			clone.CacheConfiguration = CacheConfiguration;
+			clone.Expiration = Expiration;
+			clone.IsHidden = IsHidden;
+			clone.LastLoaded = LastLoaded;
+			clone.Name = Name;
+			clone.OkToMine = false;			// This is the clone of the singleton, this should prevent any reloading
+			clone.Url = Url;
+			clone.UrlSource = UrlSource;
+			clone.Weight = Weight;			// You get the default.  :)
 
-			lock (_loadLock)
-			{
-				clone.Error = Error;
+			// Set during the Mine() method.
 
-				clone.Movies = Movies;
-			}
+			clone.Error = Error;
+
+			// Create a NEW list of movies, the movie objects are still shared between this object and the cloned object.
+			// (you can't just assign the list over otherwise the list will be shared too and you'll get interation problems amongst the threads)
+
+			clone.Movies = Movies;
 
 			return clone;
 		}
@@ -173,6 +255,33 @@ namespace MovieMiner
 			text = text.Replace(" and ", " & ");
 
 			return Regex.Replace(text, "[^\\w\\s]", string.Empty).Replace("-", string.Empty).Trim();
+		}
+
+		/// <summary>
+		/// Thread safe check to see if this miner should load.
+		/// </summary>
+		/// <returns></returns>
+		private bool ShouldLoad()
+		{
+			bool result = false;
+
+			if ((DateTime.Now > Expiration || Expiration == null) && !_isLoading)
+			{
+				lock(_isLoadingLock)
+				{
+					// _isLoading will already be set to true for the losing thread.
+
+					if (!_isLoading)
+					{
+						// This thread wins and returns true;
+
+						_isLoading = true;
+						result = true;
+					}
+				}
+			}
+
+			return result;
 		}
 	}
 }

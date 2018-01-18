@@ -7,6 +7,9 @@ namespace MovieMiner
 	/// </summary>
 	public interface ICache
 	{
+		/// <summary>
+		/// The cache configuration (how long until the data spoils, how often to check empty data)
+		/// </summary>
 		ICacheConfiguration CacheConfiguration { get; }
 
 		/// <summary>
@@ -14,10 +17,13 @@ namespace MovieMiner
 		/// </summary>
 		DateTime? Expiration { get; }
 
+		/// <summary>
+		/// When this cache was loaded last.
+		/// </summary>
 		DateTime? LastLoaded { get; }
 
 		/// <summary>
-		/// Load the cache with its data.
+		/// Load the cache with its data if the time is past the expiration.
 		/// </summary>
 		/// <param name="force"></param>
 		void Load();

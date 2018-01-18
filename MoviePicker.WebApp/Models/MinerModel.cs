@@ -9,19 +9,41 @@ using System.Threading.Tasks;
 
 namespace MoviePicker.WebApp.Models
 {
+	/// <summary>
+	///  This is the singleton that contains all of the miners.
+	/// </summary>
 	public class MinerModel : IMinerModel
 	{
 		//private const int NERD_INDEX = 1;
 		private const int FML_INDEX = 0;
 		private const int MY_INDEX = FML_INDEX + 1;
 
-		public MinerModel()
+		public MinerModel(bool createWithData)
 		{
-			Miners = CreateMinersWithData();
+			if (createWithData)
+			{
+				Miners = CreateMinersWithData();
+			}
 		}
 
 		public List<IMiner> Miners { get; private set; }
 
+		public IMinerModel Clone()
+		{
+			var clone = new MinerModel(false) { Miners = new List<IMiner>() };
+
+			foreach (var miner in Miners)
+			{
+				clone.Miners.Add(miner.Clone());
+			}
+
+			return clone;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
 		public List<IMiner> CreateMinersWithData()
 		{
 			var miners = CreateMiners();
@@ -37,6 +59,10 @@ namespace MoviePicker.WebApp.Models
 			return miners;
 		}
 
+		/// <summary>
+		/// Create box office earning numbers based on all of the miners' weights.
+		/// </summary>
+		/// <returns></returns>
 		public List<IMovie> CreateWeightedList()
 		{
 			var result = new List<IMovie>();
@@ -211,7 +237,8 @@ namespace MoviePicker.WebApp.Models
 
 			// FML Base list is first.
 
-			baseList = miners.First().Mine();
+			((ICache)miners.First()).Load();
+			baseList = miners.First().Movies;
 			result.Add(baseList);
 
 			// TODO: Fix this for the FML base list.  This will break when another compound movie (multi-day) comes into play.
@@ -224,7 +251,14 @@ namespace MoviePicker.WebApp.Models
 				{
 					if (miner != baseList)
 					{
-						var movieList = (miner.OkToMine) ? miner.Mine() : null;
+						List<IMovie> movieList = null;
+
+						if (miner.OkToMine)
+						{
+							((ICache)miner).Load();
+
+							movieList = miner.Movies;
+						}
 
 						result.Add(movieList);
 
@@ -234,18 +268,18 @@ namespace MoviePicker.WebApp.Models
 							{
 								if (miner.Abbreviation == "Todd")
 								{
-							// Prefer Todd's breakdown if it's available.
+									// Prefer Todd's breakdown if it's available.
 
-							compoundMovies = movieList.Where(movie => movie.Day.HasValue).ToList();
+									compoundMovies = movieList.Where(movie => movie.Day.HasValue).ToList();
 								}
 
-						// TODO: Move this creation outside of the thread so the compound movie list is set.
+								// TODO: Move this creation outside of the thread so the compound movie list is set.
 
-						if (!movieList.Any(movie => movie.Day.HasValue))
+								if (!movieList.Any(movie => movie.Day.HasValue))
 								{
-							// The list has no compound movies so they need to be built
+									// The list has no compound movies so they need to be built
 
-							var rootMovie = movieList.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
+									var rootMovie = movieList.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
 									var compoundTotal = compoundMovies.Sum(movie => movie.Earnings);
 
 									if (rootMovie != null)
@@ -266,9 +300,9 @@ namespace MoviePicker.WebApp.Models
 								}
 							}
 
-					// Assign the id, name, and cost to each movie.
+							// Assign the id, name, and cost to each movie.
 
-					foreach (var movie in baseList)
+							foreach (var movie in baseList)
 							{
 								AssignCost(movie, movieList);
 							}
@@ -279,10 +313,10 @@ namespace MoviePicker.WebApp.Models
 				{
 					result.Add(new List<IMovie>());     // Add a placeholder.
 
-			miner.Error = "Error";
+					miner.Error = "Error";
 
-			//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
-		}
+					//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
+				}
 			});
 
 			// Mine my movies LAST because they are based on all of the other miners.

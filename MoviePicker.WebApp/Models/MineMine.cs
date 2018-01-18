@@ -16,6 +16,7 @@ namespace MovieMiner
 			: base("My Predictions", "Mine", null)
 		{
 			_model = model;
+			CacheConfiguration = null;		// Always load this (it's ALWAYS expired)
 		}
 
 		public override IMiner Clone()
@@ -29,11 +30,7 @@ namespace MovieMiner
 
 		public override List<IMovie> Mine()
 		{
-			var result = new List<IMovie>();
-
-			Movies = _model.CreateWeightedList();
-
-			return result;
+			return _model.CreateWeightedList();
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------

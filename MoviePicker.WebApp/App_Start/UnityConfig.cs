@@ -6,6 +6,7 @@ using MoviePicker.WebApp.Models;
 using System;
 
 using Unity;
+using Unity.Injection;
 using Unity.Lifetime;
 
 namespace MoviePicker.WebApp
@@ -53,8 +54,12 @@ namespace MoviePicker.WebApp
 			// https://msdn.microsoft.com/en-us/library/ff660872(v=pandp.20).aspx
 
 			// Since the MinerModel will contain mined data then I probably want to keep this around longer than a single call.
-			// But if everything else is manipulated through Angular then it might not be a big deal.
-			container.RegisterType<IMinerModel, MinerModel>(new PerThreadLifetimeManager());
+			// (But if everything else is manipulated through Angular then it might not be a big deal.)
+
+			container.RegisterType<IMinerModel, MinerModel>(new ContainerControlledLifetimeManager(), new InjectionConstructor(true));		// Effectively a singleton.
+
+			// Each request will create a new IndexViewModel (PerThreadLifetimeManager)
+
 			container.RegisterType<IIndexViewModel, IndexViewModel>(new PerThreadLifetimeManager());
 
 			// Each of these will construct each time injected into the controller.

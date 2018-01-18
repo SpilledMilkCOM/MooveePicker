@@ -8,15 +8,12 @@
 }
 
 <script type="text/javascript">
-	function clickClearWeights(idxStart)
-	{
-		if (idxStart == 2)
-		{
+	function clickClearWeights(idxStart) {
+		if (idxStart == 2) {
 			$("#weightId1").val(1)
 		}
 
-		for (idx = idxStart; idx <= 7; idx++)
-		{
+		for (idx = idxStart; idx <= 7; idx++) {
 			$("#weightId" + idx).val(0)
 		}
 	}
@@ -162,12 +159,18 @@
 	</div>
 }
 
+@{
+	var weekendEnding = Model.Miners.First().Movies?.First().WeekendEnding.ToShortDateString();
+}
+
 <h3>Box Office Forecasts</h3>
-<h5>@*@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })*@ weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString()</h5>
+<h5>@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" }) weekend ending @weekendEnding</h5>
 
 <div class="row">
+
+
 	<div class="col-sm-6">
-		The following table is an aggregation of data for the "play" week ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString() for the Fantasy Movie League website.
+		The following table is an aggregation of data for the "play" week ending @weekendEnding for the Fantasy Movie League website.
 		Currently the site aggregates box office data from Todd Thatcher's post on FML, Box Office Pro, Box Office Mojo, Box Office Report, Culture Vulture, and Box Office Prophet.
 		These are the "experts" in the field.  YOUR job is to determine who you trust and by how much and apply a weighting mechanism before you make your game picks.
 	</div>
@@ -372,4 +375,4 @@
 			<input class="btn btn-success" type="submit" value="Calculate Picks..." />
 		</div>
 	</div>
-					}
+}

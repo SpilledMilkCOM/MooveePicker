@@ -30,7 +30,7 @@ namespace MovieMiner
 
 		public override List<IMovie> Mine()
 		{
-			Movies = new List<IMovie>();
+			var movies = new List<IMovie>();
 			var web = new HtmlWeb();
 
 			var doc = web.Load(Url);

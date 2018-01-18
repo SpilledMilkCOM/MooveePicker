@@ -36,18 +36,18 @@ namespace MovieMiner
 
 		public override List<IMovie> Mine()
 		{
-			Movies = new List<IMovie>();
+			var result = new List<IMovie>();
 
 			if (_weekendEnding.HasValue)
 			{
-				Movies = MineDate();
+				result = MineDate();
 			}
 			else
 			{
-				Movies = MineForecast();
+				result = MineForecast();
 			}
 
-			return Movies;
+			return result;
 		}
 
 		private List<IMovie> MineDate()
@@ -112,8 +112,6 @@ namespace MovieMiner
 					}
 				}
 			}
-
-			Movies = result;
 
 			return result;
 		}

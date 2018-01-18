@@ -120,8 +120,6 @@ namespace MovieMiner
 
 			result = result.OrderByDescending(movie => movie.Cost).ToList();
 
-			Movies = result;
-
 			return result;
 		}
 	}
