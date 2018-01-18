@@ -21,6 +21,8 @@ namespace MoviePicker.WebApp.Interfaces
 		decimal BoxOffice14 { get; set; }
 		decimal BoxOffice15 { get; set; }
 
+		long Duration { get; set; }
+
 		/// <summary>
 		/// The estimated values are in (typically on a Saturday)
 		/// </summary>

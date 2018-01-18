@@ -1,5 +1,6 @@
 ﻿@model  MoviePicker.WebApp.Models.IndexViewModel
 
+@using MovieMiner;
 @using MoviePicker.Common.Interfaces
 
 @{
@@ -164,7 +165,7 @@
 }
 
 <h3>Box Office Forecasts</h3>
-<h5>@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" }) weekend ending @weekendEnding</h5>
+<h5>@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" }) weekend ending @weekendEnding (@Model.Duration.ToString("N0") ms)</h5>
 
 <div class="row">
 
@@ -203,8 +204,10 @@
 						}
 						else
 						{
-							<a class="btn btn-info btn-xs" href="@miner.UrlSource" data-toggle="tooltip" data-placement="bottom" title="Click for '@miner.Name' source page...">@miner.Abbreviation</a>
-
+							<a class="btn btn-info btn-xs" href="@miner.UrlSource" data-toggle="tooltip" data-placement="bottom"
+							   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
+								@miner.Abbreviation
+							</a>
 						}
 					</th>
 					<th></th>

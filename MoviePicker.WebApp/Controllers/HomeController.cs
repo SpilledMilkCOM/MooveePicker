@@ -43,12 +43,20 @@ namespace MoviePicker.WebApp.Controllers
 
 		public ActionResult Index()
 		{
+			var stopWatch = new Stopwatch();
+
+			stopWatch.Start();
+
 			ViewBag.IsGoogleAdValid = true;
 
 			ParseBoxOfficeWeightRequest();
 
 			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
 			//_viewModel.IsTracking = true;
+
+			stopWatch.Stop();
+
+			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
 
 			return View(_viewModel);
 		}

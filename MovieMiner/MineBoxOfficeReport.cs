@@ -61,11 +61,12 @@ namespace MovieMiner
 
 					// Get the date of the article (hoping that the date is the ONLY thing in such a small font)
 
-					node = doc.DocumentNode.SelectSingleNode("//body//h2[text()='4-Day Weekend Predictions']");
+					//node = doc.DocumentNode.SelectSingleNode("//body//h2[text()='4-Day Weekend Predictions']");
+					node = doc.DocumentNode.SelectSingleNode("//body//h2[text()='Weekend Predictions']");
 
 					if (node != null)
 					{
-						Error = "4-day";
+						//Error = "4-day";
 
 						// Remove the first child span.
 
