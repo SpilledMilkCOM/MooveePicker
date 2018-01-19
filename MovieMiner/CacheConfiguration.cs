@@ -6,7 +6,7 @@ namespace MovieMiner
 	{
 		public CacheConfiguration()
 		{
-			Duration = new TimeSpan(0, 30, 0);      // 30 minutes
+			Duration = new TimeSpan(1, 0, 0);       // 1 hour
 			EmptyDuration = new TimeSpan(0, 2, 0);  // 2 minutes
 		}
 

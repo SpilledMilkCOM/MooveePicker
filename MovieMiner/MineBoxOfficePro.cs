@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Web;
 
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
@@ -30,7 +29,7 @@ namespace MovieMiner
 
 		public override List<IMovie> Mine()
 		{
-			var movies = new List<IMovie>();
+			var result = new List<IMovie>();
 			var web = new HtmlWeb();
 
 			var doc = web.Load(Url);
@@ -113,14 +112,14 @@ namespace MovieMiner
 
 							if (movie != null)
 							{
-								Movies.Add(movie);
+								result.Add(movie);
 							}
 						}
 					}
 				}
 			}
 
-			return Movies;
+			return result;
 		}
 	}
 }
