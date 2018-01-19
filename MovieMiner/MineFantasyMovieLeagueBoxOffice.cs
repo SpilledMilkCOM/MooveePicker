@@ -81,9 +81,11 @@ namespace MovieMiner
 
 			foreach (var tableRow in tableRows)
 			{
+				var id = GetIdFromClass(tableRow?.Attributes["class"]?.Value);
 				var nameNode = tableRow?.SelectSingleNode("td[contains(@class, 'movie-title')]//span[contains(@class, 'title')]");
+				var imageNode = tableRow?.SelectSingleNode("td//div[contains(@class, 'proxy-img')]");
 
-				var movie = new Movie { Name = RemovePunctuation(HttpUtility.HtmlDecode(nameNode?.InnerText)) };
+				var movie = new Movie { Id = id, Name = RemovePunctuation(HttpUtility.HtmlDecode(nameNode?.InnerText)) };
 
 				// Grab the first one for now.
 
@@ -92,6 +94,11 @@ namespace MovieMiner
 				if (earningsNode != null && isEstimate)
 				{
 					movie.Earnings = ParseEarnings(earningsNode.InnerText);
+				}
+
+				if (imageNode != null)
+				{
+					movie.ImageUrl = imageNode?.Attributes["data-img-src"]?.Value;
 				}
 
 				// Might as well grab the bux so the pick can be determined stand-alone
@@ -119,6 +126,24 @@ namespace MovieMiner
 			}
 
 			result = result.OrderByDescending(movie => movie.Cost).ToList();
+
+			return result;
+		}
+
+		private int GetIdFromClass(string nodeClass)
+		{
+			int result = -1;
+			var tokens = nodeClass.Split(new char[] { '-', ' ' });
+
+			if (tokens.Length >=2)
+			{
+				int parsed = 0;
+
+				if (int.TryParse(tokens[1], out parsed))
+				{
+					result = parsed;
+				}
+			}
 
 			return result;
 		}

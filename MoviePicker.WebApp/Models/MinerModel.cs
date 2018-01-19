@@ -140,6 +140,7 @@ namespace MoviePicker.WebApp.Models
 			var result = new Movie
 			{
 				Id = baseMovie.Id,
+				ImageUrl = baseMovie.ImageUrl,
 				MovieName = baseMovie.MovieName,
 				Day = baseMovie.Day,
 				Cost = baseMovie.Cost,

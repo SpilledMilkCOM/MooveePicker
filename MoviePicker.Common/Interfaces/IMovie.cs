@@ -44,6 +44,8 @@ namespace MoviePicker.Common.Interfaces
 		/// </summary>
 		int Id { get; set; }
 
+		string ImageUrl { get; set; }
+
 		/// <summary>
 		/// Set to true if the Efficiency is the best out of all the other movies.
 		/// </summary>

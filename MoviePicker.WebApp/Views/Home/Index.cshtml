@@ -226,12 +226,14 @@
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
 	bool first = true;
 
-	<table class="table table-striped">
+	<table class="table table-responsive table-striped">
 		<thead>
 			<tr>
 				<th style="text-align: center">
 					<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML BUX source page...">BUX</a>
 				</th>
+
+				<th> </th>
 
 				<th style="text-align: center">Movie</th>
 
@@ -304,6 +306,7 @@
 
 				<tr>
 					<td>@movie.Cost</td>
+					<td><img height="75" src="@movie.ImageUrl" /></td>
 					<td>@movie.Name</td>
 
 					@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))

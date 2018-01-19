@@ -78,6 +78,8 @@ namespace MoviePicker.Common
 
 		public int Id { get; set; }
 
+		public string ImageUrl { get; set; }
+
 		public bool IsBestPerformer
 		{
 			get { return _isBestPerformer; }

@@ -48,12 +48,6 @@ namespace MoviePicker.Msf
 
 		public decimal Efficiency => _movie.Efficiency;
 
-		public DateTime WeekendEnding
-		{
-			get { return _movie.WeekendEnding; }
-			set { _movie.WeekendEnding = value; }
-		}
-
 		public decimal Earnings
 		{
 			get { return _movie.Earnings; }
@@ -69,6 +63,18 @@ namespace MoviePicker.Msf
 		{
 			get { return (double)_movie.Earnings; }
 			set { _movie.Earnings = (decimal)value; }
+		}
+
+		public string ImageUrl
+		{
+			get { return _movie.ImageUrl; }
+			set { _movie.ImageUrl = value; }
+		}
+
+		public DateTime WeekendEnding
+		{
+			get { return _movie.WeekendEnding; }
+			set { _movie.WeekendEnding = value; }
 		}
 
 		public override int GetHashCode()

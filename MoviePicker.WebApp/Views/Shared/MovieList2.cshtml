@@ -1,0 +1,49 @@
+﻿@model MoviePicker.WebApp.Models.MovieListModel
+
+<div class="clearfix"></div>
+
+<div class="col-sm-3">
+	<h4>Total Cost (BUX): @Model.Picks.TotalCost</h4>
+</div>
+<div class="col-sm-6">
+	<h4>Total Earnings: $@Model.Picks.TotalEarnings.ToString("N0")</h4>
+	@*<h5>@Model.ComparisonHeader: $@Model.TotalPicksFromComparison.ToString("N0")</h5>*@
+</div>
+
+<div class="clearfix"></div>
+
+@{
+	int columnCount = 0;
+
+	foreach (var pick in Model.Picks.Movies.OrderByDescending(movie => movie.Cost))
+	{
+		var rankStyle1 = pick.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+
+		<div class="col-lg-2 col-xs-4">
+			<div class="col-lg-6">
+				<img class="img-responsive" height="75" src="@pick.ImageUrl" alt="@pick.Name" />
+				<div>.</div>
+			</div>
+			<div class="col-lg-6">
+				<div style="text-align: right; font-weight: bold">@pick.Cost BUX</div>
+				<div style="@rankStyle1">@string.Format("$ {0:N0}{1}", pick.Earnings, pick.IsBestPerformer ? " *" : string.Empty)</div>
+
+				@if (Model.ComparisonMovies != null)
+				{
+					var foundMovie = Model.ComparisonMovies.FirstOrDefault(movie => movie.Name == pick.Name);
+					var rankStyle2 = foundMovie.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+
+					<div style="@rankStyle2">@string.Format("$ {0:N0}{1}", foundMovie?.Earnings, foundMovie.IsBestPerformer ? " *" : string.Empty)</div>
+					@*<td style="@rankStyle2">@string.Format("{0:N0}", foundMovie?.Earnings)</td>*@
+				}
+			</div>
+		</div>
+
+		if (columnCount++ == 3)
+		{
+			// Keeps 4 per row.
+
+			<div class="clearfix"></div>
+		}
+	}
+}
