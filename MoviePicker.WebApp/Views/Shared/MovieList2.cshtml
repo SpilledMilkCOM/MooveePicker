@@ -1,7 +1,5 @@
 ﻿@model MoviePicker.WebApp.Models.MovieListModel
 
-<div class="clearfix"></div>
-
 <div class="col-sm-3">
 	<h4>Total Cost (BUX): @Model.Picks.TotalCost</h4>
 </div>
@@ -19,9 +17,9 @@
 	{
 		var rankStyle1 = pick.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 
-		<div class="col-lg-2 col-xs-4">
+		<div class="col-sm-3 col-xs-4">
 			<div class="col-lg-6">
-				<img class="img-responsive" height="75" src="@pick.ImageUrl" alt="@pick.Name" />
+				<img class="img-responsive" height="100" src="@pick.ImageUrl" alt="@pick.Name" />
 				<div>.</div>
 			</div>
 			<div class="col-lg-6">
@@ -33,8 +31,8 @@
 					var foundMovie = Model.ComparisonMovies.FirstOrDefault(movie => movie.Name == pick.Name);
 					var rankStyle2 = foundMovie.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 
+					<div style="font-weight: bold">@Model.ComparisonHeader</div>
 					<div style="@rankStyle2">@string.Format("$ {0:N0}{1}", foundMovie?.Earnings, foundMovie.IsBestPerformer ? " *" : string.Empty)</div>
-					@*<td style="@rankStyle2">@string.Format("{0:N0}", foundMovie?.Earnings)</td>*@
 				}
 			</div>
 		</div>

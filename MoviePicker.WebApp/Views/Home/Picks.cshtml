@@ -77,14 +77,22 @@
 
 <div class="row">
 	<div class="col-sm-3">
-		<h4>Bonus is ON</h4>
+		<h4 style="color: #33cc33">Bonus is ON</h4>
 	</div>
 
 	@Html.Partial("MovieList2", Model.MovieList)
-
 </div>
 
+
 <div class="row">
+	<div class="col-sm-3">
+		<h4>Bonus is OFF</h4>
+	</div>
+
+	@Html.Partial("MovieList2", Model.MovieListBonusOff)
+</div>
+
+@*<div class="row">
 	<div class="col-lg-6">
 		<div class="col-sm-3">
 			<h4>Bonus is ON</h4>
@@ -103,7 +111,7 @@
 			@Html.Partial("MovieList", Model.MovieListBonusOff);
 		}
 	</div>
-</div>
+</div>*@
 
 @if (Model.IsTracking)
 {
