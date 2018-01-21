@@ -116,16 +116,14 @@
 @if (Model.IsTracking)
 {
 	<div class="row">
-		<div class="col-lg-6">
 
-			<div class="col-sm-3">
-				<h4>FML Perfect Pick (estimated)</h4>
-			</div>
-
-			@Html.Partial("MovieList", Model.MovieListPerfectPick)
+		<div class="col-sm-3">
+			<h4>FML Perfect Pick (estimated)</h4>
 		</div>
 
-		<div class="col-lg-6">
+		@Html.Partial("MovieList2", Model.MovieListPerfectPick)
+
+		<div class="col-lg-4">
 			<table class="table table-striped">
 				<thead>
 					<tr>

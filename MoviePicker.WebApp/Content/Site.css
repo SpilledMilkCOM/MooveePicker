@@ -22,3 +22,21 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.movie-card-spacing {
+	border-style: none;
+	border-width: thick;
+}
+
+.movie-holding-pen {
+	margin: 5px 5px 5px 5px;
+}
+
+.movie-card {
+	border-style: solid;
+	border-width: thin;
+	border-color: grey;
+	border-radius: 5px;
+
+	padding: 5px;
+}
