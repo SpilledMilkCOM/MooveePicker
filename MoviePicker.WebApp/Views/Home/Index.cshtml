@@ -279,6 +279,7 @@
 			<tr>
 				<td></td>
 				<td></td>
+				<td></td>
 				<td>
 					<div id="pasteBoxOffice">
 						<div>
@@ -378,7 +379,7 @@
 							var bootstrapClass = percent <= -20 ? (percent <= -40 ? "table-danger" : "table-warning")
 													: (percent > 0 ? "table-success" : "table-info");
 
-							<td class="@bootstrapClass" style="text-align: right">
+							<td class="@bootstrapClass" style="text-align: right; width: 50px;">
 								@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "% " : string.Empty)
 							</td>
 						}

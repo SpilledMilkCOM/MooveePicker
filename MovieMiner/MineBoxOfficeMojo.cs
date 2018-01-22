@@ -12,6 +12,7 @@ namespace MovieMiner
 	{
 		private const string DEFAULT_URL = "http://boxofficemojo.com/";
 		private const string DELIMITER = "- $";
+		private const string NO_DATA = "No Data";
 
 		private readonly DateTime? _weekendEnding;
 
@@ -45,6 +46,22 @@ namespace MovieMiner
 			else
 			{
 				result = MineForecast();
+
+				if (Error == NO_DATA)
+				{
+					// Retry until you get some data.
+
+					for (int pastArticles = 2; pastArticles < 4; pastArticles++)
+					{
+						Error = string.Empty;
+						result = MineForecast(pastArticles);
+
+						if (string.IsNullOrEmpty(Error))
+						{
+							break;
+						}
+					}
+				}
 			}
 
 			return result;
@@ -116,19 +133,33 @@ namespace MovieMiner
 			return result;
 		}
 
-		private List<IMovie> MineForecast()
+		private List<IMovie> MineForecast(int articleNumber = 1)
 		{
 			var result = new List<IMovie>();
-			string url = Url;
+			string url = Url + "news/";
 			var web = new HtmlWeb();
 
-			var doc = web.Load(url);
+			var doc = web.Load(url);        // Load main page.
 
 			// Lookup XPATH to get the right node that matches.
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
-			var node = doc.DocumentNode.SelectSingleNode("//body//div[@id='storyspc']/h2/a");
+			HtmlNode node = null;
+
+			if (articleNumber == 1)
+			{
+				node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, '/news/?id=')]");
+			}
+			else
+			{
+				var nodes = doc.DocumentNode.SelectNodes("//body//a[contains(@href, '/news/?id=')]");
+
+				if (articleNumber <= nodes.Count)
+				{
+					node = nodes[articleNumber - 1];
+				}
+			}
 
 			if (node != null)
 			{
@@ -172,7 +203,7 @@ namespace MovieMiner
 
 					if (movieNodes == null)
 					{
-						Error = "No Data";
+						Error = NO_DATA;
 					}
 					else
 					{
