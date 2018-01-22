@@ -165,15 +165,21 @@
     </Compile>
     <Compile Include="Interfaces\IMinerModel.cs" />
     <Compile Include="Interfaces\IIndexViewModel.cs" />
+    <Compile Include="Interfaces\IClientInfoModel.cs" />
+    <Compile Include="Interfaces\IInfoViewModel.cs" />
     <Compile Include="Interfaces\ISimulationModel.cs" />
     <Compile Include="Interfaces\IMovieListModel.cs" />
+    <Compile Include="Interfaces\IServerInfoModel.cs" />
     <Compile Include="Models\Constants.cs" />
-    <Compile Include="Models\IndexViewModel.cs" />
+    <Compile Include="Models\ClientInfoModel.cs" />
+    <Compile Include="ViewModels\IndexViewModel.cs" />
+    <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="Models\MineMine.cs" />
     <Compile Include="Models\MinerModel.cs" />
     <Compile Include="Models\MovieListModel.cs" />
-    <Compile Include="Models\PicksViewModel.cs" />
+    <Compile Include="ViewModels\PicksViewModel.cs" />
     <Compile Include="Models\ReflectionUtility.cs" />
+    <Compile Include="Models\ServerInfoModel.cs" />
     <Compile Include="Models\SimulationModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -239,6 +245,8 @@
     <Content Include="Views\Shared\MovieList.cshtml" />
     <Content Include="Views\Home\Simulation.cshtml" />
     <Content Include="Views\Shared\MovieList2.cshtml" />
+    <Content Include="Views\LowMem\Info.cshtml" />
+    <Content Include="Views\Home\Tracking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

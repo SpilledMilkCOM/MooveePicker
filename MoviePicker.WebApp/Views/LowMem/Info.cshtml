@@ -1,0 +1,17 @@
+﻿@model MoviePicker.WebApp.Models.InfoViewModel
+
+@{
+    ViewBag.Title = "Server Info";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<h3>Server:</h3>
+
+<h4>Now: @Model.ServerInfo.Now</h4>
+<h4>Now (UTC): @Model.ServerInfo.NowUtc</h4>
+
+<h3>Client:</h3>
+
+<h4>Device: @Model.ClientInfo.Device</h4>
+<h4>Name: @Model.ClientInfo.Name</h4>

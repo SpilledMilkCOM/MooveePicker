@@ -41,6 +41,7 @@ namespace MoviePicker.WebApp.Controllers
 			UpdateViewModel();
 		}
 
+		[HttpGet]
 		public ActionResult Index()
 		{
 			var stopWatch = new Stopwatch();
@@ -159,6 +160,31 @@ namespace MoviePicker.WebApp.Controllers
 			//RunSimulation(picksViewModel);
 
 			return View(picksViewModel);
+		}
+
+		[HttpGet]
+		public ActionResult Tracking()
+		{
+			var stopWatch = new Stopwatch();
+
+			stopWatch.Start();
+
+			ViewBag.IsGoogleAdValid = true;
+
+			ParseBoxOfficeWeightRequest();
+
+			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
+			//_viewModel.IsTracking = true;
+
+			// Hide the last miner (BO Mojo for previous week).
+
+			_minerModel.Miners.Last().IsHidden = true;
+
+			stopWatch.Stop();
+
+			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			return View(_viewModel);
 		}
 
 		public ActionResult WeekBack()

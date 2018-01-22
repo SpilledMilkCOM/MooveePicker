@@ -13,7 +13,7 @@ namespace TestRunner
 			var logger = new StandardOutLogger();           // Uses Console
 			ElapsedTime elapsed = new ElapsedTime();
 
-			Console.WriteLine("Constructing test fixture...\n");
+			logger.WriteLine("Constructing test fixture...\n");
 
 			var fixture = new MoviePickerVariantsAllTests();
 

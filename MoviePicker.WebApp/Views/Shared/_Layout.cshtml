@@ -11,6 +11,9 @@
 
 	@* Only spit out the Google Ad script on SELECT pages. *@
 
+	@*
+		This probably won't happen.  Damn Google AdSense and their "criteria"
+		
 	@if (ViewBag.IsGoogleAdValid)
 	{
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -20,7 +23,7 @@
 					enable_page_level_ads: true
 				});
 			</script>
-	}
+	}*@
 
 </head>
 <body>
