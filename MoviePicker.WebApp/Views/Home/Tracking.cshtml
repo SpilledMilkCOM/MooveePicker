@@ -1,0 +1,104 @@
+﻿@model  MoviePicker.WebApp.Models.IndexViewModel
+
+@using MovieMiner;
+@using MoviePicker.Common.Interfaces;
+
+@{
+	ViewBag.Title = "Tracking Estimates";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.IsTracking)
+{
+	<div class="row">
+		<div class="col-sm-6">
+			Below is a table that compares your Custom value to the estimates as well as all the other miners.  Were you close?  Were the "experts" close?
+			There's still time as these estimates change over the weekend, but typically not by much since the "experts" are pretty good once the data starts rolling in.
+			The differences are whether the predicted numbers are higher (+) or lower (-) than the Estimated numbers.
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th style="text-align: center">
+							<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML BUX source page...">BUX</a>
+						</th>
+						<th style="text-align: center">Movie</th>
+						<th style="text-align: center">
+							<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML Estimated source page...">Estimated</a>
+						</th>
+						<th style="text-align: center">Custom</th>
+						<th style="text-align: center">Difference</th>
+						<th style="text-align: center">% Diff</th>
+
+						@foreach (var miner in Model.Miners.Skip(2).Where(item => !item.IsHidden))
+						{
+							<th style="text-align: center">@miner.Abbreviation%</th>
+						}
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var movie in Model.Miners.First().Movies)
+					{
+						var minerCount = 0;
+						IMovie fmlMovie = null;
+						IMovie customMovie = null;
+
+						<tr>
+							<td style="text-align: right">@movie.Cost</td>
+							<td>@movie.Name</td>
+
+							@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+							{
+								// The first two miners are FML and Custom (MineMine)
+
+								var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
+
+								if (minerCount == 0)
+								{
+									<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.Earnings)</td>
+
+									fmlMovie = minerMovie;
+								}
+								else if (minerCount == 1)
+								{
+									customMovie = minerMovie;
+
+									<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.Earnings)</td>
+
+									<td style="text-align: right">@string.Format("{0:N0}", (customMovie?.EarningsBase ?? 0) - fmlMovie.EarningsBase)</td>
+
+									if (customMovie?.EarningsBase > 0)
+									{
+										<td style="text-align: right">@string.Format("{0:F2}%", (customMovie.EarningsBase - fmlMovie.EarningsBase) / customMovie.EarningsBase * 100)</td>
+									}
+								}
+								else
+								{
+									if (minerMovie?.EarningsBase > 0)
+									{
+										<td style="text-align: right">@string.Format("{0:F2}%", (minerMovie.EarningsBase - fmlMovie.EarningsBase) / minerMovie.EarningsBase * 100)</td>
+									}
+									else
+									{
+										<td> </td>
+									}
+								}
+
+								minerCount++;
+							}
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+}
+else
+{
+	<h4>Nothing is tracking at the moment.</h4>
+}

@@ -1,7 +1,7 @@
 ﻿@model  MoviePicker.WebApp.Models.IndexViewModel
 
 @using MovieMiner;
-@using MoviePicker.Common.Interfaces
+@using MoviePicker.Common.Interfaces;
 
 @{
 	ViewBag.Title = "Home Page";
@@ -46,6 +46,17 @@
 		var parameters = parseBoxOfficeWeights()
 
 		var url = "/home/picks?" + parameters
+
+		var baseUrl = parseBaseUrl()
+
+		window.location.href = baseUrl + url
+	}
+
+	function clickTracking() {
+
+		var parameters = parseBoxOfficeWeights()
+
+		var url = "/home/tracking?" + parameters
 
 		var baseUrl = parseBaseUrl()
 
@@ -136,6 +147,16 @@
 			There's still time as these estimates change over the weekend, but typically not by much since the "experts" are pretty good once the data starts rolling in.
 			The differences are whether <strong>your</strong> Custom numbers are higher (+) or lower (-) than the Estimated numbers.  I may switch this depending on the user's preference and what makes more sense.
 		</div>
+
+		<div class="col-sm-3">
+			<input class="btn btn-info"
+				   onclick="clickTracking()"
+				   type="button"
+				   value="Track ALL Data..."
+				   data-toggle="tooltip"
+				   data-placement="bottom"
+				   title="Click to track all the miners against the estimates..." />
+		</div>
 	</div>
 
 	<div class="row">
@@ -209,8 +230,6 @@
 <h5>@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" }) weekend ending @weekendEnding (@Model.Duration.ToString("N0") ms)</h5>
 
 <div class="row">
-
-
 	<div class="col-sm-6">
 		The following table is an aggregation of data for the "play" week ending @weekendEnding for the Fantasy Movie League website.
 		Currently the site aggregates box office data from Todd Thatcher's post on FML, Box Office Pro, Box Office Mojo, Box Office Report, Culture Vulture, and Box Office Prophet.

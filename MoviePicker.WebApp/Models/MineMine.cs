@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using MoviePicker.Common.Interfaces;
-using MoviePicker.WebApp.Models;
+using MoviePicker.WebApp.Interfaces;
 
 namespace MovieMiner
 {
@@ -9,19 +9,23 @@ namespace MovieMiner
 	/// </summary>
 	public class MineMine : MinerBase
 	{
-		// A collection of ALL of the miners including this one.
-		private readonly MinerModel _model;
 
-		public MineMine(MinerModel model)
+		public MineMine(IMinerModel model)
 			: base("My Predictions", "Mine", null)
 		{
-			_model = model;
+			Model = model;
 			CacheConfiguration = null;		// Always load this (it's ALWAYS expired)
 		}
 
+		/// <summary>
+		/// A collection of ALL of the miners including this one.
+		/// Need to be able to inject the model into the clone.
+		/// </summary>
+		public IMinerModel Model { get; set; }
+
 		public override IMiner Clone()
 		{
-			var result = new MineMine(_model);
+			var result = new MineMine(Model);
 
 			Clone(result);
 
@@ -30,7 +34,7 @@ namespace MovieMiner
 
 		public override List<IMovie> Mine()
 		{
-			return _model.CreateWeightedList();
+			return Model.CreateWeightedList();
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------

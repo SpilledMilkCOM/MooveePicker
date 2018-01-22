@@ -1,7 +1,7 @@
 ﻿using MoviePicker.Common.Interfaces;
 using System.Collections.Generic;
 
-namespace MoviePicker.WebApp.Models
+namespace MoviePicker.WebApp.Interfaces
 {
 	public interface IMovieListModel
 	{

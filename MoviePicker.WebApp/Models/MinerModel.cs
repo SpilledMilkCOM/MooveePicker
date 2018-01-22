@@ -31,10 +31,23 @@ namespace MoviePicker.WebApp.Models
 		public IMinerModel Clone()
 		{
 			var clone = new MinerModel(false) { Miners = new List<IMiner>() };
+			int idx = 0;
 
 			foreach (var miner in Miners)
 			{
 				clone.Miners.Add(miner.Clone());
+
+				if (idx == MY_INDEX)
+				{
+					var mineMine = clone.Miners[idx] as MineMine;
+
+					if (mineMine != null)
+					{
+						mineMine.Model = clone;
+					}
+				}
+
+				idx++;
 			}
 
 			return clone;

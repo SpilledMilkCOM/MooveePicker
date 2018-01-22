@@ -64,8 +64,11 @@ namespace MoviePicker.WebApp
 
 			// Each of these will construct each time injected into the controller.
 
+			container.RegisterType<IClientInfoModel, ClientInfoModel>();
+			container.RegisterType<IInfoViewModel, InfoViewModel>();
 			container.RegisterType<IMoviePicker, MsfMovieSolver>();
 			container.RegisterType<IMovieList, MovieList>();
+			container.RegisterType<IServerInfoModel, ServerInfoModel>();
 			container.RegisterType<ISimulationModel, SimulationModel>();
 		}
 	}
