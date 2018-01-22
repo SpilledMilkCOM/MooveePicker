@@ -12,18 +12,18 @@
 	@* Only spit out the Google Ad script on SELECT pages. *@
 
 	@*
-		This probably won't happen.  Damn Google AdSense and their "criteria"
-		
-	@if (ViewBag.IsGoogleAdValid)
-	{
-		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-			<script>
-				(adsbygoogle = window.adsbygoogle || []).push({
-					google_ad_client: "ca-pub-8791392312556224",
-					enable_page_level_ads: true
-				});
-			</script>
-	}*@
+			This probably won't happen.  Damn Google AdSense and their "criteria"
+
+		@if (ViewBag.IsGoogleAdValid)
+		{
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+				<script>
+					(adsbygoogle = window.adsbygoogle || []).push({
+						google_ad_client: "ca-pub-8791392312556224",
+						enable_page_level_ads: true
+					});
+				</script>
+		}*@
 
 </head>
 <body>
@@ -65,14 +65,16 @@
 
 				<div class="col-sm-2">
 
-					@if (string.IsNullOrEmpty(ViewBag.TwitterTweetUrl))
+					<a class="twitter-share-button" href="https://twitter.com/share">Tweet</a>
+
+					@*@if (string.IsNullOrEmpty(ViewBag.TwitterTweetUrl))
 					{
 						<a class="twitter-share-button" href="https://twitter.com/share">Tweet</a>
 					}
 					else
 					{
-						<a class="twitter-share-button" href="@ViewBag.TwitterTweetUrl" >Tweet</a>
-					}
+						<a class="twitter-share-button" href="@ViewBag.TwitterTweetUrl">Tweet</a>
+					}*@
 				</div>
 			</div>
 		</footer>
