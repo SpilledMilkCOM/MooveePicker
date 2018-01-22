@@ -52,7 +52,7 @@
 							<td style="text-align: right">@movie.Cost</td>
 							<td>@movie.Name</td>
 
-							@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+							@foreach (var miner in Model.Miners)
 							{
 								// The first two miners are FML and Custom (MineMine)
 

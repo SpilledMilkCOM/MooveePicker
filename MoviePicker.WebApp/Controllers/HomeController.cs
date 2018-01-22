@@ -176,6 +176,10 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
 			//_viewModel.IsTracking = true;
 
+			// Show the values for the FML Estimate data.
+
+			_minerModel.Miners.Last().IsHidden = false;
+
 			// Hide the last miner (BO Mojo for previous week).
 
 			_minerModel.Miners.Last().IsHidden = true;
