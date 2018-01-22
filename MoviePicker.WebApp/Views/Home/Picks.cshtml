@@ -83,6 +83,7 @@
 	@Html.Partial("MovieList2", Model.MovieList)
 </div>
 
+<div class="row-divider"> </div>
 
 <div class="row">
 	<div class="col-sm-3">
@@ -93,42 +94,40 @@
 </div>
 
 @*<div class="row">
-	<div class="col-lg-6">
-		<div class="col-sm-3">
-			<h4>Bonus is ON</h4>
+		<div class="col-lg-6">
+			<div class="col-sm-3">
+				<h4>Bonus is ON</h4>
+			</div>
+
+			@Html.Partial("MovieList", Model.MovieList)
 		</div>
 
-		@Html.Partial("MovieList", Model.MovieList)
-	</div>
+		<div class="col-lg-6">
+			<div class="col-sm-3">
+				<h4>Bonus is OFF</h4>
+			</div>
 
-	<div class="col-lg-6">
-		<div class="col-sm-3">
-			<h4>Bonus is OFF</h4>
+			@if (Model.MovieListBonusOff != null)
+			{
+				@Html.Partial("MovieList", Model.MovieListBonusOff);
+			}
 		</div>
-
-		@if (Model.MovieListBonusOff != null)
-		{
-			@Html.Partial("MovieList", Model.MovieListBonusOff);
-		}
-	</div>
-</div>*@
+	</div>*@
 
 @if (Model.IsTracking)
 {
+	<div class="row-divider"> </div>
+
+	<h4>Estimated Perfect Pick</h4>
+
 	<div class="row">
-
-		<div class="col-sm-3">
-			<h4>FML Perfect Pick (estimated)</h4>
-		</div>
-
-		@Html.Partial("MovieList2", Model.MovieListPerfectPick)
-
-		<div class="col-lg-4">
+		<div class="col-lg-6">
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>Your Pick</th>
-						<th>Estimated</th>
+						<th>Predicted</th>
+						<th>Estimated BO</th>
 						<th>PP Diff</th>
 						<th>PP Diff %</th>
 					</tr>
@@ -137,12 +136,14 @@
 					<tr>
 						<td>Bonus ON</td>
 						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
 						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
 						<td>@string.Format("{0:F2} %", Model.MovieList.Picks.TotalEarnings > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
 					</tr>
 					<tr>
 						<td>Bonus OFF</td>
 						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
 						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
 						<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks.TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
 					</tr>
@@ -151,6 +152,8 @@
 		</div>
 	</div>
 }
+
+<div class="row-divider"> </div>
 
 <div class="row">
 	<div class="col-sm-1"> </div>
@@ -161,6 +164,8 @@
 		The MOST efficient movie shows how much it would have to drop to match second place.
 	</div>
 </div>
+
+<div class="row-divider"> </div>
 
 <h4>Bonus Comparisons</h4>
 

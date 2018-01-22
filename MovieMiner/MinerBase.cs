@@ -25,7 +25,7 @@ namespace MovieMiner
 			_movieLock = new object();
 			_movies = new List<IMovie>();
 
-			Abbreviation = abbr;
+			Abbreviation = abbr?.Trim();
 			CacheConfiguration = new CacheConfiguration();				// Just take the default for now.
 			Expiration = DateTime.Now.Subtract(new TimeSpan(1));        // This will trigger the first load.
 			IsHidden = false;

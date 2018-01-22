@@ -137,87 +137,21 @@
 	</div>
 </div>
 
+
 @if (Model.IsTracking)
 {
-	<h3>Tracking Estimates</h3>
+	<div class="row-divider"> </div>
 
 	<div class="row">
-		<div class="col-sm-6">
-			The estimates are IN!  Below is a table that compares your Custom value to the estimates.  Were you close?
-			There's still time as these estimates change over the weekend, but typically not by much since the "experts" are pretty good once the data starts rolling in.
-			The differences are whether <strong>your</strong> Custom numbers are higher (+) or lower (-) than the Estimated numbers.  I may switch this depending on the user's preference and what makes more sense.
-		</div>
 
 		<div class="col-sm-3">
 			<input class="btn btn-info"
 				   onclick="clickTracking()"
 				   type="button"
-				   value="Track ALL Data..."
+				   value="Track your picks with the estimates..."
 				   data-toggle="tooltip"
 				   data-placement="bottom"
 				   title="Click to track all the miners against the estimates..." />
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-sm-8">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th style="text-align: center">
-							<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML BUX source page...">BUX</a>
-						</th>
-						<th style="text-align: center">Movie</th>
-						<th style="text-align: center">
-							<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML Estimated source page...">Estimated</a>
-						</th>
-						<th style="text-align: center">Custom</th>
-						<th style="text-align: center">Difference</th>
-						<th style="text-align: center">% Diff</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var movie in Model.Miners.First().Movies)
-					{
-						var minerCount = 0;
-						IMovie fmlMovie = null;
-						IMovie customMovie = null;
-
-						<tr>
-							<td style="text-align: right">@movie.Cost</td>
-							<td>@movie.Name</td>
-
-							@foreach (var miner in Model.Miners)
-							{
-								// The first two miners are FML and Custom (MineMine)
-
-								var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
-
-								<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.Earnings)</td>
-
-								if (++minerCount == 2)
-								{
-									customMovie = minerMovie;
-
-									break;
-								}
-								else
-								{
-									fmlMovie = minerMovie;
-								}
-							}
-
-							<td style="text-align: right">@string.Format("{0:N0}", (customMovie?.EarningsBase ?? 0) - fmlMovie.EarningsBase)</td>
-
-							@if (customMovie?.EarningsBase > 0)
-							{
-								<td style="text-align: right">@string.Format("{0:F2} %", (customMovie.EarningsBase - fmlMovie.EarningsBase) / customMovie.EarningsBase * 100)</td>
-							}
-
-						</tr>
-					}
-				</tbody>
-			</table>
 		</div>
 	</div>
 }
@@ -245,20 +179,20 @@
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
 	bool first = true;
 
-	<table class="table table-responsive table-striped">
+	<table class="table" style="width: 100%">
 		<thead>
 			<tr>
-				<th style="text-align: center">
+				<th style="text-align: center;">
 					<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML BUX source page...">BUX</a>
 				</th>
 
-				<th> </th>
+				<th style="text-align: center;"> </th>
 
-				<th style="text-align: center">Movie</th>
+				<th style="text-align: center;">Movie</th>
 
 				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 				{
-					<th style="text-align: center">
+					<th style="text-align: center;">
 						@if (first)
 						{
 							first = false;
@@ -279,7 +213,7 @@
 			<tr>
 				<td></td>
 				<td></td>
-				<td></td>
+				<td style="text-align: center;"></td>
 				<td>
 					<div id="pasteBoxOffice">
 						<div>
@@ -320,14 +254,14 @@
 		<tbody>
 			@foreach (var movie in Model.Miners.First().Movies)
 			{
-				const string myColumnStyle = "width: 100px;";
+				//const string myColumnStyle = "width: 100px;";
 				//const string myColumnFormat = "{0:N0}";
 				bool isFirst = true;
 
 				<tr>
 					<td>@movie.Cost</td>
 					<td><img height="75" src="@movie.ImageUrl" /></td>
-					<td>@movie.Name</td>
+					<td style="text-align: center;">@movie.Name</td>
 
 					@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 					{

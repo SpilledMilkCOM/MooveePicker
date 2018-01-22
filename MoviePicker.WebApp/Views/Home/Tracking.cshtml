@@ -1,4 +1,4 @@
-﻿@model  MoviePicker.WebApp.Models.IndexViewModel
+﻿@model  MoviePicker.WebApp.Models.PicksViewModel
 
 @using MovieMiner;
 @using MoviePicker.Common.Interfaces;
@@ -12,12 +12,51 @@
 @if (Model.IsTracking)
 {
 	<div class="row">
+
+		<div class="col-sm-3">
+			<h4>FML Perfect Pick (estimated)</h4>
+		</div>
+
+		@Html.Partial("MovieList2", Model.MovieListPerfectPick)
+
+		<div class="col-lg-4">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Your Pick</th>
+						<th>Estimated</th>
+						<th>PP Diff</th>
+						<th>PP Diff %</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Bonus ON</td>
+						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieList.Picks.TotalEarnings > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
+					</tr>
+					<tr>
+						<td>Bonus OFF</td>
+						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks.TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="row">
+
 		<div class="col-sm-6">
 			Below is a table that compares your Custom value to the estimates as well as all the other miners.  Were you close?  Were the "experts" close?
 			There's still time as these estimates change over the weekend, but typically not by much since the "experts" are pretty good once the data starts rolling in.
-			The differences are whether the predicted numbers are higher (+) or lower (-) than the Estimated numbers.
+			The differences are whether the <strong>predicted</strong> numbers are higher (+) or lower (-) than the Estimated numbers.
 		</div>
 	</div>
+
+	<div class="row-divider"> </div>
 
 	<div class="row">
 		<div class="col-xs-12">
@@ -52,7 +91,7 @@
 							<td style="text-align: right">@movie.Cost</td>
 							<td>@movie.Name</td>
 
-							@foreach (var miner in Model.Miners)
+							@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 							{
 								// The first two miners are FML and Custom (MineMine)
 
