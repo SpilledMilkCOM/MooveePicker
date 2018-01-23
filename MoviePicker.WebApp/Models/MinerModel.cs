@@ -50,6 +50,8 @@ namespace MoviePicker.WebApp.Models
 				idx++;
 			}
 
+			FilterMinerMovies(clone.Miners);
+
 			return clone;
 		}
 
