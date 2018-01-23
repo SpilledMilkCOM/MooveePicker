@@ -127,7 +127,25 @@ namespace MoviePicker.WebApp.Controllers
 
 			ParseBoxOfficeWeightRequest();
 
+			// Hide the last miner (BO Mojo for previous week).
+
+			_minerModel.Miners.Last().IsHidden = true;
+
 			return View(ConstructPicksViewModel());
+		}
+
+		[HttpGet]
+		public ActionResult SharePicks()
+		{
+			ViewBag.IsGoogleAdValid = true;
+
+			ParseBoxOfficeWeightRequest();
+
+			var viewModel = ConstructPicksViewModel();
+
+			viewModel.GenerateSharedImage(Server);
+
+			return View(viewModel);
 		}
 
 		//TODO: Don't really need this to be a post, since Index is just sending a request with parameters.
@@ -192,9 +210,6 @@ namespace MoviePicker.WebApp.Controllers
 			ParseBoxOfficeWeightRequest();
 
 			var viewModel = ConstructPicksViewModel();
-
-			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
-			//_viewModel.IsTracking = true;
 
 			// Show the values for the FML Estimate data.
 

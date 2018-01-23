@@ -17,24 +17,24 @@
 	{
 		var rankStyle1 = pick.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 
-		<div class="col-sm-3 col-xs-4" style="padding: 5px">
+		<div class="col-sm-3 col-xs-4" style="padding: 3px">
 			<div class="col-xs-12 movie-card">
-				<div class="col-lg-6">
+				<div class="col-lg-5">
 					<img class="img-responsive" height="100" src="@pick.ImageUrl" alt="@pick.Name" />
 				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-7">
 					<div style="text-align: right; font-weight: bold">@pick.Cost BUX</div>
 					<div style="font-weight: bold">Earnings</div>
 					<div style="@rankStyle1">@string.Format("$ {0:N0}{1}", pick.Earnings, pick.IsBestPerformer ? " *" : string.Empty)</div>
 
 					@if (Model.ComparisonMovies != null)
-				{
-					var foundMovie = Model.ComparisonMovies.FirstOrDefault(movie => movie.Name == pick.Name);
-					var rankStyle2 = foundMovie.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+					{
+						var foundMovie = Model.ComparisonMovies.FirstOrDefault(movie => movie.Name == pick.Name);
+						var rankStyle2 = foundMovie.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 
 						<div style="font-weight: bold">@Model.ComparisonHeader</div>
 						<div style="@rankStyle2">@string.Format("$ {0:N0}{1}", foundMovie?.Earnings, foundMovie.IsBestPerformer ? " *" : string.Empty)</div>
-				}
+					}
 				</div>
 			</div>
 		</div>
@@ -43,7 +43,7 @@
 		{
 			// Keeps 4 per row.
 
-		<div class="clearfix"> </div>
+			<div class="clearfix"> </div>
 		}
 	}
 }

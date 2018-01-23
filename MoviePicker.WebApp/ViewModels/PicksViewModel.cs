@@ -1,8 +1,10 @@
 ﻿using MovieMiner;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.WebApp.Interfaces;
+using MoviePicker.WebApp.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace MoviePicker.WebApp.Models
 {
@@ -27,7 +29,17 @@ namespace MoviePicker.WebApp.Models
 
 		public IEnumerable<IMovie> Movies { get; set; }
 
+		public string SharedPicksImageUrl { get; set; }
+
 		public string SharedPicksUrl { get; set; }
+
+		public void GenerateSharedImage(HttpServerUtilityBase server)
+		{
+			var files = new List<string> { "MoviePoster_7GgZ6DGezkh3szFdvskH5XD4V0t.jpg", "MoviePoster_wotEBRKLKlK3HvXdv9hU4c5cvrQ.jpg" };
+			var imageUtil = new ImageUtility();
+
+			SharedPicksImageUrl = imageUtil.CombineImages(server, "~", files);
+		}
 
 		/// <summary>
 		/// TODO: Consolidate

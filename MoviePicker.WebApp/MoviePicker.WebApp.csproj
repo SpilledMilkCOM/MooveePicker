@@ -174,6 +174,7 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\ClientInfoModel.cs" />
     <Compile Include="Utilities\ControllerUtility.cs" />
+    <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
@@ -250,6 +251,7 @@
     <Content Include="Views\Shared\MovieList2.cshtml" />
     <Content Include="Views\LowMem\Info.cshtml" />
     <Content Include="Views\Home\Tracking.cshtml" />
+    <Content Include="Views\Home\SharePicks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -28,8 +28,12 @@ textarea {
 	border-width: thick;
 }
 
+/* Put stuff in this class style for later use. */
+
 .movie-holding-pen {
 	margin: 5px 5px 5px 5px;
+
+	padding: 5px;
 }
 
 .movie-card {

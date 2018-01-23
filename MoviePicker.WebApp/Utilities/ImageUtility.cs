@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Web;
 
 namespace MoviePicker.WebApp.Utilities
@@ -19,9 +19,55 @@ namespace MoviePicker.WebApp.Utilities
 		/// Combine the movie images into a single image to be shared.
 		/// </summary>
 		/// <returns>The file name to be served up.</returns>
-		public string CombineImages()
+		private const string DEFAULT_IMAGE_DIR = "images";
+
+		public string CombineImages(HttpServerUtilityBase server, string webRootPath, List<string> fileNames)
 		{
-			return null;
+			var fileSystemRootPath = server.MapPath(webRootPath);
+			var imagePath = $"{fileSystemRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
+			string resultFileName = null;
+			int width = 0;
+			int height = 0;
+			int offset = 0;
+
+			// Determine height (max height) and width (total width) of the images so they can be placed side by side.
+
+			foreach (var fileName in fileNames)
+			{
+				using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}{fileName}"))
+				{
+					width += image.Width;
+
+					if (image.Height > height)
+					{
+						height = image.Height;
+					}
+				}
+			}
+
+			using (var destBitmap = new Bitmap(width, height))
+			{
+				using (var graphics = Graphics.FromImage(destBitmap))
+				{
+					graphics.Clear(Color.Black);
+
+					foreach (var fileName in fileNames)
+					{
+						using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}{fileName}"))
+						{
+							graphics.DrawImage(image, offset, 0, image.Width, image.Height);
+
+							offset += image.Width;
+						}
+					}
+				}
+
+				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}output.jpg";
+
+				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+			}
+
+			return resultFileName;
 		}
 	}
 }
