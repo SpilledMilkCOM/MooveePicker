@@ -113,7 +113,7 @@ namespace MovieMiner
 				if (weekendEnding.HasValue)
 				{
 					//movie.WeekendEnding = weekendEnding.Value;
-					movie.WeekendEnding = MovieDateUtil.GameSunday();
+					movie.WeekendEnding = MovieDateUtil.GameSunday(null, isEstimate);
 				}
 
 				result.Add(movie);

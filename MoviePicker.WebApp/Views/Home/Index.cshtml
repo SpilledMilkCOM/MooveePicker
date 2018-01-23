@@ -330,6 +330,7 @@
 			<tr>
 				<td></td>
 				<td></td>
+				<td></td>
 
 				@{
 					first = true;
@@ -353,6 +354,8 @@
 
 			<tr>
 				<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "Click to extract as CSV text file..." })</td>
+
+				<td></td>
 
 				<td>
 					<input class="btn btn-info" onclick="clickRecalc()" type="button" value="Apply Weights" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Mine column..." />

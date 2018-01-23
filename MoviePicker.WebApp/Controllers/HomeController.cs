@@ -18,6 +18,7 @@ namespace MoviePicker.WebApp.Controllers
 		private const int MY_MINER_IDX = FML_INDEX + 1;
 
 		private IMinerModel _minerModel;
+		private IMinerModel _minerModelCache;       // Access to the singleton so it can be cleared/expired
 		private IIndexViewModel _viewModel;
 		private IMoviePicker _moviePicker;
 		private ISimulationModel _simulationModel;
@@ -31,6 +32,7 @@ namespace MoviePicker.WebApp.Controllers
 		public HomeController(IIndexViewModel viewModel, IMinerModel minerModel, IMoviePicker moviePicker, ISimulationModel simulationModel)
 		{
 			// expecting a singleton as the miner model.
+			_minerModelCache = minerModel;
 			_minerModel = minerModel.Clone();
 
 			_moviePicker = moviePicker;
@@ -39,6 +41,14 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.Miners = _minerModel.Miners;
 
 			UpdateViewModel();
+		}
+
+		[HttpGet]
+		public ActionResult Expire()
+		{
+			_minerModelCache.Expire();
+
+			return RedirectToAction("Index");
 		}
 
 		[HttpGet]

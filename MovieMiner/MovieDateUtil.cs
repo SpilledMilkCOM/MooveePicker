@@ -40,12 +40,11 @@ namespace MovieMiner
 			return (diff.Days / DAYS_IN_WEEK) % WEEKS_IN_SEASON + 1;
 		}
 
-
-		public static DateTime GameSunday(DateTime? dateTime = null)
+		public static DateTime GameSunday(DateTime? dateTime = null, bool isEstimate = false)
 		{
 			DateTime result = dateTime ?? Now;
 
-			if (result.DayOfWeek == DayOfWeek.Monday)
+			if (result.DayOfWeek == DayOfWeek.Monday && isEstimate)
 			{
 				result = result.AddDays(-1);
 			}

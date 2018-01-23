@@ -20,5 +20,7 @@ namespace MoviePicker.WebApp.Interfaces
 		List<IMiner> CreateMinersWithData();
 
 		List<IMovie> CreateWeightedList();
+
+		void Expire();
 	}
 }

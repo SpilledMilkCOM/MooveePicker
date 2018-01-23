@@ -22,6 +22,8 @@ namespace MovieMiner
 		/// </summary>
 		DateTime? LastLoaded { get; }
 
+		void Expire();
+
 		/// <summary>
 		/// Load the cache with its data if the time is past the expiration.
 		/// </summary>

@@ -98,6 +98,17 @@ namespace MoviePicker.WebApp.Models
 			return result;
 		}
 
+		/// <summary>
+		/// Expire all of the miners so they reload the next time.
+		/// </summary>
+		public void Expire()
+		{
+			foreach (ICache miner in Miners)
+			{
+				miner.Expire();
+			}
+		}
+
 		//----==== PRIVATE ====--------------------------------------------------------------------
 
 		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)

@@ -121,6 +121,12 @@ namespace MovieMiner
 
 		public abstract IMiner Clone();
 
+		public void Expire()
+		{
+			// Assign the exipration to the past versus Now so that it's guaranteed to load the next time.
+			Expiration = DateTime.Now.Subtract(new TimeSpan(1));
+		}
+
 		/// <summary>
 		/// Only load the data if it has expired.
 		/// This is thread safe and WON'T mine any data if not needed or already in the process of being mined.
