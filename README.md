@@ -41,3 +41,6 @@ https://en.wikipedia.org/wiki/Knapsack_problem
 
 Actual published website:
 http://mooveepicker.azurewebsites.net/
+
+The current defaults that I use:
+http://mooveepicker.azurewebsites.net/home/picks/wl=0,3,4,3,2,2,3
