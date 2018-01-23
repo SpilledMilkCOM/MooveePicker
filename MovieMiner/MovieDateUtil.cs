@@ -5,6 +5,8 @@ namespace MovieMiner
 {
 	public static class MovieDateUtil
 	{
+		private const int TZ_OFFSET = -7;        // The mountain time zone is 7 hours behind UTC.
+
 		// This offset may change depending on what year we're in (or the whims of FML)
 		private const int SEASON_OFFSET_WEEKS = 8;
 		private const int DAYS_IN_WEEK = 7;
@@ -83,6 +85,61 @@ namespace MovieMiner
 			return result;
 		}
 
-		private static DateTime Now => DateTime.Now.Date;
+		public static TimeSpan UntilGameTime()
+		{
+			// The mountain time zone is 7 hours behind UTC.
+
+			var now = DateTime.Now;
+			var start = GameStartTime();
+			var end = GameEndTime();
+			TimeSpan result = new TimeSpan(0);
+		
+			if (start < end)
+			{
+				result = start.Subtract(now);
+			}
+
+			return new TimeSpan();
+		}
+
+		/// <summary>
+		/// Always moving forward from Now
+		/// </summary>
+		/// <returns>Game start time within the time zone</returns>
+		public static DateTime GameEndTime()
+		{
+			var now = Now;
+			var result = new DateTime(now.Year, now.Month, now.Day + (DayOfWeek.Tuesday - now.DayOfWeek), now.Hour, now.Minute, now.Second);
+
+			if (DayOfWeek.Friday - now.DayOfWeek < 0)
+			{
+				// Went backwards to Tuesday so add a whole week.
+
+				result.AddDays(7);
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Always moving forward from Now
+		/// </summary>
+		/// <returns>Game start time within the time zone</returns>
+		public static DateTime GameStartTime()
+		{
+			var now = Now;
+			var result = new DateTime(now.Year, now.Month, now.Day + (DayOfWeek.Friday - now.DayOfWeek), now.Hour, now.Minute, now.Second);
+
+			if (DayOfWeek.Friday - now.DayOfWeek < 0)
+			{
+				// Went backwards to Friday so add a whole week.
+
+				result.AddDays(7);
+			}
+
+			return result;
+		}
+
+		private static DateTime Now => DateTime.Now.AddHours(TZ_OFFSET).Date;
 	}
 }
