@@ -17,6 +17,7 @@ namespace MoviePicker.WebApp.Controllers
 		private const int FML_INDEX = 0;
 		private const int MY_MINER_IDX = FML_INDEX + 1;
 
+		private IControllerUtility _controllerUtility;
 		private IMinerModel _minerModel;
 		private IMinerModel _minerModelCache;       // Access to the singleton so it can be cleared/expired
 		private IIndexViewModel _viewModel;
@@ -29,12 +30,19 @@ namespace MoviePicker.WebApp.Controllers
 		/// <param name="minerModel">A singleton minerModel</param>
 		/// <param name="moviePicker"></param>
 		/// <param name="simulationModel"></param>
-		public HomeController(IIndexViewModel viewModel, IMinerModel minerModel, IMoviePicker moviePicker, ISimulationModel simulationModel)
+		public HomeController(IIndexViewModel viewModel
+							, IMinerModel minerModel
+							, IMoviePicker moviePicker
+							, ISimulationModel simulationModel
+							, IControllerUtility controllerUtility)
 		{
 			// expecting a singleton as the miner model.
 			_minerModelCache = minerModel;
 			_minerModel = minerModel.Clone();
 
+			// TODO: Possibly use LazyLoad<> on some of these injected objects.
+
+			_controllerUtility = controllerUtility;
 			_moviePicker = moviePicker;
 			_simulationModel = simulationModel;
 			_viewModel = viewModel;
@@ -287,49 +295,37 @@ namespace MoviePicker.WebApp.Controllers
 			// Attempt to parse the request.
 
 			var parms = Request.Params;
+			var paramList = _controllerUtility.GetRequestIntList(Request, "bo");
+			int idx = 0;
 
-			if (parms["bo"] != null)
+			hasParams = paramList.Any();
+
+			foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
 			{
-				var boList = parms["bo"].Split(listDelimiter);
-
-				if (boList.Length >= 15)
+				if (idx < paramList.Count)
 				{
-					int idx = 0;
-
-					foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
-					{
-						decimal value = 0;
-
-						movie.Earnings = decimal.TryParse(boList[idx++], out value) ? value : 0;
-					}
-
-					hasParams = true;
+					movie.Earnings = paramList[idx++];
+				}
+				else
+				{
+					movie.Earnings = 0;
 				}
 			}
 
-			if (parms["wl"] != null)
+			paramList = _controllerUtility.GetRequestIntList(Request, "wl");
+			idx = 0;
+			hasParams |= paramList.Any();
+
+			bool isFirst = true;
+
+			foreach (var miner in _minerModel.Miners)
 			{
-				var weightList = parms["wl"].Split(listDelimiter);
-
-				if (weightList.Length >= 7)
+				if (!isFirst && idx < paramList.Count)
 				{
-					int idx = 0;
-					bool isFirst = true;
-
-					foreach (var miner in _minerModel.Miners)
-					{
-						if (!isFirst && idx < weightList.Length)
-						{
-							decimal value = 0;
-
-							miner.Weight = decimal.TryParse(weightList[idx++], out value) ? value : 0;
-						}
-
-						isFirst = false;
-					}
-
-					hasParams = true;
+					miner.Weight = paramList[idx++];
 				}
+
+				isFirst = false;
 			}
 
 			if (hasParams)

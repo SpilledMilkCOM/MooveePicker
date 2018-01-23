@@ -3,6 +3,7 @@ using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
+using MoviePicker.WebApp.Utilities;
 using System;
 
 using Unity;
@@ -65,6 +66,7 @@ namespace MoviePicker.WebApp
 			// Each of these will construct each time injected into the controller.
 
 			container.RegisterType<IClientInfoModel, ClientInfoModel>();
+			container.RegisterType<IControllerUtility, ControllerUtility>();
 			container.RegisterType<IInfoViewModel, InfoViewModel>();
 			container.RegisterType<IMoviePicker, MsfMovieSolver>();
 			container.RegisterType<IMovieList, MovieList>();
