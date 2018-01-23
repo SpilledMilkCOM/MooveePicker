@@ -9,7 +9,6 @@ namespace MovieMiner
 	/// </summary>
 	public class MineMine : MinerBase
 	{
-
 		public MineMine(IMinerModel model)
 			: base("My Predictions", "Mine", null)
 		{

@@ -343,9 +343,21 @@
 						{
 							first = false;
 						}
+						else if (miner == Model.Miners.Last() || !miner.Movies.Any())
+						{
+							<a class="btn btn-info btn-xs"
+							   href="@miner.UrlSource"
+							   data-toggle="tooltip"
+							   data-placement="bottom"
+							   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">@miner.Abbreviation</a>
+						}
 						else
 						{
-							<a class="btn btn-info btn-xs" href="@miner.UrlSource" data-toggle="tooltip" data-placement="bottom" title="Click for '@miner.Name' source page...">@miner.Abbreviation</a>
+							<a class="btn btn-success btn-xs"
+							   href="@string.Format("picks?{0}", Model.WeightListForMiner(miner))"
+							   data-toggle="tooltip"
+							   data-placement="bottom"
+							   title="Click for '@miner.Name' dedicated picks...">@miner.Abbreviation</a>
 						}
 					</td>
 					<td></td>

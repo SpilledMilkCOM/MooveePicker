@@ -132,19 +132,19 @@ namespace MoviePicker.WebApp.Models
 		private List<IMiner> CreateMiners()
 		{
 			var result = new List<IMiner> {
-				new MineFantasyMovieLeagueBoxOffice { IsHidden = true, Weight = 0 },
-				new MineMine(this) {Weight = 1},
-				new MineToddThatcher { Weight = 0 },
-				new MineBoxOfficePro { Weight = 0 },
-				new MineBoxOfficeMojo { Weight = 0 },
-				new MineCulturedVultures { Weight = 0 },
-				new MineBoxOfficeProphet { Weight = 0 },
-				new MineBoxOfficeReport { Weight = 0 }
+				new MineFantasyMovieLeagueBoxOffice { IsHidden = true },
+				new MineMine(this) { Weight = 1 },
+				new MineToddThatcher(),
+				new MineBoxOfficePro(),
+				new MineBoxOfficeMojo(),
+				new MineCulturedVultures(),
+				new MineBoxOfficeProphet(),
+				new MineBoxOfficeReport()
 			};
 
 			// Grab last weeks results for comparisons.  Always put this list last.
 
-			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday(MovieDateUtil.GameSunday().AddDays(-1))) { Weight = 0 });
+			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday(MovieDateUtil.GameSunday().AddDays(-1))));
 
 			return result;
 		}

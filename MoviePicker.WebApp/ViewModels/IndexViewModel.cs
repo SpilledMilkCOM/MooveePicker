@@ -2,6 +2,7 @@
 using MoviePicker.WebApp.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace MoviePicker.WebApp.Models
 {
@@ -77,6 +78,28 @@ namespace MoviePicker.WebApp.Models
 			}
 
 			return url + movieList;
+		}
+
+		public string WeightListForMiner(IMiner minerToCheck)
+		{
+			var builder = new StringBuilder();
+			bool first = true;
+
+			builder.Append("wl=");
+
+			foreach (var miner in Miners.Skip(1))
+			{
+				if (!first)
+				{
+					builder.Append(",");
+				}
+
+				first = false;
+
+				builder.Append(minerToCheck == miner ? "1" : "0");
+			}
+
+			return builder.ToString();
 		}
 	}
 }

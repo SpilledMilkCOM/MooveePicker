@@ -33,7 +33,6 @@ namespace MovieMiner
 			Name = name;
 			Url = url;
 			UrlSource = url;
-			Weight = 1;
 		}
 
 		public string Abbreviation { get; private set; }
