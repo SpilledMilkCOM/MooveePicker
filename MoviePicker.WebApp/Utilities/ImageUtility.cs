@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,14 +16,6 @@ namespace MoviePicker.WebApp.Utilities
 		private const string DEFAULT_IMAGE_DIR = "images";
 
 		/// <summary>
-		/// Every so often clean up the images.
-		/// </summary>
-		public void CleanupImages()
-		{
-
-		}
-
-		/// <summary>
 		/// Combine the list of images into a single image
 		/// </summary>
 		/// <param name="webRootPath"></param>
@@ -32,6 +25,7 @@ namespace MoviePicker.WebApp.Utilities
 		{
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
+			var outFileName = $"Shared_{Guid.NewGuid()}.jpg";
 			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
 			string resultFileName = null;
 			int width = 0;
@@ -102,12 +96,12 @@ namespace MoviePicker.WebApp.Utilities
 					}
 				}
 
-				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}output.jpg";
+				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{outFileName}";
 
 				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
 			}
 
-			return "output.jpg";
+			return outFileName;
 		}
 	}
 }
