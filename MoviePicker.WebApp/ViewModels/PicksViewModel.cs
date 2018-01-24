@@ -33,12 +33,11 @@ namespace MoviePicker.WebApp.Models
 
 		public string SharedPicksUrl { get; set; }
 
-		public void GenerateSharedImage(string webRootPath)
+		public string GenerateSharedImage(string webRootPath, List<string> files)
 		{
-			var files = new List<string> { "MoviePoster_7GgZ6DGezkh3szFdvskH5XD4V0t.jpg", "MoviePoster_wotEBRKLKlK3HvXdv9hU4c5cvrQ.jpg" };
 			var imageUtil = new ImageUtility();
 
-			SharedPicksImageUrl = imageUtil.CombineImages(webRootPath, files);
+			return imageUtil.CombineImages(webRootPath, files);
 		}
 
 		/// <summary>

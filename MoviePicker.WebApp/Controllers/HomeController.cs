@@ -136,19 +136,15 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult SharePicks()
+		public ActionResult ShareBonusOffPicks()
 		{
-			ViewBag.IsGoogleAdValid = true;
+			return View("SharePicks", ConstructSharePicksViewModel(false));
+		}
 
-			ParseBoxOfficeWeightRequest();
-
-			var viewModel = ConstructPicksViewModel();
-
-			FileUtility.DownloadFiles(viewModel.MovieList.Picks.MovieImages, $"{Server.MapPath("~")}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_");
-
-			viewModel.GenerateSharedImage(Server.MapPath("~"));
-
-			return View(viewModel);
+		[HttpGet]
+		public ActionResult ShareBonusOnPicks()
+		{
+			return View("SharePicks", ConstructSharePicksViewModel(true));
 		}
 
 		//TODO: Don't really need this to be a post, since Index is just sending a request with parameters.
@@ -303,6 +299,28 @@ namespace MoviePicker.WebApp.Controllers
 			result.Duration = stopWatch.ElapsedMilliseconds;
 
 			return result;
+		}
+
+		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn)
+		{
+			ParseBoxOfficeWeightRequest();
+
+			var picksViewModel = ConstructPicksViewModel();
+
+			var webRootPath = Server.MapPath("~");
+			var localFilePrefix = $"{webRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_";
+			var movieImages = bonusOn ? picksViewModel.MovieList.Picks.MovieImages : picksViewModel.MovieListBonusOff.Picks.MovieImages;
+
+			FileUtility.DownloadFiles(movieImages, localFilePrefix);
+
+			var localFiles = FileUtility.LocalFiles(movieImages, localFilePrefix);
+
+			var viewModel = new SharePicksViewModel()
+			{
+				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles)
+			};
+
+			return viewModel;
 		}
 
 		private void ParseBoxOfficeWeightRequest()

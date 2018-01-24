@@ -20,7 +20,7 @@ namespace MoviePicker.WebApp.Utilities
 
 			foreach (var fileUrl in files.Distinct())
 			{
-				var localFile = $"{localFilePrefix}{Path.GetFileName(fileUrl)}";
+				var localFile = LocalFile(fileUrl, localFilePrefix);
 
 				// Verify the file doesn't already exist.
 
@@ -29,6 +29,23 @@ namespace MoviePicker.WebApp.Utilities
 					HttpRequestUtility.DownloadFile(fileUrl, localFile);
 				}
 			}
+		}
+
+		public static List<string> LocalFiles(IEnumerable<string> files, string localFilePrefix)
+		{
+			var result = new List<string>();
+
+			foreach (var fileUrl in files)
+			{
+				result.Add(LocalFile(fileUrl, localFilePrefix));
+			}
+
+			return result;
+		}
+
+		private static string LocalFile(string fileUrl, string localFilePrefix)
+		{
+			return $"{localFilePrefix}{Path.GetFileName(fileUrl)}";
 		}
 	}
 }

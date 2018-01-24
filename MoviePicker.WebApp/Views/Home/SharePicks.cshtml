@@ -1,4 +1,4 @@
-﻿@model MoviePicker.WebApp.Models.PicksViewModel
+﻿@model MoviePicker.WebApp.Models.SharePicksViewModel
 
 @{
 	ViewBag.Title = "Share Picks";
@@ -7,9 +7,8 @@
 <h2>@ViewBag.Title</h2>
 
 <div class="row">
+	<div class="col-lg-1"></div>
 	<div class="col-lg-6">
-
-
+		<img class="img-responsive" src="~/Images/@Model.ImageFileName" />
 	</div>
-
 </div>

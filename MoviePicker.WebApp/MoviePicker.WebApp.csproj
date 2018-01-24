@@ -178,6 +178,7 @@
     <Compile Include="Utilities\HttpRequestUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
+    <Compile Include="ViewModels\SharePicksViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="Models\MineMine.cs" />
     <Compile Include="Models\MinerModel.cs" />

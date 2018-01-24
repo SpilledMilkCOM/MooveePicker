@@ -51,7 +51,7 @@ namespace MoviePicker.Common
 			{
 				var result = new List<string>();
 
-				_movies?.ForEach(movie => result.Add(movie.ImageUrl));
+				_movies?.OrderByDescending(movie => movie.Cost).ToList().ForEach(movie => result.Add(movie.ImageUrl));
 
 				return result;
 			}

@@ -30,7 +30,7 @@
 <div class="row" id="sharePicks">
 	<div>
 		<a data-toggle="collapse" data-parent="#sharePicks" href="#sharePicksPanel" class="btn btn-info btn-xs col-xs-1">
-			Share <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" />
+			Share <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
 		</a>
 
 		<div id="sharePicksPanel" class="panel-collapse collapse col-xs-8">
@@ -77,26 +77,28 @@
 
 <div class="row">
 	<div class="col-sm-3">
-		<h4 style="color: #33cc33">Bonus is ON</h4>
+		<h4>
+			<a class="btn btn-info btn-sm"
+			   href="@string.Format("ShareBonusOnPicks?{0}", Request.QueryString)"
+			   data-toggle="tooltip"
+			   data-placement="bottom"
+			   title="Click to share your Bonus ON picks...">Bonus is ON <span class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
+		</h4>
 	</div>
 
 	@Html.Partial("MovieList2", Model.MovieList)
 </div>
 
-<h5>
-	<a class="btn btn-info btn-sm"
-	   href="@string.Format("sharepicks?{0}", Request.QueryString)"
-	   data-toggle="tooltip"
-	   data-placement="bottom"
-	   title="Click to share your picks...">Share</a>
-</h5>
-
 <div class="row-divider"> </div>
 
 <div class="row">
-	<div class="col-sm-3">
-		<h4>Bonus is OFF</h4>
-	</div>
+	<h4>
+		<a class="btn btn-info btn-sm"
+		   href="@string.Format("ShareBonusOffPicks?{0}", Request.QueryString)"
+		   data-toggle="tooltip"
+		   data-placement="bottom"
+		   title="Click to share your Bonus OFF picks...">Bonus is OFF<span class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
+	</h4>
 
 	@Html.Partial("MovieList2", Model.MovieListBonusOff)
 </div>
