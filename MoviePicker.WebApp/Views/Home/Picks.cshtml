@@ -27,27 +27,6 @@
 	<h5>@Html.ActionLink("Sim", "Simulation", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })</h5>
 *@
 
-<div class="row" id="sharePicks">
-	<div>
-		<a data-toggle="collapse" data-parent="#sharePicks" href="#sharePicksPanel" class="btn btn-info btn-xs col-xs-1">
-			Share <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-		</a>
-
-		<div id="sharePicksPanel" class="panel-collapse collapse col-xs-8">
-
-			<div class="panel-body">
-				<div>
-					Tweet this below...
-
-					<a href="@Model.SharedPicksUrl">@Model.SharedPicksUrl</a>
-
-					@*<a class="twitter-share-button" data-size="large" href="@ViewBag.SharedPicks">Tweet</a>*@
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
 @* ========================================================================================== FORECAST WEIGHTS*@
 
 <table class="table">
