@@ -8,6 +8,12 @@ namespace MoviePicker.WebApp.Utilities
 	public class ImageUtility
 	{
 		/// <summary>
+		/// Combine the movie images into a single image to be shared.
+		/// </summary>
+		/// <returns>The file name to be served up.</returns>
+		private const string DEFAULT_IMAGE_DIR = "images";
+
+		/// <summary>
 		/// Every so often clean up the images.
 		/// </summary>
 		public void CleanupImages()
@@ -15,16 +21,11 @@ namespace MoviePicker.WebApp.Utilities
 
 		}
 
-		/// <summary>
-		/// Combine the movie images into a single image to be shared.
-		/// </summary>
-		/// <returns>The file name to be served up.</returns>
-		private const string DEFAULT_IMAGE_DIR = "images";
-
-		public string CombineImages(HttpServerUtilityBase server, string webRootPath, List<string> fileNames)
+		public string CombineImages(string webRootPath, List<string> fileNames)
 		{
-			var fileSystemRootPath = server.MapPath(webRootPath);
-			var imagePath = $"{fileSystemRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
+			// There is a cool site that puts images together https://www.fotor.com/create/collage/
+
+			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
 			string resultFileName = null;
 			int width = 0;
 			int height = 0;

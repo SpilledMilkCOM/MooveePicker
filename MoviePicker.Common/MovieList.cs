@@ -42,13 +42,28 @@ namespace MoviePicker.Common
 
         public bool IsFull => _movies.Count >= MOVIE_MAX;
 
-        public IEnumerable<IMovie> Movies => _movies;
+		/// <summary>
+		/// A list of movie image Urls
+		/// </summary>
+		public IEnumerable<string> MovieImages
+		{
+			get
+			{
+				var result = new List<string>();
+
+				_movies?.ForEach(movie => result.Add(movie.ImageUrl));
+
+				return result;
+			}
+		}
+
+		public IEnumerable<IMovie> Movies => _movies;
 
         public decimal TotalCost => _totalCost;
 
         public decimal TotalEarnings => _totalEarnings;
 
-        public void Add(IMovie movie)
+		public void Add(IMovie movie)
         {
             if (movie == null)
             {

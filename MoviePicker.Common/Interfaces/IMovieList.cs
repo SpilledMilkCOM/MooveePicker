@@ -6,6 +6,8 @@ namespace MoviePicker.Common.Interfaces
 	{
 		bool IsFull { get; }
 
+		IEnumerable<string> MovieImages { get; }
+
 		IEnumerable<IMovie> Movies { get; }
 
 		decimal TotalCost { get; }

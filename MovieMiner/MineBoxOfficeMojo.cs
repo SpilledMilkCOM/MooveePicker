@@ -156,7 +156,7 @@ namespace MovieMiner
 			{
 				var nodes = doc.DocumentNode.SelectNodes("//body//a[contains(@href, '/news/?id=')]");
 
-				if (articleNumber <= nodes.Count)
+				if (nodes != null && articleNumber <= nodes.Count)
 				{
 					node = nodes[articleNumber - 1];
 				}

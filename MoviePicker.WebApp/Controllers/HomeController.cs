@@ -2,6 +2,7 @@
 using MoviePicker.Common.Interfaces;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
+using MoviePicker.WebApp.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -143,7 +144,9 @@ namespace MoviePicker.WebApp.Controllers
 
 			var viewModel = ConstructPicksViewModel();
 
-			viewModel.GenerateSharedImage(Server);
+			FileUtility.DownloadFiles(viewModel.MovieList.Picks.MovieImages, $"{Server.MapPath("~")}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_");
+
+			viewModel.GenerateSharedImage(Server.MapPath("~"));
 
 			return View(viewModel);
 		}
