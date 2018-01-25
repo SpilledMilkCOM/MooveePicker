@@ -7,14 +7,17 @@ using MoviePicker.Common.Interfaces;
 
 namespace MoviePicker.Msf
 {
-	public class MsfMovieSolver : IMoviePicker
+	/// <summary>
+	/// The goal of this solver is to choose the best lineup of movies who's total box office $0 or closest to 0 without going negative.
+	/// </summary>
+	public class MsfMovieSolverZero : IMoviePicker
     {
         private readonly List<MsfMovieWrapper> _movies;
 		private IMovie _bestPerformer;
 		private List<IMovie> _bestPerformers;
 		private bool _enableBestPerformer;
 
-		public MsfMovieSolver()
+		public MsfMovieSolverZero()
 		{
 			_movies = new List<MsfMovieWrapper>();
 
@@ -187,9 +190,10 @@ namespace MoviePicker.Msf
             fmlBux.SetBinding(_movies, "CostAsDouble", "Name");
             model.AddParameters(estimatedEarnings, fmlBux);
 
-            // constraints: 2
+            // constraints: 3
             // 1: number of screens <= AvailableScreens
             // 2: available money to spend <= AvailableFmlBux
+			// 3: total box office >= 0
             model.AddConstraint("cinePlexFmlBuxConstraint", Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term] * fmlBux[term])) <= AvailableFmlBux);
             model.AddConstraint("cinePlexScreensConstraint", Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term])) <= AvailableScreens);
 
@@ -200,7 +204,11 @@ namespace MoviePicker.Msf
 									-(double)PenaltyForUnusedScreens
 									, Model.Difference(8, Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t]))));
 
-            model.AddGoal("cinePlexMaximizeRevenueMinimizeUnusedScreens", GoalKind.Maximize, Model.Sum(revenueTerm, penaltyTerm));
+			// Need to minimize this, but GREATER than 0.
+
+			model.AddConstraint("cinePlexBoxOfficeConstraint", Model.Sum(revenueTerm, penaltyTerm) >= 0);
+
+			model.AddGoal("cinePlexMaximizeRevenueMinimizeUnusedScreens", GoalKind.Minimize, Model.Sum(revenueTerm, penaltyTerm));
 
             return context;
         }

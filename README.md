@@ -39,8 +39,11 @@ http://www.programminglogic.com/knapsack-problem-dynamic-programming-algorithm/
 Reference for many of the knapsack algorithms.
 https://en.wikipedia.org/wiki/Knapsack_problem
 
+Microsoft Solver Foundation:
+https://msdn.microsoft.com/en-us/library/ff524497(v=vs.93).aspx
+
 Actual published website:
 http://mooveepicker.azurewebsites.net/
 
 The current defaults that I use:
-http://mooveepicker.azurewebsites.net/home/picks/wl=0,3,4,3,2,2,3
+http://mooveepicker.azurewebsites.net/home/picks?wl=0,3,4,3,2,2,3
