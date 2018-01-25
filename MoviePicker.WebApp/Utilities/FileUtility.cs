@@ -7,21 +7,49 @@ namespace MoviePicker.WebApp.Utilities
 {
 	public static class FileUtility
 	{
+		private const int MOVIE_EXPIRATION_DAYS = 7;
+		private const int SHARED_EXPIRATION_MINUTES = 2;
+
 		private static bool _isCleaningUp = false;
 		private static object _isCleaningUpLock = new object();
 
-		private static DateTime? Expiration { get; set; }
+		static FileUtility()
+		{
+			NextCleanUp = DateTime.Now;
+		}
+
+		static private DateTime NextCleanUp { get; set; }
 
 		/// <summary>
 		/// Every so often clean up the files.
 		/// </summary>
-		public static void CleanupFiles()
+		public static void CleanupFiles(string directoryPath)
 		{
-			if (ShouldCleanup())
+			if (ShouldCleanup() && directoryPath != null)
 			{
-				// Loop through the MoviePosters
+				var directory = $"{Path.GetDirectoryName(directoryPath)}{Path.DirectorySeparatorChar}" ;
+
+				// Loop through the MoviePosters.
+
+				foreach (var file in Directory.GetFiles(directory, "MoviePoster_*"))
+				{
+					if (File.GetCreationTime(file) < DateTime.Now.AddDays(MOVIE_EXPIRATION_DAYS * -1))
+					{
+						File.Delete(file);
+					}
+				}
 
 				// Loop through the Shared images.
+
+				foreach (var file in Directory.GetFiles(directory, "SharedImage_*"))
+				{
+					if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES * -1))
+					{
+						File.Delete(file);
+					}
+				}
+
+				NextCleanUp = DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES);
 			}
 		}
 
@@ -33,6 +61,8 @@ namespace MoviePicker.WebApp.Utilities
 		public static void DownloadFiles(IEnumerable<string> files, string localFilePrefix)
 		{
 			// TODO: Support files with the same name, but on different base Urls
+
+			CleanupFiles(localFilePrefix);
 
 			// Loop through the files.
 			// Don't need to download or verify the file multiple times.
@@ -75,7 +105,7 @@ namespace MoviePicker.WebApp.Utilities
 		{
 			bool result = false;
 
-			if ((DateTime.Now > Expiration || Expiration == null) && !_isCleaningUp)
+			if (DateTime.Now > NextCleanUp && !_isCleaningUp)
 			{
 				lock (_isCleaningUpLock)
 				{
