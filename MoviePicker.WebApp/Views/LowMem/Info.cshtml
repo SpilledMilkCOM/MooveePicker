@@ -1,7 +1,7 @@
 ﻿@model MoviePicker.WebApp.Models.InfoViewModel
 
 @{
-    ViewBag.Title = "Server Info";
+	ViewBag.Title = "Server Info";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -10,6 +10,9 @@
 
 <h4>Now: @Model.ServerInfo.Now</h4>
 <h4>Now (UTC): @Model.ServerInfo.NowUtc</h4>
+<h4>Movie Poster File Count: @Model.ServerInfo.MoviePosterFileCount</h4>
+<h4>Shared File Count: @Model.ServerInfo.SharedFileCount</h4>
+
 
 <h3>Client:</h3>
 

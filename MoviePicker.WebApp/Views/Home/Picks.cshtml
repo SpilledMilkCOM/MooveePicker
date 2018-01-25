@@ -56,13 +56,15 @@
 
 <div class="row">
 	<div class="col-sm-3">
-		<h4>
-			<a class="btn btn-info btn-sm"
-			   href="@string.Format("ShareBonusOnPicks?{0}", Request.QueryString)"
-			   data-toggle="tooltip"
-			   data-placement="bottom"
-			   title="Click to share your Bonus ON picks...">Bonus is ON <span class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
-		</h4>
+		<a class="btn btn-info btn-xs"
+		   href="@string.Format("ShareBonusOnPicks?{0}", Request.QueryString)"
+		   data-toggle="tooltip"
+		   data-placement="bottom"
+		   title="Click to share your Bonus ON picks...">
+			<h4>
+				Bonus is ON&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+			</h4>
+		</a>
 	</div>
 
 	@Html.Partial("MovieList2", Model.MovieList)
@@ -71,13 +73,17 @@
 <div class="row-divider"> </div>
 
 <div class="row">
-	<h4>
-		<a class="btn btn-info btn-sm"
+	<div class="col-sm-3">
+		<a class="btn btn-info btn-xs"
 		   href="@string.Format("ShareBonusOffPicks?{0}", Request.QueryString)"
 		   data-toggle="tooltip"
 		   data-placement="bottom"
-		   title="Click to share your Bonus OFF picks...">Bonus is OFF<span class="glyphicon glyphicon-share" aria-hidden="true"></span></a>
-	</h4>
+		   title="Click to share your Bonus OFF picks...">
+			<h4>
+				Bonus is OFF &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+			</h4>
+		</a>
+	</div>
 
 	@Html.Partial("MovieList2", Model.MovieListBonusOff)
 </div>
@@ -101,7 +107,21 @@
 				@Html.Partial("MovieList", Model.MovieListBonusOff);
 			}
 		</div>
-	</div>*@
+	</div>*@<div class="row">
+	<div class="col-lg-6">
+		<div class="col-sm-3">
+			<h4></h4>
+		</div>
+
+	</div>
+
+	<div class="col-lg-6">
+		<div class="col-sm-3">
+			<h4></h4>
+		</div>
+
+	</div>
+</div>
 
 @if (Model.IsTracking)
 {

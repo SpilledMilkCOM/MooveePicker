@@ -27,7 +27,7 @@ namespace MoviePicker.WebApp.Utilities
 		{
 			if (ShouldCleanup() && directoryPath != null)
 			{
-				var directory = $"{Path.GetDirectoryName(directoryPath)}{Path.DirectorySeparatorChar}" ;
+				var directory = $"{Path.GetDirectoryName(directoryPath)}{Path.DirectorySeparatorChar}";
 
 				// Loop through the MoviePosters.
 
@@ -41,7 +41,7 @@ namespace MoviePicker.WebApp.Utilities
 
 				// Loop through the Shared images.
 
-				foreach (var file in Directory.GetFiles(directory, "SharedImage_*"))
+				foreach (var file in Directory.GetFiles(directory, "Shared_*"))
 				{
 					if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES * -1))
 					{
@@ -91,24 +91,11 @@ namespace MoviePicker.WebApp.Utilities
 			var files = Directory.GetFiles(serverPath, filter);
 			var fileCount = files.Length;
 			var result = new List<string>();
+			var addFiles = (count > 0 && count < fileCount) ? files.Take(count) : files;
 
-			if (count > 0 && count < fileCount)
+			foreach (var file in addFiles)
 			{
-				var random = new Random();
-
-				while (result.Count < count)
-				{
-					var index = random.Next(0, fileCount - 1);
-
-					AddFileName(result, Path.GetFileName(files[index]), thumbPath);
-				}
-			}
-			else
-			{
-				foreach (var file in files)
-				{
-					AddFileName(result, Path.GetFileName(file), thumbPath);
-				}
+				result.Add(Path.GetFileName(file));
 			}
 
 			return result;
@@ -126,16 +113,7 @@ namespace MoviePicker.WebApp.Utilities
 			return result;
 		}
 
-		private static void AddFileName(List<string> list, string fileName, string thumbPath)
-		{
-			// Make sure the thumbnail exists before the image is added.
-
-			if (File.Exists($"{thumbPath}{Path.DirectorySeparatorChar}{fileName}")
-			&& !list.Contains(fileName))
-			{
-				list.Add(fileName);
-			}
-		}
+		//----==== PRIVATE ====------------------------------------------
 
 		private static string LocalFile(string fileUrl, string localFilePrefix)
 		{

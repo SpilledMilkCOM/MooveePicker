@@ -1,6 +1,7 @@
 ﻿using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Utilities;
 using System;
+using System.IO;
 using System.Web.Mvc;
 
 namespace MoviePicker.WebApp.Controllers
@@ -46,8 +47,11 @@ namespace MoviePicker.WebApp.Controllers
 
 			_serverInfoModel.Now = DateTime.Now;
 			_serverInfoModel.NowUtc = DateTime.UtcNow;
-			_serverInfoModel.MoviePosterFileCount = FileUtility.FilterImagesInPath(Server.MapPath("~"), "MoviePoster_*")?.Count ?? 0;
-			_serverInfoModel.MoviePosterFileCount = FileUtility.FilterImagesInPath(Server.MapPath("~"), "Shared_*")?.Count ?? 0;
+
+			var imagePath = $"{Server.MapPath("~")}{Path.DirectorySeparatorChar}images";
+
+			_serverInfoModel.MoviePosterFileCount = FileUtility.FilterImagesInPath(imagePath, "MoviePoster_*")?.Count ?? 0;
+			_serverInfoModel.SharedFileCount = FileUtility.FilterImagesInPath(imagePath, "Shared_*")?.Count ?? 0;
 
 			_clientInfoModel.Device = Request.Browser.IsMobileDevice ? "Mobile" : "Desktop";
 			_clientInfoModel.Name = Request.Browser.Type;

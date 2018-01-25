@@ -114,7 +114,7 @@ namespace MovieMiner
 											if (parenIndex > 0)
 											{
 												// Trim out the FML bux.
-												movieName = movieName.Substring(0, parenIndex - 1);
+												movieName = movieName.Substring(0, parenIndex).Trim();
 											}
 
 											movie = new Movie { Name = MapName(RemovePunctuation(movieName)) };

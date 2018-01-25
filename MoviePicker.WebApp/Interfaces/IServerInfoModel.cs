@@ -9,5 +9,7 @@ namespace MoviePicker.WebApp.Interfaces
 		DateTime Now { get; set; }
 
 		DateTime NowUtc { get; set; }
+
+		int SharedFileCount { get; set; }
 	}
 }
