@@ -2,6 +2,15 @@
 {
 	public class Constants
 	{
+		public const string APPLICATION_NAME = "Moovee Picker";
+		public const string APPLICATION_NAME_ABBR = "MooV";
+		public const string COMPANY_NAME = "Spilled Milk";
+
+		public const string TWITTER_ID = "@SpilledMilkCOM";
+		public const string TWITTER_CREATOR_ID = "@SpilledMilkCOM";
+
+		public const string WEBSITE_URL = "http://MooveePicker.AzureWebsites.net";
+
 		public static string GoogleAdCode
 		{
 			get

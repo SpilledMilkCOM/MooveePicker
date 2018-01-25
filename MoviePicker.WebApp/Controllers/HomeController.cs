@@ -303,13 +303,17 @@ namespace MoviePicker.WebApp.Controllers
 
 		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn)
 		{
+			ViewBag.Title = (bonusOn) ? "Share Bonus ON Picks" : "Share Bonus OFF Picks";
+			var subTitle = (bonusOn) ? "My Bonus ON Picks" : "My Bonus OFF Picks";
+
 			ParseBoxOfficeWeightRequest();
 
 			var picksViewModel = ConstructPicksViewModel();
 
 			var webRootPath = Server.MapPath("~");
 			var localFilePrefix = $"{webRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_";
-			var movieImages = bonusOn ? picksViewModel.MovieList.Picks.MovieImages : picksViewModel.MovieListBonusOff.Picks.MovieImages;
+			var picks = bonusOn ? picksViewModel.MovieList.Picks : picksViewModel.MovieListBonusOff.Picks;
+			var movieImages = picks.MovieImages;
 
 			FileUtility.DownloadFiles(movieImages, localFilePrefix);
 
@@ -319,6 +323,17 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles)
 			};
+
+			var leadingMovieName = picks.Movies.FirstOrDefault()?.Name;
+			var bonusMovieName = picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer)?.Name;
+
+			bonusMovieName = (bonusMovieName != null) ? $" and counting on {bonusMovieName} as my bonus movie" : string.Empty;
+
+			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image"
+											, $"{Constants.APPLICATION_NAME}: {subTitle}"
+											, $"{leadingMovieName} leads my lineup{bonusMovieName}..."
+											, $"{Constants.WEBSITE_URL}/images/{viewModel.ImageFileName}"
+											, $"Collage of my movie lineups.");
 
 			return viewModel;
 		}
