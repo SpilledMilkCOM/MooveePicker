@@ -50,6 +50,40 @@ namespace MoviePicker.WebApp.Utilities
 			}
 		}
 
+		/// <summary>
+		/// Return a list of file names given the server path and filter.
+		/// </summary>
+		/// <param name="serverPath">Server path to directory to filter.</param>
+		/// <param name="filter">The file system filter/wildcard.</param>
+		/// <returns></returns>
+		public static List<string> FilterImagesInPath(string serverPath, string filter, int count = 0)
+		{
+			var files = Directory.GetFiles(serverPath, filter);
+			var fileCount = files.Length;
+			var result = new List<string>();
+
+			if (count > 0 && count < fileCount)
+			{
+				var random = new Random();
+
+				while (result.Count < count)
+				{
+					var index = random.Next(0, fileCount - 1);
+
+					AddFileName(result, Path.GetFileName(files[index]), thumbPath);
+				}
+			}
+			else
+			{
+				foreach (var file in files)
+				{
+					AddFileName(result, Path.GetFileName(file), thumbPath);
+				}
+			}
+
+			return result;
+		}
+
 		public static List<string> LocalFiles(IEnumerable<string> files, string localFilePrefix)
 		{
 			var result = new List<string>();
@@ -60,6 +94,17 @@ namespace MoviePicker.WebApp.Utilities
 			}
 
 			return result;
+		}
+
+		private static void AddFileName(List<string> list, string fileName, string thumbPath)
+		{
+			// Make sure the thumbnail exists before the image is added.
+
+			if (File.Exists($"{thumbPath}{Path.DirectorySeparatorChar}{fileName}")
+			&& !list.Contains(fileName))
+			{
+				list.Add(fileName);
+			}
 		}
 
 		private static string LocalFile(string fileUrl, string localFilePrefix)
