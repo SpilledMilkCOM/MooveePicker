@@ -17,10 +17,16 @@
 
 		<div style="height: 20px"></div>
 
-		<h4>Twitter Summary Card:</h4>
+		<div class="movie-twitter-summary">
+			<img class="img-responsive" style="border-top-left-radius: 10px; border-top-right-radius: 10px;" src="~/Images/@Model.TwitterImageFileName" />
 
-		<img class="img-responsive" src="~/Images/@Model.TwitterImageFileName" />
+			<div style="padding: 8px;">
+				<div style="font-weight: bold; font-size: medium">@Model.TwitterTitle</div>
+				<div style="font-size: small;">@Model.TwitterDescription</div>
+			</div>
+		</div>
 	</div>
+
 	<div class="col-lg-1"></div>
 	<div class="col-lg-6">
 		<img class="img-responsive" src="~/Images/@Model.ImageFileName" />

@@ -7,6 +7,10 @@
 		/// </summary>
 		public string ImageFileName { get; set; }
 
+		public string TwitterDescription { get; set; }
+
 		public string TwitterImageFileName { get; set; }
+
+		public string TwitterTitle { get; set; }
 	}
 }
