@@ -151,12 +151,18 @@ namespace MoviePicker.WebApp.Utilities
 						graphics.DrawImage(image, 0, 0, offset, (int)((double)image.Height / image.Width * offset));
 					}
 
-					// Draw Spilled Milk logo in the bottom right.
-
-					using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Spilled Milk Logo 400x420.png"))
+					using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Moovee Picker Logo Vertical Strip Right.png"))
 					{
-						graphics.DrawImage(image, width - logoInset, height - logoInset, logoWidth, (int)((double)logoWidth / image.Width * image.Height));
+						// Scale the branding to fit within the offset
+						graphics.DrawImage(image, width - offset, 0, offset, (int)((double)image.Height / image.Width * offset));
 					}
+
+					//// Draw Spilled Milk logo in the bottom right.
+
+					//using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Spilled Milk Logo 400x420.png"))
+					//{
+					//	graphics.DrawImage(image, width - logoInset, height - logoInset, logoWidth, (int)((double)logoWidth / image.Width * image.Height));
+					//}
 				}
 
 				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{twitterFileName}";
