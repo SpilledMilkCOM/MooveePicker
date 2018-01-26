@@ -47,6 +47,19 @@ textarea {
 	padding: 5px;
 }
 
+.movie-card-title {
+	background-color: khaki;
+
+	border-style: solid;
+	border-width: thin;
+
+	font-size: medium;
+	font-weight: bold;
+
+	padding-left: 5px;
+	padding-left: 5px;
+}
+
 .row-divider {
 	height: 20px;
 }

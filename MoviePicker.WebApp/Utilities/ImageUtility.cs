@@ -26,6 +26,7 @@ namespace MoviePicker.WebApp.Utilities
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
 			var outFileName = $"Shared_{Guid.NewGuid()}.jpg";
+			var twitterFileName = $"Twitter_{Guid.NewGuid()}.jpg";
 			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
 			string resultFileName = null;
 			int width = 0;
@@ -33,6 +34,8 @@ namespace MoviePicker.WebApp.Utilities
 			int height = 0;
 			int height2 = 0;
 			int offset = 0;
+			int oldWidth = 0;
+			int oldHeight = 0;
 
 			// The default is 8 (or less) picks
 
@@ -66,6 +69,8 @@ namespace MoviePicker.WebApp.Utilities
 				}
 			}
 
+			// Choose the wider row of images.
+
 			if (width < width2)
 			{
 				width = width2;
@@ -97,6 +102,49 @@ namespace MoviePicker.WebApp.Utilities
 				}
 
 				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{outFileName}";
+
+				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+			}
+
+			// Create the Twitter image with the 2:1 aspect ratio
+
+			oldWidth = width;
+			oldHeight = height + height2;
+			//width = (height + height2) * 2;
+			width = 600;
+			height = 314;
+
+			// Scale the image width (down) proportionate to the height.
+			oldWidth = (int)(oldWidth * (double)height / oldHeight);
+			offset = (width - oldWidth) / 2;
+
+			int logoWidth = offset / 2;
+			int logoInset = (offset + logoWidth) / 2;
+
+			using (var destBitmap = new Bitmap(width, height))
+			{
+				using (var graphics = Graphics.FromImage(destBitmap))
+				{
+					graphics.Clear(Color.Black);
+
+					// Draw the previous image into the horizontall padded bitmap.
+
+					using (var image = Image.FromFile(resultFileName))
+					{
+						// Using the specified widths will scale the image into the smaller Twitter image.
+
+						graphics.DrawImage(image, offset, 0, oldWidth, height);
+					}
+
+					// Draw Spilled Milk logo in the bottom right.
+
+					using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Spilled Milk Logo 400x420.png"))
+					{
+						graphics.DrawImage(image, width - logoInset, height - logoInset, logoWidth, (int)((double)logoWidth / image.Width * image.Height));
+					}
+				}
+
+				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{twitterFileName}";
 
 				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
 			}

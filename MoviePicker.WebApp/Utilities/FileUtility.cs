@@ -49,6 +49,16 @@ namespace MoviePicker.WebApp.Utilities
 					}
 				}
 
+				// Loop through the Twitter images.
+
+				foreach (var file in Directory.GetFiles(directory, "Twitter_*"))
+				{
+					if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES * -1))
+					{
+						File.Delete(file);
+					}
+				}
+
 				NextCleanUp = DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES);
 			}
 		}

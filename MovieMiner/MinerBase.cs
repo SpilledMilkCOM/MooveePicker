@@ -138,6 +138,8 @@ namespace MovieMiner
 
 				try
 				{
+					Error = string.Empty;
+
 					Movies = Mine();
 
 					LastLoaded = DateTime.Now;
