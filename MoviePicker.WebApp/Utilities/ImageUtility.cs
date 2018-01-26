@@ -110,9 +110,14 @@ namespace MoviePicker.WebApp.Utilities
 
 			oldWidth = width;
 			oldHeight = height + height2;
-			//width = (height + height2) * 2;
-			width = 600;
-			height = 314;
+
+			// Force the width into a 2:1 aspect ratio
+			height = height + height2;
+			width = height * 2;
+
+			// Twitter render size for large format.
+			//width = 600;
+			//height = 314;
 
 			// Scale the image width (down) proportionate to the height.
 			oldWidth = (int)(oldWidth * (double)height / oldHeight);

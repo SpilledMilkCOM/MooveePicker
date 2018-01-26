@@ -164,6 +164,13 @@ namespace MoviePicker.Common
 					result = movieName.Substring(0, length) == testMovieName.Substring(0, length);
 				}
 
+				if (!result)
+				{
+					// Try to compare the names without the word "the"
+
+					result = movieName.Replace("the ", string.Empty).Replace(" the", string.Empty).Equals(testMovieName.Replace("the ", string.Empty).Replace(" the", string.Empty));
+				}
+
 				//if (!result)
 				//{
 				//	char[] delimiters = " ".ToCharArray();

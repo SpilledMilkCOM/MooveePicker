@@ -212,11 +212,11 @@ namespace MovieMiner
 		{
 			var result = name;
 
-			if (string.IsNullOrEmpty(name))
+			if (result != null)
 			{
-				// @nerdguru didn't include the NAME! (only the day abbr.).  Yes, a hack, but I want the damn data.
+				// BO Prophet does NOT know how to spell.
 
-				result = "Star Wars";
+				result = result.Replace("Juamnji", "Jumanji");
 			}
 
 			return result;
