@@ -203,6 +203,7 @@
     <Content Include="Images\Moovee Picker Logo 32x32.png" />
     <Content Include="Images\Moovee Picker Logo 64x64.png" />
     <Content Include="Images\Moovee Picker Logo Filled 32x32.png" />
+    <Content Include="Images\Moovee Picker Logo Vertical Strip.png" />
     <Content Include="Images\MooveePickerLogo512x512.png" />
     <Content Include="Images\Spilled Milk Logo 400x420.png" />
     <Content Include="Scripts\bootstrap.js" />

@@ -112,12 +112,12 @@ namespace MoviePicker.WebApp.Utilities
 			oldHeight = height + height2;
 
 			// Force the width into a 2:1 aspect ratio
-			height = height + height2;
-			width = height * 2;
+			//height = height + height2;
+			//width = height * 2;
 
 			// Twitter render size for large format.
-			//width = 600;
-			//height = 314;
+			width = 600;
+			height = 314;
 
 			// Scale the image width (down) proportionate to the height.
 			oldWidth = (int)(oldWidth * (double)height / oldHeight);
@@ -143,6 +143,14 @@ namespace MoviePicker.WebApp.Utilities
 						graphics.DrawImage(image, offset, 0, oldWidth, height);
 					}
 
+					// Draw branding on the left.
+
+					using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Moovee Picker Logo Vertical Strip.png"))
+					{
+						// Scale the branding to fit within the offset
+						graphics.DrawImage(image, 0, 0, offset, (int)((double)image.Height / image.Width * offset));
+					}
+
 					// Draw Spilled Milk logo in the bottom right.
 
 					using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Spilled Milk Logo 400x420.png"))
@@ -155,29 +163,6 @@ namespace MoviePicker.WebApp.Utilities
 
 				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
 			}
-
-			//// Double the size of the image (effectively zooming out)
-
-			//using (var destBitmap = new Bitmap(width * 2, height * 2))
-			//{
-			//	using (var graphics = Graphics.FromImage(destBitmap))
-			//	{
-			//		graphics.Clear(Color.Black);
-
-			//		// Draw the previous image into the horizontall padded bitmap.
-
-			//		using (var image = Image.FromFile(resultFileName))
-			//		{
-			//			// Using the specified widths will scale the image into the smaller Twitter image.
-
-			//			graphics.DrawImage(image, image.Width / 2, image.Height / 2, image.Width, image.Height);
-			//		}
-			//	}
-
-			//	resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{twitterFileName}";
-
-			//	destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
-			//}
 
 			return outFileName;
 		}
