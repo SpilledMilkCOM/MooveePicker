@@ -326,13 +326,14 @@ namespace MoviePicker.WebApp.Controllers
 
 			var leadingMovieName = picks.Movies.FirstOrDefault()?.Name;
 			var bonusMovieName = picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer)?.Name;
+			var twitterFileName = viewModel.ImageFileName.Replace("Shared_", "Twitter_");
 
 			bonusMovieName = (bonusMovieName != null) ? $" and counting on {bonusMovieName} as my bonus movie" : string.Empty;
 
 			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image"
 											, $"{Constants.APPLICATION_NAME}: {subTitle}"
 											, $"{leadingMovieName} leads my lineup{bonusMovieName}..."
-											, $"{Constants.WEBSITE_URL}/images/{viewModel.ImageFileName}"
+											, $"{Constants.WEBSITE_URL}/images/{twitterFileName}"
 											, $"Collage of my movie lineups.");
 
 			return viewModel;
