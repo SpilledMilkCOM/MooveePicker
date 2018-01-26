@@ -128,6 +128,8 @@ namespace MoviePicker.WebApp.Utilities
 
 			using (var destBitmap = new Bitmap(width, height))
 			{
+				destBitmap.SetResolution(72, 72);
+
 				using (var graphics = Graphics.FromImage(destBitmap))
 				{
 					graphics.Clear(Color.Black);
@@ -153,6 +155,29 @@ namespace MoviePicker.WebApp.Utilities
 
 				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
 			}
+
+			//// Double the size of the image (effectively zooming out)
+
+			//using (var destBitmap = new Bitmap(width * 2, height * 2))
+			//{
+			//	using (var graphics = Graphics.FromImage(destBitmap))
+			//	{
+			//		graphics.Clear(Color.Black);
+
+			//		// Draw the previous image into the horizontall padded bitmap.
+
+			//		using (var image = Image.FromFile(resultFileName))
+			//		{
+			//			// Using the specified widths will scale the image into the smaller Twitter image.
+
+			//			graphics.DrawImage(image, image.Width / 2, image.Height / 2, image.Width, image.Height);
+			//		}
+			//	}
+
+			//	resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{twitterFileName}";
+
+			//	destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+			//}
 
 			return outFileName;
 		}

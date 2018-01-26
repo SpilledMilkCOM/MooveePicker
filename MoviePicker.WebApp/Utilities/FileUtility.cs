@@ -8,7 +8,7 @@ namespace MoviePicker.WebApp.Utilities
 	public static class FileUtility
 	{
 		private const int MOVIE_EXPIRATION_DAYS = 7;
-		private const int SHARED_EXPIRATION_MINUTES = 2;
+		private const int SHARED_EXPIRATION_MINUTES = 5;
 
 		private static bool _isCleaningUp = false;
 		private static object _isCleaningUpLock = new object();
