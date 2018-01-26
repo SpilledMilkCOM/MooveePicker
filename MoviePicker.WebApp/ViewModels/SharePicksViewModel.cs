@@ -6,5 +6,7 @@
 		/// The Url of the Bonus On movie posters
 		/// </summary>
 		public string ImageFileName { get; set; }
+
+		public string TwitterImageFileName { get; set; }
 	}
 }
