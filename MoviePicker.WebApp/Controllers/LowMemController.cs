@@ -52,6 +52,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			_serverInfoModel.MoviePosterFileCount = FileUtility.FilterImagesInPath(imagePath, "MoviePoster_*")?.Count ?? 0;
 			_serverInfoModel.SharedFileCount = FileUtility.FilterImagesInPath(imagePath, "Shared_*")?.Count ?? 0;
+			_serverInfoModel.TwitterFileCount = FileUtility.FilterImagesInPath(imagePath, "Twitter_*")?.Count ?? 0;
 
 			_clientInfoModel.Device = Request.Browser.IsMobileDevice ? "Mobile" : "Desktop";
 			_clientInfoModel.Name = Request.Browser.Type;

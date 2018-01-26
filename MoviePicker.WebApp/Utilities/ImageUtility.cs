@@ -24,8 +24,9 @@ namespace MoviePicker.WebApp.Utilities
 		{
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
-			var outFileName = $"Shared_{Guid.NewGuid()}.jpg";
-			var twitterFileName = $"Twitter_{Guid.NewGuid()}.jpg";
+			var guid = Guid.NewGuid();
+			var outFileName = $"Shared_{guid}.jpg";
+			var twitterFileName = $"Twitter_{guid}.jpg";
 			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
 			string resultFileName = null;
 			int width = 0;

@@ -11,5 +11,7 @@ namespace MoviePicker.WebApp.Interfaces
 		DateTime NowUtc { get; set; }
 
 		int SharedFileCount { get; set; }
+
+		int TwitterFileCount { get; set; }
 	}
 }
