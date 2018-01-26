@@ -55,7 +55,15 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				@Html.ActionLink("Moovee Picker", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+				<a class="navbar-brand" href="@Url.Action("Index", "Home")">
+					<span>
+						<img src="~/Images/Moovee Picker Logo Filled 32x32.png" alt="Moovee Picker Logo" width="32" height="32" />
+						@Constants.APPLICATION_NAME
+					</span>
+				</a>
+
+				@*@Html.ActionLink("Moovee Picker", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">

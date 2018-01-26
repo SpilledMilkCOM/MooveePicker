@@ -199,6 +199,11 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\GitHub-Mark-32px.png" />
+    <Content Include="Images\Moovee Picker Logo 128x128.png" />
+    <Content Include="Images\Moovee Picker Logo 32x32.png" />
+    <Content Include="Images\Moovee Picker Logo 64x64.png" />
+    <Content Include="Images\Moovee Picker Logo Filled 32x32.png" />
+    <Content Include="Images\MooveePickerLogo512x512.png" />
     <Content Include="Images\Spilled Milk Logo 400x420.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
