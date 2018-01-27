@@ -121,7 +121,7 @@
 		<img class="img-responsive" src="~/Images/MooveePickerLogo512x512.png" width="200" />
 	</div>
 
-	<div class="col-sm-4">
+	<div class="col-sm-5">
 		<h2>WELCOME</h2>
 
 		This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
@@ -129,14 +129,15 @@
 		You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
 	</div>
 
-	<div class="col-sm-4">
+	<div class="col-sm-5">
 		<h2>Fantasy Movie League Family</h2>
 
 		Not sure how you found the site.  Could have been from a post or a tweet.
 		Make sure you follow me on Twitter, that can be found on the @Html.ActionLink("Contact", "Contact") page.
 		Other information is on the @Html.ActionLink("About", "About") page.
 
-		<p> </p>
+		<div class="row-divider"> </div>
+
 		Please stay tuned as this website will evolve into something that is more helpful with your picks in the future as time permits.
 	</div>
 </div>
@@ -173,11 +174,25 @@
 		Currently the site aggregates box office data from Todd Thatcher's post on FML, Box Office Pro, Box Office Mojo, Box Office Report, Culture Vulture, and Box Office Prophet.
 		These are the "experts" in the field.  YOUR job is to determine who you trust and by how much and apply a weighting mechanism before you make your game picks.
 	</div>
+
+	<div class="col-sm-1"></div>
+
+	<div class="col-sm-5">
+		<div class="col-sm-5">
+			<textarea class="col-xs-12 form-control" id="pasteAreaId" rows="5" style="background-color: lightcyan; vertical-align: top;"
+					  placeholder="Paste your 15 Box Office values here (use CR/LF to separate values)"></textarea>
+		</div>
+		<div class="col-sm-7">
+			<div>Paste your Box Office values into the field to load your custom picks and then press "Import Box Office"</div>
+			<p></p>
+			<input class="btn btn-info" onclick="clickPasteBoxOffice()" type="button" value="Import Box Office" data-toggle="tooltip" data-placement="bottom" title="Click to set Box Office predictions." />
+		</div>
+	</div>
 </div>
 
-@* Showing the data from ALL of the sources/miners *@
+<div class="row-divider"> </div>
 
-@*@using (Html.BeginForm("Picks", "Home", null, FormMethod.Post, htmlAttributes: new { @class = "form-horizontal" }))*@
+@* Showing the data from ALL of the sources/miners *@
 
 @{
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
@@ -218,25 +233,7 @@
 				<td></td>
 				<td></td>
 				<td style="text-align: center;"></td>
-				<td>
-					<div id="pasteBoxOffice">
-						<div>
-							<a data-toggle="collapse" data-parent="#pasteBoxOffice" href="#pasteBoxOfficePanel" class="btn btn-info btn-xs">
-								Paste BO <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-							</a>
-
-							<div id="pasteBoxOfficePanel" class="panel-collapse collapse">
-								<div class="panel-body">
-									<div>
-										<textarea id="pasteAreaId" rows="15" cols="20"></textarea>
-
-										<input class="btn btn-info" onclick="clickPasteBoxOffice()" type="button" value="Import Box Office" data-toggle="tooltip" data-placement="bottom" title="Click to set Box Office predictions." />
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</td>
+				<td></td>
 				<td></td>
 
 				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
@@ -288,7 +285,7 @@
 									<input name="@name"
 										   class="form-control"
 										   id="@id"
-										   style="width: 100px;"
+										   style="background-color: lightcyan; width: 100px;"
 										   type="text"
 										   value="@value"
 										   data-val-required="The Box Office @movieCount field is required."
@@ -384,7 +381,9 @@
 					{
 						var id = string.Format("weightId{0}", minerCount);
 						var name = string.Format("Weight{0}", minerCount);
+
 						// TODO: May want to use a utility to speed up the reflection.
+
 						var value = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
 
 						<td>
@@ -393,7 +392,7 @@
 							<input name="@name"
 								   class="form-control"
 								   id="@id"
-								   style="width: 50px;"
+								   style="background-color: #dfffdf; width: 50px;"
 								   type="text"
 								   value="@value"
 								   data-val-required="The Weight @minerCount field is required."
