@@ -20,8 +20,6 @@ namespace XUnitTests
 			Context = context;
 		}
 
-		
-
 		[Fact]
 		public void MoviePicker_ChooseBest_WeekEnding_20170604_Week1()
 		{
@@ -50,6 +48,7 @@ namespace XUnitTests
 			Assert.Equal(1, best.Movies.Count(movie => movie.Name == "Wonder Woman"));
 			Assert.Equal(7, best.Movies.Count(movie => movie.Name == "Everything Everything"));
 		}
+
 		[Fact]
 		public void MoviePicker_ChooseBest_WeekEnding_20170611_Week2()
 		{

@@ -13,6 +13,8 @@ namespace MoviePicker.WebApp.Models
 
 		public IMovieList Picks { get; set; }
 
+		public List<IMovieList> PicksTheRest { get; set; }
+
 		public decimal TotalPicksFromComparison
 		{
 			get

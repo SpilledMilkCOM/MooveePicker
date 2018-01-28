@@ -177,6 +177,7 @@
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\HttpRequestUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
+    <Compile Include="Utilities\ViewUtility.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\SharePicksViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />

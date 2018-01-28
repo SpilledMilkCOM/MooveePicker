@@ -102,6 +102,11 @@ namespace MooveePicker
 			return _moviePicker.ChooseBest();
 		}
 
+		public List<IMovieList> ChooseBest(int topCount)
+		{
+			throw new NotImplementedException();
+		}
+
 		//----==== PRIVATE ====----------------------------------------------------------------------
 
 		private List<IMovie> Copy(IEnumerable<IMovie> toCopy)

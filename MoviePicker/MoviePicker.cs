@@ -138,6 +138,11 @@ namespace MooveePicker
 			return best;
 		}
 
+		public List<IMovieList> ChooseBest(int topCount)
+		{
+			throw new System.NotImplementedException();
+		}
+
 		//----==== PRIVATE ====----------------------------------------------------------------------
 
 		/// <summary>
