@@ -74,6 +74,8 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
 			//_viewModel.IsTracking = true;
 
+			ControllerUtility.SetTwitterCard(ViewBag);
+
 			stopWatch.Stop();
 
 			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
@@ -131,6 +133,8 @@ namespace MoviePicker.WebApp.Controllers
 			// Hide the last miner (BO Mojo for previous week).
 
 			_minerModel.Miners.Last().IsHidden = true;
+
+			ControllerUtility.SetTwitterCard(ViewBag);
 
 			return View(ConstructPicksViewModel());
 		}
@@ -217,6 +221,8 @@ namespace MoviePicker.WebApp.Controllers
 			// Hide the last miner (BO Mojo for previous week).
 
 			_minerModel.Miners.Last().IsHidden = true;
+
+			ControllerUtility.SetTwitterCard(ViewBag);
 
 			stopWatch.Stop();
 
