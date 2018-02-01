@@ -26,5 +26,7 @@ namespace MoviePicker.Common.Interfaces
 		void AddMovies(IEnumerable<IMovie> movies);
 
 		IMovieList ChooseBest();
+
+		List<IMovieList> ChooseBest(int topCount);
 	}
 }

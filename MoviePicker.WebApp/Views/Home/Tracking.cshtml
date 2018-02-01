@@ -2,6 +2,7 @@
 
 @using MovieMiner;
 @using MoviePicker.Common.Interfaces;
+@using MoviePicker.WebApp.Utilities;
 
 @{
 	ViewBag.Title = "Tracking Estimates";
@@ -52,7 +53,7 @@
 		<div class="col-sm-6">
 			Below is a table that compares your Custom value to the estimates as well as all the other miners.  Were you close?  Were the "experts" close?
 			There's still time as these estimates change over the weekend, but typically not by much since the "experts" are pretty good once the data starts rolling in.
-			The differences are whether the <strong>predicted</strong> numbers are higher (+) or lower (-) than the Estimated numbers.
+			The differences are whether the <strong>Estimated</strong> numbers are higher (+) or lower (-) than <strong>your</strong> numbers.
 		</div>
 	</div>
 
@@ -109,18 +110,20 @@
 
 									<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.Earnings)</td>
 
-									<td style="text-align: right">@string.Format("{0:N0}", (customMovie?.EarningsBase ?? 0) - fmlMovie.EarningsBase)</td>
+									<td style="text-align: right">@string.Format("{0:N0}", fmlMovie.EarningsBase - (customMovie?.EarningsBase ?? 0))</td>
 
 									if (customMovie?.EarningsBase > 0)
 									{
-										<td style="text-align: right">@string.Format("{0:F2}%", (customMovie.EarningsBase - fmlMovie.EarningsBase) / customMovie.EarningsBase * 100)</td>
+										var percent = (fmlMovie.EarningsBase - customMovie.EarningsBase) / customMovie.EarningsBase;
+										<td style="@ViewUtility.PercentColor(percent) text-align: right">@string.Format("{0:F2}%", percent * 100)</td>
 									}
 								}
 								else
 								{
 									if (minerMovie?.EarningsBase > 0)
 									{
-										<td style="text-align: right">@string.Format("{0:F2}%", (minerMovie.EarningsBase - fmlMovie.EarningsBase) / minerMovie.EarningsBase * 100)</td>
+										var percent = (fmlMovie.EarningsBase - minerMovie.EarningsBase) / minerMovie.EarningsBase;
+										<td style="@ViewUtility.PercentColor(percent) text-align: right">@string.Format("{0:F2}%", percent * 100)</td>
 									}
 									else
 									{
@@ -133,6 +136,24 @@
 						</tr>
 					}
 				</tbody>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th>Average of |%|</th>
+						<th></th>
+						<th></th>
+						<th></th>
+						@{
+							var estimatedMiner = Model.Miners.FirstOrDefault();
+
+							foreach (var miner in Model.Miners.Skip(1).Where(item => !item.IsHidden))
+							{
+								var percent = ViewUtility.PercentAwayFromEstimates(estimatedMiner, miner);
+								<th style="@ViewUtility.PercentColor(percent ?? 0) text-align: right">@string.Format("{0:F2}%", percent * 100)</th>
+							}
+						}
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 	</div>

@@ -170,6 +170,11 @@ namespace MoviePicker.Msf
             return cinePlexMovies;
         }
 
+		public List<IMovieList> ChooseBest(int topCount)
+		{
+			throw new NotImplementedException();
+		}
+
 		private decimal PenaltyForUnusedScreens { get; set; }
 
 		private SolverContext CreateSolver()
@@ -212,5 +217,6 @@ namespace MoviePicker.Msf
 
             return context;
         }
-    }
+
+	}
 }

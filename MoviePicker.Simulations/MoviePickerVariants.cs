@@ -121,6 +121,11 @@ namespace MooveePicker
 			return _bestLists[bestHash];
 		}
 
+		public List<IMovieList> ChooseBest(int topCount)
+		{
+			throw new NotImplementedException();
+		}
+
 		public int GetRankedMovieListCount(IMovieList movieList)
 		{
 			return _bestListCounts[movieList.GetHashCode()];

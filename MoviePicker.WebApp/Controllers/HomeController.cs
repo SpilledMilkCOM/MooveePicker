@@ -74,6 +74,8 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
 			//_viewModel.IsTracking = true;
 
+			ControllerUtility.SetTwitterCard(ViewBag);
+
 			stopWatch.Stop();
 
 			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
@@ -131,6 +133,8 @@ namespace MoviePicker.WebApp.Controllers
 			// Hide the last miner (BO Mojo for previous week).
 
 			_minerModel.Miners.Last().IsHidden = true;
+
+			ControllerUtility.SetTwitterCard(ViewBag);
 
 			return View(ConstructPicksViewModel());
 		}
@@ -218,6 +222,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			_minerModel.Miners.Last().IsHidden = true;
 
+			ControllerUtility.SetTwitterCard(ViewBag);
+
 			stopWatch.Stop();
 
 			viewModel.Duration = stopWatch.ElapsedMilliseconds;
@@ -246,11 +252,14 @@ namespace MoviePicker.WebApp.Controllers
 
 			_moviePicker.AddMovies(result.Movies);
 
+			var pickList = _moviePicker.ChooseBest(3);
+
 			result.MovieList = new MovieListModel()
 			{
 				ComparisonHeader = result.IsTracking ? "Estimated" : null,
 				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
-				Picks = _moviePicker.ChooseBest()
+				Picks = pickList.FirstOrDefault(),
+				PicksTheRest = pickList.Skip(1).ToList()
 			};
 
 			// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
@@ -265,11 +274,14 @@ namespace MoviePicker.WebApp.Controllers
 			_moviePicker.AddMovies(clonedList);
 			_moviePicker.EnableBestPerformer = false;
 
+			pickList = _moviePicker.ChooseBest(3);
+
 			result.MovieListBonusOff = new MovieListModel()
 			{
 				ComparisonHeader = result.IsTracking ? "Estimated" : null,
 				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
-				Picks = _moviePicker.ChooseBest()
+				Picks = pickList.FirstOrDefault(),
+				PicksTheRest = pickList.Skip(1).ToList()
 			};
 
 			if (result.IsTracking)

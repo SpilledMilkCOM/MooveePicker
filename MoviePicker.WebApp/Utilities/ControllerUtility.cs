@@ -72,11 +72,11 @@ namespace MoviePicker.WebApp.Utilities
 				}
 				else
 				{
-					imageUrl = $"{Constants.WEBSITE_URL}/Images/MooveePickerLogo.png";
+					imageUrl = $"{Constants.WEBSITE_URL}/Images/MooveePickerLogo512x512.png";
 				}
 
 				viewBag.TwitterImage = imageUrl;
-				viewBag.TwitterImageAlt = imageUrlAlt ?? "Logo of a squinting eyeball shaped checkbox with a checkmark in the pupil.";
+				viewBag.TwitterImageAlt = imageUrlAlt ?? "Logo of a piece of movie film with a finger pointing at a frame.";
 				viewBag.OpenGraphUrl = Constants.WEBSITE_URL;
 			}
 		}

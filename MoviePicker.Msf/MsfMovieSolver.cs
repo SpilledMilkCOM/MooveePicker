@@ -8,8 +8,8 @@ using MoviePicker.Common.Interfaces;
 namespace MoviePicker.Msf
 {
 	public class MsfMovieSolver : IMoviePicker
-    {
-        private readonly List<MsfMovieWrapper> _movies;
+	{
+		private readonly List<MsfMovieWrapper> _movies;
 		private IMovie _bestPerformer;
 		private List<IMovie> _bestPerformers;
 		private bool _enableBestPerformer;
@@ -25,7 +25,7 @@ namespace MoviePicker.Msf
 			EnableBestPerformer = true;
 		}
 
-        public bool DisplayDebugMessage { get; set; }
+		public bool DisplayDebugMessage { get; set; }
 
 		/// <summary>
 		/// Best Performer will return a value ONLY if it is the BEST performer (and there are no ties)
@@ -63,21 +63,21 @@ namespace MoviePicker.Msf
 
 		public IEnumerable<IMovie> Movies => _movies;
 
-        public int AvailableScreens { get; set; }
+		public int AvailableScreens { get; set; }
 
-        public int AvailableFmlBux { get; set; }
+		public int AvailableFmlBux { get; set; }
 
-        public int TotalComparisons { get; set; }
+		public int TotalComparisons { get; set; }
 
-        public int TotalSubProblems { get; set; }
+		public int TotalSubProblems { get; set; }
 
-        public void AddMovies(IEnumerable<IMovie> movies)
-        {
-            _movies.Clear();
+		public void AddMovies(IEnumerable<IMovie> movies)
+		{
+			_movies.Clear();
 
-            foreach (var movie in movies)
-            {
-                _movies.Add(new MsfMovieWrapper(movie));
+			foreach (var movie in movies)
+			{
+				_movies.Add(new MsfMovieWrapper(movie));
 			}
 
 			if (EnableBestPerformer)
@@ -119,90 +119,157 @@ namespace MoviePicker.Msf
 			}
 		}
 
-        public IMovieList ChooseBest()
-        {
-            var context = CreateSolver();
+		public IMovieList ChooseBest()
+		{
+			var context = CreateSolver();
 
-            Solution solution = context.Solve(new SimplexDirective());
+			Solution solution = context.Solve(new SimplexDirective());
 
-            var decision = solution.Decisions.First();
-            var fmlBuxUsed = 0;
-            decimal estimatedBoxOfficeTotal = 0;
-            var screensUsed = 0;
-            Dictionary<string, MsfMovieWrapper> movies = _movies.ToDictionary(p => p.Name);
-            MovieList cinePlexMovies = new MovieList();
+			var decision = solution.Decisions.First();
+			var fmlBuxUsed = 0;
+			decimal estimatedBoxOfficeTotal = 0;
+			var screensUsed = 0;
+			Dictionary<string, MsfMovieWrapper> movies = _movies.ToDictionary(p => p.Name);
+			MovieList cinePlexMovies = new MovieList();
 
-            foreach (var v in decision.GetValues())
-            {
-                int count = Convert.ToInt32(v.GetValue(0));
-                var title = Convert.ToString(v.GetValue(1));
-                var movie = movies[title];
+			foreach (var v in decision.GetValues())
+			{
+				int count = Convert.ToInt32(v.GetValue(0));
+				var title = Convert.ToString(v.GetValue(1));
+				var movie = movies[title];
 
-                if (count > 0)
-                {
-                    screensUsed += count;
-                    fmlBuxUsed += (int)(count * movie.Cost);
-                    estimatedBoxOfficeTotal += (count * movie.Earnings);
+				if (count > 0)
+				{
+					screensUsed += count;
+					fmlBuxUsed += (int)(count * movie.Cost);
+					estimatedBoxOfficeTotal += (count * movie.Earnings);
 
-                    for (int i = 0; i < count; i++)
-                    {
-                        cinePlexMovies.Add(movie);
-                    }
-                }
-            }
+					for (int i = 0; i < count; i++)
+					{
+						cinePlexMovies.Add(movie);
+					}
+				}
+			}
 
-            decimal penalty = (AvailableScreens - screensUsed) * PenaltyForUnusedScreens;
+			decimal penalty = (AvailableScreens - screensUsed) * PenaltyForUnusedScreens;
 
-            if (DisplayDebugMessage)
-            {
-                Console.WriteLine($"Total Estimated BoxOffice:\t${estimatedBoxOfficeTotal:n} M Total FmlBux spent: ${fmlBuxUsed:n} Screens utilized: {screensUsed} Total Penalty: ${penalty:n} M");
-                Console.WriteLine($"Cineplex Total: \t\t\t\t\t\t\t\t\t${estimatedBoxOfficeTotal - penalty:n} M");
+			if (DisplayDebugMessage)
+			{
+				Console.WriteLine($"Total Estimated BoxOffice:\t${estimatedBoxOfficeTotal:n} M Total FmlBux spent: ${fmlBuxUsed:n} Screens utilized: {screensUsed} Total Penalty: ${penalty:n} M");
+				Console.WriteLine($"Cineplex Total: \t\t\t\t\t\t\t\t\t${estimatedBoxOfficeTotal - penalty:n} M");
 
-                Console.WriteLine();
-                Console.WriteLine();
+				Console.WriteLine();
+				Console.WriteLine();
 
-                Report report = solution.GetReport();
-                Console.WriteLine(report.ToString());
-            }
-            return cinePlexMovies;
-        }
+				Report report = solution.GetReport();
+				Console.WriteLine(report.ToString());
+			}
+			return cinePlexMovies;
+		}
+
+		public List<IMovieList> ChooseBest(int topCount)
+		{
+			var result = new List<IMovieList>();
+			var context = CreateSolver();
+			Solution solution = context.Solve(new SimplexDirective());
+			//Solution solution = context.Solve(new ConstraintProgrammingDirective());
+			//Solution solution = context.Solve();
+
+			Dictionary<string, MsfMovieWrapper> movies = _movies.ToDictionary(p => p.Name);
+
+			while (topCount > 0)
+			{
+				var decision = solution.Decisions.First();
+
+				var fmlBuxUsed = 0;
+				decimal estimatedBoxOfficeTotal = 0;
+				var screensUsed = 0;
+
+				MovieList cinePlexMovies = new MovieList();
+
+				foreach (var v in decision.GetValues())
+				{
+					int count = Convert.ToInt32(v.GetValue(0));
+					var title = Convert.ToString(v.GetValue(1));
+					var movie = movies[title];
+
+					if (count > 0)
+					{
+						screensUsed += count;
+						fmlBuxUsed += (int)(count * movie.Cost);
+						estimatedBoxOfficeTotal += (count * movie.Earnings);
+
+						for (int i = 0; i < count; i++)
+						{
+							cinePlexMovies.Add(movie);
+						}
+					}
+				}
+
+				decimal penalty = (AvailableScreens - screensUsed) * PenaltyForUnusedScreens;
+
+				if (DisplayDebugMessage)
+				{
+					Console.WriteLine($"Total Estimated BoxOffice:\t${estimatedBoxOfficeTotal:n} M Total FmlBux spent: ${fmlBuxUsed:n} Screens utilized: {screensUsed} Total Penalty: ${penalty:n} M");
+					Console.WriteLine($"Cineplex Total: \t\t\t\t\t\t\t\t\t${estimatedBoxOfficeTotal - penalty:n} M");
+
+					Console.WriteLine();
+					Console.WriteLine();
+
+					Report report = solution.GetReport();
+					Console.WriteLine(report.ToString());
+				}
+
+				if (!result.Any() || result.Last().TotalEarnings > cinePlexMovies.TotalEarnings)
+				{
+					result.Add(cinePlexMovies);
+				}
+
+				solution.GetNext();
+				topCount--;
+			}
+
+			return result;
+		}
+
+		//----==== PRIVATE ====--------------------------------------------------------------------
 
 		private decimal PenaltyForUnusedScreens { get; set; }
 
-		private SolverContext CreateSolver()
-        {
-            SolverContext context = new SolverContext();
-            Model model = context.CreateModel();
-            Set movieSet = new Set(Domain.Any, "movies");
-            Decision numberOfScreensToPlayMovieOn = new Decision(Domain.IntegerNonnegative, "numberOfScreensToPlayMovieOn", movieSet);
+		private SolverContext CreateSolver(double earningsCap = 0)
+		{
+			SolverContext context = new SolverContext();
+			Model model = context.CreateModel();
+			Set movieSet = new Set(Domain.Any, "movies");
+			Decision numberOfScreensToPlayMovieOn = new Decision(Domain.IntegerNonnegative, "numberOfScreensToPlayMovieOn", movieSet);
 
-            model.AddDecision(numberOfScreensToPlayMovieOn);
+			model.AddDecision(numberOfScreensToPlayMovieOn);
 
-            Parameter estimatedEarnings = new Parameter(Domain.RealNonnegative, "EstimatedBoxOfficeRevenue", movieSet);
+			Parameter estimatedEarnings = new Parameter(Domain.RealNonnegative, "EstimatedBoxOfficeRevenue", movieSet);
 
-            estimatedEarnings.SetBinding(_movies, "EarningsAsDouble", "Name");
+			estimatedEarnings.SetBinding(_movies, "EarningsAsDouble", "Name");
 
-            Parameter fmlBux = new Parameter(Domain.IntegerNonnegative, "FmlBux", movieSet);
+			Parameter fmlBux = new Parameter(Domain.IntegerNonnegative, "FmlBux", movieSet);
 
-            fmlBux.SetBinding(_movies, "CostAsDouble", "Name");
-            model.AddParameters(estimatedEarnings, fmlBux);
+			fmlBux.SetBinding(_movies, "CostAsDouble", "Name");
 
-            // constraints: 2
-            // 1: number of screens <= AvailableScreens
-            // 2: available money to spend <= AvailableFmlBux
-            model.AddConstraint("cinePlexFmlBuxConstraint", Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term] * fmlBux[term])) <= AvailableFmlBux);
-            model.AddConstraint("cinePlexScreensConstraint", Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term])) <= AvailableScreens);
+			model.AddParameters(estimatedEarnings, fmlBux);
 
-            // goal: maximize earnings.
-            // earnings = selectedMovies.Sum(Estimated Earnings) - ((AvailableScreens - selectedMovies.Count) * Penalty)
-            var revenueTerm = Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t] * estimatedEarnings[t]));
-            var penaltyTerm = Model.Product(
-									-(double)PenaltyForUnusedScreens
-									, Model.Difference(8, Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t]))));
+			// constraints: 2
+			// 1: number of screens <= AvailableScreens
+			// 2: available money to spend <= AvailableFmlBux
+			model.AddConstraint("cinePlexScreensConstraint", Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term])) <= AvailableScreens);
+			model.AddConstraint("cinePlexFmlBuxConstraint", Model.Sum(Model.ForEach(movieSet, term => numberOfScreensToPlayMovieOn[term] * fmlBux[term])) <= AvailableFmlBux);
 
-            model.AddGoal("cinePlexMaximizeRevenueMinimizeUnusedScreens", GoalKind.Maximize, Model.Sum(revenueTerm, penaltyTerm));
+			// goal: maximize earnings.
+			// earnings = selectedMovies.Sum(Estimated Earnings) - ((AvailableScreens - selectedMovies.Count) * Penalty)
+			var revenueTerm = Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t] * estimatedEarnings[t]));
+			var penaltyTerm = Model.Product(-(double)PenaltyForUnusedScreens
+											, Model.Difference(8, Model.Sum(Model.ForEach(movieSet, t => numberOfScreensToPlayMovieOn[t]))));
 
-            return context;
-        }
-    }
+			model.AddGoal("cinePlexMaximizeRevenueMinimizeUnusedScreens", GoalKind.Maximize, Model.Sum(revenueTerm, penaltyTerm));
+
+			return context;
+		}
+	}
 }

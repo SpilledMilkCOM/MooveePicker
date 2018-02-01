@@ -298,5 +298,10 @@ namespace MooveePicker.Simulations
 
             return result;
         }
-    }
+
+		public List<IMovieList> ChooseBest(int topCount)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

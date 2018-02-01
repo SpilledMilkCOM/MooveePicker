@@ -25,6 +25,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			_infoViewModel.ClientInfo = _clientInfoModel;
 			_infoViewModel.ServerInfo = _serverInfoModel;
+
+			ControllerUtility.SetTwitterCard(ViewBag);
 		}
 
 		public ActionResult About()
