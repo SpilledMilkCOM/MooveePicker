@@ -17,13 +17,13 @@
 	{
 		var rankStyle1 = pick.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 
-		<div class="col-sm-3 col-xs-4" style="padding: 3px">
+		<div class="col-xs-4 col-sm-3" style="padding: 3px">
 			<div class="col-xs-12 movie-card">
 				<div class="col-lg-5">
 					<img class="img-responsive" height="100" src="@pick.ImageUrl" alt="@pick.Name" />
 				</div>
 				<div class="col-lg-7">
-					<div class="movie-card-title" style="">@pick.Name</div>
+					<div class="movie-card-title" style="height: 50px; text-overflow: ellipsis; text-wrap: none;">@pick.Name</div>
 					<div style="text-align: right; font-weight: bold">@pick.Cost BUX</div>
 					<div style="font-weight: bold">Earnings</div>
 					<div style="@rankStyle1">@string.Format("$ {0:N0}{1}", pick.Earnings, pick.IsBestPerformer ? " *" : string.Empty)</div>
@@ -40,12 +40,12 @@
 			</div>
 		</div>
 
-		if (columnCount++ == 3)
+		@*if (columnCount++ == 3)
 		{
 			// Keeps 4 per row.
 
 		<div class="clearfix"> </div>
-		}
+		}*@
 	}
 
 	if (Model.PicksTheRest != null)
