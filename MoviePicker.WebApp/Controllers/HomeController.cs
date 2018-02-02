@@ -150,47 +150,6 @@ namespace MoviePicker.WebApp.Controllers
 			return View("SharePicks", ConstructSharePicksViewModel(true));
 		}
 
-		//TODO: Don't really need this to be a post, since Index is just sending a request with parameters.
-		//[HttpPost]
-		//public ActionResult Picks(IndexViewModel viewModel)
-		//{
-		//	int index = 1;
-
-		//	ViewBag.IsGoogleAdValid = true;
-
-		//	// Transfer the posted data to the actual ViewModel
-		//	// TODO: Use reflection...
-
-		//	_minerModel.Miners[index++].Weight = viewModel.Weight1;
-		//	_minerModel.Miners[index++].Weight = viewModel.Weight2;
-		//	_minerModel.Miners[index++].Weight = viewModel.Weight3;
-		//	_minerModel.Miners[index++].Weight = viewModel.Weight4;
-		//	_minerModel.Miners[index++].Weight = viewModel.Weight5;
-		//	_minerModel.Miners[index++].Weight = viewModel.Weight6;
-		//	_minerModel.Miners[index++].Weight = viewModel.Weight7;
-
-		//	index = 0;
-
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice1;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice2;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice3;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice4;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice5;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice6;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice7;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice8;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice9;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice10;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice11;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice12;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice13;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice14;
-		//	_minerModel.Miners[MY_MINER_IDX].Movies[index++].Earnings = viewModel.BoxOffice15;
-
-		//	//return RedirectToAction("Picks");
-		//	return View(ConstructPicksViewModel());
-		//}
-
 		public ActionResult Simulation()
 		{
 			var picksViewModel = ConstructPicksViewModel();
