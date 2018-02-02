@@ -72,7 +72,7 @@ namespace MoviePicker.WebApp.Utilities
 				}
 				else
 				{
-					imageUrl = $"{Constants.WEBSITE_URL}/Images/MooveePickerLogo512x512.png";
+					imageUrl = $"{Constants.WEBSITE_URL}/Images/MooveePickerCow512x512.png";
 				}
 
 				viewBag.TwitterImage = imageUrl;
