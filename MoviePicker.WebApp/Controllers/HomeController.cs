@@ -3,7 +3,6 @@ using MoviePicker.Common.Interfaces;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
 using MoviePicker.WebApp.Utilities;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -340,7 +339,19 @@ namespace MoviePicker.WebApp.Controllers
 			var leadingMovieName = picks.Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
 			var bonusMovieName = bonusOn ? picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer)?.Name : null;
 
-			bonusMovieName = (bonusMovieName != null) ? $" and counting on {bonusMovieName} as my bonus movie" : string.Empty;
+			if (bonusMovieName == null)
+			{
+				bonusMovieName = picks.Movies.GroupBy(movie => movie.Name)
+											.OrderByDescending(group => group.Count())
+											.FirstOrDefault()?.Key;
+			}
+
+			if (bonusMovieName == leadingMovieName)
+			{
+				bonusMovieName = "it";
+			}
+
+			bonusMovieName = (bonusOn) ? $" and counting on {bonusMovieName} as my bonus movie" : $" and hoping for {bonusMovieName} as my bonus movie";
 
 			viewModel.TwitterDescription = $"{leadingMovieName} leads my lineup{bonusMovieName}.";
 			viewModel.TwitterImageFileName = viewModel.ImageFileName.Replace("Shared_", "Twitter_");

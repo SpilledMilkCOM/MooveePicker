@@ -7,16 +7,23 @@
 <h2>@ViewBag.Title</h2>
 
 <div class="row">
-	<div class="col-lg-5">
-		Ultimately this page will have a <a href="https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/abouts-cards" target="_blank">Twitter Card</a> and some Open Graph so the post will look nicer on Twitter and you don't have to embed the image.
-		<strong>JUST</strong> tweeting this page will embed the image using the Twitter Cards.
+	<div class="col-sm-5">
+		@*<img class="img-responsive" src="~/Images/@Model.ImageFileName" />*@
+
+		<strong>JUST tweeting</strong> this page will embed this unique image using the <a href="https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/abouts-cards" target="_blank">Twitter Cards</a>.
 		The problem with these unique images is <strong>SPACE</strong>.
 		They shouldn't be kept around for long.
 		Another process may come along and remove the image after a while.
 		I'll test what makes sense, but what makes sense to <strong>ME</strong> may not make sense to <strong>YOU</strong>.
 
-		<div style="height: 20px"></div>
+		<div style="height: 10px;"></div>
 
+		<a class="twitter-share-button" href="https://twitter.com/share" data-size="large">Tweet</a>
+	</div>
+
+	<div class="col-xs-1"></div>
+
+	<div class="col-xs-10 col-sm-6">
 		<div class="movie-twitter-summary">
 			<img class="img-responsive" style="border-top-left-radius: 10px; border-top-right-radius: 10px;" src="~/Images/@Model.TwitterImageFileName" />
 
@@ -25,10 +32,5 @@
 				<div style="font-size: small;">@Model.TwitterDescription</div>
 			</div>
 		</div>
-	</div>
-
-	<div class="col-lg-1"></div>
-	<div class="col-lg-6">
-		<img class="img-responsive" src="~/Images/@Model.ImageFileName" />
 	</div>
 </div>
