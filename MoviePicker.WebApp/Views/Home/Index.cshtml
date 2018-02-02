@@ -194,82 +194,85 @@
 
 <div class="row-divider"> </div>
 
-@foreach (var movie in Model.Miners.First().Movies)
-{
-	<div class="row">
+@*<div class="row">
 
-		@* The image will always be on the left *@
+		@foreach (var movie in Model.Miners.First().Movies)
+		{
+			<!-- The image will always be on the left -->
 
-		<div class="col-xs-4 col-md-3 col-lg-2">
-			<img class="img-responsive" height="100" src="@movie.ImageUrl" />
-		</div>
+			<div class="col-xs-4 col-md-3 col-lg-2">
+				<img class="img-responsive" height="100" src="@movie.ImageUrl" />
+			</div>
 
-		@* The text will take up the space to the right *@
+			<!-- The text will take up the space to the right  -->
 
-		<div class="col-xs-8 col-md-9 col-lg-10">
+			<div class="col-xs-8 col-md-9 col-lg-4">
 
-			<div class="col-lg-2">
-				<div style="font-weight: bold;">@movie.Cost</div>
-				<div style="font-weight: bold;">@movie.Name</div>
+				<div class="col-lg-12">
+					<div style="font-weight: bold;">@movie.Cost</div>
+					<div style="font-weight: bold;">@movie.Name</div>
 
-				@if (1 <= movieCount && movieCount <= 15)
+					@if (1 <= movieCount && movieCount <= 15)
+					{
+						var id = string.Format("boId{0}", movieCount);
+						var name = string.Format("BoxOffice{0}", movieCount);
+						// TODO: May want to use a utility to speed up the reflection.
+						var value = string.Format("{0:N0}", Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model));
+
+						<!--The majority of this input was taken from Html.TextBoxFor -->
+
+						<input name="@name"
+							   class="form-control"
+							   id="@id"
+							   style="background-color: lightcyan; width: 100px;"
+							   type="text"
+							   value="@value"
+							   data-val-required="The Box Office @movieCount field is required."
+							   data-val-number="The field Box Office @movieCount must be a number."
+							   data-val="true">
+					}
+				</div>
+
+				<div class="clearfix"> </div>
+
+				@for (int column = 0; column < 2; column++)
 				{
-					var id = string.Format("boId{0}", movieCount);
-					var name = string.Format("BoxOffice{0}", movieCount);
-					// TODO: May want to use a utility to speed up the reflection.
-					var value = string.Format("{0:N0}", Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model));
+					<div class="col-lg-12">
 
-					@*The majority of this input was taken from Html.TextBoxFor*@
+						@foreach (var miner in Model.Miners.Skip(2 + 4 * column).Take(4))
+						{
+							var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
+							var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
 
-					<input name="@name"
-						   class="form-control"
-						   id="@id"
-						   style="background-color: lightcyan; width: 100px;"
-						   type="text"
-						   value="@value"
-						   data-val-required="The Box Office @movieCount field is required."
-						   data-val-number="The field Box Office @movieCount must be a number."
-						   data-val="true">
+							decimal percent = 0;
+
+							if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
+							{
+								percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+							}
+
+							<div class="col-xs-3">
+								@miner.Abbreviation
+							</div>
+							<div class="col-xs-7" style="text-align: right;">
+								@string.Format("{0:N0}", minerMovie?.EarningsBase)&nbsp;
+							</div>
+							<div class="col-xs-2" style="text-align: right; width: 50px;">
+								@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "%" : string.Empty)&nbsp;
+							</div>
+						}
+					</div>
 				}
 			</div>
 
-			<div class="clearfix"> </div>
 
-			@for (int column = 0; column < 2; column++)
-			{
-				<div class="col-lg-8">
-
-					@foreach (var miner in Model.Miners.Skip(2 + 4 * column).Take(4))
-					{
-						var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
-						var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
-
-						decimal percent = 0;
-
-						if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
-						{
-							percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-						}
-
-						<div class="col-xs-3">
-							@miner.Abbreviation
-						</div>
-						<div class="col-xs-7" style="text-align: right;">
-							@string.Format("{0:N0}", minerMovie?.EarningsBase)&nbsp;
-						</div>
-						<div class="col-xs-2" style="text-align: right; width: 50px;">
-							@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "%" : string.Empty)&nbsp;
-						</div>
-					}
-				</div>
-			}
-		</div>
+			movieCount++;
+		}
 	</div>
 
-	movieCount++;
-}
+	<div class="row-divider"> </div>
 
-<div class="row-divider"> </div>
+*@
 
 @* Showing the data from ALL of the sources/miners *@
 

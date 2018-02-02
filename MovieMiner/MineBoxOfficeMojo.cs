@@ -77,7 +77,7 @@ namespace MovieMiner
 			// Might have to tweak this offset a bit to get the numbers to match.
 			var sundayOffset = (int)new DateTime(_weekendEnding.Value.Year, 1, 1).DayOfWeek;
 
-			url = $"{Url}weekend/chart/?view={_weekendEnding.Value.Year}&yr={_weekendEnding.Value.Year}&wknd={(_weekendEnding.Value.DayOfYear - sundayOffset) / 7}&p=.htm";
+			url = $"{Url}weekend/chart/?view={_weekendEnding.Value.Year}&yr={_weekendEnding.Value.Year}&wknd={((_weekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
 
 			var doc = web.Load(url);
 
