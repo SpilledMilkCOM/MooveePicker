@@ -205,7 +205,7 @@
 			<!-- The image will always be on the left -->
 
 			<div class="col-md-3 hidden-xs hidden-sm">
-				<img height="150" src="@movie.ImageUrl" />
+				<img height="150" style="padding: 5px;" src="@movie.ImageUrl" />
 			</div>
 
 			<div class="col-xs-4 hidden-md hidden-lg">
@@ -257,10 +257,10 @@
 						@miner.Abbreviation
 					</div>
 					<div class="col-xs-3" style="text-align: right;">
-						@string.Format("{0:N0}", minerMovie?.EarningsBase)&nbsp;
+						&nbsp;@string.Format("{0:N0}", minerMovie?.EarningsBase)
 					</div>
-					<div class="col-xs-3" style="text-align: right; width: 50px;">
-						@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "%" : string.Empty)&nbsp;
+					<div class="col-xs-3" style="text-align: right;">
+						&nbsp;@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "%" : string.Empty)
 					</div>
 				}
 			</div>
