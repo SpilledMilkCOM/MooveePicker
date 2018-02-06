@@ -100,7 +100,7 @@
 
 								if (minerCount == 0)
 								{
-									<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.Earnings)</td>
+									<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.EarningsBase)</td>
 
 									fmlMovie = minerMovie;
 								}
@@ -108,7 +108,7 @@
 								{
 									customMovie = minerMovie;
 
-									<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.Earnings)</td>
+									<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.EarningsBase)</td>
 
 									<td style="text-align: right">@string.Format("{0:N0}", fmlMovie.EarningsBase - (customMovie?.EarningsBase ?? 0))</td>
 
@@ -116,6 +116,10 @@
 									{
 										var percent = (fmlMovie.EarningsBase - customMovie.EarningsBase) / customMovie.EarningsBase;
 										<td style="@ViewUtility.PercentColor(percent) text-align: right">@string.Format("{0:F2}%", percent * 100)</td>
+									}
+									else
+									{
+										<td> </td>
 									}
 								}
 								else

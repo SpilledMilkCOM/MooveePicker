@@ -42,6 +42,10 @@ namespace MoviePicker.WebApp.Models
 		/// </summary>
 		public IEnumerable<IMiner> Miners { get; set; }
 
+		public bool ViewGridOpen { get; set; }
+
+		public bool ViewMobileOpen { get; set; }
+
 		/// <summary>
 		/// Post the Weight back to the controller.
 		/// </summary>

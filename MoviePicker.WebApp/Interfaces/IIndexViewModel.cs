@@ -30,6 +30,10 @@ namespace MoviePicker.WebApp.Interfaces
 
 		IEnumerable<IMiner> Miners { get; set; }
 
+		bool ViewGridOpen { get; set; }
+
+		bool ViewMobileOpen { get; set; }
+
 		decimal Weight1 { get; set; }
 
 		decimal Weight2 { get; set; }

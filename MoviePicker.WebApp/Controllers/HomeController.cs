@@ -66,9 +66,13 @@ namespace MoviePicker.WebApp.Controllers
 
 			stopWatch.Start();
 
+			_viewModel.ViewGridOpen = !Request.Browser.IsMobileDevice;
+			_viewModel.ViewMobileOpen = Request.Browser.IsMobileDevice;
+
 			ViewBag.IsGoogleAdValid = true;
 
 			ParseBoxOfficeWeightRequest();
+			ParseViewRequest();
 
 			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
 			//_viewModel.IsTracking = true;
@@ -374,6 +378,12 @@ namespace MoviePicker.WebApp.Controllers
 			}
 
 			UpdateViewModel();
+		}
+
+		private void ParseViewRequest()
+
+		{
+
 		}
 
 		private void RunSimulation(PicksViewModel picksViewModel)
