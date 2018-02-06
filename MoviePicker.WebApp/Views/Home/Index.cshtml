@@ -30,9 +30,11 @@
 
 			if (idx < splitValues.length) {
 				$("#boId" + (idx + 1)).val(splitValues[idx].trim())
+				$("#bomId" + (idx + 1)).val(splitValues[idx].trim())
 			}
 			else {
-				$("#boId" + (idx + 1)).val("")
+				$("#boId" + (idx + 1)).val(splitValues[idx].trim())
+				$("#bomId" + (idx + 1)).val(splitValues[idx].trim())
 			}
 		}
 
@@ -198,7 +200,7 @@
 <div id="cardViewAccordionRoot">
 	<div>
 		<a data-toggle="collapse" data-parent="#cardViewAccordionRoot" href="#cardViewAccordionPanel" class="btn btn-info btn-lg">
-			Mobile View &nbsp;&nbsp;<span class="glyphicon glyphicon-th-list" aria-hidden="true" />
+			Mobile View &nbsp;&nbsp;<span class="glyphicon glyphicon-th-list" aria-hidden="true" /> <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" />
 		</a>
 
 		<div id="cardViewAccordionPanel" class="panel-collapse @string.Format("{0}", Model.ViewMobileOpen ? "visible" : "collapse")">
@@ -215,9 +217,9 @@
 						<div class="clearfix col-lg-6">
 							<!-- The image will always be on the left -->
 
-			<div class="col-md-3 hidden-xs hidden-sm">
-				<img height="150" style="padding: 5px;" src="@movie.ImageUrl" />
-			</div>
+							<div class="col-md-3 hidden-xs hidden-sm">
+								<img height="150" style="padding: 5px;" src="@movie.ImageUrl" />
+							</div>
 
 							<div class="col-xs-4 hidden-md hidden-lg">
 								<img height="250" style="padding: 5px;" src="@movie.ImageUrl" />
@@ -226,13 +228,13 @@
 							<!-- The text will take up the space to the right  -->
 
 							<div class="col-xs-6 col-sm-3 col-md-2">
-								<div style="font-weight: bold;">@movie.Cost</div>
+								<div style="font-weight: bold;">@movie.Cost BUX</div>
 								<div style="font-weight: bold;">@movie.Name</div>
 
 								@if (1 <= movieCount && movieCount <= 15)
 								{
-									var id = string.Format("boId{0}", movieCount);
-									var name = string.Format("BoxOffice{0}", movieCount);
+									var id = string.Format("bomId{0}", movieCount);
+									var name = string.Format("BoxOfficeM{0}", movieCount);
 									// TODO: May want to use a utility to speed up the reflection.
 									var value = string.Format("{0:N0}", Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model));
 
@@ -257,25 +259,26 @@
 								{
 									var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
 									var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
+									var errorStyle = !string.IsNullOrEmpty(miner.Error) ? @" color: #cc3333;" : string.Empty;
 
 									decimal percent = 0;
 
-					if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
-					{
-						percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-					}
-					<div class="col-xs-6">
-						@miner.Abbreviation
-					</div>
-					<div class="col-xs-3" style="text-align: right;">
-						&nbsp;@string.Format("{0:N0}", minerMovie?.EarningsBase)
-					</div>
-					<div class="col-xs-3" style="text-align: right;">
-						&nbsp;@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "%" : string.Empty)
-					</div>
+									if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
+									{
+										percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+									}
+									<div class="col-xs-6">
+										@miner.Abbreviation
+									</div>
+									<div class="col-xs-4" style="text-align: right;@errorStyle">
+										&nbsp;@string.Format("{0}", miner.Error ?? minerMovie?.EarningsBase.ToString("N0"))
+									</div>
+									<div class="col-xs-2" style="text-align: right;">
+										&nbsp;@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "%" : string.Empty)
+									</div>
 				}
-			</div>
-		</div>
+							</div>
+						</div>
 
 						movieCount++;
 					}
@@ -299,7 +302,7 @@
 	<div id="gridViewAccordionRoot">
 		<div>
 			<a data-toggle="collapse" data-parent="#gridViewAccordionRoot" href="#gridViewAccordionPanel" class="btn btn-info btn-lg">
-				Grid View &nbsp;&nbsp;<span class="glyphicon glyphicon-list-alt" aria-hidden="true" />
+				Grid View &nbsp;&nbsp;<span class="glyphicon glyphicon-list-alt" aria-hidden="true" /> <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true" />
 			</a>
 
 			<div id="gridViewAccordionPanel" class="panel-collapse  @string.Format("{0}", Model.ViewGridOpen ? "visible" : "collapse")">
@@ -535,5 +538,5 @@
 		   value="Calculate Picks..."
 		   data-toggle="tooltip"
 		   data-placement="bottom"
-		   title="Click to apply weights and recalculate Custom column..." >
+		   title="Click to apply weights and recalculate Custom column...">
 }
