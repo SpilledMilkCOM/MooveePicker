@@ -215,9 +215,9 @@
 						<div class="clearfix col-lg-6">
 							<!-- The image will always be on the left -->
 
-							<div class="col-md-3 hidden-xs hidden-sm">
-								<img height="150" src="@movie.ImageUrl" />
-							</div>
+			<div class="col-md-3 hidden-xs hidden-sm">
+				<img height="150" style="padding: 5px;" src="@movie.ImageUrl" />
+			</div>
 
 							<div class="col-xs-4 hidden-md hidden-lg">
 								<img height="250" style="padding: 5px;" src="@movie.ImageUrl" />
@@ -260,22 +260,22 @@
 
 									decimal percent = 0;
 
-									if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
-									{
-										percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-									}
-									<div class="col-xs-6">
-										@miner.Abbreviation
-									</div>
-									<div class="col-xs-3" style="text-align: right;">
-										@string.Format("{0:N0}", minerMovie?.EarningsBase)&nbsp;
-									</div>
-									<div class="col-xs-3" style="text-align: right; width: 50px;">
-										@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "%" : string.Empty)&nbsp;
-									</div>
-								}
-							</div>
-						</div>
+					if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
+					{
+						percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+					}
+					<div class="col-xs-6">
+						@miner.Abbreviation
+					</div>
+					<div class="col-xs-3" style="text-align: right;">
+						&nbsp;@string.Format("{0:N0}", minerMovie?.EarningsBase)
+					</div>
+					<div class="col-xs-3" style="text-align: right;">
+						&nbsp;@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "%" : string.Empty)
+					</div>
+				}
+			</div>
+		</div>
 
 						movieCount++;
 					}

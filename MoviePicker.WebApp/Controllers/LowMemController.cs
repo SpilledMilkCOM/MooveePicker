@@ -36,6 +36,18 @@ namespace MoviePicker.WebApp.Controllers
 			return View();
 		}
 
+		public ActionResult ClearFiles()
+		{
+			var webRootPath = Server.MapPath("~");
+			var localFilePrefix = $"{webRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_";
+
+			ViewBag.IsGoogleAdValid = false;
+
+			FileUtility.CleanupFiles(localFilePrefix);
+
+			return RedirectToAction("Info");
+		}
+
 		public ActionResult Contact()
 		{
 			ViewBag.IsGoogleAdValid = false;
