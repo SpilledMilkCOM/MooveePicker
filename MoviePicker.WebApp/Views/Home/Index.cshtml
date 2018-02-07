@@ -13,10 +13,12 @@
 	function clickClearWeights(idxStart) {
 		if (idxStart == 2) {
 			$("#weightId1").val(1)
+			$("#weightmId1").val(1)
 		}
 
 		for (idx = idxStart; idx <= 7; idx++) {
 			$("#weightId" + idx).val(0)
+			$("#weightmId" + idx).val(0)
 		}
 	}
 
@@ -65,9 +67,11 @@
 		window.location.href = baseUrl + url
 	}
 
-	function clickRecalc() {
+	function clickRecalc(viewName) {
 
-		var parameters = parseBoxOfficeWeights()
+		synchronizeBoxOfficeWeights(viewName);
+
+		var parameters = parseBoxOfficeWeights(viewName)
 
 		var url = "/home/index?" + parameters
 
@@ -90,10 +94,12 @@
 		return baseUrl
 	}
 
-	function parseBoxOfficeWeights() {
+	function parseBoxOfficeWeights(viewName) {
 
 		var boList = ""
 		var weightList = ""
+
+		// The values should be synchronized so the values can be pulled from one set of fields.
 
 		for (idx = 1; idx <= 15; idx++) {
 			if (idx != 1) {
@@ -115,6 +121,31 @@
 		}
 
 		return "bo=" + boList + "&wl=" + weightList
+	}
+
+	function synchronizeBoxOfficeWeights(viewName) {
+
+		// Copies the values from source fields to destination fields.
+
+		var boIdSource = "#boId"
+		var weightIdSource = "#weightId"
+		var boIdDest = "#bomId"
+		var weightIdDest = "#weightmId"
+
+		if (viewName == "card") {
+			boIdSource = "#bomId"
+			weightIdSource = "#weightmId"
+			boIdDest = "#boId"
+			weightIdDest = "#weightId"
+		}
+
+		for (idx = 1; idx <= 15; idx++) {
+			$(boIdDest + idx).val($(boIdSource + idx).val())
+		}
+
+		for (idx = 1; idx <= 7; idx++) {
+			$(weightIdDest + idx).val($(weightIdSource + idx).val())
+		}
 	}
 </script>
 
@@ -196,6 +227,8 @@
 </div>
 
 <div class="row-divider"> </div>
+
+@* Showing the data from ALL of the sources/miners ====================================================================================== CARD VIEW ==== *@
 
 <div id="cardViewAccordionRoot">
 	<div>
@@ -290,8 +323,71 @@
 
 				<div class="row">
 
-					<!-- Setup the miner weights. -->
+					<div class="clearfix col-xs-12 col-sm-6 col-md-7">
 
+						@for (int minerCount = 1; minerCount <= 7; minerCount++)
+						{
+							var miner = Model.Miners.ToList()[minerCount];
+							var id = string.Format("weightmId{0}", minerCount);
+							var name = string.Format("WeightM{0}", minerCount);
+
+							// TODO: May want to use a utility to speed up the reflection.
+
+							var value = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
+
+							<div class="col-xs-5">
+								@if (miner == Model.Miners.Last() || !miner.Movies.Any())
+								{
+									<a class="btn btn-info"
+									   href="@miner.UrlSource"
+									   target="_blank"
+									   data-toggle="tooltip"
+									   data-placement="bottom"
+									   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">@miner.Name</a>
+								}
+								else
+								{
+									<a class="btn btn-success"
+									   href="~/home/picks?@string.Format("{0}", Model.WeightListForMiner(miner))"
+									   data-toggle="tooltip"
+									   data-placement="bottom"
+									   title="Click for '@miner.Name' dedicated picks...">@miner.Name</a>
+								}
+							</div>
+							<div class="col-xs-4" style="text-align: right;">
+
+								@*The majority of this input was taken from Html.TextBoxFor*@
+
+								<input name="@name"
+									   class="form-control"
+									   id="@id"
+									   style="background-color: #dfffdf; width: 50px;"
+									   type="text"
+									   value="@value"
+									   data-val-required="The Weight @minerCount field is required."
+									   data-val-number="The field Weight @minerCount must be a number."
+									   data-val="true">
+							</div>
+						}
+					</div>
+
+					<div class="col-xs-3">
+						<input class="btn btn-info"
+							   onclick="clickRecalc('card')"
+							   type="button"
+							   value="Apply Weights"
+							   data-toggle="tooltip"
+							   data-placement="bottom"
+							   title="Click to apply weights and recalculate Custom column..." />
+
+						<input class="btn btn-info"
+							   onclick="clickClearWeights(2)"
+							   type="button"
+							   value="Clear"
+							   data-toggle="tooltip"
+							   data-placement="bottom"
+							   title="Click to clear the miners' weights." />
+					</div>
 				</div>
 
 				@*END of Accordion panel *@
@@ -303,7 +399,7 @@
 
 <div class="row-divider"> </div>
 
-@* Showing the data from ALL of the sources/miners *@
+@* Showing the data from ALL of the sources/miners ====================================================================================== GRID VIEW ==== *@
 
 @{
 	movieCount = 1;
@@ -338,7 +434,13 @@
 										{
 											first = false;
 
-											<input class="btn btn-info btn-xs" onclick="clickRecalc()" type="button" value="Custom" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Custom column..." />
+											<input class="btn btn-info btn-xs"
+												   onclick="clickRecalc('grid')"
+												   type="button"
+												   value="Custom"
+												   data-toggle="tooltip"
+												   data-placement="bottom"
+												   title="Click to apply weights and recalculate Custom column..." />
 										}
 										else
 										{
@@ -501,33 +603,38 @@
 
 								@for (int minerCount = 1; minerCount <= 7; minerCount++)
 								{
-									if (1 <= minerCount && minerCount <= 15)
-									{
-										var id = string.Format("weightId{0}", minerCount);
-										var name = string.Format("Weight{0}", minerCount);
+									var id = string.Format("weightId{0}", minerCount);
+									var name = string.Format("Weight{0}", minerCount);
 
-										// TODO: May want to use a utility to speed up the reflection.
+									// TODO: May want to use a utility to speed up the reflection.
 
-										var value = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
+									var value = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
 
-										<td>
-											@*The majority of this input was taken from Html.TextBoxFor*@
+									<td>
+										@*The majority of this input was taken from Html.TextBoxFor*@
 
-											<input name="@name"
-												   class="form-control"
-												   id="@id"
-												   style="background-color: #dfffdf; width: 50px;"
-												   type="text"
-												   value="@value"
-												   data-val-required="The Weight @minerCount field is required."
-												   data-val-number="The field Weight @minerCount must be a number."
-												   data-val="true">
-										</td>
-										<td></td>
-									}
+										<input name="@name"
+											   class="form-control"
+											   id="@id"
+											   style="background-color: #dfffdf; width: 50px;"
+											   type="text"
+											   value="@value"
+											   data-val-required="The Weight @minerCount field is required."
+											   data-val-number="The field Weight @minerCount must be a number."
+											   data-val="true">
+									</td>
+									<td></td>
 								}
 
-								<td><input class="btn btn-info" onclick="clickClearWeights(2)" type="button" value="Clear" data-toggle="tooltip" data-placement="bottom" title="Click to clear the miners' weights." /></td>
+								<td>
+									<input class="btn btn-info"
+										   onclick="clickClearWeights(2)"
+										   type="button"
+										   value="Clear"
+										   data-toggle="tooltip"
+										   data-placement="bottom"
+										   title="Click to clear the miners' weights." />
+								</td>
 								<td></td>
 							</tr>
 						</tbody>
