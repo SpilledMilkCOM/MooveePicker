@@ -1,5 +1,7 @@
 ﻿@model MoviePicker.WebApp.Models.InfoViewModel
 
+@using MovieMiner
+
 @{
 	ViewBag.Title = "Info";
 }
@@ -14,9 +16,33 @@
 <h4>Shared File Count: @Model.ServerInfo.SharedFileCount</h4>
 <h4>Twitter File Count: @Model.ServerInfo.TwitterFileCount</h4>
 
-@Html.ActionLink("Clear Files", "ClearFiles")
+@Html.ActionLink("Clear Files", "ClearFiles", null, htmlAttributes: new { @class = "btn btn-info" })
 
 <h3>Client:</h3>
 
 <h4>Device: @Model.ClientInfo.Device</h4>
 <h4>Name: @Model.ClientInfo.Name</h4>
+
+<h3>Miners:</h3>
+
+<div class="row">
+
+	<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
+	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Error</div>
+	<div class="col-sm-3 hidden-xs" style="font-weight: bold;">Last Update</div>
+	<div class="col-sm-3 hidden-xs" style="font-weight: bold;">Expires</div>
+
+	@foreach (var miner in Model.MinerModel.Miners)
+	{
+		<div class="col-sm-3" style="font-weight: bold;">@miner.Name</div>
+		<div class="col-sm-3">@miner.Error</div>
+
+		<div class="col-xs-6 col-sm-3 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Last Update:</div>
+		<div class="col-xs-6 col-sm-3">@string.Format("{0}", ((ICache)miner)?.LastLoaded)</div>
+
+		<div class="col-xs-6 col-sm-3 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Expires:</div>
+		<div class="col-sm-3">@string.Format("{0}", ((ICache)miner)?.Expiration)</div>
+	}
+</div>
+
+@Html.ActionLink("Expire Miners", "ExpireMiners", null, htmlAttributes: new { @class = "btn btn-info" })

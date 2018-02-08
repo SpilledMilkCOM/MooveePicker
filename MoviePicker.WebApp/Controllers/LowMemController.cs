@@ -66,5 +66,12 @@ namespace MoviePicker.WebApp.Controllers
 
 			return View(_infoViewModel);
 		}
+
+		public ActionResult ReloadMiners()
+		{
+			_infoViewModel.MinerModel.Expire();
+
+			return RedirectToAction("Info");
+		}
 	}
 }

@@ -1,11 +1,11 @@
-﻿using MoviePicker.WebApp.Interfaces;
-
-namespace MoviePicker.WebApp.Interfaces
+﻿namespace MoviePicker.WebApp.Interfaces
 {
 	public interface IInfoViewModel
 	{
-		IClientInfoModel ClientInfo { get; set; }
+		IClientInfoModel ClientInfo { get; }
 
-		IServerInfoModel ServerInfo { get; set; }
+		IMinerModel MinerModel { get; }
+
+		IServerInfoModel ServerInfo { get; }
 	}
 }
