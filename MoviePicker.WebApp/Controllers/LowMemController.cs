@@ -11,20 +11,13 @@ namespace MoviePicker.WebApp.Controllers
 	/// </summary>
 	public class LowMemController : Controller
 	{
-		private readonly IClientInfoModel _clientInfoModel;
 		private readonly IInfoViewModel _infoViewModel;
-		private readonly IServerInfoModel _serverInfoModel;
 
-		public LowMemController(IClientInfoModel clientInfo, IInfoViewModel infoViewModel, IServerInfoModel serverInfo)
+		public LowMemController(IInfoViewModel infoViewModel)
 		{
 			// Just some injection and some assignments.
 
-			_clientInfoModel = clientInfo;
 			_infoViewModel = infoViewModel;
-			_serverInfoModel = serverInfo;
-
-			_infoViewModel.ClientInfo = _clientInfoModel;
-			_infoViewModel.ServerInfo = _serverInfoModel;
 
 			ControllerUtility.SetTwitterCard(ViewBag);
 		}
@@ -59,17 +52,17 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			ViewBag.IsGoogleAdValid = false;
 
-			_serverInfoModel.Now = DateTime.Now;
-			_serverInfoModel.NowUtc = DateTime.UtcNow;
+			_infoViewModel.ServerInfo.Now = DateTime.Now;
+			_infoViewModel.ServerInfo.NowUtc = DateTime.UtcNow;
 
 			var imagePath = $"{Server.MapPath("~")}{Path.DirectorySeparatorChar}images";
 
-			_serverInfoModel.MoviePosterFileCount = FileUtility.FilterImagesInPath(imagePath, "MoviePoster_*")?.Count ?? 0;
-			_serverInfoModel.SharedFileCount = FileUtility.FilterImagesInPath(imagePath, "Shared_*")?.Count ?? 0;
-			_serverInfoModel.TwitterFileCount = FileUtility.FilterImagesInPath(imagePath, "Twitter_*")?.Count ?? 0;
+			_infoViewModel.ServerInfo.MoviePosterFileCount = FileUtility.FilterImagesInPath(imagePath, "MoviePoster_*")?.Count ?? 0;
+			_infoViewModel.ServerInfo.SharedFileCount = FileUtility.FilterImagesInPath(imagePath, "Shared_*")?.Count ?? 0;
+			_infoViewModel.ServerInfo.TwitterFileCount = FileUtility.FilterImagesInPath(imagePath, "Twitter_*")?.Count ?? 0;
 
-			_clientInfoModel.Device = Request.Browser.IsMobileDevice ? "Mobile" : "Desktop";
-			_clientInfoModel.Name = Request.Browser.Type;
+			_infoViewModel.ClientInfo.Device = Request.Browser.IsMobileDevice ? "Mobile" : "Desktop";
+			_infoViewModel.ClientInfo.Name = Request.Browser.Type;
 
 			return View(_infoViewModel);
 		}
