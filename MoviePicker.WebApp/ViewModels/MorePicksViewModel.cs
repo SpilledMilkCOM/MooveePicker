@@ -1,4 +1,4 @@
-﻿using MoviePicker.WebApp.Interfaces;
+﻿using MoviePicker.Common.Interfaces;
 using System.Collections.Generic;
 
 namespace MoviePicker.WebApp.Models
@@ -7,6 +7,8 @@ namespace MoviePicker.WebApp.Models
 	{
 		public long Duration { get; set; }
 
-		public IEnumerable<IMovieListModel> MorePicks { get; set; }
+		public List<MovieListModel> MorePicks { get; set; }
+
+		public List<MovieListModel> MorePicksBonusOff { get; set; }
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using MoviePicker.Common.Interfaces;
@@ -15,6 +16,10 @@ namespace MooveePicker
 
 		private IMovie _bestPerformer;
 		private List<IMovie> _bestPerformers;
+		private int _topCount;
+		private bool _topListFull;
+		private List<IMovieList> _topLists;
+		private decimal _topMin;                        // The minimum of the list is only calculated when items are added/updated (not ALL the time)
 		private bool _enableBestPerformer;
 
 		public MoviePicker(IMovieList movieListPrototype)
@@ -117,7 +122,7 @@ namespace MooveePicker
 
 			if (_bestPerformers != null)
 			{
-				_bestPerformer = null;		// There is NO one best performer.
+				_bestPerformer = null;      // There is NO one best performer.
 			}
 		}
 
@@ -140,10 +145,46 @@ namespace MooveePicker
 
 		public List<IMovieList> ChooseBest(int topCount)
 		{
-			throw new System.NotImplementedException();
+			_topLists = new List<IMovieList>();
+			_topCount = topCount;
+			_topListFull = false;
+
+			ChooseBest();
+
+			return _topLists.OrderByDescending(list => list.TotalEarnings).ToList();
 		}
 
 		//----==== PRIVATE ====----------------------------------------------------------------------
+
+		private void AddToTopList(IMovieList sample)
+		{
+			if (_topLists != null)
+			{
+				if (!_topListFull)
+				{
+					_topLists.Add(sample.Clone());
+
+					_topMin = _topLists.Min(list => list.TotalEarnings);
+					_topListFull = _topLists.Count >= _topCount;
+				}
+				else
+				{
+					// Is the sample greater than the top min?
+					// Don't add it if it's already in the list.
+
+					if (sample.TotalEarnings > _topMin
+					&& !_topLists.Any(list => list.GetHashCode() == sample.GetHashCode()))
+					{
+						// Remove the min and add a clone of the sample.
+
+						_topLists.Remove(_topLists.First(list => list.TotalEarnings == _topMin));
+						_topLists.Add(sample.Clone());
+
+						_topMin = _topLists.Min(list => list.TotalEarnings);
+					}
+				}
+			}
+		}
 
 		/// <summary>
 		/// Return a list of movies each within the budget (sorted by efficiency)
@@ -182,20 +223,24 @@ namespace MooveePicker
 
 				TotalComparisons++;
 
-				if (best.TotalEarnings < sample.TotalEarnings)
-				{
-					best = sample.Clone();
-
-					// Add to the top list.
-				}
-
 				var sampleHashCode = sample.GetHashCode();
+
+				var beenProcessed = _processedHashes.Contains(sampleHashCode);
 
 				// DON'T PROCESS the sample:
 				//		If the sample is already full
 				//		Already been processed.
 
-				if (!sample.IsFull && !_processedHashes.Contains(sampleHashCode))
+				if (_topLists != null && !beenProcessed)
+				{
+					AddToTopList(sample);
+				}
+				else if (best.TotalEarnings < sample.TotalEarnings)
+				{
+					best = sample.Clone();
+				}
+
+				if (!sample.IsFull && !beenProcessed)
 				{
 					remainingBudget -= movieToAdd.Cost;
 

@@ -1,4 +1,5 @@
 ﻿using MovieMiner;
+using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
@@ -9,6 +10,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+
+using TopMoviePicker = MooveePicker.MoviePicker;
 
 namespace MoviePicker.WebApp.Controllers
 {
@@ -127,6 +130,18 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult MorePicks()
+		{
+			ViewBag.IsGoogleAdValid = true;
+
+			ParseBoxOfficeWeightRequest();
+
+			ControllerUtility.SetTwitterCard(ViewBag);
+
+			return View(ConstructMorePicksViewModel());
+		}
+
+		[HttpGet]
 		public ActionResult Picks()
 		{
 			ViewBag.IsGoogleAdValid = true;
@@ -199,6 +214,50 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
+		private MorePicksViewModel ConstructMorePicksViewModel()
+		{
+			var result = new MorePicksViewModel { MorePicks = new List<MovieListModel>(), MorePicksBonusOff = new List<MovieListModel>() };
+			var stopWatch = new Stopwatch();
+
+			stopWatch.Start();
+
+			var movies = _minerModel.CreateWeightedList();
+			var moviePicker = new TopMoviePicker(new MovieList());
+
+			moviePicker.AddMovies(movies);
+
+			var movieLists = moviePicker.ChooseBest(10);
+
+			foreach (var movieList in movieLists)
+			{
+				result.MorePicks.Add(new MovieListModel { Picks = movieList });
+			}
+
+			// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
+
+			var clonedList = new List<IMovie>();
+
+			foreach (var movie in movies)
+			{
+				clonedList.Add(movie.Clone());
+			}
+
+			moviePicker.AddMovies(clonedList);
+			moviePicker.EnableBestPerformer = false;
+
+			movieLists = moviePicker.ChooseBest(10);
+
+			foreach (var movieList in movieLists)
+			{
+				result.MorePicksBonusOff.Add(new MovieListModel { Picks = movieList });
+			}
+
+			stopWatch.Stop();
+
+			result.Duration = stopWatch.ElapsedMilliseconds;
+
+			return result;
+		}
 
 		private PicksViewModel ConstructPicksViewModel()
 		{
