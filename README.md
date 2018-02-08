@@ -50,6 +50,6 @@ http://mooveepicker.azurewebsites.net/home/picks?wl=0,3,4,3,2,2,3
 
 ##### Things I learned in this project
 * More Javascript and shortcuts
-* I didn't know that hsl() was a thing in Javascript (pretty cool)
+* I didn't know that hsl() was a thing in CSS (pretty cool)
 * More about Bootstrap and columns within columns.
 * Phone browsers are weird.
