@@ -179,6 +179,7 @@
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\ViewUtility.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
+    <Compile Include="ViewModels\MorePicksViewModel.cs" />
     <Compile Include="ViewModels\SharePicksViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="Models\MineMine.cs" />
@@ -267,6 +268,7 @@
     <Content Include="Views\LowMem\Info.cshtml" />
     <Content Include="Views\Home\Tracking.cshtml" />
     <Content Include="Views\Home\SharePicks.cshtml" />
+    <Content Include="Views\Home\MorePicks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,333 @@
+﻿@model MoviePicker.WebApp.Models.PicksViewModel
+
+@{
+	ViewBag.Title = "More Picks";
+}
+
+<h2>@ViewBag.Title</h2>
+<h5>weekend ending @Model.Miners.First().Movies.First().WeekendEnding.ToShortDateString() (@Model.Duration.ToString("N0") ms)</h5>
+
+<h3>Deciphering Picks</h3>
+
+<div class="row">
+	<div class="col-sm-1"> </div>
+	<div class="col-sm-8">
+		I'm still not sold as to why the 2nd, 3rd, etc. slots are valuable so only the winner is posted.
+		Oh sure, the loser places are somewhat interesting, but if you're confident with your numbers then that's all they are...  Lineups that will lose.
+		There are two tables that show the picks WITH the bonus ON and with it turned off.
+		The third table shows how the effeciencies stack up.  <strong>REMEMBER</strong>, these are <strong>YOUR</strong> numbers.
+		The last table only takes the top 5 ranked by efficiency and shows in red what percentage that movie has to drop in order to be overtaken by second place.
+		The other percentages are the values that those movies would have to GAIN if the top ranked movie held its number.
+		I feel like this table is more helpful that knowing what the 2nd, 3rd, etc. slots will be.
+		This may sway your decision on what your bonus movie might be.
+	</div>
+</div>
+
+@*
+	Remove sim button for now since this affects the response time and does NOT return in a timely manner.
+
+	<h5>@Html.ActionLink("Sim", "Simulation", null, htmlAttributes: new { @class = "btn btn-info btn-sm" })</h5>
+*@
+
+@* ========================================================================================== FORECAST WEIGHTS*@
+
+<table class="table">
+	<thead>
+		<tr><th>Forecast Weights</th></tr>
+		<tr>
+			@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+			{
+				<th>
+					@miner.Abbreviation
+				</th>
+			}
+		</tr>
+
+	</thead>
+	<tbody>
+		<tr>
+			@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+			{
+				<th>
+					@miner.Weight
+				</th>
+			}
+		</tr>
+	</tbody>
+</table>
+
+<div class="row">
+	<div class="col-sm-3">
+		<a class="btn btn-info btn-xs"
+		   href="@string.Format("ShareBonusOnPicks?{0}", Request.QueryString)"
+		   data-toggle="tooltip"
+		   data-placement="bottom"
+		   title="Click to share your Bonus ON picks...">
+			<h4>
+				Bonus is ON&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+			</h4>
+		</a>
+	</div>
+
+	@Html.Partial("MovieList2", Model.MovieList)
+</div>
+
+<div class="row-divider"> </div>
+
+<div class="row">
+	<div class="col-sm-3">
+		<a class="btn btn-info btn-xs"
+		   href="@string.Format("ShareBonusOffPicks?{0}", Request.QueryString)"
+		   data-toggle="tooltip"
+		   data-placement="bottom"
+		   title="Click to share your Bonus OFF picks...">
+			<h4>
+				Bonus is OFF &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+			</h4>
+		</a>
+	</div>
+
+	@Html.Partial("MovieList2", Model.MovieListBonusOff)
+</div>
+
+@*<div class="row">
+		<div class="col-lg-6">
+			<div class="col-sm-3">
+				<h4>Bonus is ON</h4>
+			</div>
+
+			@Html.Partial("MovieList", Model.MovieList)
+		</div>
+
+		<div class="col-lg-6">
+			<div class="col-sm-3">
+				<h4>Bonus is OFF</h4>
+			</div>
+
+			@if (Model.MovieListBonusOff != null)
+			{
+				@Html.Partial("MovieList", Model.MovieListBonusOff);
+			}
+		</div>
+	</div>*@<div class="row">
+	<div class="col-lg-6">
+		<div class="col-sm-3">
+			<h4></h4>
+		</div>
+
+	</div>
+
+	<div class="col-lg-6">
+		<div class="col-sm-3">
+			<h4></h4>
+		</div>
+
+	</div>
+</div>
+
+@if (Model.IsTracking)
+{
+	<div class="row-divider"> </div>
+
+	<h4>Estimated Perfect Pick</h4>
+
+	<div class="row">
+		<div class="col-lg-6">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Your Pick</th>
+						<th>Predicted</th>
+						<th>Estimated BO</th>
+						<th>PP Diff</th>
+						<th>PP Diff %</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Bonus ON</td>
+						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
+						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieList.Picks.TotalEarnings > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
+					</tr>
+					<tr>
+						<td>Bonus OFF</td>
+						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
+						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks.TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+}
+
+<div class="row-divider"> </div>
+
+<div class="row">
+	<div class="col-sm-1"> </div>
+	<div class="col-sm-8">
+		The table below compares ALL of the movies to the MOST efficient one.
+		The Bonus Earnings column is the value that the movie WOULD need to have the top efficiency or at least MATCH top efficiency.
+		The Difference column is the dollar amount of gain, and the % Difference is just that; Difference divided the actual earnings (percentage gain).
+		The MOST efficient movie shows how much it would have to drop to match second place.
+	</div>
+</div>
+
+<div class="row-divider"> </div>
+
+<h4>Bonus Comparisons</h4>
+
+<div class="row">
+	<div class="col-lg-12">
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>BUX</th>
+					<th>Name</th>
+					<th>Earnings</th>
+					<th>Efficiency</th>
+					<th>Rank</th>
+					<th>Bonus Earnings</th>
+					<th>Difference</th>
+					<th>% Difference</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					var mostEfficient = Model.Movies.OrderByDescending(item => item.Efficiency).First();
+
+					foreach (var movie in Model.Movies)
+					{
+						var rank = Model.Rank(movie);
+						var rankStyle = rank <= 5 ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+						var rankStyle1 = rank == 1 ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+
+						<tr>
+							<td style="text-align: right">@movie.Cost</td>
+							<td>@movie.Name</td>
+							<td style="text-align: right">@movie.EarningsBase.ToString("N0")</td>
+							<td style="@rankStyle1">@string.Format("{0}{1:N0}", rank == 1 ? "* " : string.Empty, movie.Efficiency)</td>
+							<td style="@rankStyle">@rank</td>
+							<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost)</td>
+
+							@if (movie.EarningsBase > 0) // Dividing by zero is BAD!
+							{
+								// Compute difference columns.
+
+								if (rank == 1)
+								{
+									var nextRankedMovie = Model.Movies.FirstOrDefault(item => Model.Rank(item) == 2);
+
+									if (nextRankedMovie != null && movie.EarningsBase > 0)
+									{
+										//How much does the top rank have to LOSE before it's no longer the TOP
+										<td style="text-align: right">@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)</td>
+										<td style="text-align: right; font-weight: bold; color: #cc3333">@string.Format("{0:N2}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+									}
+								}
+								else
+								{
+									<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)</td>
+									<td style="@rankStyle">@string.Format("{0:N2}%", (movie.EarningsBase > 0) ? (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100 : 0)</td>
+								}
+							}
+						</tr>
+					}
+				}
+			</tbody>
+
+			<tfoot>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td style="font-weight: bold; color: #33cc33; text-align: right">* Most Efficient</td>
+					<td style="font-weight: bold; color: #33cc33; text-align: right">Top 5</td>
+					<td></td>
+					<td></td>
+					<td style="font-weight: bold; color: #33cc33; text-align: right">Top 5</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
+
+<h4>Top 5 Bonus Comparisons</h4>
+
+<div class="row">
+	<div class="col-lg-12">
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>BUX</th>
+					<th>Name</th>
+					<th>Earnings</th>
+					<th>Efficiency</th>
+					<th>Rank</th>
+					<th>Bonus Earnings</th>
+					<th>Difference</th>
+					<th>% Difference</th>
+				</tr>
+			</thead>
+			<tbody>
+				@{
+					foreach (var movie in Model.Movies.OrderByDescending(item => item.Efficiency).Take(5))
+					{
+						var rank = Model.Rank(movie);
+						var rankStyle = rank <= 5 ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+						var rankStyle1 = rank == 1 ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+
+						<tr>
+							<td style="text-align: right">@movie.Cost</td>
+							<td>@movie.Name</td>
+							<td style="text-align: right">@movie.EarningsBase.ToString("N0")</td>
+							<td style="@rankStyle1">@string.Format("{0}{1:N0}", rank == 1 ? "* " : string.Empty, movie.Efficiency)</td>
+							<td style="@rankStyle">@rank</td>
+							<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost)</td>
+
+							@if (movie.EarningsBase > 0)
+							{
+								// Compute difference columns.
+
+								if (rank == 1)
+								{
+									var nextRankedMovie = Model.Movies.FirstOrDefault(item => Model.Rank(item) == 2);
+
+									if (nextRankedMovie != null)
+									{
+										//How much does the top rank have to LOSE before it's no longer the TOP
+										<td style="text-align: right">@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)</td>
+										<td style="text-align: right; font-weight: bold; color: #cc3333">@string.Format("{0:N2}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+									}
+								}
+								else
+								{
+									<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)</td>
+									<td style="@rankStyle">@string.Format("{0:N2}%", (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+								}
+							}
+						</tr>
+					}
+				}
+			</tbody>
+
+			<tfoot>
+				<tr>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td style="font-weight: bold; color: #33cc33; text-align: right">* Most Efficient</td>
+					<td style="font-weight: bold; color: #33cc33; text-align: right">Top 5</td>
+					<td></td>
+					<td></td>
+					<td style="font-weight: bold; color: #33cc33; text-align: right">Top 5</td>
+				</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
