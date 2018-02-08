@@ -214,6 +214,7 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
+
 		private MorePicksViewModel ConstructMorePicksViewModel()
 		{
 			var result = new MorePicksViewModel { MorePicks = new List<MovieListModel>(), MorePicksBonusOff = new List<MovieListModel>() };

@@ -294,6 +294,24 @@ namespace MoviePicker.Tests
 			WriteMovies(best);
 		}
 
+		[TestMethod]
+		public void MoviePicker_ChooseBest_Top10_ThisWeeksPicks()
+		{
+			var test = ConstructTestObject();
+
+			test.AddMovies(ThisWeeksMoviesPicks());
+
+			var best = test.ChooseBest(10);
+
+			WritePicker(test);
+
+			foreach (var movieList in best)
+			{
+				Logger.WriteLine(string.Empty);
+				WriteMovies(movieList);
+			}
+		}
+
 		//----==== PRIVATE ====---------------------------------------------------------
 
 		private List<IMovie> ThisWeeksMoviesPicks()
@@ -302,21 +320,21 @@ namespace MoviePicker.Tests
 
 			int id = 1;
 
-			movies.Add(ConstructMovie(id++, "Wonder Woman", 55, 613));
-			movies.Add(ConstructMovie(id++, "The Mummy", 38, 526));
-			movies.Add(ConstructMovie(id++, "Captain Underpants", 12, 198));
-			movies.Add(ConstructMovie(id++, "It Comes at Night", 20, 150));
-			movies.Add(ConstructMovie(id++, "Pirates", 12, 143));
-			movies.Add(ConstructMovie(id++, "Guardians", 5, 70));
-			movies.Add(ConstructMovie(id++, "Baywatch", 5, 60));
-			movies.Add(ConstructMovie(id++, "Meagan Leavey", 3.3m, 59));
-			movies.Add(ConstructMovie(id++, "Everything", 1.5m, 28));
-			movies.Add(ConstructMovie(id++, "Alien", 2.1m, 26));
-			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 1, 15));
-			movies.Add(ConstructMovie(id++, "Snatched", 0.6m, 9));
-			movies.Add(ConstructMovie(id++, "Best of the Rest", 1.1m, 9));
-			movies.Add(ConstructMovie(id++, "Diary of a Wimpy Kid", 0.6m, 8));
-			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
+			movies.Add(ConstructMovie(id++, "Fifty Shades Freed", 38.4m, 556));
+			movies.Add(ConstructMovie(id++, "Peter Rabbit", 18.7m, 276));
+			movies.Add(ConstructMovie(id++, "The 1517 to Paris", 15.1m, 221));
+			movies.Add(ConstructMovie(id++, "Jumanji Welcome to the Jungle", 7.2m, 126));
+			movies.Add(ConstructMovie(id++, "The Greatest Showman", 6m, 101));
+			movies.Add(ConstructMovie(id++, "Maze Runner The Death Cure", 5.1m, 83));
+			movies.Add(ConstructMovie(id++, "Winchester", 4m, 66));
+			movies.Add(ConstructMovie(id++, "The Shape of Water", 3.3m, 51));
+			movies.Add(ConstructMovie(id++, "The Post", 3.2m, 50));
+			movies.Add(ConstructMovie(id++, "Hostiles", 2.7m, 46));
+			movies.Add(ConstructMovie(id++, "12 Strong", 2.6m, 43));
+			movies.Add(ConstructMovie(id++, "Den of Thieves", 2.3m, 40));
+			movies.Add(ConstructMovie(id++, "Three Billboards Outside Ebbing Missouri", 2.2m, 35));
+			movies.Add(ConstructMovie(id++, "I Tonya", 1.8m, 30));
+			movies.Add(ConstructMovie(id++, "Darkest Hour", 1.7m, 29));
 
 			return movies;
 		}

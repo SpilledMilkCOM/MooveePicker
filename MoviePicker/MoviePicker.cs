@@ -219,6 +219,7 @@ namespace MooveePicker
 
 			if (sample.CanAdd(movieToAdd))
 			{
+				// Add the movie to the clone that was passed in.
 				sample.Add(movieToAdd);
 
 				TotalComparisons++;
@@ -248,10 +249,10 @@ namespace MooveePicker
 
 					foreach (var movie in availableMovies)
 					{
-						// Cloning is expensive.  Better to remove the added movie when done with this current method call.
-						//best = ChooseBest(best, movie, sample.Clone(), availableMovies, remainingBudget);
+						// Cloning is now cheaper than adding and removing.
+						best = ChooseBest(best, movie, sample.Clone(), availableMovies, remainingBudget);
 
-						best = ChooseBest(best, movie, sample, availableMovies, remainingBudget);
+						//best = ChooseBest(best, movie, sample, availableMovies, remainingBudget);
 					}
 
 					// When finished processing this sub-list, store the list in the saved hashes.
@@ -259,7 +260,7 @@ namespace MooveePicker
 					_processedHashes.Add(sampleHashCode);
 				}
 
-				sample.Remove(movieToAdd);
+				//sample.Remove(movieToAdd);
 			}
 
 			return best;
