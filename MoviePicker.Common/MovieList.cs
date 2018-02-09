@@ -77,7 +77,7 @@ namespace MoviePicker.Common
 
 			_movies.Add(movie);
 
-			UpdateTotals();
+			UpdateTotals(null, movie);
 		}
 
 		public void Add(IEnumerable<IMovie> movies)
@@ -132,7 +132,7 @@ namespace MoviePicker.Common
 
 		//----==== PRIVATE ====---------------------------------------------------------
 
-		private void UpdateTotals(MovieList toCopy = null)
+		private void UpdateTotals(MovieList toCopy = null, IMovie movieToAdd = null)
 		{
 			// "Greedy" method is not used (yet)
 			// Keep the list sorted by efficiency so we don't need to always sort the list in the algoritm.
@@ -151,10 +151,15 @@ namespace MoviePicker.Common
 			//	return 1;
 			//});
 
-			// Keep this list sorted by Id so the hashing won't care about the order added.
-
 			if (toCopy == null)
 			{
+				// Keep this list sorted by Id so the hashing won't care about the order added.
+
+				//var orderedList = _movies.OrderBy(movie => movie.Id).ToList();
+
+				//_movies.Clear();
+				//_movies.AddRange(orderedList);
+
 				_movies.Sort((left, right) =>
 				{
 					if (left.Id == right.Id)
@@ -168,6 +173,23 @@ namespace MoviePicker.Common
 
 					return 1;
 				});
+
+				//else
+				//{
+				//	// The movie has not been added yet.
+				//	// Since the list is kept sorted, then use insertion instead of sorting the entire list.
+
+				//	var found = _movies.FirstOrDefault(movie => movie.Id >= movieToAdd.Id);
+
+				//	if (found == null)
+				//	{
+				//		_movies.Add(movieToAdd);
+				//	}
+				//	else
+				//	{
+				//		_movies.Insert(_movies.IndexOf(found), movieToAdd);
+				//	}
+				//}
 
 				_totalCost = 0;
 				_totalEarnings = 0;
