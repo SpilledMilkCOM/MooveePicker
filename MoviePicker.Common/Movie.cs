@@ -1,10 +1,12 @@
 ﻿using MoviePicker.Common.Interfaces;
 using System;
 using System.Diagnostics;
+using System.Globalization;
+using System.Text;
 
 namespace MoviePicker.Common
 {
-	[DebuggerDisplay("Name = {Name}")]
+	[DebuggerDisplay("Id = {Id} - Name = {Name}")]
 	public class Movie : IMovie
 	{
 		private const decimal BEST_PERFORMER_BONUS = 2000000;
@@ -42,6 +44,49 @@ namespace MoviePicker.Common
 				UpdateEfficiency();
 
 				IsBestPerformer = toCopy.IsBestPerformer;
+			}
+		}
+
+		public string Abbreviation
+		{
+			get
+			{
+				var tokens = Day.HasValue ? MovieName.Split() : Name.Split();
+				var result = new StringBuilder();
+
+				if (tokens.Length > 1)
+				{
+					foreach (var token in tokens)
+					{
+						if (!string.IsNullOrEmpty(token))
+						{
+							result.Append(token.Substring(0, 1).ToUpper());
+						}
+					}
+				}
+				else if (tokens[0].Length > 5)
+				{
+					var vowels = new string[] { "a", "e", "i", "o", "u", "y" };
+					var name = tokens[0];
+
+					// Remove the vowels. (if the word is longer than 5 characters)
+
+					foreach (var vowel in vowels)
+					{
+						name = name.Replace(vowel, string.Empty).Replace(vowel.ToUpper(), string.Empty);
+					}
+
+					result.Append(name);
+				}
+
+				if (Day.HasValue)
+				{
+					var textInfo = new CultureInfo("en-US", false).TextInfo;
+
+					result.Append($"-{textInfo.ToTitleCase(Day.Value.ToString().Substring(0, 3))}");
+				}
+
+				return result.ToString();
 			}
 		}
 

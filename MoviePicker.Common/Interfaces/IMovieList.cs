@@ -4,6 +4,8 @@ namespace MoviePicker.Common.Interfaces
 {
 	public interface IMovieList
 	{
+		string Abbreviation { get; }
+
 		bool IsFull { get; }
 
 		IEnumerable<string> MovieImages { get; }

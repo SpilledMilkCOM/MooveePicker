@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using MoviePicker.Common.Interfaces;
 
 namespace MoviePicker.Common
@@ -37,6 +38,35 @@ namespace MoviePicker.Common
 				_movies = new List<IMovie>(toCopy.Movies);
 
 				UpdateTotals(toCopy);
+			}
+		}
+
+		public string Abbreviation
+		{
+			get
+			{
+				bool first = true;
+				var result = new StringBuilder();
+				var grouping = from movie in Movies
+							   orderby movie.Cost descending
+							   group movie by movie.Id into grp
+							   select grp;
+
+				foreach (var movieGroup in grouping)
+				{
+					var multiplier = (movieGroup.Count() > 1) ? $"x{movieGroup.Count()}" : string.Empty;
+
+					if (!first)
+					{
+						result.Append(",");
+					}
+
+					result.Append($"{movieGroup.First().Abbreviation}{multiplier}");
+
+					first = false;
+				}
+
+				return result.ToString();
 			}
 		}
 
@@ -128,6 +158,40 @@ namespace MoviePicker.Common
 			//_totalCount--;
 			//_totalCost -= movie.Cost;
 			//_totalEarnings -= movie.Earnings + MISSING_THEATER_EARNINGS;
+		}
+
+		public override string ToString()
+		{
+			bool first = true;
+			var result = new StringBuilder();
+			var grouping = from movie in Movies
+						   orderby movie.Cost descending
+						   group movie by movie.Id into grp
+						   select grp;
+
+			foreach (var movieGroup in grouping)
+			{
+				var multiplier = (movieGroup.Count() > 1) ? $"x{movieGroup.Count()}" : string.Empty;
+				var movie = movieGroup.First();
+				var abbreviation = movie.Abbreviation;
+
+				if (!first)
+				{
+					result.Append(",");
+				}
+
+				//if (abbreviation.Length == 1
+				//|| (movie.Day.HasValue && abbreviation.Length == 5))
+				//{
+				//	abbreviation = movie.Name;
+				//}
+
+				result.Append($"{abbreviation}{multiplier}");
+
+				first = false;
+			}
+
+			return result.ToString();
 		}
 
 		//----==== PRIVATE ====---------------------------------------------------------

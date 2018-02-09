@@ -17,6 +17,8 @@ namespace MoviePicker.Msf
 			_movie = movie ?? throw new ArgumentNullException(nameof(movie));
 		}
 
+		public string Abbreviation => _movie.Abbreviation;
+
 		public bool AdjustEarnings
 		{
 			get { return _movie.AdjustEarnings; }
@@ -65,23 +67,6 @@ namespace MoviePicker.Msf
 			set { _movie.Earnings = (decimal)value; }
 		}
 
-		public string ImageUrl
-		{
-			get { return _movie.ImageUrl; }
-			set { _movie.ImageUrl = value; }
-		}
-
-		public DateTime WeekendEnding
-		{
-			get { return _movie.WeekendEnding; }
-			set { _movie.WeekendEnding = value; }
-		}
-
-		public override int GetHashCode()
-		{
-			return Id.GetHashCode();
-		}
-
 		public int Id
 		{
 			get { return _movie.Id; }
@@ -94,6 +79,12 @@ namespace MoviePicker.Msf
 			set { _movie.IsBestPerformer = value; }
 		}
 
+		public string ImageUrl
+		{
+			get { return _movie.ImageUrl; }
+			set { _movie.ImageUrl = value; }
+		}
+
 		public string MovieName
 		{
 			get { return _movie.MovieName; }
@@ -104,6 +95,17 @@ namespace MoviePicker.Msf
 		{
 			get { return _movie.Name; }
 			set { _movie.Name = value; }
+		}
+
+		public DateTime WeekendEnding
+		{
+			get { return _movie.WeekendEnding; }
+			set { _movie.WeekendEnding = value; }
+		}
+
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
 		}
 	}
 }

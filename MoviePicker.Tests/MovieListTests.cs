@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Unity;
@@ -94,6 +95,52 @@ namespace MoviePicker.Tests
 			test2.Add(movies[2]);
 
 			Assert.AreEqual(test1.GetHashCode(), test2.GetHashCode(), "The hash codes are different");
+		}
+
+		[TestMethod]
+		public void MovieList_ToString()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			test.Add(movies[0]);
+			test.Add(movies[2]);
+			test.Add(movies[5]);
+
+			Assert.AreEqual("WW,CU,Guardians", test.ToString(), "The hash codes are different");
+		}
+
+		[TestMethod]
+		public void MovieList_ToString_DayOfWeek()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			movies[0].Day = DayOfWeek.Friday;
+			movies[2].Day = DayOfWeek.Saturday;
+			movies[5].Day = DayOfWeek.Sunday;
+
+			test.Add(movies[0]);
+			test.Add(movies[2]);
+			test.Add(movies[5]);
+
+			Assert.AreEqual("WW-Fri,CU-Sat,Grdns-Sun", test.ToString(), "The hash codes are different");
+		}
+
+		[TestMethod]
+		public void MovieList_ToStringx2()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			test.Add(movies[0]);
+			test.Add(movies[0]);
+			test.Add(movies[2]);
+			test.Add(movies[2]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+
+			Assert.AreEqual("WWx2,CUx2,Guardiansx2", test.ToString(), "The hash codes are different");
 		}
 
 		//----==== PRIVATE ====---------------------------------------------------------

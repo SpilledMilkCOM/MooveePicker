@@ -4,6 +4,8 @@ namespace MoviePicker.Common.Interfaces
 {
     public interface IMovie
     {
+		string Abbreviation { get; }
+
         /// <summary>
         /// Allow simulations to adjust this movie's earnings.
         /// </summary>

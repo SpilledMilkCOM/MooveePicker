@@ -45,7 +45,7 @@ namespace MoviePicker.WebApp.Utilities
 		/// <param name="description">The descriptive text for the card</param>
 		/// <param name="imageUrl">The url of the image</param>
 		/// <param name="imageUrlAlt">Descriptive text of the image for the visuall impared</param>
-		public static void SetTwitterCard(dynamic viewBag, string card = null, string title = null, string description = null, string imageUrl = null, string imageUrlAlt = null)
+		public static void SetTwitterCard(dynamic viewBag, string card = null, string title = null, string description = null, string imageUrl = null, string imageUrlAlt = null, string tweetText = null)
 		{
 			if (viewBag != null)
 			{
@@ -54,6 +54,7 @@ namespace MoviePicker.WebApp.Utilities
 				viewBag.TwitterId = Constants.TWITTER_ID;
 				viewBag.TwitterTitle = title ?? Constants.APPLICATION_NAME;
 				viewBag.TwitterDescription = description ?? "Don't know where to start with the Fantasy Movie League? Take a look at the MooVee Picker to help you with your picks!";
+				viewBag.TwitterTweetText = tweetText ?? viewBag.TwitterTitle;
 
 				if (!string.IsNullOrEmpty(imageUrl))
 				{

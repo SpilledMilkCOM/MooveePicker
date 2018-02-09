@@ -225,7 +225,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			var movies = _minerModel.CreateWeightedList();
 			var moviePicker = new TopMoviePicker(new MovieList());
-			var moviePickerBonusOff = new TopMoviePicker(new MovieList()) { EnableBestPerformer = false };
+			var moviePickerBonusOff = new TopMoviePicker(new MovieList());
 
 			moviePicker.AddMovies(movies);
 
@@ -255,6 +255,7 @@ namespace MoviePicker.WebApp.Controllers
 			}
 
 			moviePickerBonusOff.AddMovies(clonedList);
+			moviePickerBonusOff.EnableBestPerformer = false;
 
 			// Start both.
 
@@ -397,7 +398,8 @@ namespace MoviePicker.WebApp.Controllers
 											, viewModel.TwitterTitle
 											, viewModel.TwitterDescription
 											, $"{Constants.WEBSITE_URL}/images/{viewModel.TwitterImageFileName}"
-											, $"Collage of my movie lineups.");
+											, $"Collage of my movie lineups."
+											, $"Check out my @fml_movies picks. {picks.ToString()} #ShowYourScreens @SpilledMilkCOM");
 
 			return viewModel;
 		}
