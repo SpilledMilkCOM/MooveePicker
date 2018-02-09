@@ -36,6 +36,11 @@ namespace MoviePicker.WebApp.Utilities
 			return result;
 		}
 
+		public static string GetRequestString(HttpRequestBase request, string key)
+		{
+			return request.Params[key];
+		}
+
 		/// <summary>
 		/// Initialize the ViewBag with the Twitter Card "meta" tag info.
 		/// </summary>

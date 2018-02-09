@@ -456,9 +456,7 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		private void ParseViewRequest()
-
 		{
-
 		}
 
 		private void RunSimulation(PicksViewModel picksViewModel)
