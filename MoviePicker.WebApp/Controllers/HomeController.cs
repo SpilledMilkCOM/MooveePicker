@@ -225,21 +225,25 @@ namespace MoviePicker.WebApp.Controllers
 
 			var movies = _minerModel.CreateWeightedList();
 			var moviePicker = new TopMoviePicker(new MovieList());
+			var moviePickerBonusOff = new TopMoviePicker(new MovieList()) { EnableBestPerformer = false };
 
 			moviePicker.AddMovies(movies);
 
-			var paramAndResult = new KeyValuePair<TopMoviePicker, List<IMovieList>>();
-
-			var bonusThread = new Thread(new ParameterizedThreadStart(PickMovie));
-
-			var movieLists = moviePicker.ChooseBest(10);
-
-			bonusThread.Start(paramAndResult);
-
-			foreach (var movieList in movieLists)
+			var bonusThread = new Thread(new ThreadStart(() =>
 			{
-				result.MorePicks.Add(new MovieListModel { Picks = movieList });
-			}
+				foreach (var movieList in moviePicker.ChooseBest(10))
+				{
+					result.MorePicks.Add(new MovieListModel { Picks = movieList });
+				}
+			}))	{ Name = "bonusThread" };
+
+			var bonusOffThread = new Thread(new ThreadStart(() =>
+			{
+				foreach (var movieList in moviePickerBonusOff.ChooseBest(10))
+				{
+					result.MorePicksBonusOff.Add(new MovieListModel { Picks = movieList });
+				}
+			}))	{ Name = "bonusOffThread" };
 
 			// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
 
@@ -250,25 +254,23 @@ namespace MoviePicker.WebApp.Controllers
 				clonedList.Add(movie.Clone());
 			}
 
-			moviePicker.AddMovies(clonedList);
-			moviePicker.EnableBestPerformer = false;
+			moviePickerBonusOff.AddMovies(clonedList);
 
-			movieLists = moviePicker.ChooseBest(10);
+			// Start both.
 
-			foreach (var movieList in movieLists)
-			{
-				result.MorePicksBonusOff.Add(new MovieListModel { Picks = movieList });
-			}
+			bonusThread.Start();
+			bonusOffThread.Start();
+
+			// Wait for both to finish...
+
+			bonusThread.Join();
+			bonusOffThread.Join();
 
 			stopWatch.Stop();
 
 			result.Duration = stopWatch.ElapsedMilliseconds;
 
 			return result;
-		}
-
-		private void PickMovie(object obj)
-		{
 		}
 
 		private PicksViewModel ConstructPicksViewModel()
