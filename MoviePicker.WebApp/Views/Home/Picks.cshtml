@@ -20,6 +20,16 @@
 		The other percentages are the values that those movies would have to GAIN if the top ranked movie held its number.
 		I feel like this table is more helpful that knowing what the 2nd, 3rd, etc. slots will be.
 		This may sway your decision on what your bonus movie might be.
+
+		<a class="btn btn-info btn-xs"
+		   href="@string.Format("MorePicks?{0}", Request.QueryString)"
+		   data-toggle="tooltip"
+		   data-placement="bottom"
+		   title="View the top 10 picks...">
+			<h4>
+				More Picks... Top 10 for bonus ON and OFF (this is a bit slow... please be patient.)
+			</h4>
+		</a>
 	</div>
 </div>
 
@@ -30,6 +40,8 @@
 *@
 
 @* ========================================================================================== FORECAST WEIGHTS*@
+
+<div class="row-divider"> </div>
 
 <table class="table">
 	<thead>
@@ -88,20 +100,6 @@
 	</div>
 
 	@Html.Partial("MovieList2", Model.MovieListBonusOff)
-</div>
-
-<div class="row-divider"> </div>
-
-<div class="col-sm-3">
-	<a class="btn btn-info btn-xs"
-	   href="@string.Format("MorePicks?{0}", Request.QueryString)"
-	   data-toggle="tooltip"
-	   data-placement="bottom"
-	   title="View the top 10 picks...">
-		<h4>
-			More Picks... Top 10 for bonus ON and OFF (this is a bit slow... please be patient.)
-		</h4>
-	</a>
 </div>
 
 <div class="row">
