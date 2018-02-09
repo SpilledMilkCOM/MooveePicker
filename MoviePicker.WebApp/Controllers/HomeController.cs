@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Web.Mvc;
 
 using TopMoviePicker = MooveePicker.MoviePicker;
@@ -227,7 +228,13 @@ namespace MoviePicker.WebApp.Controllers
 
 			moviePicker.AddMovies(movies);
 
+			var paramAndResult = new KeyValuePair<TopMoviePicker, List<IMovieList>>();
+
+			var bonusThread = new Thread(new ParameterizedThreadStart(PickMovie));
+
 			var movieLists = moviePicker.ChooseBest(10);
+
+			bonusThread.Start(paramAndResult);
 
 			foreach (var movieList in movieLists)
 			{
@@ -258,6 +265,10 @@ namespace MoviePicker.WebApp.Controllers
 			result.Duration = stopWatch.ElapsedMilliseconds;
 
 			return result;
+		}
+
+		private void PickMovie(object obj)
+		{
 		}
 
 		private PicksViewModel ConstructPicksViewModel()
