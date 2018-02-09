@@ -264,6 +264,21 @@ namespace MovieMiner
 			return Regex.Replace(text, "[^\\w\\s]", string.Empty).Replace("-", string.Empty).Trim();
 		}
 
+		protected string RemoveStudio(string name)
+		{
+			var result = name;
+
+			// Remove the studio that's in parenthesis
+			var parenIndex = result.IndexOf("(");
+
+			if (parenIndex > 0)
+			{
+				result = result.Substring(0, parenIndex).Trim();
+			}
+
+			return result;
+		}
+
 		/// <summary>
 		/// Thread safe check to see if this miner should load.
 		/// </summary>

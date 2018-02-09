@@ -84,7 +84,7 @@ namespace MovieMiner
 						{
 							if (row.Name.ToLower() == "h2")
 							{
-								currentName = row.InnerText;
+								currentName = HttpUtility.HtmlDecode(row.InnerText);
 							}
 							else if (row.InnerText.StartsWith("Prediction:"))
 							{
@@ -103,6 +103,8 @@ namespace MovieMiner
 
 								if (decimal.TryParse(currentValue, out earnings))
 								{
+									currentName = RemovePunctuation(RemoveStudio(currentName));
+
 									currentMovie = new Movie
 									{
 										Name = MapName(currentName),
