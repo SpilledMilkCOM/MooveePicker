@@ -76,19 +76,19 @@
   <ItemGroup>
     <Compile Include="TitleMatchTests.cs" />
     <Compile Include="MovieTests.cs" />
-    <Compile Include="MoviePickerTest_20170820.cs" />
+    <Compile Include="Old\MoviePickerTest_20170820.cs" />
     <Compile Include="MoviePicks.cs" />
     <Compile Include="DebugLogger.cs" />
     <Compile Include="MoviePickerTestBase.cs" />
     <Compile Include="MovieListTests.cs" />
-    <Compile Include="MoviePickerTest_20170813.cs" />
-    <Compile Include="MoviePickerTest_20170730.cs" />
-    <Compile Include="MoviePickerTest_20170625.cs" />
-    <Compile Include="MoviePickerTest_20170618.cs" />
+    <Compile Include="Old\MoviePickerTest_20170813.cs" />
+    <Compile Include="Old\MoviePickerTest_20170730.cs" />
+    <Compile Include="Old\MoviePickerTest_20170625.cs" />
+    <Compile Include="Old\MoviePickerTest_20170618.cs" />
     <Compile Include="MoviePickerTopDropsOutTests.cs" />
     <Compile Include="MoviePickerVariantsAllTests.cs" />
     <Compile Include="MoviePickerVariantsTests.cs" />
-    <Compile Include="MoviePickerTest_20170611.cs" />
+    <Compile Include="Old\MoviePickerTest_20170611.cs" />
     <Compile Include="MoviePickerTests.cs" />
     <Compile Include="MsfMovieSolver\MsfMoviePickerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

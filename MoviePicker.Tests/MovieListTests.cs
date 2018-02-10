@@ -4,6 +4,7 @@ using MoviePicker.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Unity;
 
 namespace MoviePicker.Tests
@@ -25,6 +26,100 @@ namespace MoviePicker.Tests
 			_unity.RegisterType<IMovie, Movie>();
 			_unity.RegisterType<IMovieList, MovieList>();
 			_unity.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();
+		}
+
+		[TestMethod]
+		public void MovieList_Add_ReconcileCount()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			test.Add(movies[0]);
+
+			Assert.AreEqual(1, test.Movies.Count(), "The counts are different");
+		}
+
+		[TestMethod]
+		public void MovieList_Add_ReconcileCount4()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			test.Add(movies[0]);
+			test.Add(movies[1]);
+			test.Add(movies[2]);
+
+			Assert.IsTrue(test.CanAdd(movies[3]), "Should be able to add the movie.");
+
+			test.Add(movies[3]);
+
+			Assert.AreEqual(4, test.Movies.Count(), "The counts are different");
+		}
+
+		[TestMethod]
+		public void MovieList_Add_ReconcileCount8()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			test.Add(movies[0]);
+			test.Add(movies[0]);
+			test.Add(movies[1]);
+			test.Add(movies[1]);
+			test.Add(movies[2]);
+			test.Add(movies[2]);
+			test.Add(movies[3]);
+			test.Add(movies[3]);
+
+			Assert.AreEqual(8, test.Movies.Count(), "The hash codes are different");
+		}
+
+		[TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+		public void MovieList_Add_9Items_ThrowsException()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+		}
+
+		[TestMethod]
+		public void MovieList_CanAdd_ReconcileCount()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			Assert.IsTrue(test.CanAdd(movies[0]));
+
+			test.Add(movies[0]);
+
+			Assert.IsFalse(test.CanAdd(movies[0]));
+		}
+
+		[TestMethod]
+		public void MovieList_CanAdd_OnlyTestsCostNotQuantity()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+
+			Assert.IsTrue(test.CanAdd(movies[5]));
 		}
 
 		[TestMethod]
@@ -98,6 +193,27 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod]
+		public void MovieList_IsFull_TestsQuantityAndNotCost()
+		{
+			var movies = ThisWeeksMoviesPicks();
+			var test = UnityContainer.Resolve<IMovieList>();
+
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+
+			Assert.IsFalse(test.IsFull);
+
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+			test.Add(movies[5]);
+
+			Assert.IsTrue(test.IsFull);
+		}
+
+		[TestMethod]
 		public void MovieList_ToString()
 		{
 			var movies = ThisWeeksMoviesPicks();
@@ -107,7 +223,7 @@ namespace MoviePicker.Tests
 			test.Add(movies[2]);
 			test.Add(movies[5]);
 
-			Assert.AreEqual("WW,CU,Guardians", test.ToString(), "The hash codes are different");
+			Assert.AreEqual("WW,CU,Grdns", test.ToString(), "The hash codes are different");
 		}
 
 		[TestMethod]
@@ -140,7 +256,7 @@ namespace MoviePicker.Tests
 			test.Add(movies[5]);
 			test.Add(movies[5]);
 
-			Assert.AreEqual("WWx2,CUx2,Guardiansx2", test.ToString(), "The hash codes are different");
+			Assert.AreEqual("WWx2,CUx2,Grdnsx2", test.ToString(), "The hash codes are different");
 		}
 
 		//----==== PRIVATE ====---------------------------------------------------------
