@@ -1,5 +1,6 @@
 ﻿using MoviePicker.Common.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Unity;
@@ -62,6 +63,25 @@ namespace MoviePicker.Tests
 			result.Cost = cost;
 
 			return result;
+		}
+
+		protected void WriteMovies(IEnumerable<IMovie> movies)
+		{
+			Logger.WriteLine($"Total Movies In List: {movies.Count()}");
+
+			foreach (var movie in movies.OrderByDescending(item => item.Earnings))
+			{
+				var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
+
+				if (movie.Cost > 0)
+				{
+					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} {movie.Cost,3} Bx   ${movie.Earnings,13:N2} - [${movie.Efficiency,10:N2}]{isBestBonus}");
+				}
+				else
+				{
+					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} ${movie.Earnings:N2}");
+				}
+			}
 		}
 
 		protected void WriteMovies(IMovieList movies)

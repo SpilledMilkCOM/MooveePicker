@@ -27,7 +27,8 @@ namespace MovieMiner
 			{
 				{" Friday", DayOfWeek.Friday},
 				{" Saturday", DayOfWeek.Saturday},
-				{" Sunday", DayOfWeek.Sunday}
+				{" Sunday", DayOfWeek.Sunday},
+				{" Monday", DayOfWeek.Monday}
 			};
 		}
 
@@ -219,8 +220,6 @@ namespace MovieMiner
 				{
 					if (name.EndsWith(pair.Key))
 					{
-						// Remove the key
-
 						result = pair.Value;
 						break;
 					}

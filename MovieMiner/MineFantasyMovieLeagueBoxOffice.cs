@@ -15,11 +15,20 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "https://fantasymovieleague.com";
 
 		private readonly string _columnTitle;
+		private readonly Dictionary<string, DayOfWeek> _daysOfWeek;
 
 		public MineFantasyMovieLeagueBoxOffice(string columnTitle = null)
 			: base("FML Box Office", "FMLBO", DEFAULT_URL)
 		{
 			_columnTitle = columnTitle;
+
+			_daysOfWeek = new Dictionary<string, DayOfWeek>
+			{
+				{"FRI ", DayOfWeek.Friday},
+				{"SAT ", DayOfWeek.Saturday},
+				{"SUN ", DayOfWeek.Sunday},
+				{"MON ", DayOfWeek.Monday}
+			};
 		}
 
 		public override IMiner Clone()
@@ -84,8 +93,14 @@ namespace MovieMiner
 				var id = GetIdFromClass(tableRow?.Attributes["class"]?.Value);
 				var nameNode = tableRow?.SelectSingleNode("td[contains(@class, 'movie-title')]//span[contains(@class, 'title')]");
 				var imageNode = tableRow?.SelectSingleNode("td//div[contains(@class, 'proxy-img')]");
+				var name = HttpUtility.HtmlDecode(nameNode?.InnerText);
 
-				var movie = new Movie { Id = id, Name = RemovePunctuation(HttpUtility.HtmlDecode(nameNode?.InnerText)) };
+				var movie = new Movie
+				{
+					Id = id,
+					Day = ParseDayOfWeek(name),
+					Name = RemovePunctuation(ParseName(name))
+				};
 
 				// Grab the first one for now.
 
@@ -135,13 +150,55 @@ namespace MovieMiner
 			int result = -1;
 			var tokens = nodeClass.Split(new char[] { '-', ' ' });
 
-			if (tokens.Length >=2)
+			if (tokens.Length >= 2)
 			{
 				int parsed = 0;
 
 				if (int.TryParse(tokens[1], out parsed))
 				{
 					result = parsed;
+				}
+			}
+
+			return result;
+		}
+
+		private DayOfWeek? ParseDayOfWeek(string name)
+		{
+			DayOfWeek? result = null;
+
+			if (name != null)
+			{
+				foreach (var pair in _daysOfWeek)
+				{
+					if (name.StartsWith(pair.Key))
+					{
+						// Remove the key
+
+						result = pair.Value;
+						break;
+					}
+				}
+			}
+
+			return result;
+		}
+
+		private string ParseName(string name)
+		{
+			var result = name;
+
+			if (result != null)
+			{
+				foreach (var key in _daysOfWeek.Keys)
+				{
+					if (result.StartsWith(key))
+					{
+						// Remove the key
+
+						result = result.Substring(key.Length - 1, result.Length - key.Length - (key.Length + "ONLY".Length));
+						break;
+					}
 				}
 			}
 

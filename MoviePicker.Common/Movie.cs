@@ -144,8 +144,6 @@ namespace MoviePicker.Common
 			get { return (Day.HasValue) ? $"{MovieName} [{Day.Value}]" : MovieName; }
 			set
 			{
-				// TODO: Possibly parse the name to find DayOfWeek.
-
 				MovieName = value;
 			}
 		}

@@ -27,6 +27,20 @@ namespace MoviePicker.WebApp.Tests.Models
 			//_unity.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();
 		}
 
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_ConstructWithDAta()
+		{
+			var test = new MinerModel(true);
+
+			foreach (var miner in test.Miners)
+			{
+				Logger.WriteLine(string.Empty);
+				Logger.WriteLine($"======== {miner.Name} ========");
+				WriteMovies(miner.Movies);
+			}
+		}
+
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_TopMoviePicker()
 		{
@@ -55,7 +69,6 @@ namespace MoviePicker.WebApp.Tests.Models
 				WriteMovies(movieList);
 			}
 		}
-
 
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_WriteCodedOutput()
