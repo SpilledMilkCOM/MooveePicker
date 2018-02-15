@@ -26,7 +26,7 @@ namespace MovieMiner
 			_movies = new List<IMovie>();
 
 			Abbreviation = abbr?.Trim();
-			CacheConfiguration = new CacheConfiguration();				// Just take the default for now.
+			CacheConfiguration = new CacheConfiguration();              // Just take the default for now.
 			Expiration = DateTime.Now.Subtract(new TimeSpan(1));        // This will trigger the first load.
 			IsHidden = false;
 			OkToMine = true;
@@ -38,6 +38,8 @@ namespace MovieMiner
 		public string Abbreviation { get; private set; }
 
 		public ICacheConfiguration CacheConfiguration { get; protected set; }
+
+		public bool CloneCausedReload { get; private set; }
 
 		/// <summary>
 		/// A thread safe version of setting the Error (the Error can be set in the Loading thread or when filtering)
@@ -142,6 +144,7 @@ namespace MovieMiner
 
 					Movies = Mine();
 
+					CloneCausedReload = true;
 					LastLoaded = DateTime.Now;
 				}
 				finally
@@ -182,11 +185,19 @@ namespace MovieMiner
 		/// <returns></returns>
 		protected IMiner Clone(MinerBase clone)
 		{
+			CloneCausedReload = false;
+
 			// Make sure the source data is all up to date.
 			// If this is the thread loading then you will wait before you clone it.
 			// TODO: Possibly thread out the loading of the data.
 
 			Load();
+
+			if (CloneCausedReload)
+			{
+				clone.CloneCausedReload = true;
+				CloneCausedReload = false;
+			}
 
 			// Copy and fill in all of the base goodness.
 
@@ -196,10 +207,10 @@ namespace MovieMiner
 			clone.IsHidden = IsHidden;
 			clone.LastLoaded = LastLoaded;
 			clone.Name = Name;
-			clone.OkToMine = false;			// This is the clone of the singleton, this should prevent any reloading
+			clone.OkToMine = false;         // This is the clone of the singleton, this should prevent any reloading
 			clone.Url = Url;
 			clone.UrlSource = UrlSource;
-			clone.Weight = Weight;			// You get the default.  :)
+			clone.Weight = Weight;          // You get the default.  :)
 
 			// Set during the Mine() method.
 
@@ -208,7 +219,7 @@ namespace MovieMiner
 			// Create a NEW list of movies, the movie objects are still shared between this object and the cloned object.
 			// (you can't just assign the list over otherwise the list will be shared too and you'll get interation problems amongst the threads)
 
-			clone.Movies = Movies;
+			clone.Movies = new List<IMovie>(Movies);
 
 			return clone;
 		}
@@ -294,7 +305,7 @@ namespace MovieMiner
 
 			if ((DateTime.Now > Expiration || Expiration == null) && !_isLoading)
 			{
-				lock(_isLoadingLock)
+				lock (_isLoadingLock)
 				{
 					// _isLoading will already be set to true for the losing thread.
 

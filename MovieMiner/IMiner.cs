@@ -14,6 +14,8 @@ namespace MovieMiner
 		/// </summary>
 		string Abbreviation { get; }
 
+		bool CloneCausedReload { get; }
+
 		bool IsHidden { get; set; }
 
 		List<IMovie> Movies { get; }

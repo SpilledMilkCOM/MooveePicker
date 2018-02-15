@@ -36,10 +36,13 @@ namespace MoviePicker.WebApp.Models
 
 			foreach (var miner in Miners)
 			{
+				// Clone could possibly load in fresh data.
 				clone.Miners.Add(miner.Clone());
 
 				if (idx == MY_INDEX)
 				{
+					// The custom (numbers) miner needs a reference to THIS model
+
 					var mineMine = clone.Miners[idx] as MineMine;
 
 					if (mineMine != null)
@@ -49,6 +52,39 @@ namespace MoviePicker.WebApp.Models
 				}
 
 				idx++;
+			}
+
+			// If any of the miners reloaded, then the composite movies (in any) need to be refigured.
+
+			if (clone.Miners.Any(miner => miner.CloneCausedReload))
+			{ 
+				var compoundMovies = CompoundMovies(clone.Miners[FML_INDEX].Movies);
+
+				if (compoundMovies.Any())
+				{
+					compoundMovies = CompoundMovies(clone.Miners[TODD_INDEX].Movies);
+
+					idx = TODD_INDEX + 1;
+
+					foreach (var miner in clone.Miners.Skip(TODD_INDEX + 1))
+					{
+						if (miner.CloneCausedReload && miner.Movies.Any())
+						{
+							if (!miner.Movies.Any(movie => movie.Day.HasValue))
+							{
+								// The list has no compound movies so they need to be built
+
+								// Need to readjust the movies. (of the clone)
+								miner.SetMovies(SpreadCompoundMovies(compoundMovies, miner.Movies));
+
+								// Need to readjust the movies. (of the singleton)
+								Miners[idx].SetMovies(SpreadCompoundMovies(compoundMovies, Miners[idx].Movies));
+							}
+						}
+
+						idx++;
+					}
+				}
 			}
 
 			FilterMinerMovies(clone.Miners);
@@ -124,6 +160,11 @@ namespace MoviePicker.WebApp.Models
 				found.MovieName = movie.MovieName;        // So the names aren't fuzzy anymore.
 				found.Cost = movie.Cost;
 			}
+		}
+
+		private List<IMovie> CompoundMovies(IList<IMovie> movies)
+		{
+			return movies.Where(movie => movie.Day.HasValue).ToList();
 		}
 
 		/// <summary>
@@ -205,7 +246,7 @@ namespace MoviePicker.WebApp.Models
 		/// Filter out the data that does not match the base date.
 		/// </summary>
 		/// <param name="minerData"></param>
-		void FilterMinerMovies(List<IMiner> minerData)
+		private void FilterMinerMovies(List<IMiner> minerData)
 		{
 			DateTime? weekendEnding = minerData[FML_INDEX].Movies?.FirstOrDefault()?.WeekendEnding;
 
@@ -271,7 +312,7 @@ namespace MoviePicker.WebApp.Models
 
 			// TODO: Fix this for the FML base list.  This will break when another compound movie (multi-day) comes into play.
 
-			compoundMovies = baseList.Where(movie => movie.Day.HasValue).ToList();
+			compoundMovies = CompoundMovies(baseList);
 
 			if (compoundMovies.Any())
 			{
@@ -283,7 +324,7 @@ namespace MoviePicker.WebApp.Models
 				{
 					((ICache)minerTodd).Load();
 
-					compoundMovies = minerTodd.Movies.Where(movie => movie.Day.HasValue).ToList();
+					compoundMovies = CompoundMovies(minerTodd.Movies);
 
 					toSkip++;       // Now skip Todd's too.
 				}
@@ -305,7 +346,10 @@ namespace MoviePicker.WebApp.Models
 							movieList = miner.Movies;
 						}
 
-						result.Add(movieList);
+						lock (result)
+						{
+							result.Add(movieList);
+						}
 
 						if (movieList != null && movieList.Any())
 						{
@@ -313,30 +357,12 @@ namespace MoviePicker.WebApp.Models
 							{
 								if (!movieList.Any(movie => movie.Day.HasValue))
 								{
+
+
 									// The list has no compound movies so they need to be built
-
-									var rootMovie = movieList.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
-									var compoundTotal = compoundMovies.Sum(movie => movie.Earnings);
-
-									if (rootMovie != null)
-									{
-										movieList.Remove(rootMovie);
-
-										foreach (var movieDay in compoundMovies)
-										{
-											movieList.Add(new Movie
-											{
-												Name = movieDay.MovieName,
-												Day = movieDay.Day,
-												Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
-												WeekendEnding = movieDay.WeekendEnding
-											});
-										}
-									}
+									// Need to readjust the movies.
+									miner.SetMovies(SpreadCompoundMovies(compoundMovies, movieList));
 								}
-
-								// Need to readjust the movies.
-								miner.SetMovies(movieList);
 							}
 
 							// Assign the id, name, and cost to each movie.
@@ -350,13 +376,16 @@ namespace MoviePicker.WebApp.Models
 				}
 				catch (Exception ex)
 				{
-					result.Add(new List<IMovie>());     // Add a placeholder.
+					lock (result)
+					{
+						result.Add(new List<IMovie>());     // Add a placeholder.
+					}
 
 					miner.Error = "Error";
 
 					//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
 				}
-			//}
+				//}
 			});
 
 			// Mine my movies LAST because they are based on all of the other miners.
@@ -364,6 +393,30 @@ namespace MoviePicker.WebApp.Models
 			miners.ToList()[MY_INDEX].Mine();
 
 			return result;
+		}
+
+		private List<IMovie> SpreadCompoundMovies(List<IMovie> compoundMovies, List<IMovie> movies)
+		{
+			var rootMovie = movies.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
+			var compoundTotal = compoundMovies.Sum(movie => movie.Earnings);
+
+			if (rootMovie != null)
+			{
+				movies.Remove(rootMovie);
+
+				foreach (var movieDay in compoundMovies)
+				{
+					movies.Add(new Movie
+					{
+						Name = movieDay.MovieName,
+						Day = movieDay.Day,
+						Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
+						WeekendEnding = movieDay.WeekendEnding
+					});
+				}
+			}
+
+			return movies;
 		}
 	}
 }
