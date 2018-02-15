@@ -17,6 +17,7 @@ namespace MoviePicker.WebApp.Models
 		//private const int NERD_INDEX = 1;
 		private const int FML_INDEX = 0;
 		private const int MY_INDEX = FML_INDEX + 1;
+		private const int TODD_INDEX = FML_INDEX + 2;
 
 		public MinerModel(bool createWithData)
 		{
@@ -258,6 +259,7 @@ namespace MoviePicker.WebApp.Models
 		private List<List<IMovie>> MineMiners(IEnumerable<IMiner> miners)
 		{
 			var result = new List<List<IMovie>>();
+			int toSkip = 2;         // Skip FML and "My" (custom) miner
 			List<IMovie> baseList = null;
 			List<IMovie> compoundMovies = null;
 
@@ -271,7 +273,24 @@ namespace MoviePicker.WebApp.Models
 
 			compoundMovies = baseList.Where(movie => movie.Day.HasValue).ToList();
 
-			Parallel.ForEach(miners, miner =>
+			if (compoundMovies.Any())
+			{
+				// Todd's list is preferred for compound movies.
+
+				var minerTodd = miners.ToList()[TODD_INDEX];
+
+				if (minerTodd != null)
+				{
+					((ICache)minerTodd).Load();
+
+					compoundMovies = minerTodd.Movies.Where(movie => movie.Day.HasValue).ToList();
+
+					toSkip++;       // Now skip Todd's too.
+				}
+			}
+
+			Parallel.ForEach(miners.Skip(toSkip), miner =>
+			//foreach (var miner in miners.Skip(toSkip))
 			{
 				try
 				{
@@ -288,19 +307,10 @@ namespace MoviePicker.WebApp.Models
 
 						result.Add(movieList);
 
-						if (movieList != null)
+						if (movieList != null && movieList.Any())
 						{
 							if (compoundMovies.Any())
 							{
-								if (miner.Abbreviation == "Todd")
-								{
-									// Prefer Todd's breakdown if it's available.
-
-									compoundMovies = movieList.Where(movie => movie.Day.HasValue).ToList();
-								}
-
-								// TODO: Move this creation outside of the thread so the compound movie list is set.
-
 								if (!movieList.Any(movie => movie.Day.HasValue))
 								{
 									// The list has no compound movies so they need to be built
@@ -324,6 +334,9 @@ namespace MoviePicker.WebApp.Models
 										}
 									}
 								}
+
+								// Need to readjust the movies.
+								miner.SetMovies(movieList);
 							}
 
 							// Assign the id, name, and cost to each movie.
@@ -343,11 +356,12 @@ namespace MoviePicker.WebApp.Models
 
 					//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
 				}
+			//}
 			});
 
 			// Mine my movies LAST because they are based on all of the other miners.
 
-			miners.ToList()[1].Mine();
+			miners.ToList()[MY_INDEX].Mine();
 
 			return result;
 		}

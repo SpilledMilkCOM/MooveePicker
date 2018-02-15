@@ -168,6 +168,11 @@ namespace MovieMiner
 
 		public abstract List<IMovie> Mine();
 
+		public void SetMovies(List<IMovie> movies)
+		{
+			Movies = movies;
+		}
+
 		//----==== PROTECTED METHODS ====----------------------------------------------------------
 
 		/// <summary>

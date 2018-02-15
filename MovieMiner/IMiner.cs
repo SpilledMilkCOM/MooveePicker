@@ -56,6 +56,8 @@ namespace MovieMiner
 
 		List<IMovie> Mine();
 
+		void SetMovies(List<IMovie> movies);
+
 		//Task<List<IMovie>> MineAsync();			// Not just yet.
 	}
 }
