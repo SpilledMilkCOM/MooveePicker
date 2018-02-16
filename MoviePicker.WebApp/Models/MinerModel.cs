@@ -2,6 +2,7 @@
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.WebApp.Interfaces;
+using MoviePicker.WebApp.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -135,6 +136,17 @@ namespace MoviePicker.WebApp.Models
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Makes sure that the movie posters are downloaded locally.
+		/// This is so the URL referenced isn't used a TON.
+		/// </summary>
+		public void DownloadMoviePosters(string localFilePrefix)
+		{
+			var miner = Miners[0];
+
+			FileUtility.DownloadFiles(miner.Movies.Select(movie => movie.ImageUrl), localFilePrefix);
 		}
 
 		/// <summary>

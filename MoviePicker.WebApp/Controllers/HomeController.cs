@@ -83,6 +83,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			ControllerUtility.SetTwitterCard(ViewBag);
 
+			DownloadMoviePosters();
+
 			stopWatch.Stop();
 
 			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
@@ -138,6 +140,8 @@ namespace MoviePicker.WebApp.Controllers
 			ParseBoxOfficeWeightRequest();
 
 			ControllerUtility.SetTwitterCard(ViewBag);
+
+			DownloadMoviePosters();
 
 			return View(ConstructMorePicksViewModel());
 		}
@@ -201,6 +205,8 @@ namespace MoviePicker.WebApp.Controllers
 			_minerModel.Miners.Last().IsHidden = true;
 
 			ControllerUtility.SetTwitterCard(ViewBag);
+
+			DownloadMoviePosters();
 
 			stopWatch.Stop();
 
@@ -342,6 +348,8 @@ namespace MoviePicker.WebApp.Controllers
 			// Needs to be put in the ViewBag since this value is on the footer.
 			ViewBag.TwitterTweetUrl = $"https://twitter.com/intent/tweet?text={leadMovie} leads my lineup @fml_movies {result.SharedPicksUrl.Replace("?", "%3F")}";
 
+			DownloadMoviePosters();
+
 			stopWatch.Stop();
 
 			result.Duration = stopWatch.ElapsedMilliseconds;
@@ -401,7 +409,16 @@ namespace MoviePicker.WebApp.Controllers
 											, $"Collage of my movie lineups."
 											, $"Check out my @fml_movies picks. {picks.ToString()} #ShowYourScreens @SpilledMilkCOM");
 
+			DownloadMoviePosters();
+
 			return viewModel;
+		}
+
+		private void DownloadMoviePosters()
+		{
+			var localFilePrefix = $"{Server.MapPath("~")}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_";
+
+			_minerModel.DownloadMoviePosters(localFilePrefix);
 		}
 
 		private void ParseBoxOfficeWeightRequest()
