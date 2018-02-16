@@ -367,7 +367,7 @@ namespace MoviePicker.WebApp.Controllers
 			var picksViewModel = ConstructPicksViewModel();
 
 			var webRootPath = Server.MapPath("~");
-			var localFilePrefix = $"{webRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_";
+			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}MoviePoster_";
 			var picks = bonusOn ? picksViewModel.MovieList.Picks : picksViewModel.MovieListBonusOff.Picks;
 			var movieImages = picks.MovieImages;
 
@@ -416,7 +416,7 @@ namespace MoviePicker.WebApp.Controllers
 
 		private void DownloadMoviePosters()
 		{
-			var localFilePrefix = $"{Server.MapPath("~")}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_";
+			var localFilePrefix = $"{Server.MapPath("~")}images{Path.DirectorySeparatorChar}MoviePoster_";
 
 			_minerModel.DownloadMoviePosters(localFilePrefix);
 		}

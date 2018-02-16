@@ -145,13 +145,20 @@ namespace MoviePicker.WebApp.Models
 		/// </summary>
 		public void DownloadMoviePosters(string localFilePrefix)
 		{
+			var imageUtil = new ImageUtility();
+
 			var miner = Miners[0];
 
-			FileUtility.DownloadFiles(miner.Movies.Select(movie => movie.ImageUrlSource), localFilePrefix);
+			var filesDownloaded = FileUtility.DownloadFiles(miner.Movies.Select(movie => movie.ImageUrlSource), localFilePrefix);
 
 			foreach (var movie in miner.Movies)
 			{
 				movie.ImageUrl = $"/Images/MoviePoster_{Path.GetFileName(movie.ImageUrlSource)}";
+
+				if (filesDownloaded)
+				{
+					imageUtil.AdjustAspectRatio( $"{localFilePrefix}{Path.GetFileName(movie.ImageUrlSource)}", 2 / 3m );
+				}
 			}
 		}
 

@@ -68,8 +68,10 @@ namespace MoviePicker.WebApp.Utilities
 		/// </summary>
 		/// <param name="files">A list of file Urls</param>
 		/// <param name="localFilePrefix">Full path plus local file prefix</param>
-		public static void DownloadFiles(IEnumerable<string> files, string localFilePrefix)
+		public static bool DownloadFiles(IEnumerable<string> files, string localFilePrefix)
 		{
+			bool filesDownloaded = false;
+
 			// TODO: Support files with the same name, but on different base Urls
 
 			CleanupFiles(localFilePrefix);
@@ -86,8 +88,12 @@ namespace MoviePicker.WebApp.Utilities
 				if (!File.Exists(localFile))
 				{
 					HttpRequestUtility.DownloadFile(fileUrl, localFile);
+
+					filesDownloaded = true;
 				}
 			}
+
+			return filesDownloaded;
 		}
 
 		/// <summary>

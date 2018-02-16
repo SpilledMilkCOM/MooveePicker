@@ -14,6 +14,43 @@ namespace MoviePicker.WebApp.Utilities
 		/// <returns>The file name to be served up.</returns>
 		private const string DEFAULT_IMAGE_DIR = "images";
 
+		public void AdjustAspectRatio(string localFile, decimal aspectRatio)
+		{
+			var tempFileName = $"{Path.GetDirectoryName(localFile)}{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(localFile)}.temp{Path.GetExtension(localFile)}";
+
+			if (File.Exists(tempFileName))
+			{
+				File.Delete(tempFileName);
+			}
+
+			using (var image = Image.FromFile(localFile))
+			{
+				// Make sure the aspect ratio needs to be adjusted before adjusting it.
+
+				if (image.Width / aspectRatio != image.Height)
+				{
+					using (var destBitmap = new Bitmap(image.Width, (int)(image.Width / aspectRatio)))
+					{
+						using (var graphics = Graphics.FromImage(destBitmap))
+						{
+							graphics.Clear(Color.White);
+
+							graphics.DrawImage(image, 0, 0, image.Width, image.Height);
+						}
+
+						destBitmap.Save(tempFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+					}
+				}
+
+				image.Dispose();
+			}
+
+			// Rename
+
+			File.Delete(localFile);
+			File.Move(tempFileName, localFile);
+		}
+
 		/// <summary>
 		/// Combine the list of images into a single image
 		/// </summary>
