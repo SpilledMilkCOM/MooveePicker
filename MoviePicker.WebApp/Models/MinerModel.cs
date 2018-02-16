@@ -5,6 +5,7 @@ using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -146,7 +147,12 @@ namespace MoviePicker.WebApp.Models
 		{
 			var miner = Miners[0];
 
-			FileUtility.DownloadFiles(miner.Movies.Select(movie => movie.ImageUrl), localFilePrefix);
+			FileUtility.DownloadFiles(miner.Movies.Select(movie => movie.ImageUrlSource), localFilePrefix);
+
+			foreach (var movie in miner.Movies)
+			{
+				movie.ImageUrl = $"/Images/MoviePoster_{Path.GetFileName(movie.ImageUrlSource)}";
+			}
 		}
 
 		/// <summary>

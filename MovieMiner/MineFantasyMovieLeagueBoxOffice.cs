@@ -114,6 +114,7 @@ namespace MovieMiner
 				if (imageNode != null)
 				{
 					movie.ImageUrl = imageNode?.Attributes["data-img-src"]?.Value;
+					movie.ImageUrlSource = movie.ImageUrl;
 				}
 
 				// Might as well grab the bux so the pick can be determined stand-alone

@@ -46,12 +46,20 @@ namespace MoviePicker.Common.Interfaces
 		/// </summary>
 		int Id { get; set; }
 
+		/// <summary>
+		/// Local image Url (unless there isn't one then it's the same as the source)
+		/// </summary>
 		string ImageUrl { get; set; }
+
+		/// <summary>
+		/// The source image url that will not change.
+		/// </summary>
+		string ImageUrlSource { get; set; }
 
 		/// <summary>
 		/// Set to true if the Efficiency is the best out of all the other movies.
 		/// </summary>
-        bool IsBestPerformer { get; set; }
+		bool IsBestPerformer { get; set; }
 
 		/// <summary>
 		/// The name of the movie (NOT including the day of the week, if applicable)

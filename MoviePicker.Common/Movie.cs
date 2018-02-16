@@ -126,6 +126,8 @@ namespace MoviePicker.Common
 
 		public string ImageUrl { get; set; }
 
+		public string ImageUrlSource { get; set; }
+
 		public bool IsBestPerformer
 		{
 			get { return _isBestPerformer; }

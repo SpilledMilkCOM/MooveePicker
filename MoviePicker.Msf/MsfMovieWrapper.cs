@@ -85,6 +85,12 @@ namespace MoviePicker.Msf
 			set { _movie.ImageUrl = value; }
 		}
 
+		public string ImageUrlSource
+		{
+			get { return _movie.ImageUrlSource; }
+			set { _movie.ImageUrlSource = value; }
+		}
+
 		public string MovieName
 		{
 			get { return _movie.MovieName; }
