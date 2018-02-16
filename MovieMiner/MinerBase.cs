@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using MoviePicker.Common.Interfaces;
@@ -40,6 +41,10 @@ namespace MovieMiner
 		public ICacheConfiguration CacheConfiguration { get; protected set; }
 
 		public bool CloneCausedReload { get; private set; }
+
+		public IMovie CompoundMovie { get { return Movies.FirstOrDefault(movie => movie.Day.HasValue); } }
+
+		public decimal CompoundTotal { get { return Movies.Where(movie => movie.Day.HasValue).Sum(matchedMovie => matchedMovie.EarningsBase); } }
 
 		/// <summary>
 		/// A thread safe version of setting the Error (the Error can be set in the Loading thread or when filtering)

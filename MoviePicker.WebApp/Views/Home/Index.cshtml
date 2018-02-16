@@ -78,7 +78,7 @@
 		var baseUrl = parseBaseUrl()
 
 		window.location.href = baseUrl + url
-	} 
+	}
 
 	function parseBaseUrl() {
 		var baseUrl = window.location.href
@@ -477,6 +477,29 @@
 						</thead>
 
 						<tbody>
+							@if (Model.Miners.Any(miner => miner.CompoundMovie != null))
+							{
+								var compoundMovie = Model.Miners.ToList()[0].CompoundMovie;
+
+								<tr>
+									<td> </td>
+									<td>
+										<img height="75" src="@compoundMovie.ImageUrl" />
+									</td>
+									<td style="font-weight: bold;">@compoundMovie.MovieName TOTAL</td>
+									<td> </td>
+									<td> </td>
+
+									@foreach (var miner in Model.Miners.Skip(2))
+									{
+										var compoundTotal = miner.CompoundTotal;
+
+										<td>@string.Format("{0}", compoundTotal > 0 ? compoundTotal.ToString("N0") : string.Empty)</td>
+										<td></td>
+									}
+								</tr>
+							}
+
 							@foreach (var movie in Model.Miners.First().Movies)
 							{
 								//const string myColumnStyle = "width: 100px;";

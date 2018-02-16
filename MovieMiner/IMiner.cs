@@ -14,6 +14,10 @@ namespace MovieMiner
 		/// </summary>
 		string Abbreviation { get; }
 
+		IMovie CompoundMovie { get;  }
+
+		decimal CompoundTotal { get; }
+
 		bool CloneCausedReload { get; }
 
 		bool IsHidden { get; set; }
