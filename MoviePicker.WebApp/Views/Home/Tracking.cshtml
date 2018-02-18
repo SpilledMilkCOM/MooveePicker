@@ -2,6 +2,7 @@
 
 @using MovieMiner;
 @using MoviePicker.Common.Interfaces;
+@using MoviePicker.WebApp.Models;
 @using MoviePicker.WebApp.Utilities;
 
 @{
@@ -19,6 +20,8 @@
 		</div>
 
 		@Html.Partial("MovieList2", Model.MovieListPerfectPick)
+
+		<div class="clearfix"></div>
 
 		<div class="col-lg-4">
 			<table class="table table-striped">
@@ -46,6 +49,17 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="col-lg-4">
+			<a class="btn btn-info btn-xs"
+			   href="@string.Format("Picks?bo={0}&wl=1,0,0,0,0,0,0", Model.Miners.First().BoxOfficeListCSV)"
+			   data-toggle="tooltip"
+			   data-placement="bottom"
+			   title="">
+				<h4>
+					Pick using estimates...
+				</h4>
+			</a>
+		</div>
 	</div>
 
 	<div class="row">
@@ -71,7 +85,7 @@
 						<th style="text-align: center">
 							<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML Estimated source page...">Estimated</a>
 						</th>
-						<th style="text-align: center">Custom</th>
+						<th style="text-align: center">Custom / Mine</th>
 						<th style="text-align: center">Difference</th>
 						<th style="text-align: center">% Diff</th>
 
@@ -87,10 +101,11 @@
 						var minerCount = 0;
 						IMovie fmlMovie = null;
 						IMovie customMovie = null;
+						var movieIsPickStyle = Model.MovieList.Picks.Movies.Any(item => item.Name == movie.Name) ? "background-color: lightskyblue; " : string.Empty;
 
 						<tr>
-							<td style="text-align: right">@movie.Cost</td>
-							<td>@movie.Name</td>
+							<td style="text-align: right; @movieIsPickStyle">@movie.Cost</td>
+							<td style="@movieIsPickStyle">@movie.Name</td>
 
 							@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 							{
@@ -100,7 +115,7 @@
 
 								if (minerCount == 0)
 								{
-									<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.EarningsBase)</td>
+									<td style="text-align: right; @movieIsPickStyle">@string.Format("{0:N0}", minerMovie?.EarningsBase)</td>
 
 									fmlMovie = minerMovie;
 								}
@@ -108,9 +123,9 @@
 								{
 									customMovie = minerMovie;
 
-									<td style="text-align: right">@string.Format("{0:N0}", minerMovie?.EarningsBase)</td>
+									<td style="text-align: right; @movieIsPickStyle">@string.Format("{0:N0}", minerMovie?.EarningsBase)</td>
 
-									<td style="text-align: right">@string.Format("{0:N0}", fmlMovie.EarningsBase - (customMovie?.EarningsBase ?? 0))</td>
+									<td style="text-align: right; @movieIsPickStyle">@string.Format("{0:N0}", fmlMovie.EarningsBase - (customMovie?.EarningsBase ?? 0))</td>
 
 									if (customMovie?.EarningsBase > 0)
 									{
@@ -161,8 +176,8 @@
 			</table>
 		</div>
 	</div>
-}
-else
-{
-	<h4>Nothing is tracking at the moment.</h4>
-}
+							}
+							else
+							{
+								<h4>Nothing is tracking at the moment.</h4>
+							}
