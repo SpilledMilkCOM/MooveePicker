@@ -178,6 +178,7 @@
     <Compile Include="Utilities\HttpRequestUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\ViewUtility.cs" />
+    <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\MorePicksViewModel.cs" />
     <Compile Include="ViewModels\SharePicksViewModel.cs" />
@@ -270,6 +271,7 @@
     <Content Include="Views\Home\SharePicks.cshtml" />
     <Content Include="Views\Home\MorePicks.cshtml" />
     <Content Include="Views\Shared\MovieListMini.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

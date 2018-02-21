@@ -4,6 +4,7 @@ using MoviePicker.Common.Interfaces;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
 using MoviePicker.WebApp.Utilities;
+using MoviePicker.WebApp.ViewModels;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -53,6 +54,11 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.Miners = _minerModel.Miners;
 
 			UpdateViewModel();
+		}
+
+		public ActionResult Error(string message)
+		{ 
+			return View(new ErrorViewModel { MainMessage = message ?? "An unknown error occurred." });
 		}
 
 		[HttpGet]
