@@ -14,6 +14,8 @@ namespace MovieMiner
 		/// </summary>
 		string Abbreviation { get; }
 
+		string BoxOfficeListCSV { get; }
+
 		IMovie CompoundMovie { get;  }
 
 		decimal CompoundTotal { get; }

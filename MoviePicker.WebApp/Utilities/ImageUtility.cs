@@ -14,16 +14,22 @@ namespace MoviePicker.WebApp.Utilities
 		/// <returns>The file name to be served up.</returns>
 		private const string DEFAULT_IMAGE_DIR = "images";
 
-		public void AdjustAspectRatio(string localFile, decimal aspectRatio)
+		public string AdjustAspectRatio(string localFile, decimal aspectRatio)
 		{
 			var tempFileName = $"{Path.GetDirectoryName(localFile)}{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(localFile)}.temp{Path.GetExtension(localFile)}";
+
+			// Delete the temporary destination file if it exists.
 
 			if (File.Exists(tempFileName))
 			{
 				File.Delete(tempFileName);
 			}
 
-			using (var image = Image.FromFile(localFile))
+			// Move actual file to the temporary name.
+
+			File.Move(localFile, tempFileName);
+
+			using (var image = Image.FromFile(tempFileName))
 			{
 				// Make sure the aspect ratio needs to be adjusted before adjusting it.
 
@@ -38,17 +44,25 @@ namespace MoviePicker.WebApp.Utilities
 							graphics.DrawImage(image, 0, 0, image.Width, image.Height);
 						}
 
-						destBitmap.Save(tempFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+						// Save the resized image to the 
+
+						destBitmap.Save(localFile, System.Drawing.Imaging.ImageFormat.Jpeg);
 					}
 				}
+				else
+				{
+					// No changes needed so move the file back.
 
-				image.Dispose();
+					File.Move(tempFileName, localFile);
+				}
 			}
 
-			// Rename
+			// Rename doesn't work because the local file is still in use.
 
-			File.Delete(localFile);
-			File.Move(tempFileName, localFile);
+			//File.Delete(localFile);
+			//File.Move(tempFileName, localFile);
+
+			return tempFileName;
 		}
 
 		/// <summary>

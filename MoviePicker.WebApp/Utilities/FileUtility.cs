@@ -33,7 +33,13 @@ namespace MoviePicker.WebApp.Utilities
 
 				foreach (var file in Directory.GetFiles(directory, "MoviePoster_*"))
 				{
-					if (File.GetCreationTime(file) < DateTime.Now.AddDays(MOVIE_EXPIRATION_DAYS * -1))
+					if (file.IndexOf(".temp") > 0)
+					{
+						// Just delete the temp files each possible pass.
+
+						File.Delete(file);
+					}
+					else if (File.GetCreationTime(file) < DateTime.Now.AddDays(MOVIE_EXPIRATION_DAYS * -1))
 					{
 						File.Delete(file);
 					}

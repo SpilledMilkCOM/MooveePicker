@@ -373,11 +373,12 @@ namespace MoviePicker.WebApp.Controllers
 			var picksViewModel = ConstructPicksViewModel();
 
 			var webRootPath = Server.MapPath("~");
-			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}MoviePoster_";
+			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
 			var picks = bonusOn ? picksViewModel.MovieList.Picks : picksViewModel.MovieListBonusOff.Picks;
 			var movieImages = picks.MovieImages;
 
-			FileUtility.DownloadFiles(movieImages, localFilePrefix);
+			// Files should already be there now.
+			//FileUtility.DownloadFiles(movieImages, localFilePrefix);
 
 			var localFiles = FileUtility.LocalFiles(movieImages, localFilePrefix);
 
@@ -389,6 +390,8 @@ namespace MoviePicker.WebApp.Controllers
 			// Ordering by Cost is the same sort as the file names.
 			var leadingMovieName = picks.Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
 			var bonusMovieName = bonusOn ? picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer)?.Name : null;
+			var spentBux = picks.Movies.Sum(movie => movie.Cost);
+			var spentBuxText = spentBux == 1000 ? " and spent all my BUX" : $" and spent {spentBux} BUX";
 
 			if (bonusMovieName == null)
 			{
@@ -402,9 +405,9 @@ namespace MoviePicker.WebApp.Controllers
 				bonusMovieName = "it";
 			}
 
-			bonusMovieName = (bonusOn) ? $" and counting on {bonusMovieName} as my bonus movie" : $" and hoping for {bonusMovieName} as my bonus movie";
+			bonusMovieName = (bonusOn) ? $", counting on {bonusMovieName} as my bonus movie" : $", hoping for {bonusMovieName} as my bonus movie";
 
-			viewModel.TwitterDescription = $"{leadingMovieName} leads my lineup{bonusMovieName}.";
+			viewModel.TwitterDescription = $"{leadingMovieName} leads my lineup{bonusMovieName}{spentBuxText}.";
 			viewModel.TwitterImageFileName = viewModel.ImageFileName.Replace("Shared_", "Twitter_");
 			viewModel.TwitterTitle = $"{Constants.APPLICATION_NAME}: {subTitle} (Est ${picks.TotalEarnings:N0})";
 
@@ -413,7 +416,7 @@ namespace MoviePicker.WebApp.Controllers
 											, viewModel.TwitterDescription
 											, $"{Constants.WEBSITE_URL}/images/{viewModel.TwitterImageFileName}"
 											, $"Collage of my movie lineups."
-											, $"Check out my @fml_movies picks. {picks.ToString()} #ShowYourScreens @SpilledMilkCOM");
+											, $"Check out my @fml_movies picks. {picks.ToString()} only cost me {spentBux.ToString("N0")} BUX #ShowYourScreens @SpilledMilkCOM");
 
 			DownloadMoviePosters();
 

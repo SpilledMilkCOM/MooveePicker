@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 
 using MoviePicker.Common.Interfaces;
+using System.Text;
 
 namespace MovieMiner
 {
@@ -37,6 +38,32 @@ namespace MovieMiner
 		}
 
 		public string Abbreviation { get; private set; }
+
+		/// <summary>
+		/// A list of Box Office values separated by commas (primarily used in a query string).
+		/// </summary>
+		public string BoxOfficeListCSV
+		{
+			get
+			{
+				var builder = new StringBuilder();
+				bool isFirst = true;
+
+				foreach (var movie in Movies.OrderByDescending(item => item.Cost))
+				{
+					if (!isFirst)
+					{
+						builder.Append(",");
+					}
+
+					builder.Append(movie.EarningsBase.ToString("F0"));
+
+					isFirst = false;
+				}
+
+				return builder.ToString();
+			}
+		}
 
 		public ICacheConfiguration CacheConfiguration { get; protected set; }
 
