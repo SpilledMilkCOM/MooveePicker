@@ -16,6 +16,7 @@ namespace MovieMiner
 		public MineCulturedVultures()
 			: base("Cultured Vultures", "CultVult", DEFAULT_URL)
 		{
+			TwitterID = "CultVultures";
 		}
 
 		public override IMiner Clone()

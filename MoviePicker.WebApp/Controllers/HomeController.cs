@@ -411,12 +411,20 @@ namespace MoviePicker.WebApp.Controllers
 			viewModel.TwitterImageFileName = viewModel.ImageFileName.Replace("Shared_", "Twitter_");
 			viewModel.TwitterTitle = $"{Constants.APPLICATION_NAME}: {subTitle} (Est ${picks.TotalEarnings:N0})";
 
+			var minerPick = MinerWeightToMiner();
+
+			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks." : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:" ;
+
+			defaultTwitterText += picks.ToString();
+			defaultTwitterText += minerPick == null ? " only cost me " : " cost ";
+			defaultTwitterText += $"{spentBux.ToString("N0")} BUX #ShowYourScreens @SpilledMilkCOM";
+
 			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image"
 											, viewModel.TwitterTitle
 											, viewModel.TwitterDescription
 											, $"{Constants.WEBSITE_URL}/images/{viewModel.TwitterImageFileName}"
 											, $"Collage of my movie lineups."
-											, $"Check out my @fml_movies picks. {picks.ToString()} only cost me {spentBux.ToString("N0")} BUX #ShowYourScreens @SpilledMilkCOM");
+											, defaultTwitterText);
 
 			DownloadMoviePosters();
 
@@ -516,6 +524,40 @@ namespace MoviePicker.WebApp.Controllers
 			};
 
 			picksViewModel.Duration += stopwatch.ElapsedMilliseconds;
+		}
+
+		/// <summary>
+		/// Coverts the weight list in the request to a miner.
+		/// </summary>
+		/// <param name="weightList">The weight list from the request</param>
+		/// <returns></returns>
+		private IMiner MinerWeightToMiner()
+		{
+			IMiner result = null;
+			int index = 0;
+			char[] delimiters = new char[] { ',' };
+			var weightList = ControllerUtility.GetRequestString(Request, "wl");
+
+			if (weightList != null)
+			{
+				var weights = weightList.Split(delimiters);
+				bool minerWeightsOnly = ControllerUtility.GetRequestString(Request, "bo") == null && weightList != null;
+
+				if (minerWeightsOnly)
+				{
+					foreach (var miner in _minerModel.Miners.Skip(1))
+					{
+						if (index < weights.Length && weights[index] == "1")
+						{
+							result = miner;
+						}
+
+						index++;
+					}
+				}
+			}
+
+			return result;
 		}
 
 		private string SharedPicksFromModels()

@@ -39,6 +39,11 @@ namespace MovieMiner
 		bool OkToMine { get; set; }
 
 		/// <summary>
+		/// The Twitter handle/ID of the miner source.  Do NOT include the @ sign.
+		/// </summary>
+		string TwitterID { get; }
+
+		/// <summary>
 		/// Typically the root Url for the root page.
 		/// </summary>
 		string Url { get; }

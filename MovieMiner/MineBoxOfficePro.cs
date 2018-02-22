@@ -16,6 +16,7 @@ namespace MovieMiner
 		public MineBoxOfficePro()
 			: base("Box Office Pro", "BO Pro", DEFAULT_URL)
 		{
+			TwitterID = "BoxOffice";
 		}
 
 		public override IMiner Clone()

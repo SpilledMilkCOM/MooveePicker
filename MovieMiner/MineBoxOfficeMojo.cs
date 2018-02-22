@@ -24,6 +24,7 @@ namespace MovieMiner
 			: base($"Box Office Mojo {weekendEnding?.ToShortDateString()}"
 				  , $"BO Mojo {weekendEnding?.ToShortDateString()}", DEFAULT_URL)
 		{
+			TwitterID = "BoxOfficeMojo";
 			_weekendEnding = weekendEnding?.Date;
 		}
 

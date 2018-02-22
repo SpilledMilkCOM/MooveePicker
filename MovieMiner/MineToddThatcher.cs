@@ -21,6 +21,8 @@ namespace MovieMiner
 		public MineToddThatcher(string articleTitle = null)
 			: base("Todd M. Thatcher", "Todd", DEFAULT_URL)
 		{
+			TwitterID = "tthizz";
+
 			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()}";
 
 			_daysOfWeek = new Dictionary<string, DayOfWeek>

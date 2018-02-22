@@ -139,6 +139,8 @@ namespace MovieMiner
 
 		public bool OkToMine { get; set; }
 
+		public string TwitterID { get; protected set; }
+
 		public string Url { get; private set; }
 
 		public string UrlSource { get; protected set; }
