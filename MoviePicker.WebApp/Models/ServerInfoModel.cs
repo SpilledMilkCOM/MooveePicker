@@ -9,6 +9,8 @@ namespace MoviePicker.WebApp.Models
 
 		public DateTime Now { get; set; }
 
+		public DateTime NowMst { get; set; }
+
 		public DateTime NowUtc { get; set; }
 
 		public int SharedFileCount { get; set; }
