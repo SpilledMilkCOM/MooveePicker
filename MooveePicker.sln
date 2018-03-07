@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.WebApp", "Movie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.WebApp.Tests", "MoviePicker.WebApp.Tests\MoviePicker.WebApp.Tests.csproj", "{52473B04-56A5-432E-AB0F-CCD6C533F4FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieMiner.Browser", "MovieMiner.Browser\MovieMiner.Browser.csproj", "{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +221,22 @@ Global
 		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|x64.Build.0 = Release|Any CPU
 		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|x86.ActiveCfg = Release|Any CPU
 		{52473B04-56A5-432E-AB0F-CCD6C533F4FD}.Release|x86.Build.0 = Release|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Debug|ARM.Build.0 = Debug|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Debug|x64.Build.0 = Debug|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Debug|x86.Build.0 = Debug|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Release|ARM.ActiveCfg = Release|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Release|ARM.Build.0 = Release|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Release|x64.ActiveCfg = Release|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Release|x64.Build.0 = Release|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Release|x86.ActiveCfg = Release|Any CPU
+		{4F9166C4-5C2D-46A0-98AF-4FFCC2488AE5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

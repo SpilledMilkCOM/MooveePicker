@@ -1,6 +1,6 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Diagnostics;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace MovieMiner.Browser
@@ -14,40 +14,43 @@ namespace MovieMiner.Browser
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
-			Browser.Navigate("http://analyzer.fmlnerd.com/lineups/");
+			var web = new HtmlWeb();
+			var doc = web.Load(@"C:\temp\MooveePickerData.html");        // Load main page.
+			var movieLinks = doc.DocumentNode.SelectNodes("//body//div[contains(@href, '/movie/')]");
+			
+			if (movieLinks != null)
+			{
+				foreach (var movieNode in movieLinks)
+				{
+					Debug.WriteLine(movieNode.GetAttributeValue("href", null));
+					Debug.WriteLine("=================================================================");
+
+					//Browser.Navigate($@"https://cinemadraft.com{movieNode.GetAttributeValue("href", null)}");
+
+					Browser.Navigate("https://cinemadraft.com/movie/297802");
+					//Browser.Refresh(WebBrowserRefreshOption.Completely);
+
+					break;
+				}
+			}
 		}
 
 		private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
 		{
-			var text = Browser.DocumentText;
+			// Parse the data
 
-			//Debug.WriteLine(text);
+			var webBrowser = sender as WebBrowser;
 
-			//Thread.Sleep(5000);
+			if (webBrowser != null)
+			{
+				var infoNode = webBrowser.Document;
 
-			Debug.WriteLine(Browser.Document.Body.InnerHtml);
+				Debug.WriteLine($"Navigated to: {webBrowser.Url}");
 
-			var button = Browser.Document.GetElementById("bpToggle");
+				//infoNode = doc.DocumentNode.SelectSingleNode("//body//div[contains(@ng-bind, '::$ctrl.movie.overview')]");
 
-			var table = Browser.Document.GetElementById("BPtableBody");
-
-			var rows = table.GetElementsByTagName("tr");
-
-			//		XmlNode table = doc.SelectSingleNode("//table[@class='tableType-group hasGroups']");
-
-			//		if (table == null)
-			//		{
-			//			table = doc.SelectSingleNode("//table[@class='tableType-group noGroups']");
-			//		}
-
-			//XmlNodeList items = table.SelectNodes("//td[@class='movie-title movie-title--with-cost-and-image']");
-
-			//		if (items == null)
-			//		{
-			//			items = table.SelectNodes("//td[@class='movie-title movie-title--with-cost']");
-			//		} 
-
-
+				//Debug.WriteLine(infoNode?.InnerText);
+			}
 		}
 	}
 }
