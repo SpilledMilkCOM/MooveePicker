@@ -232,13 +232,15 @@ namespace MovieMiner
 									movieName = movieName.Substring(0, parenIndex - 1).Trim();
 								}
 
-								if (!string.IsNullOrEmpty(movieName))
+								decimal estBoxOffice;
+
+								if (!string.IsNullOrEmpty(movieName) && decimal.TryParse(estimatedBoxOffice, out estBoxOffice))
 								{
 									var name = MapName(RemovePunctuation(HttpUtility.HtmlDecode(movieName)));
 									var movie = new Movie
 									{
 										MovieName = name,
-										Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
+										Earnings = estBoxOffice * (valueInMillions.Value ? 1000000 : 1)
 									};
 
 									if (articleDate.HasValue)
