@@ -33,11 +33,14 @@
 			// 
 			// Browser
 			// 
-			this.Browser.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Browser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.Browser.Location = new System.Drawing.Point(0, 0);
 			this.Browser.MinimumSize = new System.Drawing.Size(20, 20);
 			this.Browser.Name = "Browser";
-			this.Browser.Size = new System.Drawing.Size(467, 376);
+			this.Browser.ScriptErrorsSuppressed = true;
+			this.Browser.Size = new System.Drawing.Size(552, 438);
 			this.Browser.TabIndex = 0;
 			this.Browser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.Browser_DocumentCompleted);
 			// 
@@ -45,7 +48,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(467, 376);
+			this.ClientSize = new System.Drawing.Size(554, 436);
 			this.Controls.Add(this.Browser);
 			this.Name = "Form1";
 			this.Text = "Form1";
