@@ -446,16 +446,16 @@ namespace MoviePicker.WebApp.Controllers
 			// Attempt to parse the request.
 
 			var parms = Request.Params;
-			var paramList = _controllerUtility.GetRequestIntList(Request, "bo");
+			var decimalList = _controllerUtility.GetRequestDecimalList(Request, "bo");
 			int idx = 0;
 
-			hasParams = paramList.Any();
+			hasParams = decimalList.Any();
 
 			foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
 			{
-				if (idx < paramList.Count)
+				if (idx < decimalList.Count)
 				{
-					movie.Earnings = paramList[idx++];
+					movie.Earnings = decimalList[idx++];
 				}
 				else
 				{
@@ -463,17 +463,17 @@ namespace MoviePicker.WebApp.Controllers
 				}
 			}
 
-			paramList = _controllerUtility.GetRequestIntList(Request, "wl");
+			var intList = _controllerUtility.GetRequestIntList(Request, "wl");
 			idx = 0;
-			hasParams |= paramList.Any();
+			hasParams |= intList.Any();
 
 			bool isFirst = true;
 
 			foreach (var miner in _minerModel.Miners)
 			{
-				if (!isFirst && idx < paramList.Count)
+				if (!isFirst && idx < intList.Count)
 				{
-					miner.Weight = paramList[idx++];
+					miner.Weight = intList[idx++];
 				}
 
 				isFirst = false;

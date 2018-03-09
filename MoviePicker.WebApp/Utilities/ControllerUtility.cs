@@ -12,6 +12,30 @@ namespace MoviePicker.WebApp.Utilities
 			return url != null && (url.StartsWith("http://") || url.StartsWith("https://"));
 		}
 
+		public List<decimal> GetRequestDecimalList(HttpRequestBase request, string key)
+		{
+			char[] listDelimiter = { ',' };
+			var result = new List<decimal>();
+			var parms = request.Params;
+
+			if (parms[key] != null)
+			{
+				var paramList = parms[key].Split(listDelimiter);
+
+				foreach (var paramValue in paramList)
+				{
+					decimal value = 0;
+
+					if (decimal.TryParse(paramValue, out value))
+					{
+						result.Add(value);
+					}
+				}
+			}
+
+			return result;
+		}
+
 		public List<int> GetRequestIntList(HttpRequestBase request, string key)
 		{
 			char[] listDelimiter = { ',' };
