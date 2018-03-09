@@ -1,4 +1,4 @@
-﻿using HtmlAgilityPack;
+﻿//using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
@@ -19,27 +19,27 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory("Integration")]
 		public void MineMRCData_Mine()
 		{
-			var web = new HtmlWeb();
-			var doc = web.Load(@"C:\temp\MooveePickerData.html");        // Load main page.
-			var movieLinks = doc.DocumentNode.SelectNodes("//body//div[contains(@href, '/movie/')]");
+			//var web = new HtmlWeb();
+			//var doc = web.Load(@"C:\temp\MooveePickerData.html");        // Load main page.
+			//var movieLinks = doc.DocumentNode.SelectNodes("//body//div[contains(@href, '/movie/')]");
 
-			if (movieLinks != null)
-			{
-				var webBrowser = new WebBrowser();
+			//if (movieLinks != null)
+			//{
+			//	var webBrowser = new WebBrowser();
 
-				webBrowser.Show();
-				webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
+			//	webBrowser.Show();
+			//	webBrowser.DocumentCompleted += WebBrowser_DocumentCompleted;
 
-				foreach (var movieNode in movieLinks)
-				{
-					Debug.WriteLine(movieNode.GetAttributeValue("href", null));
-					Debug.WriteLine("=================================================================");
+			//	foreach (var movieNode in movieLinks)
+			//	{
+			//		Debug.WriteLine(movieNode.GetAttributeValue("href", null));
+			//		Debug.WriteLine("=================================================================");
 
-					webBrowser.Navigate($@"https://cinemadraft.com{movieNode.GetAttributeValue("href", null)}");
+			//		webBrowser.Navigate($@"https://cinemadraft.com{movieNode.GetAttributeValue("href", null)}");
 
-					break;
-				}
-			}
+			//		break;
+			//	}
+			//}
 		}
 
 		private void WebBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
