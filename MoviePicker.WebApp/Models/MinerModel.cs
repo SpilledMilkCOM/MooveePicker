@@ -59,7 +59,7 @@ namespace MoviePicker.WebApp.Models
 			// If any of the miners reloaded, then the composite movies (in any) need to be refigured.
 
 			if (clone.Miners.Any(miner => miner.CloneCausedReload))
-			{ 
+			{
 				var compoundMovies = CompoundMovies(clone.Miners[FML_INDEX].Movies);
 
 				if (compoundMovies.Any())
@@ -153,11 +153,13 @@ namespace MoviePicker.WebApp.Models
 
 			foreach (var movie in miner.Movies)
 			{
-				movie.ImageUrl = $"/Images/MoviePoster_{Path.GetFileName(movie.ImageUrlSource)}";
+				var localFileName = Path.GetFileName(FileUtility.LocalFile(movie.ImageUrlSource, localFilePrefix));
+
+				movie.ImageUrl = $"/Images/{localFileName}";
 
 				if (filesDownloaded)
 				{
-					imageUtil.AdjustAspectRatio( $"{localFilePrefix}{Path.GetFileName(movie.ImageUrlSource)}", 2 / 3m );
+					imageUtil.AdjustAspectRatio(localFileName, 2 / 3m);
 				}
 			}
 		}

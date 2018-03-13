@@ -123,6 +123,35 @@ namespace MoviePicker.WebApp.Utilities
 			return result;
 		}
 
+		/// <summary>
+		/// Map a file URL to a local file name (removing/replacing illegal characters)
+		/// </summary>
+		/// <param name="fileUrl">The url to the file (may include path)</param>
+		/// <param name="localFilePrefix">Prefix of the file name to prepend.</param>
+		/// <returns></returns>
+		public static string LocalFile(string fileUrl, string localFilePrefix)
+		{
+			var localFileName = Path.GetFileName(fileUrl);
+			var questionIndex = localFileName.IndexOf('?');
+
+			// Check for illegal characters.
+
+			if (questionIndex >= 0)
+			{
+				// Remove everything to the right of the '?'
+
+				localFileName = localFileName.Substring(0, questionIndex);
+			}
+
+			return $"{localFilePrefix}{localFileName}";
+		}
+
+		/// <summary>
+		/// Map file URLs to a local file names (removing/replacing illegal characters)
+		/// </summary>
+		/// <param name="files">The list of file urls (may include path)</param>
+		/// <param name="localFilePrefix">Prefix of the file name to prepend to each local file name.</param>
+		/// <returns></returns>
 		public static List<string> LocalFiles(IEnumerable<string> files, string localFilePrefix)
 		{
 			var result = new List<string>();
@@ -136,11 +165,6 @@ namespace MoviePicker.WebApp.Utilities
 		}
 
 		//----==== PRIVATE ====------------------------------------------
-
-		private static string LocalFile(string fileUrl, string localFilePrefix)
-		{
-			return $"{localFilePrefix}{Path.GetFileName(fileUrl)}";
-		}
 
 		/// <summary>
 		/// Thread safe check to see if this miner should load.
