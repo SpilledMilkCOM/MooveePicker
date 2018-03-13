@@ -25,10 +25,18 @@ namespace MoviePicker.WebApp
 				return;
 			}
 
-			//Logger.Error(LoggerType.Global, ex, "Exception");
+			var helper = new UrlHelper(Request.RequestContext, RouteTable.Routes);
 
-			var helper = new UrlHelper();
-			string url = helper.Action("error", "home", new { message = ex.Message });
+			var trimIndex = ex.StackTrace.IndexOf('\r');
+
+			if (trimIndex < 0)
+			{
+				trimIndex = 100;
+			}
+
+			var abbreviatedStackTrace = ex.StackTrace.Substring(0, trimIndex);
+
+			string url = helper.Action("error", "home", routeValues: new { message = $"{ex.Message} -- {abbreviatedStackTrace}" });
 
 			Response.Redirect(url);
 		}
