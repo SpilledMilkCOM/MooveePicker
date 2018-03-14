@@ -73,6 +73,8 @@ namespace MoviePicker.WebApp.Utilities
 		/// <returns>The result file name.</returns>
 		public string CombineImages(string webRootPath, List<string> fileNames)
 		{
+			const int COLUMNS = 4;
+
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
 			var guid = Guid.NewGuid();
@@ -80,10 +82,10 @@ namespace MoviePicker.WebApp.Utilities
 			var twitterFileName = $"Twitter_{guid}.jpg";
 			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
 			string resultFileName = null;
+			int? minWidth = null;
+			int? minHeight = null;
 			int width = 0;
-			int width2 = 0;
 			int height = 0;
-			int height2 = 0;
 			int offset = 0;
 			int oldWidth = 0;
 			int oldHeight = 0;
@@ -92,42 +94,27 @@ namespace MoviePicker.WebApp.Utilities
 
 			// Determine width and height of the 1st row.
 
-			foreach (var fileName in fileNames.Take(4))
+			foreach (var fileName in fileNames)
 			{
 				using (var image = Image.FromFile(fileName))
 				{
-					width += image.Width;
-
-					if (height < image.Height)
+					if (!minWidth.HasValue || minWidth.Value > image.Width)
 					{
-						height = image.Height;
+						minWidth = image.Width;
+						minHeight = image.Height;
 					}
 				}
 			}
 
-			// Determine width and height of the 1st row.
+			// Use a constant width for each image.
 
-			foreach (var fileName in fileNames.Skip(4))
-			{
-				using (var image = Image.FromFile(fileName))
-				{
-					width2 += image.Width;
+			width = minWidth.Value * COLUMNS;
 
-					if (height2 < image.Height)
-					{
-						height2 = image.Height;
-					}
-				}
-			}
+			// Since the aspect ratio should be the same for each image then the height will be the same as well (using a constant width)
 
-			// Choose the wider row of images.
+			height = minHeight.Value * 2;
 
-			if (width < width2)
-			{
-				width = width2;
-			}
-
-			using (var destBitmap = new Bitmap(width, height + height2))
+			using (var destBitmap = new Bitmap(width, height))
 			{
 				using (var graphics = Graphics.FromImage(destBitmap))
 				{
@@ -139,14 +126,14 @@ namespace MoviePicker.WebApp.Utilities
 					{
 						using (var image = Image.FromFile(fileName))
 						{
-							if (column % 4 == 0)
+							if (column % COLUMNS == 0)
 							{
 								offset = 0;
 							}
 
-							graphics.DrawImage(image, offset, column < 4 ? 0 : height, image.Width, image.Height);
+							graphics.DrawImage(image, offset, column < COLUMNS ? 0 : minHeight.Value, minWidth.Value, minHeight.Value);
 
-							offset += image.Width;
+							offset += minWidth.Value;
 							column++;
 						}
 					}
@@ -160,15 +147,11 @@ namespace MoviePicker.WebApp.Utilities
 			// Create the Twitter image with the 2:1 aspect ratio
 
 			oldWidth = width;
-			oldHeight = height + height2;
-
-			// Force the width into a 2:1 aspect ratio
-			//height = height + height2;
-			//width = height * 2;
+			oldHeight = height;
 
 			// Twitter render size for large format.
 			width = 600;
-			height = 300; // 314;
+			height = 300;
 
 			// Scale the image width (down) proportionate to the height.
 			oldWidth = (int)(oldWidth * (double)height / oldHeight);
