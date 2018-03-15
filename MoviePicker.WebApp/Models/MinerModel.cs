@@ -415,7 +415,7 @@ namespace MoviePicker.WebApp.Models
 				//}
 			});
 
-			// Mine my movies LAST because they are based on all of the other miners.
+			// Mine my/custom movies LAST because they are based on all of the other miners.
 
 			miners.ToList()[MY_INDEX].Mine();
 

@@ -272,6 +272,7 @@
     <Content Include="Views\Home\MorePicks.cshtml" />
     <Content Include="Views\Shared\MovieListMini.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\LowMem\Miner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

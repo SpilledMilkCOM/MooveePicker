@@ -15,6 +15,71 @@
 			As developers we are <strong>LAZY</strong>, but we'll <strong>BUILD</strong> things in our spare time so we have MORE of it!
 		</div>
 
+		<div class="col-sm-12">
+			<h3>Summary / Home Page</h3>
+
+			I wish I had the time to make this site pretty like Pete's site, but I keep thinking up functionality and implementing it.
+
+			<h4>Where to start?</h4>
+
+			<ol>
+				<li>
+					I typically start with the weights at the bottom where I can enter my values.  These weights are "trust" values. "How much do I trust certain sources?"
+					These weights are all relative.  If you trust Box Office Report 6 times more than Box Office Prophet then put a 6 for BO Report's weight and a 1 for BO Prophet's weight.
+					If you don't trust Box Office Mojo at all, then enter a 0 for that weight and BO Mojo's data will be ignored.
+				</li>
+				<li>
+					Click on the Apply Weights button.  This creates a weighted average os ALL the columns and puts those numbers in the Custom column.  Those are YOUR numbers.
+				</li>
+				<li>
+					You may edit those numbers in the custom column.  If you choose to edit the numbers, the weight in the custom column will matter when you go to the picks page.
+				</li>
+				<li>
+					You can copy the URL for future reference if you want to edit your numbers later, but you don't have to.
+				</li>
+				<li>
+					Click the Calculate Picks button to see the picks based on the Box Office Values you have provided.
+				</li>
+				<li>
+					SHARE your picks on Twitter using the handy share buttons (with bonus or without)
+				</li>
+			</ol>
+
+			<ul>
+				<li>
+					The column titles are clickable with the column's source data/article (they do not sort the columns).  I'm always up for new sources, so let me know if you feel like sharing.
+				</li>
+				<li>
+					If you want only <strong>YOUR</strong> numbers, then put zeros at the bottom of all of the industry weight fields.  The Clear helps with this.
+				</li>
+				<li>
+					Or you can mix and match and tweak the defaults and feed those numbers back into the calculations (kind of like a feedback loop).
+				</li>
+				<li>
+					The weights that I currently use as a basis and then maybe adjust from there.
+
+					<a href="~/home/index?wl=0,3,3,3,1,1,6">My Default Weights</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="col-sm-12">
+			<h4>API / Request Parameters</h4>
+
+			If you keep your numbers in a spreadsheet you can link directly to the index page and feed it your numbers.  There are 15 "bo" and 7 "wl" parameters separated by commas (standard request stuff).
+			You can get a sense of this request if you click the "Apply Weights" button.  Maybe you keep your numbers in a spreadsheet, then you can use the HYPERLINK() and CONCATENATE() functions
+			to build the URL for this site so it can help with your picks.  That's what Liem does.  He copies the aggregated data from the index page and then does his own thing with the data.
+			NOW he can link back to this site for his picks.
+
+			<p> </p>
+
+			Here's a full blown blog post about how to use the Excel functions and "link" to this site.
+			<br />
+			<a href="https://spilledmilkcom.wordpress.com/2018/03/01/excelhyperlink-or-how-to-integrate-your-spreadsheet-with-moovee-picker/">Word Press BLOG Post</a>
+
+			<p> </p>
+		</div>		
+
 		<div class="col-xs-3 col-md-2" style="padding-top: 10px;">
 			<a class="btn btn-default btn-lg" href="https://github.com/SpilledMilkCOM/MooveePicker" target="_blank">
 				<img src="~/Images/GitHub-Mark-32px.png">
@@ -23,30 +88,6 @@
 
 		<div class="col-xs-8 col-md-10" style="padding-top: 10px;">
 			This site's code lives on GitHub.  So &lt;meta/&gt;  You can look at the history of how all of the code came together.  It started out with a few tests and spreadsheets and <strong>GREW</strong> from there.
-		</div>
-
-		<div class="col-sm-12">
-			<h3>Summary / Home Page</h3>
-
-			I wish I had the time to make this site pretty like Pete's site, but I keep thinking up functionality and implementing it.
-			I'll have to double check my numbers to make sure the "Mine" column didn't break things.
-			The column titles are clickable with the column's source (they do not sort the columns).  I'm always up for new sources, so let me know if you feel like sharing.
-			If you just want to go with the industry numbers then put a weight of 0 at the bottom of the Mine column.
-			If you want only <strong>YOUR</strong> numbers, then put zeros at the bottom of all of the industry weight fields.
-			Or you can mix and match and tweak the defaults and feed those numbers back into the calculations (kind of like a feedback loop).
-		</div>
-
-		<div class="col-sm-12">
-			<strong>NOTE:</strong> If you want to recalculate your numbers based on NEW weights you entered for the other BO predictions then set your number's weight to ZERO before you "Apply Weights".
-		</div>
-
-		<div class="col-sm-12">
-			<h4>API / Request Parameters</h4>
-
-			If you keep your numbers in a spreadsheet you can link directly to the index page and feed it your numbers.  There are 15 "bo" and 7 "wl" parameters separated by commas (standard request stuff).
-			You can get a sense of this request if you click the "Apply Weights" button.  Maybe you keep your numbers in a spreadsheet, then you can use the LINK() and CONCATENATE() functions
-			to build the URL for this site so it can help with your picks.  That's what Liem does.  He copies the aggregated data from the index page and then does his own thing with the data.
-			NOW he can link back to this site for his picks.
 		</div>
 
 		<div class="col-sm-12">

@@ -29,19 +29,24 @@
 
 	<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
 	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Error</div>
-	<div class="col-sm-3 hidden-xs" style="font-weight: bold;">Last Update</div>
-	<div class="col-sm-3 hidden-xs" style="font-weight: bold;">Expires</div>
+	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Movie Count</div>
+	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Last Update</div>
+	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Expires</div>
 
 	@foreach (var miner in Model.MinerModel.Miners)
 	{
-		<div class="col-sm-3" style="font-weight: bold;">@miner.Name</div>
+		<div class="col-sm-3" style="font-weight: bold;">@Html.ActionLink(miner.Name, "Miner", "LowMem", routeValues: new { name = miner.Name }, htmlAttributes: null)</div>
+
 		<div class="col-sm-3">@miner.Error</div>
 
+		<div class="col-xs-6 col-sm-3 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Movie Count:</div>
+		<div class="col-xs-6 col-sm-2">@string.Format("{0}", miner.Movies.Count)</div>
+
 		<div class="col-xs-6 col-sm-3 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Last Update:</div>
-		<div class="col-xs-6 col-sm-3">@string.Format("{0}", ((ICache)miner)?.LastLoaded)</div>
+		<div class="col-xs-6 col-sm-2">@string.Format("{0}", ((ICache)miner)?.LastLoaded)</div>
 
 		<div class="col-xs-6 col-sm-3 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Expires:</div>
-		<div class="col-sm-3">@string.Format("{0}", ((ICache)miner)?.Expiration)</div>
+		<div class="col-xs-6 col-sm-2">@string.Format("{0}", ((ICache)miner)?.Expiration)</div>
 	}
 </div>
 

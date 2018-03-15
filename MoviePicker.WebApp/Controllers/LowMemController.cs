@@ -2,6 +2,7 @@
 using MoviePicker.WebApp.Utilities;
 using System;
 using System.IO;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace MoviePicker.WebApp.Controllers
@@ -65,6 +66,13 @@ namespace MoviePicker.WebApp.Controllers
 			_infoViewModel.ClientInfo.Name = Request.Browser.Type;
 
 			return View(_infoViewModel);
+		}
+
+		public ActionResult Miner(string name)
+		{
+			var found = _infoViewModel.MinerModel.Miners.FirstOrDefault(miner => miner.Name == name);
+
+			return View(found);
 		}
 
 		public ActionResult ExpireMiners()
