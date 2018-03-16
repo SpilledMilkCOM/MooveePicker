@@ -87,6 +87,25 @@ namespace MoviePicker.WebApp.Models
 						idx++;
 					}
 				}
+
+				// Loop through all of the reloaded miners and adjust their movies.
+
+				foreach (var miner in clone.Miners.Where(miner => miner.CloneCausedReload))
+				{
+					foreach (var movie in miner.Movies)
+					{
+						AssignCost(movie, clone.Miners[FML_INDEX].Movies);
+					}
+
+					var masterMiner = Miners.FirstOrDefault(item => item.Name == miner.Name);
+
+					if (masterMiner != null)
+					{
+						// The MinerBase.Clone() method for explation of cloning this list.
+
+						masterMiner.SetMovies(new List<IMovie>(miner.Movies));
+					}
+				}
 			}
 
 			FilterMinerMovies(clone.Miners);
@@ -177,6 +196,11 @@ namespace MoviePicker.WebApp.Models
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
 
+		/// <summary>
+		/// Assign base movie attributes to the movie passed in.
+		/// </summary>
+		/// <param name="movie">The movie to find so the</param>
+		/// <param name="movies">A list of base movies to search</param>
 		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)
 		{
 			var found = movies?.FirstOrDefault(item => item.Equals(movie));
