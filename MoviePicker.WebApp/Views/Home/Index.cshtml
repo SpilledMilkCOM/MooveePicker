@@ -291,8 +291,8 @@
 
 								@foreach (var miner in Model.Miners.Skip(2))
 								{
-									var minerMovie = miner.Movies.FirstOrDefault(item => item.Id == movie.Id);
-									var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Id == movie.Id);
+									var minerMovie = miner.Movies.FirstOrDefault(item => item.Id == movie.Id || item.Name == movie.Name);
+									var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Id == movie.Id || item.Name == movie.Name);
 									var errorStyle = !string.IsNullOrEmpty(miner.Error) ? @" color: #cc3333;" : string.Empty;
 									var colorBackgroundStyle = minerCount % 2 == 0 ? "background-color:hsl(0, 0%, 90%);" : string.Empty;
 
@@ -515,7 +515,7 @@
 
 									@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 									{
-										var minerMovie = miner.Movies?.FirstOrDefault(item => item.Id == movie.Id);
+										var minerMovie = miner.Movies?.FirstOrDefault(item => item.Id == movie.Id || item.Name == movie.Name);
 
 										if (isFirst)
 										{
@@ -553,7 +553,7 @@
 
 										if (miner != Model.Miners.Last())
 										{
-											var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Id == movie.Id);
+											var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Id == movie.Id || item.Name == movie.Name);
 											decimal percent = 0;
 
 											if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
