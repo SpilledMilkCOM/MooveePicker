@@ -90,11 +90,11 @@ namespace MoviePicker.WebApp.Models
 
 				// Loop through all of the reloaded miners and adjust their movies.
 
-				foreach (var miner in clone.Miners.Where(miner => miner.CloneCausedReload))
+				foreach (var miner in clone.Miners.Where(miner => miner.CloneCausedReload && miner != clone.Miners[FML_INDEX]))
 				{
-					foreach (var movie in miner.Movies)
+					foreach (var movie in clone.Miners[FML_INDEX].Movies)
 					{
-						AssignCost(movie, clone.Miners[FML_INDEX].Movies);
+						AssignCostIdName(movie, miner.Movies);
 					}
 
 					var masterMiner = Miners.FirstOrDefault(item => item.Name == miner.Name);
@@ -201,7 +201,7 @@ namespace MoviePicker.WebApp.Models
 		/// </summary>
 		/// <param name="movie">The movie to find so the</param>
 		/// <param name="movies">A list of base movies to search</param>
-		private void AssignCost(IMovie movie, IEnumerable<IMovie> movies)
+		private void AssignCostIdName(IMovie movie, IEnumerable<IMovie> movies)
 		{
 			var found = movies?.FirstOrDefault(item => item.Equals(movie));
 
@@ -420,7 +420,7 @@ namespace MoviePicker.WebApp.Models
 
 							foreach (var movie in baseList)
 							{
-								AssignCost(movie, movieList);
+								AssignCostIdName(movie, movieList);
 							}
 						}
 					}
