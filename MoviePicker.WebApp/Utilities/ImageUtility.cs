@@ -25,35 +25,39 @@ namespace MoviePicker.WebApp.Utilities
 				File.Delete(tempFileName);
 			}
 
-			// Move actual file to the temporary name.
-
-			File.Move(localFile, tempFileName);
-
-			using (var image = Image.FromFile(tempFileName))
+			if (File.Exists(localFile))
 			{
-				// Make sure the aspect ratio needs to be adjusted before adjusting it.
 
-				if (image.Width / aspectRatio != image.Height)
+				// Move actual file to the temporary name.
+
+				File.Move(localFile, tempFileName);
+
+				using (var image = Image.FromFile(tempFileName))
 				{
-					using (var destBitmap = new Bitmap(image.Width, (int)(image.Width / aspectRatio)))
+					// Make sure the aspect ratio needs to be adjusted before adjusting it.
+
+					if (image.Width / aspectRatio != image.Height)
 					{
-						using (var graphics = Graphics.FromImage(destBitmap))
+						using (var destBitmap = new Bitmap(image.Width, (int)(image.Width / aspectRatio)))
 						{
-							graphics.Clear(Color.White);
+							using (var graphics = Graphics.FromImage(destBitmap))
+							{
+								graphics.Clear(Color.White);
 
-							graphics.DrawImage(image, 0, 0, image.Width, image.Height);
+								graphics.DrawImage(image, 0, 0, image.Width, image.Height);
+							}
+
+							// Save the resized image to the 
+
+							destBitmap.Save(localFile, System.Drawing.Imaging.ImageFormat.Jpeg);
 						}
-
-						// Save the resized image to the 
-
-						destBitmap.Save(localFile, System.Drawing.Imaging.ImageFormat.Jpeg);
 					}
-				}
-				else
-				{
-					// No changes needed so move the file back.
+					else
+					{
+						// No changes needed so move the file back.
 
-					File.Move(tempFileName, localFile);
+						File.Move(tempFileName, localFile);
+					}
 				}
 			}
 

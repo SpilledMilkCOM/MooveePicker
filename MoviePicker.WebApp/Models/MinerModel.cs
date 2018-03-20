@@ -174,11 +174,16 @@ namespace MoviePicker.WebApp.Models
 			{
 				var localFileName = Path.GetFileName(FileUtility.LocalFile(movie.ImageUrlSource, localFilePrefix));
 
-				movie.ImageUrl = $"/Images/{localFileName}";
-
-				if (filesDownloaded)
+				if (File.Exists(localFileName))
 				{
-					imageUtil.AdjustAspectRatio(localFileName, 2 / 3m);
+					// If the file was actually downloaded then use the local file.
+
+					movie.ImageUrl = $"/Images/{localFileName}";
+
+					if (filesDownloaded)
+					{
+						imageUtil.AdjustAspectRatio(localFileName, 2 / 3m);
+					}
 				}
 			}
 		}

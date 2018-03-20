@@ -45,10 +45,15 @@ namespace MoviePicker.WebApp.Utilities
 			try
 			{
 				// Create a request for the specified remote file name
-				WebRequest request = WebRequest.Create(remoteFilename);
+				var request = WebRequest.Create(remoteFilename) as HttpWebRequest;
 
 				if (request != null)
 				{
+					request.Method = "GET";
+					request.Accept = "image/png,image/*";
+					request.KeepAlive = false;
+					request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36 Edge/12.0";
+
 					// Send the request to the server and retrieve the
 					// WebResponse object 
 					response = request.GetResponse();
@@ -85,6 +90,15 @@ namespace MoviePicker.WebApp.Utilities
 
 						} while (bytesRead > 0 && !_cancel);
 					}
+				}
+			}
+			catch (WebException webEx)
+			{
+				// Ignore "Forbidden"
+
+				if (webEx.Message.IndexOf("403") < 0)
+				{
+					throw webEx;
 				}
 			}
 			catch (Exception ex)
