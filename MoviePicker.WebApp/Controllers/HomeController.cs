@@ -380,7 +380,7 @@ namespace MoviePicker.WebApp.Controllers
 			// Files should already be there now.
 			//FileUtility.DownloadFiles(movieImages, localFilePrefix);
 
-			var localFiles = FileUtility.LocalFiles(movieImages, localFilePrefix);
+			var localFiles = FileUtility.LocalFiles(movieImages, $"{localFilePrefix}MoviePoster_");
 
 			var viewModel = new SharePicksViewModel()
 			{

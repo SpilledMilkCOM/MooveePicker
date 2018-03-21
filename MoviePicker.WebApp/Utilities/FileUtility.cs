@@ -9,6 +9,7 @@ namespace MoviePicker.WebApp.Utilities
 	{
 		private const int MOVIE_EXPIRATION_DAYS = 7;
 		private const int SHARED_EXPIRATION_MINUTES = 5;
+		private const string MOVIE_POSTER_PREFIX = "MoviePoster_";
 
 		private static bool _isCleaningUp = false;
 		private static object _isCleaningUpLock = new object();
@@ -31,7 +32,7 @@ namespace MoviePicker.WebApp.Utilities
 
 				// Loop through the MoviePosters.
 
-				foreach (var file in Directory.GetFiles(directory, "MoviePoster_*"))
+				foreach (var file in Directory.GetFiles(directory, $"{MOVIE_POSTER_PREFIX}*"))
 				{
 					if (file.IndexOf(".temp") > 0)
 					{
@@ -158,7 +159,16 @@ namespace MoviePicker.WebApp.Utilities
 
 			foreach (var fileUrl in files)
 			{
-				result.Add(LocalFile(fileUrl, localFilePrefix));
+				var localFile = LocalFile(fileUrl, localFilePrefix);
+
+				if (File.Exists(localFile))
+				{
+					result.Add(localFile);
+				}
+				else if (Path.GetExtension(localFile).ToLower() == ".jpg")
+				{
+					result.Add($"{Path.GetDirectoryName(localFile)}{Path.DirectorySeparatorChar}MooveePosterNotFound.jpg");
+				}
 			}
 
 			return result;

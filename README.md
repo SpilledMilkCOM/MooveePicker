@@ -45,6 +45,9 @@ https://msdn.microsoft.com/en-us/library/ff524497(v=vs.93).aspx
 Actual published website:
 http://mooveepicker.azurewebsites.net/
 
+Using The Movie Database for movie posters where needed.
+http://www.themoviedb.org/
+
 The current defaults that I use:
 http://mooveepicker.azurewebsites.net/home/picks?wl=0,3,3,3,1,1,6
 
