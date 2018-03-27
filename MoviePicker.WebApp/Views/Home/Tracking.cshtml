@@ -41,6 +41,8 @@
 						<td>@string.Format("{0:F2} %", Model.MovieList.Picks.TotalEarnings > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
 					</tr>
 					<tr>
+						@* REMEMBER!! TotalPicksFromComparison are YOUR picks with the current estimates. *@
+
 						<td>Bonus OFF</td>
 						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
 						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
