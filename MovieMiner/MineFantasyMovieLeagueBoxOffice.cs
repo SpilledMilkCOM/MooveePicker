@@ -106,7 +106,7 @@ namespace MovieMiner
 
 				var earningsNode = tableRow?.SelectSingleNode("td[@class='movie-earnings numeric stat']");
 
-				if (earningsNode != null && isEstimate)
+				if (earningsNode != null) // && isEstimate)
 				{
 					movie.Earnings = ParseEarnings(earningsNode.InnerText);
 				}
@@ -131,8 +131,8 @@ namespace MovieMiner
 
 				if (weekendEnding.HasValue)
 				{
-					//movie.WeekendEnding = weekendEnding.Value;
-					movie.WeekendEnding = MovieDateUtil.GameSunday(null, isEstimate);
+					movie.WeekendEnding = weekendEnding.Value;
+					//movie.WeekendEnding = MovieDateUtil.GameSunday(null, isEstimate);
 				}
 
 				result.Add(movie);
