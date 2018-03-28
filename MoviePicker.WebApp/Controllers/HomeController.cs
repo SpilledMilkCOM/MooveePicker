@@ -84,7 +84,7 @@ namespace MoviePicker.WebApp.Controllers
 			ParseBoxOfficeWeightRequest();
 			ParseViewRequest();
 
-			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
+			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
 			//_viewModel.IsTracking = true;
 
 			ControllerUtility.SetTwitterCard(ViewBag);
@@ -293,20 +293,20 @@ namespace MoviePicker.WebApp.Controllers
 
 			stopWatch.Start();
 
-			result.IsTracking = _minerModel.Miners[FML_INDEX].Movies.FirstOrDefault()?.Earnings > 0;
+			result.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
 
 			result.Miners = _minerModel.Miners;
 			result.Movies = _minerModel.CreateWeightedList();
 
 			_moviePicker.AddMovies(result.Movies);
 
-			var pickList = _moviePicker.ChooseBest();
+			var pickList = _moviePicker.ChooseBest(3);
 
 			result.MovieList = new MovieListModel()
 			{
 				ComparisonHeader = result.IsTracking ? "Estimated" : null,
 				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
-				Picks = pickList
+				Picks = pickList?.FirstOrDefault()
 			};
 
 			// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
@@ -321,13 +321,13 @@ namespace MoviePicker.WebApp.Controllers
 			_moviePicker.AddMovies(clonedList);
 			_moviePicker.EnableBestPerformer = false;
 
-			pickList = _moviePicker.ChooseBest();
+			pickList = _moviePicker.ChooseBest(3);
 
 			result.MovieListBonusOff = new MovieListModel()
 			{
 				ComparisonHeader = result.IsTracking ? "Estimated" : null,
 				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
-				Picks = pickList
+				Picks = pickList?.FirstOrDefault()
 			};
 
 			if (result.IsTracking)

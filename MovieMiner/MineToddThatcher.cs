@@ -14,7 +14,7 @@ namespace MovieMiner
 	{
 		private const string DEFAULT_URL = "https://fantasymovieleague.com";
 		private const string DELIMITER = "- $";
-
+		private const string DELIMITER2 = "-$";
 		private readonly string _articleTitle;
 		private readonly Dictionary<string, DayOfWeek> _daysOfWeek;
 
@@ -102,7 +102,7 @@ namespace MovieMiner
 
 					if (node != null)
 					{
-						var movieNodes = node.SelectNodes($"//p[contains(., '{DELIMITER}')]");     // Find all of the estimate paragraphs
+						var movieNodes = node.SelectNodes($"//p[contains(., '{DELIMITER}')]|//p[contains(., '{DELIMITER2}')]");     // Find all of the estimate paragraphs
 
 						// As of 11/2/2017 Todd is separating things with <br /> now.
 
@@ -126,6 +126,11 @@ namespace MovieMiner
 							{
 								int index = movieNode.InnerText.IndexOf(DELIMITER);
 
+								if (index < 0)
+								{
+									index = movieNode.InnerText.IndexOf(DELIMITER2);
+								}
+
 								if (index > 0)
 								{
 									var nodeText = movieNode.InnerText;
@@ -135,7 +140,7 @@ namespace MovieMiner
 
 									var valueInMillions = nodeText.Substring(index, nodeText.Length - index)?.Contains("million");
 
-									var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace("million", string.Empty);
+									var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace(DELIMITER2, string.Empty).Replace("million", string.Empty);
 
 									var parenIndex = estimatedBoxOffice.IndexOf("(");
 

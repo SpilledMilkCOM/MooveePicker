@@ -75,6 +75,8 @@ namespace MovieMiner
 			string url = $"{Url}weekend/chart/";
 			var web = new HtmlWeb();
 
+			ContainsEstimates = false;
+
 			// Might have to tweak this offset a bit to get the numbers to match.
 			var sundayOffset = (int)new DateTime(_weekendEnding.Value.Year, 1, 1).DayOfWeek;
 

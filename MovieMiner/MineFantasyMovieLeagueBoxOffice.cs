@@ -45,7 +45,6 @@ namespace MovieMiner
 			var result = new List<IMovie>();
 			var web = new HtmlWeb();
 			DateTime? weekendEnding = null;
-			bool isEstimate = false;
 
 			UrlSource = $"{Url}/researchvault?section=box-office";
 
@@ -64,7 +63,7 @@ namespace MovieMiner
 				{
 					// Grab the first one for now.
 
-					isEstimate = tableHeader.InnerText.IndexOf("Estimated") >= 0;
+					ContainsEstimates = tableHeader.InnerText.IndexOf("Estimated") >= 0;
 					var dateText = tableHeader.InnerText.Replace("Estimated", string.Empty);
 
 					if (dateText != null)
@@ -106,7 +105,7 @@ namespace MovieMiner
 
 				var earningsNode = tableRow?.SelectSingleNode("td[@class='movie-earnings numeric stat']");
 
-				if (earningsNode != null) // && isEstimate)
+				if (earningsNode != null)
 				{
 					movie.Earnings = ParseEarnings(earningsNode.InnerText);
 				}
@@ -131,7 +130,8 @@ namespace MovieMiner
 
 				if (weekendEnding.HasValue)
 				{
-					movie.WeekendEnding = weekendEnding.Value;
+					// This weekend ending date is used to populate the "custom" box office weekend ending date.
+					movie.WeekendEnding = ContainsEstimates ? weekendEnding.Value : MovieDateUtil.GameSunday(null, ContainsEstimates);
 					//movie.WeekendEnding = MovieDateUtil.GameSunday(null, isEstimate);
 				}
 

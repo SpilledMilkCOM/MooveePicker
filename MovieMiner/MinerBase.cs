@@ -29,6 +29,7 @@ namespace MovieMiner
 
 			Abbreviation = abbr?.Trim();
 			CacheConfiguration = new CacheConfiguration();              // Just take the default for now.
+			ContainsEstimates = true;									// Override this if actuals.
 			Expiration = DateTime.Now.Subtract(new TimeSpan(1));        // This will trigger the first load.
 			IsHidden = false;
 			OkToMine = true;
@@ -72,6 +73,11 @@ namespace MovieMiner
 		public IMovie CompoundMovie { get { return Movies.FirstOrDefault(movie => movie.Day.HasValue); } }
 
 		public decimal CompoundTotal { get { return Movies.Where(movie => movie.Day.HasValue).Sum(matchedMovie => matchedMovie.EarningsBase); } }
+
+		/// <summary>
+		/// Whether or not the values are estimates or actuals.
+		/// </summary>
+		public bool ContainsEstimates { get; protected set; }
 
 		/// <summary>
 		/// A thread safe version of setting the Error (the Error can be set in the Loading thread or when filtering)
@@ -237,6 +243,7 @@ namespace MovieMiner
 
 			clone.Abbreviation = Abbreviation;
 			clone.CacheConfiguration = CacheConfiguration;
+			clone.ContainsEstimates = ContainsEstimates;
 			clone.Expiration = Expiration;
 			clone.IsHidden = IsHidden;
 			clone.LastLoaded = LastLoaded;

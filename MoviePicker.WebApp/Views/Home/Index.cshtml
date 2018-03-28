@@ -195,7 +195,9 @@
 }
 
 @{
-	var weekendEnding = Model.Miners.First().Movies?.First().WeekendEnding.ToShortDateString();
+	//var weekendEnding = Model.Miners.First().Movies?.First().WeekendEnding.ToShortDateString();
+	var weekendEnding = Model.Miners.First().ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Model.Miners.First().ContainsEstimates).ToShortDateString() : Model.Miners.First().Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString();
+
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
 	bool first = true;
 }

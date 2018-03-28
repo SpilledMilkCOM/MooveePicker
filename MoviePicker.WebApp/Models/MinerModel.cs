@@ -304,7 +304,7 @@ namespace MoviePicker.WebApp.Models
 		/// <param name="minerData"></param>
 		private void FilterMinerMovies(List<IMiner> minerData)
 		{
-			DateTime? weekendEnding = minerData[FML_INDEX].Movies?.FirstOrDefault()?.WeekendEnding;
+			DateTime? weekendEnding = minerData[FML_INDEX].ContainsEstimates ? minerData[FML_INDEX].Movies?.FirstOrDefault()?.WeekendEnding : MovieDateUtil.GameSunday(isEstimate: minerData[FML_INDEX].ContainsEstimates);
 
 			for (int index = FML_INDEX + 1; index < minerData.Count - 1; index++)
 			{
