@@ -230,7 +230,7 @@ namespace MoviePicker.WebApp.Controllers
 
 		private MorePicksViewModel ConstructMorePicksViewModel()
 		{
-			var result = new MorePicksViewModel { MorePicks = new List<MovieListModel>(), MorePicksBonusOff = new List<MovieListModel>() };
+			var result = new MorePicksViewModel { MorePicks = new List<IMovieListModel>(), MorePicksBonusOff = new List<IMovieListModel>() };
 			var stopWatch = new Stopwatch();
 
 			stopWatch.Start();
@@ -245,7 +245,7 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				foreach (var movieList in moviePicker.ChooseBest(10))
 				{
-					result.MorePicks.Add(new MovieListModel { Picks = movieList });
+					result.MorePicks.Add(new MovieListModel { Picks = new List<IMovieList> { movieList } });
 				}
 			}))	{ Name = "bonusThread" };
 
@@ -253,7 +253,7 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				foreach (var movieList in moviePickerBonusOff.ChooseBest(10))
 				{
-					result.MorePicksBonusOff.Add(new MovieListModel { Picks = movieList });
+					result.MorePicksBonusOff.Add(new MovieListModel { Picks = new List<IMovieList> { movieList } });
 				}
 			}))	{ Name = "bonusOffThread" };
 
@@ -306,7 +306,7 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				ComparisonHeader = result.IsTracking ? "Estimated" : null,
 				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
-				Picks = pickList?.FirstOrDefault()
+				Picks = pickList
 			};
 
 			// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
@@ -327,7 +327,7 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				ComparisonHeader = result.IsTracking ? "Estimated" : null,
 				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
-				Picks = pickList?.FirstOrDefault()
+				Picks = pickList
 			};
 
 			if (result.IsTracking)
@@ -341,13 +341,13 @@ namespace MoviePicker.WebApp.Controllers
 				{
 					ComparisonHeader = "Custom",
 					ComparisonMovies = result.Movies,
-					Picks = _moviePicker.ChooseBest()
+					Picks = new List<IMovieList> { _moviePicker.ChooseBest() }
 				};
 			}
 
 			result.SharedPicksUrl = SharedPicksFromModels();
 
-			var leadMovie = result.MovieList.Picks.Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
+			var leadMovie = result.MovieList.Picks?.First().Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
 
 			// Needs to be put in the ViewBag since this value is on the footer.
 			ViewBag.TwitterTweetUrl = $"https://twitter.com/intent/tweet?text={leadMovie} leads my lineup @fml_movies {result.SharedPicksUrl.Replace("?", "%3F")}";
@@ -361,7 +361,7 @@ namespace MoviePicker.WebApp.Controllers
 			return result;
 		}
 
-		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn)
+		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn, int index = 0)
 		{
 			ViewBag.Title = bonusOn ? "Share Bonus ON Picks" : "Share Bonus OFF Picks";
 			var subTitle = bonusOn ? "Bonus ON" : "Bonus OFF";
@@ -372,7 +372,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			var webRootPath = Server.MapPath("~");
 			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
-			var picks = bonusOn ? picksViewModel.MovieList.Picks : picksViewModel.MovieListBonusOff.Picks;
+			var picks = bonusOn ? picksViewModel.MovieList.Picks[index] : picksViewModel.MovieListBonusOff.Picks[index];
 			var movieImages = picks.MovieImages;
 
 			// Files should already be there now.
@@ -496,7 +496,7 @@ namespace MoviePicker.WebApp.Controllers
 			var stopwatch = new Stopwatch();
 
 			// Add picked movies.
-			var movies = picksViewModel.MovieList.Picks.Movies.Distinct().ToList();
+			var movies = picksViewModel.MovieList.Picks[0].Movies.Distinct().ToList();
 
 			// Add most efficient.
 
@@ -518,7 +518,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			picksViewModel.MovieList = new MovieListModel()
 			{
-				Picks = _moviePicker.ChooseBest()
+				Picks = new List<IMovieList> { _moviePicker.ChooseBest() }
 			};
 
 			picksViewModel.Duration += stopwatch.ElapsedMilliseconds;

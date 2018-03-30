@@ -69,6 +69,7 @@ namespace MoviePicker.WebApp
 			container.RegisterType<IControllerUtility, ControllerUtility>();
 			container.RegisterType<IInfoViewModel, InfoViewModel>();
 			container.RegisterType<IMoviePicker, MsfMovieSolver>();
+			//container.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();		Still too slow.
 			container.RegisterType<IMovieList, MovieList>();
 			container.RegisterType<IServerInfoModel, ServerInfoModel>();
 			container.RegisterType<ISimulationModel, SimulationModel>();

@@ -11,7 +11,7 @@ namespace MoviePicker.WebApp.Models
 
 		public IEnumerable<IMovie> ComparisonMovies { get; set; }
 
-		public IMovieList Picks { get; set; }
+		public List<IMovieList> Picks { get; set; }
 
 		public List<IMovieList> PicksTheRest { get; set; }
 
@@ -23,7 +23,7 @@ namespace MoviePicker.WebApp.Models
 
 				if (Picks != null && ComparisonMovies != null)
 				{
-					foreach (var pick in Picks.Movies)
+					foreach (var pick in Picks[0].Movies)
 					{
 						var foundMovie = ComparisonMovies.FirstOrDefault(movie => movie.Name == pick.Name);
 

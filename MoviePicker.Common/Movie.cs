@@ -261,7 +261,7 @@ namespace MoviePicker.Common
 		{
 			if (Cost != 0)
 			{
-				_efficiency = Earnings / Cost;
+				_efficiency = EarningsBase / Cost;
 			}
 
 			_isBestPerformer = false;

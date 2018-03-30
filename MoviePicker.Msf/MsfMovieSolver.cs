@@ -177,6 +177,12 @@ namespace MoviePicker.Msf
 
 			Dictionary<string, MsfMovieWrapper> movies = _movies.ToDictionary(p => p.Name);
 
+			if (topCount > 1)
+			{
+				// For now only do this once.
+				topCount = 1;
+			}
+
 			while (topCount > 0)
 			{
 				var decision = solution.Decisions.First();

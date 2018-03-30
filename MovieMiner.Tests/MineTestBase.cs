@@ -77,7 +77,7 @@ namespace MovieMiner.Tests
 		{
 			Logger.WriteLine($"Total Movies In List: {movies.Count()}");
 
-			foreach (var movie in movies.OrderByDescending(item => item.Earnings))
+			foreach (var movie in movies.OrderByDescending(item => item.Cost))
 			{
 				var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
 

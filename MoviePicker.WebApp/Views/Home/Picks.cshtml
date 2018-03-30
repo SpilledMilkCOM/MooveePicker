@@ -99,7 +99,7 @@
 		</a>
 	</div>
 
-	@Html.Partial("MovieList2", Model.MovieList)
+	@Html.Partial("MovieListMini", Model.MovieList)
 </div>
 
 <div class="row-divider"> </div>
@@ -118,7 +118,7 @@
 		</a>
 	</div>
 
-	@Html.Partial("MovieList2", Model.MovieListBonusOff)
+	@Html.Partial("MovieListMini", Model.MovieListBonusOff)
 </div>
 
 <div class="row">
@@ -156,20 +156,28 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>Bonus ON</td>
-						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
-						<td>@string.Format("{0:N0}", Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
-						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
-						<td>@string.Format("{0:F2} %", Model.MovieList.Picks.TotalEarnings > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
-					</tr>
-					<tr>
-						<td>Bonus OFF</td>
-						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
-						<td>@string.Format("{0:N0}", Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
-						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
-						<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks.TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
-					</tr>
+
+					@foreach (var pick in Model.MovieList.Picks)
+					{
+						<tr>
+							<td>Bonus ON</td>
+							<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
+							<td>@string.Format("{0:N0}", pick.TotalEarnings)</td>
+							<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - pick.TotalEarnings)</td>
+							<td>@string.Format("{0:F2} %", pick.TotalEarnings > 0 ? (Model.MovieList.TotalPicksFromComparison - pick.TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
+						</tr>
+					}
+
+					@foreach (var pick in Model.MovieListBonusOff.Picks)
+					{
+						<tr>
+							<td>Bonus OFF</td>
+							<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
+							<td>@string.Format("{0:N0}", pick.TotalEarnings)</td>
+							<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - pick.TotalEarnings)</td>
+							<td>@string.Format("{0:F2} %", pick.TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - pick.TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
+						</tr>
+					}
 				</tbody>
 			</table>
 		</div>

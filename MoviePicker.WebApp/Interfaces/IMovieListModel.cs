@@ -17,7 +17,7 @@ namespace MoviePicker.WebApp.Interfaces
 		/// These can be either YOUR picks with the bonus on or off,
 		/// or this can be the FML Perfect Picks based on the estimated actuals.
 		/// </summary>
-		IMovieList Picks { get; set; }
+		List<IMovieList> Picks { get; set; }
 
 		/// <summary>
 		/// A list of the rest of the picks
