@@ -1,4 +1,15 @@
-﻿// For Twitter "follow" and "tweet" buttons.
+﻿// ----==== For Bootstrap ====-------------------------------------------------------------------
+
+$(window).on("load resize", function () {
+	$(".fill-screen").css("height", window.innerHeight);
+});
+
+$(document).ready(function () {
+	$('[data-toggle="tooltip"]').tooltip();
+});
+
+// ----==== For Twitter ====-------------------------------------------------------------------
+// For Twitter "follow" and "tweet" buttons.
 
 !function (d, s, id) {
 

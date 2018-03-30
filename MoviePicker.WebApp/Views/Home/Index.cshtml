@@ -149,13 +149,28 @@
 	}
 </script>
 
+@{
+	//var weekendEnding = Model.Miners.First().Movies?.First().WeekendEnding.ToShortDateString();
+	var weekendEnding = Model.Miners.First().ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Model.Miners.First().ContainsEstimates).ToShortDateString() : Model.Miners.First().Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString();
+
+	int movieCount = 1;     // This scope is pretty far, sorry  :(
+	bool first = true;
+}
+
 <div class="row">
 	<div class="col-xs-3 col-md-2" style="padding-top: 20px;">
 		<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
 	</div>
 
 	<div class="col-xs-9 col-sm-6 col-md-5">
-		<h2>WELCOME</h2>
+		<h2>
+			WELCOME
+			<div class="btn btn-info" style="font-size: large;" data-toggle="tooltip" data-placement="bottom" title="The following table is an aggregation of data for the &quot;play&quot; week ending @weekendEnding for the Fantasy Movie League website.
+				Currently the site aggregates box office data from Todd Thatcher's post on FML, Box Office Pro, Box Office Mojo, Box Office Report, Culture Vulture, and Box Office Prophet.
+				These are the &quot;experts&quot; in the field.  YOUR job is to determine who you trust and by how much and apply a weighting mechanism before you make your game picks.">
+				Box Office Forecasts
+			</div>
+		</h2>
 
 		This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
 		This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
@@ -175,7 +190,6 @@
 	</div>
 </div>
 
-
 @if (Model.IsTracking)
 {
 	<div class="row-divider"> </div>
@@ -194,27 +208,12 @@
 	</div>
 }
 
-@{
-	//var weekendEnding = Model.Miners.First().Movies?.First().WeekendEnding.ToShortDateString();
-	var weekendEnding = Model.Miners.First().ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Model.Miners.First().ContainsEstimates).ToShortDateString() : Model.Miners.First().Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString();
+<div class="row-divider"> </div>
 
-	int movieCount = 1;     // This scope is pretty far, sorry  :(
-	bool first = true;
-}
-
-<h3>Box Office Forecasts</h3>
 <h5>@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" }) weekend ending @weekendEnding (@Model.Duration.ToString("N0") ms)</h5>
 
 <div class="row">
-	<div class="col-sm-6">
-		The following table is an aggregation of data for the "play" week ending @weekendEnding for the Fantasy Movie League website.
-		Currently the site aggregates box office data from Todd Thatcher's post on FML, Box Office Pro, Box Office Mojo, Box Office Report, Culture Vulture, and Box Office Prophet.
-		These are the "experts" in the field.  YOUR job is to determine who you trust and by how much and apply a weighting mechanism before you make your game picks.
-	</div>
-
-	<div class="col-sm-1 hidden-sm"></div>
-
-	<div class="col-sm-5">
+	<div class="col-sm-8">
 		<div class="col-sm-5">
 			<textarea class="col-xs-12 form-control" id="pasteAreaId" rows="5" style="background-color: lightcyan; vertical-align: top;"
 					  placeholder="Paste your 15 Box Office values here (use CR/LF to separate values)"></textarea>
@@ -425,40 +424,29 @@
 									<a class="btn btn-info btn-xs" href="@string.Format("{0}", Model.Miners.FirstOrDefault()?.UrlSource)" data-toggle="tooltip" data-placement="bottom" title="Click for FML BUX source page...">BUX</a>
 								</th>
 
-								<th style="text-align: center;"> </th>
+								<th style="text-align: center;">
+									<input class="btn btn-info btn-xs"
+										   onclick="clickRecalc('grid')"
+										   type="button"
+										   value="Custom"
+										   data-toggle="tooltip"
+										   data-placement="bottom"
+										   title="Click to apply weights and recalculate Custom column..." />
+								</th>
 
-								<th style="text-align: center;">Movie</th>
-
-								@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+								@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 								{
-									<th style="text-align: center;">
-										@if (first)
-										{
-											first = false;
-
-											<input class="btn btn-info btn-xs"
-												   onclick="clickRecalc('grid')"
-												   type="button"
-												   value="Custom"
-												   data-toggle="tooltip"
-												   data-placement="bottom"
-												   title="Click to apply weights and recalculate Custom column..." />
-										}
-										else
-										{
-											<a class="btn btn-info btn-xs" href="@miner.UrlSource" target="_blank" data-toggle="tooltip" data-placement="bottom"
-											   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
-												@miner.Abbreviation
-											</a>
-										}
-									</th>
 									<th></th>
+									<th style="text-align: center;">
+										<a class="btn btn-info btn-xs" href="@miner.UrlSource" target="_blank" data-toggle="tooltip" data-placement="bottom"
+										   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
+											@miner.Abbreviation
+										</a>
+									</th>
 								}
 							</tr>
 							<tr>
 								<td></td>
-								<td></td>
-								<td style="text-align: center;"></td>
 								<td></td>
 								<td></td>
 
@@ -488,7 +476,7 @@
 									<td>
 										<img height="75" src="@compoundMovie.ImageUrl" />
 									</td>
-									<td style="font-weight: bold;">@compoundMovie.MovieName TOTAL</td>
+									<td>@compoundMovie.MovieName TOTAL</td>
 									<td> </td>
 									<td> </td>
 
@@ -509,11 +497,38 @@
 								bool isFirst = true;
 
 								<tr>
-									<td>@movie.Cost</td>
 									<td>
-										<img height="75" src="@movie.ImageUrl" />
+										<img height="100" src="@movie.ImageUrl" />
+										<div style="font-weight: bold;">
+											@movie.Cost
+										</div>
 									</td>
-									<td style="text-align: center;">@movie.Name</td>
+									<td>
+										<div>
+											@movie.Name
+										</div>
+
+										@{
+											var id = string.Format("boId{0}", movieCount);
+											var name = string.Format("BoxOffice{0}", movieCount);
+											// TODO: May want to use a utility to speed up the reflection.
+											var value = string.Format("{0:N0}", Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model));
+
+
+											@*The majority of this input was taken from Html.TextBoxFor*@
+
+											<input name="@name"
+												   class="form-control"
+												   id="@id"
+												   style="background-color: lightcyan; width: 100px;"
+												   type="text"
+												   value="@value"
+												   data-val-required="The Box Office @movieCount field is required."
+												   data-val-number="The field Box Office @movieCount must be a number."
+												   data-val="true">
+
+										}
+									</td>
 
 									@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 									{
@@ -522,28 +537,6 @@
 										if (isFirst)
 										{
 											isFirst = false;
-
-											if (1 <= movieCount && movieCount <= 15)
-											{
-												var id = string.Format("boId{0}", movieCount);
-												var name = string.Format("BoxOffice{0}", movieCount);
-												// TODO: May want to use a utility to speed up the reflection.
-												var value = string.Format("{0:N0}", Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model));
-
-												<td>
-													@*The majority of this input was taken from Html.TextBoxFor*@
-
-													<input name="@name"
-														   class="form-control"
-														   id="@id"
-														   style="background-color: lightcyan; width: 100px;"
-														   type="text"
-														   value="@value"
-														   data-val-required="The Box Office @movieCount field is required."
-														   data-val-number="The field Box Office @movieCount must be a number."
-														   data-val="true">
-												</td>
-											}
 										}
 										else
 										{
@@ -583,20 +576,12 @@
 							<tr>
 								<td></td>
 								<td></td>
-								<td></td>
 
-								@{
-									first = true;
-								}
-
-								@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
+								@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 								{
+									<td></td>
 									<td style="text-align: center">
-										@if (first)
-										{
-											first = false;
-										}
-										else if (miner == Model.Miners.Last() || !miner.Movies.Any())
+										@if (miner == Model.Miners.Last() || !miner.Movies.Any())
 										{
 											<a class="btn btn-info btn-xs"
 											   href="@miner.UrlSource"
@@ -614,14 +599,11 @@
 											   title="Click for '@miner.Name' dedicated picks...">@miner.Abbreviation</a>
 										}
 									</td>
-									<td></td>
 								}
 							</tr>
 
 							<tr>
 								<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "Click to extract as CSV text file..." })</td>
-
-								<td></td>
 
 								<td>
 									<input class="btn btn-info" onclick="clickRecalc()" type="button" value="Apply Weights" data-toggle="tooltip" data-placement="bottom" title="Click to apply weights and recalculate Mine column..." />
@@ -636,6 +618,11 @@
 
 									var value = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
 
+									if (minerCount > 2)
+									{
+										<td></td>
+									}
+
 									<td>
 										@*The majority of this input was taken from Html.TextBoxFor*@
 
@@ -649,8 +636,8 @@
 											   data-val-number="The field Weight @minerCount must be a number."
 											   data-val="true">
 									</td>
-									<td></td>
 								}
+								<td></td>
 
 								<td>
 									<input class="btn btn-info"
@@ -661,7 +648,7 @@
 										   data-placement="bottom"
 										   title="Click to clear the miners' weights." />
 								</td>
-								<td></td>
+
 							</tr>
 						</tbody>
 					</table>
