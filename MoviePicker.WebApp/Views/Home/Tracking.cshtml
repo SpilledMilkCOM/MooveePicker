@@ -37,16 +37,16 @@
 					<tr>
 						<td>Bonus ON</td>
 						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
-						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
-						<td>@string.Format("{0:F2} %", Model.MovieList.Picks.TotalEarnings > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
+						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieList.TotalPicksFromComparison > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
 					</tr>
 					<tr>
 						@* REMEMBER!! TotalPicksFromComparison are YOUR picks with the current estimates. *@
 
 						<td>Bonus OFF</td>
 						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
-						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings)</td>
-						<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks.TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks.TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
+						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks[0].TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
 					</tr>
 				</tbody>
 			</table>
@@ -103,7 +103,7 @@
 						var minerCount = 0;
 						IMovie fmlMovie = null;
 						IMovie customMovie = null;
-						var movieIsPickStyle = Model.MovieList.Picks.Movies.Any(item => item.Name == movie.Name) ? "background-color: lightskyblue; " : string.Empty;
+						var movieIsPickStyle = Model.MovieList.Picks[0].Movies.Any(item => item.Name == movie.Name) ? "background-color: lightskyblue; " : string.Empty;
 
 						<tr>
 							<td style="text-align: right; @movieIsPickStyle">@movie.Cost</td>
