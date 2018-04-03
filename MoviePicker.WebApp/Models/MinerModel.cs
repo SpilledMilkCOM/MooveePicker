@@ -324,28 +324,30 @@ namespace MoviePicker.WebApp.Models
 
 			// BO Mojo has a HUGE list of movies that were mined
 
-			var moviesToRemove = new List<IMovie>();
-			var lastWeekMovies = minerData.Last().Movies;
-			var baseMovies = minerData.First().Movies;
+			var lastWeekMovies = minerData.Last().Movies;       // Returns a copy of the the movies.
+			var moviesToRemove = minerData.Last().Movies.Where(movie => movie.Id == 0);
 
-			foreach (var movie in lastWeekMovies)
-			{
-				var found = baseMovies.FirstOrDefault(item => movie.Equals(item));      // Use the fuzzy logic to match the movie name.
+			//foreach (var movie in lastWeekMovies)
+			//{
 
-				if (found == null)
-				{
-					moviesToRemove.Add(movie);
-				}
-				else
-				{
-					movie.MovieName = found.MovieName;
-				}
-			}
+			//	var found = baseMovies.FirstOrDefault(item => movie.Equals(item));      // Use the fuzzy logic to match the movie name.
+
+			//	if (found == null)
+			//	{
+			//		moviesToRemove.Add(movie);
+			//	}
+			//	else
+			//	{
+			//		movie.MovieName = found.MovieName;
+			//	}
+			//}
 
 			foreach (var movie in moviesToRemove)
 			{
 				lastWeekMovies.Remove(movie);
 			}
+
+			minerData.Last().SetMovies(lastWeekMovies);     // Update the internal list with the reduced size.
 		}
 
 		/// <summary>
