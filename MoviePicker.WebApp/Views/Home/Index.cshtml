@@ -436,10 +436,15 @@
 
 								@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 								{
+									var errorDetail = miner.ErrorDetail == null ? string.Empty : string.Format("[Error]");
+									var lastUpdated = ((ICache)miner).LastLoaded.HasValue ? string.Format("(last updated {0})", ((ICache)miner).LastLoaded) : string.Empty;
+									var toolTip = string.Format("Click for '{0}' source page... {1}{2}"
+																, miner.Name, lastUpdated, errorDetail);
+
 									<th></th>
 									<th style="text-align: center;">
 										<a class="btn btn-info btn-xs" href="@miner.UrlSource" target="_blank" data-toggle="tooltip" data-placement="bottom"
-										   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
+										   title="@toolTip">
 											@miner.Abbreviation
 										</a>
 									</th>

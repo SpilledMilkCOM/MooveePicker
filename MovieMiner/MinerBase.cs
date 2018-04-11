@@ -19,6 +19,7 @@ namespace MovieMiner
 		private volatile bool _isLoading;
 		private volatile List<IMovie> _movies;
 		private volatile string _error;
+		private volatile string _errorDetail;
 
 		protected MinerBase(string name, string abbr, string url)
 		{
@@ -101,6 +102,32 @@ namespace MovieMiner
 				lock (_errorLock)
 				{
 					_error = value;
+				}
+			}
+		}
+
+		/// <summary>
+		/// A thread safe version of setting the Error (the Error can be set in the Loading thread or when filtering)
+		/// </summary>
+		public string ErrorDetail
+		{
+			get
+			{
+				string result = null;
+
+				lock (_errorLock)
+				{
+					// Return a copy of the error
+					result = _errorDetail;
+				}
+
+				return result;
+			}
+			set
+			{
+				lock (_errorLock)
+				{
+					_errorDetail = value;
 				}
 			}
 		}
@@ -256,6 +283,7 @@ namespace MovieMiner
 			// Set during the Mine() method.
 
 			clone.Error = Error;
+			clone.ErrorDetail = ErrorDetail;
 
 			// Create a NEW list of movies, the movie objects are still shared between this object and the cloned object.
 			// (you can't just assign the list over otherwise the list will be shared too and you'll get iteration problems amongst the threads)

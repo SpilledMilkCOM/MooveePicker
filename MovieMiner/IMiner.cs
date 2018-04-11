@@ -30,6 +30,8 @@ namespace MovieMiner
 
 		string Error { get; set; }
 
+		string ErrorDetail { get; set; }
+
 		/// <summary>
 		/// Name of the Miner
 		/// </summary>

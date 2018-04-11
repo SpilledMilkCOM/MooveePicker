@@ -316,6 +316,7 @@ namespace MoviePicker.WebApp.Models
 					{
 						// Only set this if there was data and there's no error.
 						minerData[index].Error = "Old Data";
+						minerData[index].ErrorDetail = $"The box office data is from the weekend ending {minerData[index].Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString()}";
 					}
 
 					minerData[index].Clear();
@@ -440,6 +441,7 @@ namespace MoviePicker.WebApp.Models
 					}
 
 					miner.Error = "Error";
+					miner.ErrorDetail = ex.Message;
 
 					//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
 				}

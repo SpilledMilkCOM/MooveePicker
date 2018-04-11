@@ -109,7 +109,7 @@ namespace MovieMiner
 						if (movieNodes.Count == 1)
 						{
 							var innerHtml = HttpUtility.HtmlDecode(movieNodes.First().InnerHtml);
-							var delimiters = new string[] { "<br>\n", "<br><br>" };
+							var delimiters = new string[] { "\n", "<br>\n", "<br><br>" };
 							var tokens = innerHtml.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
 							foreach (var token in tokens)
@@ -186,9 +186,10 @@ namespace MovieMiner
 
 			// Might switch this to RegEx...
 
-			var valueInMillions = nodeText.Substring(index, nodeText.Length - index)?.Contains("million");
+			var valueInMillions = (nodeText.Substring(index, nodeText.Length - index)?.Contains("million") ?? false)
+								|| (nodeText.Substring(index, nodeText.Length - index)?.Contains("milllion") ?? false);
 
-			var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace("million", string.Empty);
+			var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace("million", string.Empty).Replace("milllion", string.Empty);
 
 			var parenIndex = estimatedBoxOffice.IndexOf("(");
 
@@ -205,7 +206,7 @@ namespace MovieMiner
 				{
 					MovieName = MapName(ParseName(name)),
 					Day = ParseDayOfWeek(name),
-					Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
+					Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions ? 1000000 : 1)
 				};
 
 				if (articleDate.HasValue)
