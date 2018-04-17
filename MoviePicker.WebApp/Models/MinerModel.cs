@@ -97,6 +97,8 @@ namespace MoviePicker.WebApp.Models
 						AssignCostIdName(movie, miner.Movies);
 					}
 
+					FilterOutMovieIdZero(miner);
+
 					var masterMiner = Miners.FirstOrDefault(item => item.Name == miner.Name);
 
 					if (masterMiner != null)
@@ -325,30 +327,30 @@ namespace MoviePicker.WebApp.Models
 
 			// BO Mojo has a HUGE list of movies that were mined
 
-			var lastWeekMovies = minerData.Last().Movies;       // Returns a copy of the the movies.
-			var moviesToRemove = minerData.Last().Movies.Where(movie => movie.Id == 0);
+			FilterOutMovieIdZero(minerData.Last());
 
-			//foreach (var movie in lastWeekMovies)
+			//var lastWeekMovies = minerData.Last().Movies;       // Returns a copy of the the movies.
+			//var moviesToRemove = minerData.Last().Movies.Where(movie => movie.Id == 0);
+
+			//foreach (var movie in moviesToRemove)
 			//{
-
-			//	var found = baseMovies.FirstOrDefault(item => movie.Equals(item));      // Use the fuzzy logic to match the movie name.
-
-			//	if (found == null)
-			//	{
-			//		moviesToRemove.Add(movie);
-			//	}
-			//	else
-			//	{
-			//		movie.MovieName = found.MovieName;
-			//	}
+			//	lastWeekMovies.Remove(movie);
 			//}
+
+			//minerData.Last().SetMovies(lastWeekMovies);     // Update the internal list with the reduced size.
+		}
+
+		private void FilterOutMovieIdZero(IMiner miner)
+		{
+			var movies = miner.Movies;												// Returns a copy of the the movies.
+			var moviesToRemove = movies.Where(movie => movie.Id == 0).ToList();		// Need a new list of this
 
 			foreach (var movie in moviesToRemove)
 			{
-				lastWeekMovies.Remove(movie);
+				movies.Remove(movie);
 			}
 
-			minerData.Last().SetMovies(lastWeekMovies);     // Update the internal list with the reduced size.
+			miner.SetMovies(movies);     // Update the internal list with the reduced size.
 		}
 
 		/// <summary>
