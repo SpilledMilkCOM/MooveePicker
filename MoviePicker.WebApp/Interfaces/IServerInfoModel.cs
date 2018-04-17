@@ -6,6 +6,8 @@ namespace MoviePicker.WebApp.Interfaces
 	{
 		int MoviePosterFileCount { get; set; }
 
+		long ProcessBytes { get; set; }
+
 		/// <summary>
 		/// Local server "Now"
 		/// </summary>

@@ -53,6 +53,8 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			ViewBag.IsGoogleAdValid = false;
 
+			_infoViewModel.ServerInfo.ProcessBytes = System.Diagnostics.Process.GetCurrentProcess()?.WorkingSet64 ?? 0;
+
 			_infoViewModel.ServerInfo.Now = DateTime.Now;
 			_infoViewModel.ServerInfo.NowUtc = DateTime.UtcNow;
 

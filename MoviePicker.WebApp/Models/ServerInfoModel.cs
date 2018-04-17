@@ -13,6 +13,8 @@ namespace MoviePicker.WebApp.Models
 
 		public DateTime NowUtc { get; set; }
 
+		public long ProcessBytes { get; set; }
+
 		public int SharedFileCount { get; set; }
 	
 		public int TwitterFileCount { get; set; }
