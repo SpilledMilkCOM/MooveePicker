@@ -500,15 +500,12 @@
 								//const string myColumnStyle = "width: 100px;";
 								//const string myColumnFormat = "{0:N0}";
 								var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
-								var movieIsNewStyle = lastWeek == null ? "background-color: #C3FDB8;" : string.Empty;			// Color light-jade
+								var movieIsNewStyle = lastWeek == null ? "background-color: #C3FDB8;" : string.Empty;           // Color light-jade
 								bool isFirst = true;
 
 								<tr style="@movieIsNewStyle">
 									<td>
 										<img height="100" src="@movie.ImageUrl" />
-										<div style="font-weight: bold;">
-											@movie.Cost
-										</div>
 									</td>
 									<td>
 										<div>
@@ -535,6 +532,10 @@
 												   data-val="true">
 
 										}
+
+										<div style="font-weight: bold;">
+											@movie.Cost
+										</div>
 									</td>
 
 									@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
