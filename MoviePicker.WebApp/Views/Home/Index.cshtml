@@ -499,9 +499,11 @@
 							{
 								//const string myColumnStyle = "width: 100px;";
 								//const string myColumnFormat = "{0:N0}";
+								var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
+								var movieIsNewStyle = lastWeek == null ? "background-color: #C3FDB8;" : string.Empty;			// Color light-jade
 								bool isFirst = true;
 
-								<tr>
+								<tr style="@movieIsNewStyle">
 									<td>
 										<img height="100" src="@movie.ImageUrl" />
 										<div style="font-weight: bold;">
@@ -553,7 +555,6 @@
 
 										if (miner != Model.Miners.Last())
 										{
-											var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
 											decimal percent = 0;
 
 											if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
