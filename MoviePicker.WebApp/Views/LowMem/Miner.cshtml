@@ -14,16 +14,16 @@
 	<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
 	<div class="col-sm-1 hidden-xs" style="font-weight: bold;">ID</div>
 	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Earnings</div>
-	<div class="col-sm-5 hidden-xs" style="font-weight: bold;">Blank</div>
+	<div class="col-sm-5 hidden-xs" style="font-weight: bold;">Weekend Ending</div>
 
 	@foreach (var movie in Model.Movies)
 	{
 		<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">@movie.Name</div>
 		<div class="col-sm-4 hidden-xs">@movie.Name</div>
-		<div class="col-sm-1 hidden-xs">@movie.Id</div>
+		<div class="col-xs-1">@movie.Id</div>
 
-		<div class="col-xs-6 col-sm-2" style="text-align: right;">@string.Format("{0:N0}", movie.Earnings)</div>
+		<div class="col-xs-5 col-sm-2" style="text-align: right;">@string.Format("{0:N0}", movie.Earnings)</div>
 
-		<div class="col-sm-5 hidden-xs">#</div>
+		<div class="col-sm-5 hidden-xs">@string.Format("{0}", movie.WeekendEnding.ToShortDateString())</div>
 	}
 </div>
