@@ -16,20 +16,37 @@
 		Another process may come along and remove the image after a while.
 		I'll test what makes sense, but what makes sense to <strong>ME</strong> may not make sense to <strong>YOU</strong>.
 
-		<p> </p>
+		<div style="height: 30px;"> </div>
 
-		<p>Please bear with me while I switch over to <a href="https://www.themoviedb.org/">The Movie Database</a> for movie posters.
+		@*<p>Please bear with me while I switch over to <a href="https://www.themoviedb.org/">The Movie Database</a> for movie posters.
 		You may see a "NOT FOUND" poster image.  Please be patient.
 		Fantasy Movie League has switched vendors from TMDb to another vendor which does not allow downloading their images without a key.</p>
 
-		<div style="height: 10px;"></div>
+		<div style="height: 10px;"></div>*@
 
 		<a class="twitter-share-button" data-size="large" href="https://twitter.com/intent/tweet?text=@ViewBag.TwitterTweetText">Tweet</a>
+
+		<div style="height: 30px;"> </div>
+
+		<div>
+			Please <strong>NOTE</strong>: Since there is no database backing this website, it relies on only the current data provided by Fantasy Movie League.
+			There is NO “as of” dating which means that once this reference is over a week old, then it will use the CURRENT BUX data and the picks will be using the OLD box office data contained within the tweet as well as reference different movies and different cost values.
+			Sorry about that, but until this is backed by a database then these page image references WILL be out of date after a week.
+		</div>
 	</div>
 
 	<div class="col-xs-1"></div>
 
 	<div class="col-xs-10 col-sm-6">
+
+		<div style="font-weight: bold; font-size: medium">Preview Tweet:</div>
+
+		<div>
+			@ViewBag.TwitterTweetText
+		</div>
+
+		<p> </p>
+
 		<div class="movie-twitter-summary">
 			<img class="img-responsive" style="border-top-left-radius: 10px; border-top-right-radius: 10px;" src="~/Images/@Model.TwitterImageFileName" />
 

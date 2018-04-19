@@ -390,6 +390,8 @@ namespace MoviePicker.WebApp.Controllers
 			var bonusMovieName = bonusOn ? picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer)?.Name : null;
 			var spentBux = picks.Movies.Sum(movie => movie.Cost);
 			var spentBuxText = spentBux == 1000 ? " and spent all my BUX" : $" and spent {spentBux} BUX";
+			var minerPick = MinerWeightToMiner();
+			var lineupArticle = minerPick == null ? "my" : "the";
 
 			if (bonusMovieName == null)
 			{
@@ -405,11 +407,9 @@ namespace MoviePicker.WebApp.Controllers
 
 			bonusMovieName = (bonusOn) ? $", counting on {bonusMovieName} as my bonus movie" : $", hoping for {bonusMovieName} as my bonus movie";
 
-			viewModel.TwitterDescription = $"{leadingMovieName} leads my lineup{bonusMovieName}{spentBuxText}.";
+			viewModel.TwitterDescription = $"{leadingMovieName} leads {lineupArticle} lineup{bonusMovieName}{spentBuxText}.";
 			viewModel.TwitterImageFileName = viewModel.ImageFileName.Replace("Shared_", "Twitter_");
 			viewModel.TwitterTitle = $"{Constants.APPLICATION_NAME}: {subTitle} (Est ${picks.TotalEarnings:N0})";
-
-			var minerPick = MinerWeightToMiner();
 
 			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks." : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:" ;
 
