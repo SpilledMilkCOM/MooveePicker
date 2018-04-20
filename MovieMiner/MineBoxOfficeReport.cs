@@ -20,7 +20,7 @@ namespace MovieMiner
 		public MineBoxOfficeReport()
 			: base("Box Office Report", "BO Rpt", DEFAULT_URL)
 		{
-			TwitterID = "BOReport";
+			TwitterID = "BORReport";
 		}
 
 		public override IMiner Clone()
