@@ -1,4 +1,5 @@
-﻿using MoviePicker.WebApp.Interfaces;
+﻿using MovieMiner;
+using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Utilities;
 using System;
 using System.IO;
@@ -77,6 +78,14 @@ namespace MoviePicker.WebApp.Controllers
 			return View(found);
 		}
 
+		public ActionResult ExpireMiner(string minerName)
+		{
+			var foundMiner = _infoViewModel.MinerModel.Miners.FirstOrDefault(miner => miner.Name == minerName) as ICache;
+
+			foundMiner?.Expire();
+
+			return RedirectToAction("Miner", new { name = minerName });
+		}
 		public ActionResult ExpireMiners()
 		{
 			_infoViewModel.MinerModel.Expire();

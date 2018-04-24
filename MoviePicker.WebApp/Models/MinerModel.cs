@@ -459,7 +459,7 @@ namespace MoviePicker.WebApp.Models
 
 		private List<IMovie> SpreadCompoundMovies(List<IMovie> compoundMovies, List<IMovie> movies)
 		{
-			var rootMovie = movies.FirstOrDefault(movie => movie.Equals(compoundMovies.First()));
+			var rootMovie = movies.FirstOrDefault(movie => movie.Equals(compoundMovies.FirstOrDefault()));
 			var compoundTotal = compoundMovies.Sum(movie => movie.Earnings);
 
 			if (rootMovie != null)

@@ -8,6 +8,11 @@
 
 <h2>@ViewBag.Title</h2>
 
+<div>@Html.ActionLink("Expire Miner", "ExpireMiner", new { minerName = Model.Name }, htmlAttributes: new { @class = "btn btn-info" })</div>
+
+<h4>Last Updated: @string.Format("{0}", ((ICache)Model).LastLoaded)</h4>
+<h4>Expires: @string.Format("{0}", ((ICache)Model).Expiration)</h4>
+
 <h3>@Model.Name (@Model.Movies.Count)</h3>
 
 <div class="row">
