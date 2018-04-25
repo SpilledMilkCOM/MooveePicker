@@ -477,12 +477,10 @@
 								var compoundMovie = Model.Miners.ToList()[0].CompoundMovie;
 
 								<tr>
-									<td> </td>
 									<td>
-										<img height="75" src="@compoundMovie.ImageUrl" />
+										<img height="100" src="@compoundMovie.ImageUrl" />
 									</td>
 									<td>@compoundMovie.MovieName TOTAL</td>
-									<td> </td>
 									<td> </td>
 
 									@foreach (var miner in Model.Miners.Skip(2))

@@ -138,9 +138,8 @@ namespace MovieMiner
 
 									// Might switch this to RegEx...
 
-									var valueInMillions = nodeText.Substring(index, nodeText.Length - index)?.Contains("million");
-
-									var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace(DELIMITER2, string.Empty).Replace("million", string.Empty);
+									var multiplier = Multiplier(nodeText.Substring(index, nodeText.Length - index));
+									var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace(DELIMITER2, string.Empty).Replace("million", string.Empty).Replace("k", string.Empty);
 
 									var parenIndex = estimatedBoxOffice.IndexOf("(");
 
@@ -157,7 +156,7 @@ namespace MovieMiner
 										{
 											MovieName = MapName(ParseName(name)),
 											Day = ParseDayOfWeek(name),
-											Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions.Value ? 1000000 : 1)
+											Earnings = decimal.Parse(estimatedBoxOffice) * multiplier
 										};
 
 										if (articleDate.HasValue)
@@ -171,6 +170,25 @@ namespace MovieMiner
 							}
 						}
 					}
+				}
+			}
+
+			return result;
+		}
+
+		private decimal Multiplier(string boxOffice)
+		{
+			decimal result = 1;
+
+			if (boxOffice != null)
+			{
+				if (boxOffice.Contains("million"))
+				{
+					result = 1000000;
+				}
+				else if (boxOffice.Contains("k"))
+				{
+					result = 1000;
 				}
 			}
 
