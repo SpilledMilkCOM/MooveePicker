@@ -436,7 +436,7 @@
 
 								@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 								{
-									var errorDetail = miner.ErrorDetail == null ? string.Empty : string.Format("[Error]");
+									var errorDetail = miner.ErrorDetail == null ? string.Empty : string.Format("[Error - {0}]", miner.ErrorDetail);
 									var lastUpdated = ((ICache)miner).LastLoaded.HasValue ? string.Format("(last updated {0})", ((ICache)miner).LastLoaded) : string.Empty;
 									var toolTip = string.Format("Click for '{0}' source page... {1}{2}"
 																, miner.Name, lastUpdated, errorDetail);

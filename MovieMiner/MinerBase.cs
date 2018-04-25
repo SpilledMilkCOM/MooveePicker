@@ -214,6 +214,11 @@ namespace MovieMiner
 					CloneCausedReload = true;
 					LastLoaded = DateTime.Now;
 				}
+				catch(Exception ex)
+				{
+					Error = $"Error Loading";
+					ErrorDetail = ex.Message;
+				}
 				finally
 				{
 					if (CacheConfiguration != null)
@@ -222,7 +227,7 @@ namespace MovieMiner
 						{
 							Expiration = LastLoaded.Value.Add(CacheConfiguration.Duration);
 						}
-						else
+						else if (LastLoaded.HasValue)
 						{
 							Expiration = LastLoaded.Value.Add(CacheConfiguration.EmptyDuration);
 						}
