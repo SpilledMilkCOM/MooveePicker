@@ -472,25 +472,30 @@
 						</thead>
 
 						<tbody>
-							@if (Model.Miners.Any(miner => miner.CompoundMovie != null))
-							{
-								var compoundMovie = Model.Miners.ToList()[0].CompoundMovie;
 
-								<tr>
-									<td>
-										<img height="100" src="@compoundMovie.ImageUrl" />
-									</td>
-									<td>@compoundMovie.MovieName TOTAL</td>
-									<td> </td>
+							@* Are there any compound movies?  Movie(s) that are split up into multiple days. *@
 
-									@foreach (var miner in Model.Miners.Skip(2))
-									{
-										var compoundTotal = miner.CompoundTotal;
+							@{
+								var compoundMovie = Model.Miners.FirstOrDefault(miner => miner.CompoundMovie != null)?.CompoundMovie;
 
-										<td>@string.Format("{0}", compoundTotal > 0 ? compoundTotal.ToString("N0") : string.Empty)</td>
-										<td></td>
-									}
-								</tr>
+								if (compoundMovie != null)
+								{
+									<tr>
+										<td>
+											<img height="100" src="@compoundMovie.ImageUrl" />
+										</td>
+										<td>@compoundMovie.MovieName TOTAL</td>
+										<td> </td>
+
+										@foreach (var miner in Model.Miners.Skip(2))
+										{
+											var compoundTotal = miner.CompoundTotal;
+
+											<td>@string.Format("{0}", compoundTotal > 0 ? compoundTotal.ToString("N0") : string.Empty)</td>
+											<td></td>
+										}
+									</tr>
+								}
 							}
 
 							@foreach (var movie in Model.Miners.First().Movies)
