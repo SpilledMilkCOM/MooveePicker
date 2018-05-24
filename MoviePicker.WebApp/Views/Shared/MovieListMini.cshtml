@@ -18,10 +18,10 @@
 			<div class="movie-card" data-toggle="tooltip" data-placement="bottom"
 				 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)">
 
-				@if (movie.Day.HasValue)
+				@*@if (movie.Day.HasValue)
 				{
 					<img class="img-responsive" height="30" style="position: relative; bottom: -30px; float: left;" src="@string.Format("/Images/{0}-mask.png", movie.Day.Value)" />
-				}
+				}*@
 
 				<img class="img-responsive" height="100" src="@movie.ImageUrl" alt="@movie.Name" />
 			</div>

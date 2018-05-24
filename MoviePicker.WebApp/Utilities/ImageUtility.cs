@@ -210,5 +210,56 @@ namespace MoviePicker.WebApp.Utilities
 
 			return outFileName;
 		}
+
+		/// <summary>
+		/// Apply a mask to a base image.
+		/// </summary>
+		/// <param name="baseImageName">The base image to which the mask is applied.</param>
+		/// <param name="maskImageName">The mask image to apply.</param>
+		/// <param name="resultImageName">The result file with the base and the applied mask.</param>
+		/// <returns></returns>
+		public bool MaskImage(string baseImageName, string maskImageName, string resultImageName)
+		{
+			var baseDirectory = Path.GetDirectoryName(baseImageName);
+			int height = 0;
+			int width = 0;
+			bool result = false;
+
+			using (var image = Image.FromFile(baseImageName))
+			{
+				height = image.Height;
+				width = image.Width;
+			}
+
+			using (var destBitmap = new Bitmap(width, height))
+			{
+				destBitmap.SetResolution(72, 72);
+
+				using (var graphics = Graphics.FromImage(destBitmap))
+				{
+					graphics.Clear(Color.Black);
+
+					// Draw the base image into the new bitmap of the same dimensions (copy).
+
+					using (var image = Image.FromFile(baseImageName))
+					{
+						graphics.DrawImage(image, 0, 0, width, height);
+					}
+
+					var maskImagePath = Path.Combine(baseDirectory, maskImageName);
+
+					using (var image = Image.FromFile(maskImagePath))
+					{
+						graphics.DrawImage(image, 0, 0, image.Width, image.Height);
+					}
+				}
+
+				var resultFileName = Path.Combine(baseDirectory, resultImageName);
+
+				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+			}
+
+			return result;
+		}
 	}
 }

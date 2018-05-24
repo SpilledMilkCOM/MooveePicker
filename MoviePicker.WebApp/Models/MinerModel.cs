@@ -164,30 +164,47 @@ namespace MoviePicker.WebApp.Models
 		/// Makes sure that the movie posters are downloaded locally.
 		/// This is so the URL referenced isn't used a TON.
 		/// </summary>
-		public void DownloadMoviePosters(string localFilePrefix)
+		public bool DownloadMoviePosters(string localFilePrefix)
 		{
 			var imageUtil = new ImageUtility();
 
-			var miner = Miners[0];
+			var miner = Miners[FML_INDEX];
 
 			var filesDownloaded = FileUtility.DownloadFiles(miner.Movies.Select(movie => movie.ImageUrlSource), localFilePrefix);
 
 			foreach (var movie in miner.Movies)
 			{
-				var localFileName = Path.GetFileName(FileUtility.LocalFile(movie.ImageUrlSource, localFilePrefix));
+				//var localFileName = Path.GetFileName(FileUtility.LocalFile(movie.ImageUrlSource, localFilePrefix));
+				var localFileName = FileUtility.LocalFile(movie.ImageUrlSource, localFilePrefix);
 
 				if (File.Exists(localFileName))
 				{
 					// If the file was actually downloaded then use the local file.
 
-					movie.ImageUrl = $"/Images/{localFileName}";
-
 					if (filesDownloaded)
 					{
 						imageUtil.AdjustAspectRatio(localFileName, 2 / 3m);
 					}
+
+					if (movie.Day.HasValue)
+					{
+						var maskedFileName = $"{Path.GetFileNameWithoutExtension(localFileName)}-{movie.Day.Value}.jpg";
+
+						if (!File.Exists(Path.Combine(Path.GetDirectoryName(localFileName), maskedFileName)))
+						{
+							imageUtil.MaskImage(localFileName, $"{movie.Day.Value}-mask.png", maskedFileName);
+						}
+
+						movie.ImageUrl = $"/Images/{maskedFileName}";
+					}
+					else
+					{
+						movie.ImageUrl = $"/Images/{Path.GetFileName(localFileName)}";
+					}
 				}
 			}
+
+			return filesDownloaded;
 		}
 
 		/// <summary>
@@ -342,8 +359,8 @@ namespace MoviePicker.WebApp.Models
 
 		private void FilterOutMovieIdZero(IMiner miner)
 		{
-			var movies = miner.Movies;												// Returns a copy of the the movies.
-			var moviesToRemove = movies.Where(movie => movie.Id == 0).ToList();		// Need a new list of this
+			var movies = miner.Movies;                                              // Returns a copy of the the movies.
+			var moviesToRemove = movies.Where(movie => movie.Id == 0).ToList();     // Need a new list of this
 
 			foreach (var movie in moviesToRemove)
 			{

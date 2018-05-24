@@ -21,7 +21,7 @@ namespace MoviePicker.WebApp.Interfaces
 
 		List<IMovie> CreateWeightedList();
 
-		void DownloadMoviePosters(string localFilePrefix);
+		bool DownloadMoviePosters(string localFilePrefix);
 
 		void Expire();
 	}

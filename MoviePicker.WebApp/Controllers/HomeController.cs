@@ -57,7 +57,7 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		public ActionResult Error(string message)
-		{ 
+		{
 			return View(new ErrorViewModel { MainMessage = message ?? "An unknown error occurred." });
 		}
 
@@ -247,7 +247,8 @@ namespace MoviePicker.WebApp.Controllers
 				{
 					result.MorePicks.Add(new MovieListModel { Picks = new List<IMovieList> { movieList } });
 				}
-			}))	{ Name = "bonusThread" };
+			}))
+			{ Name = "bonusThread" };
 
 			var bonusOffThread = new Thread(new ThreadStart(() =>
 			{
@@ -255,7 +256,8 @@ namespace MoviePicker.WebApp.Controllers
 				{
 					result.MorePicksBonusOff.Add(new MovieListModel { Picks = new List<IMovieList> { movieList } });
 				}
-			}))	{ Name = "bonusOffThread" };
+			}))
+			{ Name = "bonusOffThread" };
 
 			// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
 
@@ -373,7 +375,7 @@ namespace MoviePicker.WebApp.Controllers
 			var webRootPath = Server.MapPath("~");
 			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
 			var picks = bonusOn ? picksViewModel.MovieList.Picks[index] : picksViewModel.MovieListBonusOff.Picks[index];
-			var movieImages = picks.MovieImages;
+			var movieImages = picks.MovieImages.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
 
 			// Files should already be there now.
 			//FileUtility.DownloadFiles(movieImages, localFilePrefix);
@@ -411,7 +413,7 @@ namespace MoviePicker.WebApp.Controllers
 			viewModel.TwitterImageFileName = viewModel.ImageFileName.Replace("Shared_", "Twitter_");
 			viewModel.TwitterTitle = $"{Constants.APPLICATION_NAME}: {subTitle} (Est ${picks.TotalEarnings:N0})";
 
-			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks." : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:" ;
+			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks." : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:";
 
 			defaultTwitterText += picks.ToString();
 			defaultTwitterText += minerPick == null ? " only cost me " : " cost ";
@@ -433,7 +435,15 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			var localFilePrefix = $"{Server.MapPath("~")}images{Path.DirectorySeparatorChar}MoviePoster_";
 
-			_minerModel.DownloadMoviePosters(localFilePrefix);
+			if (_minerModel.DownloadMoviePosters(localFilePrefix))
+			{
+				// If the posters were downloaded then update the cached image urls to the local files.
+
+				//lock (_minerModelCache)
+				//{
+				//	_minerModelCache.Miners[FML_INDEX].SetMovies(new List<IMovie>(_minerModel.Miners[FML_INDEX].Movies));
+				//}
+			}
 		}
 
 		private void ParseBoxOfficeWeightRequest()
