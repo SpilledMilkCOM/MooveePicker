@@ -480,9 +480,11 @@
 
 								if (compoundMovie != null)
 								{
+									var compoundMovieImageUrl = compoundMovie.ImageUrl.Replace($"-{compoundMovie.Day.Value.ToString()}", string.Empty);
+
 									<tr>
 										<td>
-											<img height="100" src="@compoundMovie.ImageUrl" />
+											<img height="100" src="@compoundMovieImageUrl" />
 										</td>
 										<td>@compoundMovie.MovieName TOTAL</td>
 										<td> </td>
