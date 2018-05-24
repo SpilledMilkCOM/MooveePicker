@@ -92,13 +92,13 @@ namespace MovieMiner
 				var id = GetIdFromClass(tableRow?.Attributes["class"]?.Value);
 				var nameNode = tableRow?.SelectSingleNode("td[contains(@class, 'movie-title')]//span[contains(@class, 'title')]");
 				var imageNode = tableRow?.SelectSingleNode("td//div[contains(@class, 'proxy-img')]");
-				var name = HttpUtility.HtmlDecode(nameNode?.InnerText);
+				var name = RemovePunctuation(HttpUtility.HtmlDecode(nameNode?.InnerText));
 
 				var movie = new Movie
 				{
 					Id = id,
 					Day = ParseDayOfWeek(name),
-					Name = RemovePunctuation(ParseName(name))
+					Name = ParseName(name)
 				};
 
 				// Grab the first one for now.
@@ -200,7 +200,7 @@ namespace MovieMiner
 					{
 						// Remove the key
 
-						result = result.Substring(key.Length - 1, result.Length - key.Length - (key.Length + "ONLY".Length));
+						result = result.Substring(key.Length, result.Length - key.Length);
 						break;
 					}
 				}

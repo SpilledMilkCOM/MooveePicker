@@ -319,11 +319,11 @@ namespace MovieMiner
 
 			earnings = earnings.ToLower();
 
-			if (earnings.Contains("m"))
+			if (earnings.Contains("m") || earnings.Contains("million"))
 			{
 				multiplier = 1000000m;
 
-				earnings = earnings.Replace("m", string.Empty);
+				earnings = earnings.Replace("million", string.Empty).Replace("m", string.Empty);
 			}
 			else if (earnings.Contains("k"))
 			{

@@ -149,20 +149,24 @@ namespace MovieMiner
 								if (index > 0)
 								{
 									// Match one or more digits, followed by a period and a space.
-									// Gobble up (non-greedy using the ?) to 'million'
-									var matches = Regex.Matches(row.InnerText, @"\d+\.\s.*?million");
+									// Gobble up (non-greedy using the ?) to 'cume' (meaning cumulative)
+									var matches = Regex.Matches(row.InnerText, @"\d+\.\s.*?cume");
 
 									foreach (Match match in matches)
 									{
 										var movie = new Movie();
-										//var titleMatch = Regex.Match(match.Value, @"\s.*\s.\s\$");
+										// \s - Match up to white space
 										var titleMatch = Regex.Match(match.Value, @"\s(.*?)\$");
-										//var earningsMatch = Regex.Match(match.Value, @"\$\d+\smillion");
-										var earningsMatch = Regex.Match(match.Value, @"\$\d+\.*\d*");
+										var earningsMatch = Regex.Match(match.Value, @"\$\d+.*?\(");
+										var fourDayMatch = Regex.Match(match.Value, @",\s\$\d+\.*\d*.*day");
 
-										if (!string.IsNullOrEmpty(earningsMatch.Value))
+										if (!string.IsNullOrEmpty(fourDayMatch.Value))
 										{
-											movie.Earnings = Convert.ToDecimal(earningsMatch.Value.Replace("$", string.Empty)) * 1000000;
+											movie.Earnings = ParseEarnings(fourDayMatch.Value.Replace(",", string.Empty).Replace("(4-day", string.Empty));
+										}
+										else if (!string.IsNullOrEmpty(earningsMatch.Value))
+										{
+											movie.Earnings = ParseEarnings(earningsMatch.Value.Replace("(", string.Empty));
 										}
 
 										if (!string.IsNullOrEmpty(titleMatch.Value))
