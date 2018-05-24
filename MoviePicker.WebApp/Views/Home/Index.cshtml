@@ -508,7 +508,15 @@
 
 								<tr style="@movieIsNewStyle">
 									<td>
-										<img height="100" src="@movie.ImageUrl" />
+										@if (movie.Day.HasValue)
+										{
+											<img height="100" style="position: relative; bottom: -15px; float: left;" src="@movie.ImageUrl" />
+											<img height="30" style="position: relative; top: -85px; float: left;" src="@string.Format("/Images/{0}-mask.png", movie.Day.Value)" />
+										}
+										else
+										{
+											<img height="100" src="@movie.ImageUrl" />
+										}
 									</td>
 									<td>
 										<div>

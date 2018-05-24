@@ -73,8 +73,6 @@ namespace MovieMiner
 
 					if (node != null)
 					{
-						//Error = "4-day";
-
 						// Remove the first child span.
 
 						if (node.HasChildNodes)

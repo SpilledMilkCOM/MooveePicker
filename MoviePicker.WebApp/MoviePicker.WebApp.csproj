@@ -201,7 +201,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Friday-mask.png" />
     <Content Include="Images\GitHub-Mark-32px.png" />
+    <Content Include="Images\Monday-mask.png" />
     <Content Include="Images\Moovee Picker Cow.png" />
     <Content Include="Images\Moovee Picker Cow128x128.png" />
     <Content Include="Images\Moovee Picker Cow32x32.png" />
@@ -214,7 +216,9 @@
     <Content Include="Images\MooveePickerCow512x512.png" />
     <Content Include="Images\MooveePickerLogo512x512.png" />
     <Content Include="Images\MooveePosterNotFound.jpg" />
+    <Content Include="Images\Saturday-mask.png" />
     <Content Include="Images\Spilled Milk Logo 400x420.png" />
+    <Content Include="Images\Sunday-mask.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">

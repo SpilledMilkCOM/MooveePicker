@@ -41,6 +41,8 @@ namespace MovieMiner
 
 			var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'weekend-box-office-predictions-')]");
 
+			Error = string.Empty;
+
 			if (node != null)
 			{
 				var href = node.GetAttributeValue("href", null);
@@ -162,6 +164,7 @@ namespace MovieMiner
 
 										if (!string.IsNullOrEmpty(fourDayMatch.Value))
 										{
+											Error = "4-day";
 											movie.Earnings = ParseEarnings(fourDayMatch.Value.Replace(",", string.Empty).Replace("(4-day", string.Empty));
 										}
 										else if (!string.IsNullOrEmpty(earningsMatch.Value))
