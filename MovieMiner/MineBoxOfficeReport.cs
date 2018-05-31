@@ -139,7 +139,7 @@ namespace MovieMiner
 								}
 							}
 
-							if (movie != null)
+							if (movie != null && !string.IsNullOrEmpty(movie.MovieName) && movie.EarningsBase > 0)
 							{
 								result.Add(movie);
 							}
