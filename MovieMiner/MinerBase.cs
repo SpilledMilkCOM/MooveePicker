@@ -208,6 +208,7 @@ namespace MovieMiner
 				try
 				{
 					Error = string.Empty;
+					ErrorDetail = string.Empty;
 
 					Movies = Mine();
 

@@ -197,13 +197,20 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="favicon.ico" />
+    <Content Include="favicon old.ico" />
+    <Content Include="favicon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\favicon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Friday-mask.png" />
     <Content Include="Images\GitHub-Mark-32px.png" />
     <Content Include="Images\Monday-mask.png" />
+    <Content Include="Images\MooV64x64.png" />
     <Content Include="Images\Moovee Picker Cow.png" />
     <Content Include="Images\Moovee Picker Cow128x128.png" />
     <Content Include="Images\Moovee Picker Cow32x32.png" />
