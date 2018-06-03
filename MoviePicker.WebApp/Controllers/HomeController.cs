@@ -212,6 +212,11 @@ namespace MoviePicker.WebApp.Controllers
 
 			ControllerUtility.SetTwitterCard(ViewBag);
 
+			ControllerUtility.SetTwitterCard(ViewBag, null, null
+								, "Tracking my picks against the perfect pick to see where I went right or horribly wrong."
+								, null, null
+								, "Check out my picks against the perfect pick.");
+
 			DownloadMoviePosters();
 
 			stopWatch.Stop();
