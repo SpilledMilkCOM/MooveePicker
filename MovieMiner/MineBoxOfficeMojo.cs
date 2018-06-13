@@ -14,7 +14,7 @@ namespace MovieMiner
 		private const string DELIMITER = "- $";
 		private const string NO_DATA = "No Data";
 
-		private readonly DateTime? _weekendEnding;
+		private DateTime? _weekendEnding;
 
 		/// <summary>
 		/// 
@@ -43,6 +43,15 @@ namespace MovieMiner
 
 			if (_weekendEnding.HasValue)
 			{
+				var lastSunday = MovieDateUtil.LastSunday();
+
+				// Check to see if the weekend ending is out of date.
+
+				if (_weekendEnding.Value < lastSunday)
+				{
+					_weekendEnding = lastSunday;
+				}
+
 				result = MineDate();
 			}
 			else
