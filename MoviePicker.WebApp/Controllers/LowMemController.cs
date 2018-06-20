@@ -86,6 +86,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			return RedirectToAction("Miner", new { name = minerName });
 		}
+
 		public ActionResult ExpireMiners()
 		{
 			_infoViewModel.MinerModel.Expire();

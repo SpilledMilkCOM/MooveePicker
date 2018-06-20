@@ -58,6 +58,11 @@ namespace MovieMiner
 			return result;
 		}
 
+		/// <summary>
+		/// Return the previous Sunday.
+		/// </summary>
+		/// <param name="dateTime">Reference date (or null for Now)</param>
+		/// <returns>Previous Sunday</returns>
 		public static DateTime LastSunday(DateTime? dateTime = null)
 		{
 			DateTime reference = dateTime ?? Now;
@@ -65,6 +70,11 @@ namespace MovieMiner
 			return reference.AddDays(DayOfWeek.Sunday - reference.DayOfWeek);
 		}
 
+		/// <summary>
+		/// Find the upcoming Sunday.
+		/// </summary>
+		/// <param name="dateTime">Reference date (or null for Now)</param>
+		/// <returns>Next Sunday</returns>
 		public static DateTime NextSunday(DateTime? dateTime = null)
 		{
 			DateTime reference = dateTime ?? Now;
@@ -72,6 +82,11 @@ namespace MovieMiner
 			return reference.AddDays(7 - (int)reference.DayOfWeek);
 		}
 
+		/// <summary>
+		/// Find the upcoming Sunday unless the reference day (or today) is Sunday.
+		/// </summary>
+		/// <param name="dateTime">Reference date (or null for Now)</param>
+		/// <returns>The reference Sunday or the following Sunday</returns>
 		public static DateTime ThisSunday(DateTime? dateTime = null)
 		{
 			DateTime result = dateTime ?? Now;
