@@ -152,19 +152,33 @@ namespace MovieMiner
 									if (!string.IsNullOrEmpty(movieName))
 									{
 										var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
-										var movie = new Movie
-										{
-											MovieName = MapName(ParseName(name)),
-											Day = ParseDayOfWeek(name),
-											Earnings = decimal.Parse(estimatedBoxOffice) * multiplier
-										};
+										Movie movie = null;
 
-										if (articleDate.HasValue)
+										try
 										{
-											movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+											movie = new Movie
+											{
+												MovieName = MapName(ParseName(name)),
+												Day = ParseDayOfWeek(name),
+												Earnings = decimal.Parse(estimatedBoxOffice) * multiplier
+											};
+										}
+										catch(Exception exception)
+										{
+											Error = "Some bad data";
+											ErrorDetail = $"The movie did not parse correctly \"{name}\" - {exception.Message}";
+											movie = null;
 										}
 
-										result.Add(movie);
+										if (movie != null)
+										{
+											if (articleDate.HasValue)
+											{
+												movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+											}
+
+											result.Add(movie);
+										}
 									}
 								}
 							}
