@@ -11,7 +11,7 @@ namespace MovieMiner
 {
 	public class MineBoxOfficePro : MinerBase
 	{
-		private const string DEFAULT_URL = "http://pro.boxoffice.com/";
+		private const string DEFAULT_URL = "https://pro.boxoffice.com/";
 
 		public MineBoxOfficePro()
 			: base("Box Office Pro", "BO Pro", DEFAULT_URL)
@@ -34,6 +34,8 @@ namespace MovieMiner
 			var web = new HtmlWeb();
 
 			var doc = web.Load(Url);
+			// Can't instanciate an Active-X control within a web application.
+			//var doc = web.LoadFromBrowser(Url);		
 
 			// Lookup XPATH to get the right node that matches.
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
