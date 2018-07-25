@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MoviePicker.Common
 {
-	[DebuggerDisplay("Id = {Id} - Name = {Name}")]
+	[DebuggerDisplay("Id = {Id} - Name = {Name} ${Earnings}")]
 	public class Movie : IMovie
 	{
 		private const decimal BEST_PERFORMER_BONUS = 2000000;

@@ -7,7 +7,7 @@ namespace MoviePicker.Msf
 	/// <summary>
 	/// needed as MSF solves with doubles not decimals
 	/// </summary>
-	[DebuggerDisplay("Id = {Id} - Name = {Name}")]
+	[DebuggerDisplay("Id = {Id} - Name = {Name} ${Earnings}")]
 	public class MsfMovieWrapper : IMovie
 	{
 		private IMovie _movie;

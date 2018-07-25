@@ -14,6 +14,8 @@ namespace MoviePicker.Tests
 	[ExcludeFromCodeCoverage]
 	public class MoviePickerVariantsAllTests : MoviePickerTestBase
 	{
+		private const string TEST_CATEGORY = "Simulation";
+
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
 
@@ -29,7 +31,7 @@ namespace MoviePicker.Tests
 			_unity.RegisterType<IMoviePicker, MoviePickerVariantsAll>();
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf01()
 		{
 			var test = ConstructTestObject();
@@ -44,7 +46,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(1, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf02()
 		{
 			var test = ConstructTestObject();
@@ -59,7 +61,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(1, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf03()
 		{
 			var test = ConstructTestObject();
@@ -74,7 +76,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(2, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf04()
 		{
 			var test = ConstructTestObject();
@@ -89,7 +91,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(6, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf05()
 		{
 			var test = ConstructTestObject();
@@ -104,7 +106,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(6, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf06()
 		{
 			var test = ConstructTestObject();
@@ -119,7 +121,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(7, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf07()
 		{
 			var test = ConstructTestObject();
@@ -134,7 +136,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(7, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf08()
 		{
 			var test = ConstructTestObject();
@@ -149,7 +151,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(7, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf09()
 		{
 			var test = ConstructTestObject();
@@ -164,7 +166,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(8, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_OutOf10()
 		{
 			var test = ConstructTestObject();
@@ -179,7 +181,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(8, best.Movies.Count());
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_WeekEnding_20170604()
 		{
 			var test = ConstructTestObject();
@@ -228,7 +230,7 @@ namespace MoviePicker.Tests
 			Assert.AreEqual(7, best.Movies.Count(movie => movie.Name == "Everything Everything"));
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_ThisWeeksPicks()
 		{
 			var test = ConstructTestObject();
@@ -241,7 +243,7 @@ namespace MoviePicker.Tests
 			WriteMovies(best);
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_Parker_2017061()
 		{
 			var test = ConstructTestObject();
@@ -272,7 +274,7 @@ namespace MoviePicker.Tests
 			WriteMovies(best);
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_Parker_20170618()
 		{
 			var test = ConstructTestObject();
@@ -315,8 +317,8 @@ namespace MoviePicker.Tests
 			}
 		}
 
-        [TestMethod]
-        public void MoviePickerVariantsAll_ChooseBest_Parker_20170625()
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20170625()
         {
             var test = ConstructTestObject();
             var movies = new List<IMovie>();
@@ -358,8 +360,8 @@ namespace MoviePicker.Tests
             }
         }
 
-        [TestMethod]
-        public void MoviePickerVariantsAll_ChooseBest_Parker_20170730()
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20170730()
         {
             var test = ConstructTestObject();
             var movies = new List<IMovie>();
@@ -401,8 +403,8 @@ namespace MoviePicker.Tests
             }
         }
 
-        [TestMethod]
-        public void MoviePickerVariantsAll_ChooseBest_Parker_20170813()
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20170813()
         {
             var test = ConstructTestObject();
             var movies = new List<IMovie>();
@@ -444,7 +446,7 @@ namespace MoviePicker.Tests
             }
         }
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_Parker_20170820()
 		{
 			var test = ConstructTestObject();
@@ -487,7 +489,7 @@ namespace MoviePicker.Tests
 			}
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_Parker_20170618_ByPercent()
 		{
 			var test = ConstructTestObject();
@@ -530,7 +532,7 @@ namespace MoviePicker.Tests
 			}
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_Raj_2017061()
 		{
 			var test = ConstructTestObject();
