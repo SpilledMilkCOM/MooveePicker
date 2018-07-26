@@ -318,6 +318,49 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20170618_ByPercent()
+		{
+			var test = ConstructTestObject(true);
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			// The baseline movie list.
+
+			movies.Add(ConstructMovie(id++, "Cars 3", 60m, 719));
+			movies.Add(ConstructMovie(id++, "Wonder Woman", 36m, 478));
+			movies.Add(ConstructMovie(id++, "All Eyez on Me", 24.4m, 327));
+			movies.Add(ConstructMovie(id++, "Rough Night", 15.1m, 243));
+			movies.Add(ConstructMovie(id++, "The Mummy", 13m, 167));
+			movies.Add(ConstructMovie(id++, "47 Meters Down", 7m, 105));
+			movies.Add(ConstructMovie(id++, "Captain Underpants", 5.5m, 78));
+			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 5m, 71));
+			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 3.5m, 60));
+			movies.Add(ConstructMovie(id++, "It Comes at night", 3m, 34));
+			movies.Add(ConstructMovie(id++, "The Book of Henry", 2m, 31));
+			movies.Add(ConstructMovie(id++, "Baywatch", 2.324m, 29));
+			movies.Add(ConstructMovie(id++, "Megan Leavey", 1.9m, 25));
+			movies.Add(ConstructMovie(id++, "Alien: Covenant", 0.913m, 11));
+			movies.Add(ConstructMovie(id++, "Everything, Everything", 0.8m, 10));
+
+			IgnoreMovies(movies, 7m);
+
+			test.AddMovies(movies);
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+			Logger.WriteLine(string.Empty);
+
+			foreach (var movieList in ((MoviePickerVariants)test).GetRankedMovieLists())
+			{
+				WriteMovies(movieList);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariants)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
+			}
+		}
+
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void MoviePickerVariantsAll_ChooseBest_Parker_20170625()
         {
             var test = ConstructTestObject();
@@ -490,33 +533,13 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void MoviePickerVariantsAll_ChooseBest_Parker_20170618_ByPercent()
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20180729()
 		{
 			var test = ConstructTestObject();
-			var movies = new List<IMovie>();
-			int id = 1;
 
-			// The baseline movie list.
+			// By default two adjustments are made (+/- 100,000)
 
-			movies.Add(ConstructMovie(id++, "Cars 3", 60m, 719));
-			movies.Add(ConstructMovie(id++, "Wonder Woman", 36m, 478));
-			movies.Add(ConstructMovie(id++, "All Eyez on Me", 24.4m, 327));
-			movies.Add(ConstructMovie(id++, "Rough Night", 15.1m, 243));
-			movies.Add(ConstructMovie(id++, "The Mummy", 13m, 167));
-			movies.Add(ConstructMovie(id++, "47 Meters Down", 7m, 105));
-			movies.Add(ConstructMovie(id++, "Captain Underpants", 5.5m, 78));
-			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 5m, 71));
-			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 3.5m, 60));
-			movies.Add(ConstructMovie(id++, "It Comes at night", 3m, 34));
-			movies.Add(ConstructMovie(id++, "The Book of Henry", 2m, 31));
-			movies.Add(ConstructMovie(id++, "Baywatch", 2.324m, 29));
-			movies.Add(ConstructMovie(id++, "Megan Leavey", 1.9m, 25));
-			movies.Add(ConstructMovie(id++, "Alien: Covenant", 0.913m, 11));
-			movies.Add(ConstructMovie(id++, "Everything, Everything", 0.8m, 10));
-
-			test.AddMovies(movies);
-
-			((MoviePickerVariants)test).EarningsAdjustmentByPercent = true;
+			test.AddMovies(ConstructMovieList_20180729());
 
 			var best = test.ChooseBest();
 
@@ -524,62 +547,153 @@ namespace MoviePicker.Tests
 			WriteMovies(best);
 			Logger.WriteLine(string.Empty);
 
-			foreach (var movieList in ((MoviePickerVariants)test).GetRankedMovieLists())
+			foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
 			{
 				WriteMovies(movieList);
-				Logger.WriteLine($"Total List Count: {((MoviePickerVariants)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
 				Logger.WriteLine(string.Empty);
 			}
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void MoviePickerVariantsAll_ChooseBest_Raj_2017061()
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20180729_Percentage()
 		{
 			var test = ConstructTestObject();
-			var movies = new List<IMovie>();
-			int id = 1;
 
-			movies.Add(ConstructMovie(id++, "Wonder Woman", 50m, 613));
-			movies.Add(ConstructMovie(id++, "The Mummy", 32m, 526));
-			movies.Add(ConstructMovie(id++, "It Comes at night", 10m, 150));
-			movies.Add(ConstructMovie(id++, "Pirates of the caribbean", 10.5m, 143));
-			movies.Add(ConstructMovie(id++, "Baywatch", 4m, 69));
-			movies.Add(ConstructMovie(id++, "Megan Leavey", 2.4m, 59));
-			movies.Add(ConstructMovie(id++, "Alien: Covenant", 2m, 26));
-			movies.Add(ConstructMovie(id++, "My Cousin Rachel", 0.5m, 15));
-			movies.Add(ConstructMovie(id++, "Diary of a wimpy Kid", 0.5m, 8));
-			movies.Add(ConstructMovie(id++, "Captain Underpants", 13m, 198));
-			movies.Add(ConstructMovie(id++, "Everything, Everything", 1.5m, 28));
-			movies.Add(ConstructMovie(id++, "Guardians of the Galaxy", 4.5m, 70));
-			movies.Add(ConstructMovie(id++, "King Arthur", 0.5m, 7));
-			movies.Add(ConstructMovie(id++, "Snatched", 0.5m, 9));
-			movies.Add(ConstructMovie(id++, "Best of the rest", 0.5m, 9));
+			// By default two adjustments are made (+/- 3%)
 
-			test.AddMovies(movies);
+			test.AddMovies(ConstructMovieList_20180729());
 
 			var best = test.ChooseBest();
 
 			WritePicker(test);
 			WriteMovies(best);
+			Logger.WriteLine(string.Empty);
+
+			foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
+			{
+				WriteMovies(movieList);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
+			}
 		}
 
-        //----==== PRIVATE ====---------------------------------------------------------
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20180729_PercentageCustom()
+		{
+			var test = ConstructTestObject(true);
 
-        protected override IMoviePicker ConstructTestObject()
+			// By default two adjustments are made (+/- 3%) because EarningsAdjustmentMax is 3%
+
+			// The setting below will allow for 6 adjustments and one baseline.
+
+			((MoviePickerVariantsAll)test).EarningsAdjustment = 0.01m;
+
+			test.AddMovies(ConstructMovieList_20180729());
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+			Logger.WriteLine(string.Empty);
+
+			foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
+			{
+				WriteMovies(movieList);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
+			}
+		}
+
+		//----==== PRIVATE ====---------------------------------------------------------
+
+		private List<IMovie> ConstructMovieList_20180729()
+		{
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			// Movie list generated from FML.xlsx CodeGen tab
+
+			movies.Add(ConstructMovie(id++, "Mission Impossible Fallout", 59.2m, 756));
+			movies.Add(ConstructMovie(id++, "Mamma Mia Here We Go Again", 20.2666666666667m, 227));
+			movies.Add(ConstructMovie(id++, "The Equalizer 2", 16.7666666666667m, 201));
+			movies.Add(ConstructMovie(id++, "Hotel Transylvania 3 Summer Vacation", 13.8666666666667m, 157));
+			movies.Add(ConstructMovie(id++, "Teen Titans GO to the Movies", 13.4666666666667m, 149));
+			movies.Add(ConstructMovie(id++, "AntMan the Wasp", 9.23333333333333m, 116));
+			movies.Add(ConstructMovie(id++, "Incredibles 2", 8.16666666666667m, 89));
+			movies.Add(ConstructMovie(id++, "Jurassic World Fallen Kingdom", 7.03333333333333m, 76));
+			movies.Add(ConstructMovie(id++, "Skyscraper", 5.56666666666667m, 61));
+			movies.Add(ConstructMovie(id++, "Blindspotting", 2.33333333333333m, 41));
+			movies.Add(ConstructMovie(id++, "The First Purge", 2.4m, 28));
+			movies.Add(ConstructMovie(id++, "Eighth Grade", 0.946m, 26));
+			movies.Add(ConstructMovie(id++, "Unfriended Dark Web", 1.6m, 18));
+			movies.Add(ConstructMovie(id++, "Sorry to Bother You", 1.8m, 18));
+			movies.Add(ConstructMovie(id++, "Three Identical Strangers", 1.1m, 16));
+
+
+			IgnoreMovies(movies);
+			IncludeMoviesByEfficiency(movies, 5);
+
+			return movies;
+		}
+
+		protected IMoviePicker ConstructTestObject(bool earningsAdjustmentByPercent = false)
         {
             var result = base.ConstructTestObject() as MoviePickerVariantsAll;
 
-            result.LogMessagesMax = 1000;
+			result.EarningsAdjustmentByPercent = earningsAdjustmentByPercent;
+
+			if (!earningsAdjustmentByPercent)
+			{
+				result.EarningsAdjustment = 100000m;
+				result.EarningsAdjustmentMax = 100000m;
+
+			}
+			result.LogMessagesMax = 1000;
 
             return result;
         }
 
-        /// <summary>
-        /// Ignore the movies BELOW (and equal) the lower bound.
-        /// </summary>
-        /// <param name="movies"></param>
-        /// <param name="lowerBound"></param>
-        private void IgnoreMovies(IEnumerable<IMovie> movies, decimal lowerBound)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="movies"></param>
+		/// <param name="topCount"></param>
+		private void IncludeMoviesByEfficiency(IEnumerable<IMovie> movies, int topCount)
+		{
+			foreach (var movie in movies.OrderByDescending(item => item.Efficiency).Take(topCount))
+			{
+				movie.AdjustEarnings = true;
+			}
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="movies"></param>
+		/// <param name="topCount"></param>
+		private void IncludeMoviesByBoxOffice(IEnumerable<IMovie> movies, int topCount)
+		{
+			foreach (var movie in movies.OrderByDescending(item => item.EarningsBase).Take(topCount))
+			{
+				movie.AdjustEarnings = true;
+			}
+		}
+
+		private void IgnoreMovies(IEnumerable<IMovie> movies)
+		{
+			foreach (var movie in movies)
+			{
+				movie.AdjustEarnings = false;
+			}
+		}
+
+		/// <summary>
+		/// Ignore the movies BELOW (and equal) the lower bound.
+		/// </summary>
+		/// <param name="movies"></param>
+		/// <param name="lowerBound"></param>
+		private void IgnoreMovies(IEnumerable<IMovie> movies, decimal lowerBound)
         {
             lowerBound *= 1000000;
 

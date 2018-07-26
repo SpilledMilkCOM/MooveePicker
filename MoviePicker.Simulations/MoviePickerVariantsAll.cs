@@ -14,11 +14,8 @@ namespace MooveePicker.Simulations
 	/// </summary>
 	public class MoviePickerVariantsAll : IMoviePicker
 	{
-		private const decimal EARNINGS_ADJUSTMENT = 0.1m;
-		private const decimal EARNINGS_VARIANT_MAX = 0.1m;
-
-		private const decimal EARNINGS_ADJUSTMENT_PERCENT = 0.001m;
-		private const decimal EARNINGS_VARIANT_PERCENT_MAX = 0.03m;
+		private const decimal EARNINGS_ADJUSTMENT = 0.03m;
+		private const decimal EARNINGS_ADJUSTMENT_MAX = 0.03m;
 
 		private readonly List<IMovie> _baselineMovies;
 		private readonly Dictionary<int, int> _bestListCounts;          // Keyed using the hash code.
@@ -43,6 +40,10 @@ namespace MooveePicker.Simulations
 			_baselineMovies = new List<IMovie>();
 
 			_movieListPrototype = movieListPrototype;
+
+			EarningsAdjustmentByPercent = true;
+			EarningsAdjustment = EARNINGS_ADJUSTMENT;
+			EarningsAdjustmentMax = EARNINGS_ADJUSTMENT_MAX;
 		}
 
 		public IMovie BestPerformer
@@ -60,6 +61,12 @@ namespace MooveePicker.Simulations
 				throw new NotImplementedException();
 			}
 		}
+
+		public decimal EarningsAdjustment { get; set; }
+
+		public bool EarningsAdjustmentByPercent { get; set; }
+
+		public decimal EarningsAdjustmentMax { get; set; }
 
 		public bool EnableBestPerformer
 		{
@@ -84,8 +91,6 @@ namespace MooveePicker.Simulations
 
 		public int TotalSubProblems { get; set; }
 
-		public bool EarningsAdjustmentByPercent { get; set; }
-
 		public void AddMovies(IEnumerable<IMovie> movies)
 		{
 			// Need base copies of the movie earnings, so you need clones.
@@ -98,6 +103,11 @@ namespace MooveePicker.Simulations
 
 		public IMovieList ChooseBest()
 		{
+			int exponent = _baselineMovies.Count(item => item.AdjustEarnings);
+			int toRaise = (int)(EarningsAdjustmentMax / EarningsAdjustment) * 2 + 1;
+
+			_elapsed.Max = Math.Pow(toRaise, exponent);
+
 			var movieLists = GenerateMovieLists(new List<IMovie>(), _baselineMovies);
 
 			_logMessagesCount = 0;
@@ -130,6 +140,8 @@ namespace MooveePicker.Simulations
 
 				TotalComparisons += _moviePicker.TotalComparisons;
 				TotalSubProblems += (_moviePicker.TotalSubProblems == 0) ? 1 : _moviePicker.TotalSubProblems;
+
+				// Increment (or add to) the best list counts
 
 				if (_bestListCounts.TryGetValue(hashCode, out value))
 				{
@@ -164,7 +176,28 @@ namespace MooveePicker.Simulations
 
 		//----==== PRIVATE ====----------------------------------------------------------------------
 
-		private bool CanLog => LogMessagesMax > 0 && (_logMessagesCount % LogMessagesMax) == 0;
+		private bool CanLog => LogMessagesMax > 0 && _logMessagesCount > 0 && (_logMessagesCount % LogMessagesMax) == 0;
+
+		public List<IMovieList> ChooseBest(int topCount)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Concatenate two lists and return a new list.
+		/// </summary>
+		/// <param name="list1"></param>
+		/// <param name="list2"></param>
+		/// <returns></returns>
+		private List<IMovie> Concatenate(List<IMovie> list1, List<IMovie> list2)
+		{
+			var result = new List<IMovie>();
+
+			result.AddRange(list1);
+			result.AddRange(list2);
+
+			return result;
+		}
 
 		private List<IMovie> Copy(IEnumerable<IMovie> toCopy)
 		{
@@ -181,8 +214,6 @@ namespace MooveePicker.Simulations
 		{
 			var result = new List<List<IMovie>>();
 			var endOfListCopy = Copy(endOfList);
-			decimal earningsAdjustment = (EarningsAdjustmentByPercent) ? EARNINGS_ADJUSTMENT_PERCENT : EARNINGS_ADJUSTMENT;
-			decimal earningsAdjustmentMax = (EarningsAdjustmentByPercent) ? EARNINGS_VARIANT_PERCENT_MAX : EARNINGS_VARIANT_MAX;
 
 			if (CanLog)
 			{
@@ -212,11 +243,11 @@ namespace MooveePicker.Simulations
 
 			if (movieToAdjust != null && movieToAdjust.AdjustEarnings)
 			{
-				var increment = earningsAdjustment;
+				var increment = EarningsAdjustment;
 
 				// For the movie to adjust only go up or down by the increment (not to exceed the max)
 
-				while (increment <= earningsAdjustmentMax)
+				while (increment <= EarningsAdjustmentMax)
 				{
 					// Make a copy of the end of the list (since this is recursive), find the current movie, and remove it from the list and add it to the beginning of the list.
 					var newBeginningOfList = Copy(beginingOfList);
@@ -232,7 +263,7 @@ namespace MooveePicker.Simulations
 					}
 					else
 					{
-						movieToAdjustCopy.Earnings += increment * 1000000m;
+						movieToAdjustCopy.Earnings += increment;
 					}
 
 					result.AddRange(GenerateMovieLists(newBeginningOfList, endOfListCopy));
@@ -247,7 +278,7 @@ namespace MooveePicker.Simulations
 					}
 					else
 					{
-						movieToAdjustCopy.Earnings -= increment * 1000000m;
+						movieToAdjustCopy.Earnings -= increment;
 					}
 
 					if (movieToAdjustCopy.Earnings > 0)
@@ -261,7 +292,7 @@ namespace MooveePicker.Simulations
 							result.AddRange(GenerateMovieLists(newBeginningOfList2, endOfListCopy));
 					}
 
-					increment += earningsAdjustment;
+					increment += EarningsAdjustment;
 				}
 			}
 
@@ -299,7 +330,7 @@ namespace MooveePicker.Simulations
 
 				foreach (var movie in movies)
 				{
-					list += movie.Name + ",";
+					list += $"{movie.Abbreviation} ${movie.Earnings:N0}|";
 				}
 
 				_logger?.WriteLine(list);
@@ -314,21 +345,6 @@ namespace MooveePicker.Simulations
 			list.Remove(result);
 
 			return result;
-		}
-
-		private List<IMovie> Concatenate(List<IMovie> list1, List<IMovie> list2)
-		{
-			var result = new List<IMovie>();
-
-			result.AddRange(list1);
-			result.AddRange(list2);
-
-			return result;
-		}
-
-		public List<IMovieList> ChooseBest(int topCount)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

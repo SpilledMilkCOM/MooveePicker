@@ -13,8 +13,8 @@ namespace SM.Common.Utils
 		protected bool _autoUpdate = true;
 		protected DateTime _current;
 		protected DateTime _started;
-		protected Int32 _currentCount = 0;
-		protected Int32 _maxCount = 0;
+		protected double _currentCount = 0;
+		protected double _maxCount = 0;
 
 		public ElapsedTime()
 		{
@@ -37,7 +37,7 @@ namespace SM.Common.Utils
 
 		/// <summary> This method is used to Get/Set the Current Item.
 		/// </summary>
-		public int Current
+		public double Current
 		{
 			get
 			{
@@ -99,7 +99,7 @@ namespace SM.Common.Utils
 
 		/// <summary> This method is used to Get/Set the Max Items.
 		/// </summary>
-		public int Max
+		public double Max
 		{
 			get
 			{
