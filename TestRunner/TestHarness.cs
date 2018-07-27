@@ -30,7 +30,7 @@ namespace TestRunner
 
 			logger.WriteLine($"AFTER - InitializeBeforeAllTests {elapsed.Elapsed}");
 
-			fixture.MoviePickerVariantsAll_ChooseBest_Parker_20180729_Percentage();               //<<<<< Test method.
+			fixture.MoviePickerVariantsAll_ChooseBest_Parker_20180729_PercentageCustom();               //<<<<< Test method.
 
 			logger.WriteLine($"AFTER TEST - {elapsed.ElapsedSinceLastElapsed}");
 			logger.WriteLine($"AFTER - CleanupAfterAllTests {elapsed.Elapsed}");

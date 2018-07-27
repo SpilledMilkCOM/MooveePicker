@@ -588,6 +588,7 @@ namespace MoviePicker.Tests
 			// The setting below will allow for 6 adjustments and one baseline.
 
 			((MoviePickerVariantsAll)test).EarningsAdjustment = 0.01m;
+			((MoviePickerVariantsAll)test).EarningsAdjustmentMax = 0.04m;
 
 			test.AddMovies(ConstructMovieList_20180729());
 
@@ -631,7 +632,8 @@ namespace MoviePicker.Tests
 			movies.Add(ConstructMovie(id++, "Three Identical Strangers", 1.1m, 16));
 
 			IgnoreMovies(movies);
-			IncludeMoviesByEfficiency(movies, 5);
+			IncludeMoviesByEfficiency(movies, 6);
+			IncludeMoviesByBoxOffice(movies, 1);
 
 			return movies;
 		}
