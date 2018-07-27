@@ -223,6 +223,7 @@ namespace MooveePicker.Simulations
 			}
 
 			_logMessagesCount++;
+			_elapsed.Current = _logMessagesCount;
 
 			var movieToAdjust = RemoveFirst(endOfListCopy);
 

@@ -588,6 +588,7 @@ namespace MoviePicker.Tests
 			// The setting below will allow for 6 adjustments and one baseline.
 
 			((MoviePickerVariantsAll)test).EarningsAdjustment = 0.01m;
+			((MoviePickerVariantsAll)test).EarningsAdjustmentMax = 0.04m;
 
 			test.AddMovies(ConstructMovieList_20180729());
 
@@ -614,25 +615,25 @@ namespace MoviePicker.Tests
 
 			// Movie list generated from FML.xlsx CodeGen tab
 
-			movies.Add(ConstructMovie(id++, "Mission Impossible Fallout", 59.2m, 756));
-			movies.Add(ConstructMovie(id++, "Mamma Mia Here We Go Again", 20.2666666666667m, 227));
-			movies.Add(ConstructMovie(id++, "The Equalizer 2", 16.7666666666667m, 201));
-			movies.Add(ConstructMovie(id++, "Hotel Transylvania 3 Summer Vacation", 13.8666666666667m, 157));
-			movies.Add(ConstructMovie(id++, "Teen Titans GO to the Movies", 13.4666666666667m, 149));
-			movies.Add(ConstructMovie(id++, "AntMan the Wasp", 9.23333333333333m, 116));
-			movies.Add(ConstructMovie(id++, "Incredibles 2", 8.16666666666667m, 89));
-			movies.Add(ConstructMovie(id++, "Jurassic World Fallen Kingdom", 7.03333333333333m, 76));
-			movies.Add(ConstructMovie(id++, "Skyscraper", 5.56666666666667m, 61));
-			movies.Add(ConstructMovie(id++, "Blindspotting", 2.33333333333333m, 41));
-			movies.Add(ConstructMovie(id++, "The First Purge", 2.4m, 28));
+			movies.Add(ConstructMovie(id++, "Mission Impossible  Fallout", 62.675m, 756));
+			movies.Add(ConstructMovie(id++, "Mamma Mia Here We Go Again", 18.99375m, 227));
+			movies.Add(ConstructMovie(id++, "The Equalizer 2", 16.5m, 201));
+			movies.Add(ConstructMovie(id++, "Hotel Transylvania 3 Summer Vacation", 13.475m, 157));
+			movies.Add(ConstructMovie(id++, "Teen Titans GO to the Movies", 15.10625m, 149));
+			movies.Add(ConstructMovie(id++, "AntMan  the Wasp", 9.161538461538461538461538462m, 116));
+			movies.Add(ConstructMovie(id++, "Incredibles 2", 8.023076923076923076923076923m, 89));
+			movies.Add(ConstructMovie(id++, "Jurassic World Fallen Kingdom", 6.9307692307692307692307692308m, 76));
+			movies.Add(ConstructMovie(id++, "Skyscraper", 5.6076923076923076923076923077m, 61));
+			movies.Add(ConstructMovie(id++, "Blindspotting", 2.3333333333333333333333333333m, 41));
+			movies.Add(ConstructMovie(id++, "The First Purge", 2.3384615384615384615384615385m, 28));
 			movies.Add(ConstructMovie(id++, "Eighth Grade", 0.946m, 26));
 			movies.Add(ConstructMovie(id++, "Unfriended Dark Web", 1.6m, 18));
 			movies.Add(ConstructMovie(id++, "Sorry to Bother You", 1.8m, 18));
 			movies.Add(ConstructMovie(id++, "Three Identical Strangers", 1.1m, 16));
 
-
 			IgnoreMovies(movies);
-			IncludeMoviesByEfficiency(movies, 5);
+			IncludeMoviesByEfficiency(movies, 6);
+			IncludeMoviesByBoxOffice(movies, 1);
 
 			return movies;
 		}

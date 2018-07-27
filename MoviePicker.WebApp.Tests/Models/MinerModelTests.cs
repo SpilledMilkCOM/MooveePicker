@@ -72,7 +72,6 @@ namespace MoviePicker.WebApp.Tests.Models
 			}
 		}
 
-
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_WriteCodedOutput()
 		{
