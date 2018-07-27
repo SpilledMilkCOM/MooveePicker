@@ -614,22 +614,21 @@ namespace MoviePicker.Tests
 
 			// Movie list generated from FML.xlsx CodeGen tab
 
-			movies.Add(ConstructMovie(id++, "Mission Impossible Fallout", 59.2m, 756));
-			movies.Add(ConstructMovie(id++, "Mamma Mia Here We Go Again", 20.2666666666667m, 227));
-			movies.Add(ConstructMovie(id++, "The Equalizer 2", 16.7666666666667m, 201));
-			movies.Add(ConstructMovie(id++, "Hotel Transylvania 3 Summer Vacation", 13.8666666666667m, 157));
-			movies.Add(ConstructMovie(id++, "Teen Titans GO to the Movies", 13.4666666666667m, 149));
-			movies.Add(ConstructMovie(id++, "AntMan the Wasp", 9.23333333333333m, 116));
-			movies.Add(ConstructMovie(id++, "Incredibles 2", 8.16666666666667m, 89));
-			movies.Add(ConstructMovie(id++, "Jurassic World Fallen Kingdom", 7.03333333333333m, 76));
-			movies.Add(ConstructMovie(id++, "Skyscraper", 5.56666666666667m, 61));
-			movies.Add(ConstructMovie(id++, "Blindspotting", 2.33333333333333m, 41));
-			movies.Add(ConstructMovie(id++, "The First Purge", 2.4m, 28));
+			movies.Add(ConstructMovie(id++, "Mission Impossible  Fallout", 62.529411764705882352941176471m, 756));
+			movies.Add(ConstructMovie(id++, "Mamma Mia Here We Go Again", 19.194117647058823529411764706m, 227));
+			movies.Add(ConstructMovie(id++, "The Equalizer 2", 16.582352941176470588235294118m, 201));
+			movies.Add(ConstructMovie(id++, "Hotel Transylvania 3 Summer Vacation", 13.494117647058823529411764706m, 157));
+			movies.Add(ConstructMovie(id++, "Teen Titans GO to the Movies", 15.064705882352941176470588235m, 149));
+			movies.Add(ConstructMovie(id++, "AntMan  the Wasp", 9.178571428571428571428571429m, 116));
+			movies.Add(ConstructMovie(id++, "Incredibles 2", 8.057142857142857142857142857m, 89));
+			movies.Add(ConstructMovie(id++, "Jurassic World Fallen Kingdom", 6.95m, 76));
+			movies.Add(ConstructMovie(id++, "Skyscraper", 5.5857142857142857142857142857m, 61));
+			movies.Add(ConstructMovie(id++, "Blindspotting", 2.3333333333333333333333333333m, 41));
+			movies.Add(ConstructMovie(id++, "The First Purge", 2.3857142857142857142857142857m, 28));
 			movies.Add(ConstructMovie(id++, "Eighth Grade", 0.946m, 26));
 			movies.Add(ConstructMovie(id++, "Unfriended Dark Web", 1.6m, 18));
 			movies.Add(ConstructMovie(id++, "Sorry to Bother You", 1.8m, 18));
 			movies.Add(ConstructMovie(id++, "Three Identical Strangers", 1.1m, 16));
-
 
 			IgnoreMovies(movies);
 			IncludeMoviesByEfficiency(movies, 5);
