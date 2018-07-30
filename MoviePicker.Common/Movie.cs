@@ -10,12 +10,12 @@ namespace MoviePicker.Common
 	public class Movie : IMovie
 	{
 		private const decimal BEST_PERFORMER_BONUS = 2000000;
+		private const string HASHTAG = "#";
 
 		private decimal _cost;
 		private decimal _earnings;
-		private decimal _efficiency;
 		private bool _isBestPerformer;
-		private decimal _originalEarnings;
+		private string _movieName;
 
 		public Movie()
 		{
@@ -38,7 +38,7 @@ namespace MoviePicker.Common
 				Id = toCopy.Id;
 				ImageUrl = toCopy.ImageUrl;
 				MovieName = toCopy.MovieName;
-				_originalEarnings = toCopy._originalEarnings;
+				EarningsBase = toCopy.EarningsBase;
 				WeekendEnding = toCopy.WeekendEnding;
 
 				UpdateEfficiency();
@@ -104,7 +104,7 @@ namespace MoviePicker.Common
 
 		public DayOfWeek? Day { get; set; }
 
-		public decimal Efficiency => _efficiency;
+		public decimal Efficiency { get; private set; }
 
 		public decimal Earnings
 		{
@@ -112,15 +112,17 @@ namespace MoviePicker.Common
 			set
 			{
 				_earnings = value;
-				_originalEarnings = value;
+				EarningsBase = value;
 				UpdateEfficiency();
 			}
 		}
 
-		public decimal EarningsBase
-		{
-			get { return _originalEarnings; }
-		}
+		/// <summary>
+		/// The base earnings which does NOT include any bonus (also "original earnings")
+		/// </summary>
+		public decimal EarningsBase { get; private set; }
+
+		public string Hashtag { get; private set; }
 
 		public int Id { get; set; }
 
@@ -133,13 +135,24 @@ namespace MoviePicker.Common
 			get { return _isBestPerformer; }
 			set
 			{
-				_earnings = _originalEarnings + ((value) ? BEST_PERFORMER_BONUS : 0m);
+				_earnings = EarningsBase + ((value) ? BEST_PERFORMER_BONUS : 0m);
 				UpdateEfficiency();
 				_isBestPerformer = value;
 			}
 		}
 
-		public string MovieName { get; set; }
+		public string MovieName
+		{
+			get
+			{
+				return _movieName;
+			}
+			set
+			{
+				_movieName = value;
+				UpdateHashtag();
+			}
+		}
 
 		public string Name
 		{
@@ -257,11 +270,21 @@ namespace MoviePicker.Common
 			return Id.GetHashCode();
 		}
 
+		private void UpdateHashtag()
+		{
+			TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+			
+			// The movie name should already have the punctuation removed.
+			// Add "Movie" to the end?
+
+			Hashtag = HASHTAG + textInfo.ToTitleCase(_movieName).Replace(" ", string.Empty);
+		}
+
 		private void UpdateEfficiency()
 		{
 			if (Cost != 0)
 			{
-				_efficiency = EarningsBase / Cost;
+				Efficiency = EarningsBase / Cost;
 			}
 
 			_isBestPerformer = false;

@@ -41,6 +41,8 @@ namespace MoviePicker.Common.Interfaces
 		/// </summary>
 		decimal EarningsBase { get; }
 
+		string Hashtag { get; }
+
 		/// <summary>
 		/// An arbitrary Id for the movie
 		/// </summary>

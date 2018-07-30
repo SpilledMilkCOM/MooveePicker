@@ -67,6 +67,8 @@ namespace MoviePicker.Msf
 			set { _movie.Earnings = (decimal)value; }
 		}
 
+		public string Hashtag => _movie.Hashtag;
+
 		public int Id
 		{
 			get { return _movie.Id; }
