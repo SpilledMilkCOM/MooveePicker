@@ -171,22 +171,17 @@ namespace MoviePicker.Common
 
 			foreach (var movieGroup in grouping)
 			{
-				var multiplier = (movieGroup.Count() > 1) ? $"x{movieGroup.Count()}" : string.Empty;
+				var multiplier = (movieGroup.Count() > 1) ? $" x{movieGroup.Count()}" : string.Empty;
 				var movie = movieGroup.First();
-				var abbreviation = movie.Abbreviation;
+				// Now that Twitter is up to 280 characters you'll get more visibility if you #hashtag the movie name (or maybe use its @idname)
+				var abbreviation = movie.Hashtag; //movie.Abbreviation;
 
-				if (!first)
-				{
-					result.Append(",");
-				}
-
-				//if (abbreviation.Length == 1
-				//|| (movie.Day.HasValue && abbreviation.Length == 5))
+				//if (!first)
 				//{
-				//	abbreviation = movie.Name;
+				//	result.Append(",");
 				//}
 
-				result.Append($"{abbreviation}{multiplier}");
+				result.Append($" {abbreviation}{multiplier}");
 
 				first = false;
 			}
