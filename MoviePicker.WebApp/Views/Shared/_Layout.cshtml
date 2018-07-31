@@ -1,4 +1,9 @@
 ﻿@using MoviePicker.WebApp.Models
+@using MoviePicker.WebApp.Utilities
+
+@{
+	var userRequestKeys = new List<string>() { "wl", "bo" };
+}
 
 <!DOCTYPE html>
 <html>
@@ -69,9 +74,9 @@
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li>@Html.ActionLink("Home", "Index", "Home")</li>
-					<li>@Html.ActionLink("About", "About", "LowMem")</li>
-					<li>@Html.ActionLink("Contact", "Contact", "LowMem")</li>
+					<li>@Html.ActionLink("Home", "Index", "Home", ViewUtility.RequestParamsToDynamic(Request), null)</li>
+					<li>@Html.ActionLink("About", "About", $"LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
+					<li>@Html.ActionLink("Contact", "Contact", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
 				</ul>
 			</div>
 		</div>

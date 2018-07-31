@@ -1,6 +1,9 @@
 ﻿using MovieMiner;
 using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
+using System.Web;
 
 namespace MoviePicker.WebApp.Utilities
 {
@@ -59,6 +62,32 @@ namespace MoviePicker.WebApp.Utilities
 			if (dataPointCount > 0)
 			{
 				result = sumOfDiffPercent / dataPointCount;
+			}
+
+			return result;
+		}
+
+		public static object RequestParamsToDynamic(HttpRequestBase request)
+		{
+			return new { bo = request.Params["bo"], wl = request.Params["wl"] };
+		}
+
+		/// <summary>
+		/// Converts a web request's parameters to a dynamic object to be used in an Html.ActionLink() method.
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns>A dynamic object to be used in an ActionLink</returns>
+		public static dynamic RequestParamsToDynamic(HttpRequestBase request, IList<string> userKeys)
+		{
+			var result = new ExpandoObject();
+			var dictionary = (IDictionary<string, object>)result;
+
+			foreach (string key in request.Params.Keys)
+			{
+				if (userKeys.Contains(key))
+				{
+					dictionary.Add(key, request.Params[key]);
+				}
 			}
 
 			return result;

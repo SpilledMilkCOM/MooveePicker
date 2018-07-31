@@ -458,7 +458,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			// Attempt to parse the request.
 
-			var parms = Request.Params;
+			//var parms = Request.Params;
 			var decimalList = _controllerUtility.GetRequestDecimalList(Request, "bo");
 			int idx = 0;
 
