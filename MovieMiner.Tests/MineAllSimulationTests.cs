@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MooveePicker;
+using MooveePicker.Simulations;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
 using System;
@@ -28,7 +28,7 @@ namespace MovieMiner.Tests
 
 			_unity.RegisterType<IMovie, Movie>();
 			_unity.RegisterType<IMovieList, MovieList>();
-			_unity.RegisterType<IMoviePicker, MoviePickerVariants>();
+			_unity.RegisterType<IMoviePicker, MoviePickerVariantsAll>();
 
 			_unity.RegisterType<ILogger, DebugLogger>();
 		}
@@ -42,8 +42,6 @@ namespace MovieMiner.Tests
 			var minedData = MineMiners(miners);
 
 			FilterMiners(minedData);
-
-			// TODO: Should probably connect the mined data to the miner.
 
 			var myList = CreateMyList(minedData, miners);
 
@@ -65,8 +63,6 @@ namespace MovieMiner.Tests
 			Logger.WriteLine(string.Empty);
 
 			WriteMoviesAndPicks("==== Spilled Milk Cinema ====", myList);
-
-			WriteFMLNerdLink(myList);
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------

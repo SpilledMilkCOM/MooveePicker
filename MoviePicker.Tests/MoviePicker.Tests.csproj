@@ -88,7 +88,6 @@
     <Compile Include="Old\MoviePickerTest_20170618.cs" />
     <Compile Include="MoviePickerTopDropsOutTests.cs" />
     <Compile Include="MoviePickerVariantsAllTests.cs" />
-    <Compile Include="MoviePickerVariantsTests.cs" />
     <Compile Include="Old\MoviePickerTest_20170611.cs" />
     <Compile Include="MoviePickerTests.cs" />
     <Compile Include="MsfMovieSolver\MsfMoviePickerTests.cs" />
