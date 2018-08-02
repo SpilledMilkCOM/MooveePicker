@@ -184,7 +184,7 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			var picksViewModel = ConstructPicksViewModel();
 
-			//RunSimulation(picksViewModel);
+			RunSimulation(picksViewModel);
 
 			return View(picksViewModel);
 		}
@@ -293,7 +293,7 @@ namespace MoviePicker.WebApp.Controllers
 			return result;
 		}
 
-		private PicksViewModel ConstructPicksViewModel()
+		private PicksViewModel ConstructPicksViewModel(bool onlyBestPerformer = false)
 		{
 			var result = new PicksViewModel();
 			var stopWatch = new Stopwatch();
@@ -316,26 +316,29 @@ namespace MoviePicker.WebApp.Controllers
 				Picks = pickList
 			};
 
-			// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
-
-			var clonedList = new List<IMovie>();
-
-			foreach (var movie in result.Movies)
+			if (!onlyBestPerformer)
 			{
-				clonedList.Add(movie.Clone());
+				// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
+
+				var clonedList = new List<IMovie>();
+
+				foreach (var movie in result.Movies)
+				{
+					clonedList.Add(movie.Clone());
+				}
+
+				_moviePicker.AddMovies(clonedList);
+				_moviePicker.EnableBestPerformer = false;
+
+				pickList = _moviePicker.ChooseBest(3);
+
+				result.MovieListBonusOff = new MovieListModel()
+				{
+					ComparisonHeader = result.IsTracking ? "Estimated" : null,
+					ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
+					Picks = pickList
+				};
 			}
-
-			_moviePicker.AddMovies(clonedList);
-			_moviePicker.EnableBestPerformer = false;
-
-			pickList = _moviePicker.ChooseBest(3);
-
-			result.MovieListBonusOff = new MovieListModel()
-			{
-				ComparisonHeader = result.IsTracking ? "Estimated" : null,
-				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
-				Picks = pickList
-			};
 
 			if (result.IsTracking)
 			{
@@ -511,6 +514,7 @@ namespace MoviePicker.WebApp.Controllers
 			var stopwatch = new Stopwatch();
 
 			// Add picked movies.
+
 			var movies = picksViewModel.MovieList.Picks[0].Movies.Distinct().ToList();
 
 			// Add most efficient.
