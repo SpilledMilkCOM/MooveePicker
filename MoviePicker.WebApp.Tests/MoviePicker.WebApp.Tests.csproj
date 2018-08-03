@@ -100,6 +100,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\MinerModelSimulationTests.cs" />
     <Compile Include="Models\MinerModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
@@ -120,6 +121,10 @@
     <ProjectReference Include="..\MoviePicker.Common\MoviePicker.Common.csproj">
       <Project>{c413ba12-dcd8-485e-b008-087ba02004cb}</Project>
       <Name>MoviePicker.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MoviePicker.Msf\MoviePicker.Msf.csproj">
+      <Project>{420fcf88-e38d-46ee-a4de-be87042d5b1b}</Project>
+      <Name>MoviePicker.Msf</Name>
     </ProjectReference>
     <ProjectReference Include="..\MoviePicker.Tests\MoviePicker.Tests.csproj">
       <Project>{f53c5b2d-dce7-4bc2-ba98-55c2cc474be2}</Project>

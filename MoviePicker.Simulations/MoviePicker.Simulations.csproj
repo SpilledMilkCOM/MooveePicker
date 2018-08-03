@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElapsedTime.cs" />
     <Compile Include="MoviePickerTopDropsOut.cs" />
     <Compile Include="MoviePickerVariantsAll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
