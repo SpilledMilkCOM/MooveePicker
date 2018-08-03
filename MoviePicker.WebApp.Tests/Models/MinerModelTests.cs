@@ -29,7 +29,6 @@ namespace MoviePicker.WebApp.Tests.Models
 			//_unity.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();
 		}
 
-
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_ConstructWithDAta()
 		{
@@ -69,6 +68,26 @@ namespace MoviePicker.WebApp.Tests.Models
 			{
 				Logger.WriteLine(string.Empty);
 				WriteMovies(movieList);
+			}
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_Simulation()
+		{
+			var test = new MinerModel(true);
+
+			test.Miners[TODD_INDEX].Weight = 3;
+			test.Miners[3].Weight = 3;              // Box Office Pro
+			test.Miners[4].Weight = 4;              // Box Office Mojo
+			test.Miners[5].Weight = 1;              // Cultured Vultures
+			test.Miners[6].Weight = 1;              // Box Office Prophet
+			test.Miners[7].Weight = 6;              // Box Office Report
+
+			var myPicks = test.CreateWeightedList();
+
+			foreach (var movie in myPicks)
+			{
+				Logger.WriteLine($"movies.Add(ConstructMovie(id++, \"{movie.Name}\", {movie.EarningsBase / 1000000m}m, {movie.Cost}));");
 			}
 		}
 

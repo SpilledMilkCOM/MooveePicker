@@ -268,6 +268,33 @@ namespace MoviePicker.Tests
 			}
 		}
 
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void MoviePickerVariantsAll_ChooseBest_Parker_20180805_Percentage()
+		{
+			var test = ConstructTestObject();
+
+			// By default two adjustments are made (+/- 3%)
+			// The setting below will allow for 6 adjustments and one baseline.
+
+			((MoviePickerVariantsAll)test).EarningsAdjustment = 0.01m;
+			((MoviePickerVariantsAll)test).EarningsAdjustmentMax = 0.03m;
+
+			test.AddMovies(ConstructMovieList_20180805());
+
+			var best = test.ChooseBest();
+
+			WritePicker(test);
+			WriteMovies(best);
+			Logger.WriteLine(string.Empty);
+
+			foreach (var movieList in ((MoviePickerVariantsAll)test).GetRankedMovieLists())
+			{
+				WriteMovies(movieList);
+				Logger.WriteLine($"Total List Count: {((MoviePickerVariantsAll)test).GetRankedMovieListCount(movieList)}");
+				Logger.WriteLine(string.Empty);
+			}
+		}
+
 		//----==== PRIVATE ====---------------------------------------------------------
 
 		private List<IMovie> ConstructMovieList_20180729()
@@ -292,6 +319,36 @@ namespace MoviePicker.Tests
 			movies.Add(ConstructMovie(id++, "Unfriended Dark Web", 1.6m, 18));
 			movies.Add(ConstructMovie(id++, "Sorry to Bother You", 1.8m, 18));
 			movies.Add(ConstructMovie(id++, "Three Identical Strangers", 1.1m, 16));
+
+			IgnoreMovies(movies);
+			IncludeMoviesByEfficiency(movies, 6);
+			IncludeMoviesByBoxOffice(movies, 1);
+
+			return movies;
+		}
+
+		private List<IMovie> ConstructMovieList_20180805()
+		{
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			// Movie list generated from MinerModelTests.MinerModel_WriteCodedOutput
+
+			movies.Add(ConstructMovie(id++, "Christopher Robin", 30.458823529411764705882352941m, 513));
+			movies.Add(ConstructMovie(id++, "Mission Impossible  Fallout", 31.7m, 512));
+			movies.Add(ConstructMovie(id++, "The Spy Who Dumped Me", 13.741176470588235294117647059m, 268));
+			movies.Add(ConstructMovie(id++, "The Darkest Minds", 7.4882352941176470588235294118m, 154));
+			movies.Add(ConstructMovie(id++, "Mamma Mia Here We Go Again", 8.541176470588235294117647059m, 136));
+			movies.Add(ConstructMovie(id++, "Hotel Transylvania 3 Summer Vacation", 6.8142857142857142857142857143m, 131));
+			movies.Add(ConstructMovie(id++, "The Equalizer 2", 7.0928571428571428571428571429m, 126));
+			movies.Add(ConstructMovie(id++, "Teen Titans GO to the Movies", 5.3357142857142857142857142857m, 93));
+			movies.Add(ConstructMovie(id++, "AntMan  the Wasp", 5.3769230769230769230769230769m, 88));
+			movies.Add(ConstructMovie(id++, "Incredibles 2", 4.7714285714285714285714285714m, 76));
+			movies.Add(ConstructMovie(id++, "Jurassic World Fallen Kingdom", 4.2m, 70));
+			movies.Add(ConstructMovie(id++, "Death of a Nation", 2.7333333333333333333333333333m, 55));
+			movies.Add(ConstructMovie(id++, "Skyscraper", 2.3m, 45));
+			movies.Add(ConstructMovie(id++, "Eighth Grade", 2.37m, 32));
+			movies.Add(ConstructMovie(id++, "The First Purge", 0.954m, 16));
 
 			IgnoreMovies(movies);
 			IncludeMoviesByEfficiency(movies, 6);
