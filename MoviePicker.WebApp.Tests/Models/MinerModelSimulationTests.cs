@@ -24,7 +24,6 @@ namespace MoviePicker.WebApp.Tests.Models
 
 		public override IUnityContainer UnityContainer => _unity;
 
-
 		[ClassInitialize]
 		public static void InitializeBeforeAllTests(TestContext context)
 		{
@@ -57,8 +56,8 @@ namespace MoviePicker.WebApp.Tests.Models
 			//	}
 			//	builder.Append("\r");
 			//}
-
 			//Debug.Write(builder);
+
 			foreach (var list in weights)
 			{
 				SetWeights(test, list);

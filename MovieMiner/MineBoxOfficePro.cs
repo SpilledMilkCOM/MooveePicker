@@ -30,15 +30,15 @@ namespace MovieMiner
 
 		public override List<IMovie> Mine()
 		{
-			DateTime weekend = new DateTime(2018, 8, 5);
+			DateTime weekend = new DateTime(2018, 8, 12);
 
 			return new List<IMovie>
 			{
-				new Movie { MovieName = "Disneys Christopher Robin", Earnings = 31500000, WeekendEnding = weekend },
-				new Movie { MovieName = "Mission Impossible  Fallout", Earnings = 31500000, WeekendEnding = weekend },
-				new Movie { MovieName = "The Spy Who Dumped Me", Earnings = 14400000, WeekendEnding = weekend },
-				new Movie { MovieName = "Mamma Mia Here We Go Again", Earnings = 7900000, WeekendEnding = weekend },
-				new Movie { MovieName = "The Darkest Minds", Earnings = 8400000, WeekendEnding = weekend }
+				new Movie { MovieName = "The Meg", Earnings = 22000000, WeekendEnding = weekend },
+				new Movie { MovieName = "Mission Impossible  Fallout", Earnings = 22500000, WeekendEnding = weekend },
+				new Movie { MovieName = "Christopher Robin", Earnings = 14300000, WeekendEnding = weekend },
+				new Movie { MovieName = "BlacKkKlansman", Earnings = 12200000, WeekendEnding = weekend },
+				new Movie { MovieName = "Slender Man", Earnings = 10800000, WeekendEnding = weekend }
 			};
 		}
 
