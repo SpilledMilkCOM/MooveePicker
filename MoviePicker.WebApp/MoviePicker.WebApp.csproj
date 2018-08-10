@@ -324,6 +324,10 @@
       <Project>{420fcf88-e38d-46ee-a4de-be87042d5b1b}</Project>
       <Name>MoviePicker.Msf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MoviePicker.Repository\MoviePicker.Repository.csproj">
+      <Project>{3f448fb2-296b-4bb2-ae05-407a576dc838}</Project>
+      <Name>MoviePicker.Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MoviePicker.Simulations\MoviePicker.Simulations.csproj">
       <Project>{c337051a-a8d2-4a45-91a5-9d3074a14313}</Project>
       <Name>MoviePicker.Simulations</Name>
