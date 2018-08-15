@@ -243,6 +243,14 @@ namespace MovieMiner
 									movieName = movieName.Substring(0, parenIndex - 1).Trim();
 								}
 
+								parenIndex = estimatedBoxOffice.IndexOf("(");
+
+								if (parenIndex > 0)
+								{
+									// Trim out the multi-day value.
+									estimatedBoxOffice = estimatedBoxOffice.Substring(0, parenIndex - 1).Trim();
+								}
+
 								decimal estBoxOffice;
 
 								if (!string.IsNullOrEmpty(movieName) && decimal.TryParse(estimatedBoxOffice, out estBoxOffice))
