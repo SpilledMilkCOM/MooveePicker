@@ -53,6 +53,7 @@
     <Compile Include="HttpRequestUtil.cs" />
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="IMiner.cs" />
+    <Compile Include="MineFandangoTicketSales.cs" />
     <Compile Include="MineBoxOfficeReport.cs" />
     <Compile Include="MineBoxOfficeMojo.cs" />
     <Compile Include="MineBoxOfficeProphet.cs" />

@@ -43,5 +43,21 @@ namespace MovieMiner
 
 			return await client.DownloadStringTaskAsync(uri);
 		}
+
+		public static string DownloadTextFile(string url)
+		{
+			// Open the requested URL
+			WebRequest req = WebRequest.Create(url);
+
+			// Get the stream from the returned web response
+			StreamReader stream = new StreamReader(req.GetResponse().GetResponseStream());
+
+			string result = stream.ReadToEnd();
+
+			// Finished with the stream so close it now
+			stream.Close();
+
+			return result;
+		}
 	}
 }
