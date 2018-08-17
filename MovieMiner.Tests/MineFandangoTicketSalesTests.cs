@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Unity;
@@ -27,8 +28,6 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineFandangoTicketSales_Mine()
 		{
-			// http://boxofficereport.com/
-
 			var test = new MineFandangoTicketSales();
 
 			var actual = test.Mine();
@@ -40,8 +39,6 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineFandangoTicketSales_Totals()
 		{
-			// http://boxofficereport.com/
-
 			var test = new MineFandangoTicketSales();
 
 			var actual = test.Mine();
@@ -50,6 +47,27 @@ namespace MovieMiner.Tests
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 
 			actual = actual.GroupBy(movie => movie.Name)
+							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
+							.Cast<IMovie>()
+							.OrderByDescending(movie => movie.Earnings)
+							.ToList();
+
+			WriteMovies(actual);
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineFandangoTicketSales_TotalsFiltered()
+		{
+			var test = new MineFandangoTicketSales();
+			var movies = new List<string>() { "Crazy Rich Asians", "The Meg", "Mission Impossible - Fallout", "Mile 22" };
+
+			var actual = test.Mine();
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			actual = actual.Where(movie => movies.Contains(movie.Name))
+							.GroupBy(movie => movie.Name)
 							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
 							.Cast<IMovie>()
 							.OrderByDescending(movie => movie.Earnings)

@@ -94,7 +94,7 @@
 		   data-placement="bottom"
 		   title="Click to share your Bonus ON picks...">
 			<h4>
-				Bonus is ON&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+				Share Bonus is ON&nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
 			</h4>
 		</a>
 	</div>
@@ -113,7 +113,7 @@
 		   data-placement="bottom"
 		   title="Click to share your Bonus OFF picks...">
 			<h4>
-				Bonus is OFF &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+				Share Bonus is OFF &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
 			</h4>
 		</a>
 	</div>
@@ -223,7 +223,7 @@
 					foreach (var movie in Model.Movies.OrderByDescending(item => item.Efficiency))
 					{
 						var rank = Model.Rank(movie);
-						var rankStyle = rank <= 5 ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
+						//var rankStyle = rank <= 5 ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 						var rankStyle1 = rank == 1 ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 
 						<tr>
@@ -231,7 +231,7 @@
 							<td>@movie.Name</td>
 							<td style="text-align: right">@movie.EarningsBase.ToString("N0")</td>
 							<td style="@rankStyle1">@string.Format("{0}{1:N0}", rank == 1 ? "* " : string.Empty, movie.Efficiency)</td>
-							<td style="@rankStyle">@rank</td>
+							<td>@rank</td>
 							<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost)</td>
 
 							@if (movie.EarningsBase > 0)
@@ -253,7 +253,7 @@
 								else
 								{
 									<td style="text-align: right">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)</td>
-									<td style="@rankStyle">@string.Format("{0:N2}%", (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
+									<td style="text-align: right; font-weight: bold; color: #33cc33">@string.Format("{0:N2}%", (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</td>
 
 									if (nextRankedMovie != null)
 									{
