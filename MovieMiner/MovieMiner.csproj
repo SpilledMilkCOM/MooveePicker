@@ -61,6 +61,7 @@
     <Compile Include="MineNerdMovie.cs" />
     <Compile Include="MineBoxOfficePro.cs" />
     <Compile Include="MineFantasyMovieLeagueBoxOffice.cs" />
+    <Compile Include="MineCoupe.cs" />
     <Compile Include="MineToddThatcher.cs" />
     <Compile Include="MineNerd.cs" />
     <Compile Include="MinerBase.cs" />

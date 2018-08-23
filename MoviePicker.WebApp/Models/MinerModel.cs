@@ -254,7 +254,8 @@ namespace MoviePicker.WebApp.Models
 				new MineToddThatcher(),
 				new MineBoxOfficePro(),
 				new MineBoxOfficeMojo(),
-				new MineCulturedVultures(),
+				new MineCoupe(),
+				//new MineCulturedVultures(),
 				new MineBoxOfficeProphet(),
 				new MineBoxOfficeReport()
 			};

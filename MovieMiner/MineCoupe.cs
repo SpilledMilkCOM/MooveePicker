@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace MovieMiner
 {
-	public class MineToddThatcher : MinerBase
+	public class MineCoupe : MinerBase
 	{
 		private const string DEFAULT_URL = "https://fantasymovieleague.com";
 		private const string DELIMITER = "- $";
@@ -18,12 +18,14 @@ namespace MovieMiner
 		private readonly string _articleTitle;
 		private readonly Dictionary<string, DayOfWeek> _daysOfWeek;
 
-		public MineToddThatcher(string articleTitle = null)
-			: base("Todd M. Thatcher", "Todd", DEFAULT_URL)
+		public MineCoupe(string articleTitle = null)
+			: base("Coupe", "Coupe", DEFAULT_URL)
 		{
-			TwitterID = "tthizz";
+			TwitterID = "coupedevilles";
 
-			_articleTitle = articleTitle ?? $"Week {MovieDateUtil.DateToWeek()}";
+			_articleTitle = articleTitle ?? "Weekend Box Office Predictions";
+
+			// Not sure if Coupe will support day-of-week predictions
 
 			_daysOfWeek = new Dictionary<string, DayOfWeek>
 			{
@@ -36,7 +38,7 @@ namespace MovieMiner
 
 		public override IMiner Clone()
 		{
-			var result = new MineToddThatcher();
+			var result = new MineCoupe();
 
 			Clone(result);
 
@@ -48,23 +50,22 @@ namespace MovieMiner
 			var result = new List<IMovie>();
 			var web = new HtmlWeb();
 
-			var doc = web.Load($"{Url}/news");
+			var doc = web.Load($"{Url}/chatter/searchmessages?boardId=fml-main-chatter&query=coupe");
 
 			// Lookup XPATH to get the right node that matches.
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
-			// Select the first <a> node that contains the title attribute.
+			var node = doc.DocumentNode.SelectSingleNode($"//body//div/h3[@class='topic-item__title']");
 
-			var node = doc.DocumentNode.SelectSingleNode($"//body//a[contains(@title, '{_articleTitle}')]");
-
-			if (node == null)
+			if (node != null)
 			{
-				node = doc.DocumentNode.SelectSingleNode($"//body//a[contains(@title, 'Box Office Estimates')]");
+				// Traverse up to the <div>
+				node = node.ParentNode;
 			}
 
 			if (node != null)
 			{
-				var href = node.GetAttributeValue("href", null);
+				var href = node.GetAttributeValue("data-href", null);
 
 				if (href != null)
 				{
@@ -78,8 +79,7 @@ namespace MovieMiner
 
 					// Get the date of the article
 
-					//node = doc.DocumentNode.SelectSingleNode("//body//div[@class='credits']/span[@class='date']");
-					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post__credits']/div[@class='post__date-time']/div");
+					node = doc.DocumentNode.SelectSingleNode("//body//span[@class='topic-item__attribution']/span[@class='time-date']");
 
 					if (node != null)
 					{
@@ -87,7 +87,18 @@ namespace MovieMiner
 
 						if (node.HasChildNodes)
 						{
-							string articleText = HttpUtility.HtmlDecode(node.FirstChild.InnerText).Trim();
+							var articleText = HttpUtility.HtmlDecode(node.FirstChild.InnerText.Replace(",", string.Empty)).Trim();
+
+							// Remove the text after the year.
+
+							var year = DateTime.Now.Year;
+							var index = articleText.IndexOf(year.ToString());
+
+							if (index > 0)
+							{
+								articleText = articleText.Substring(0, index + year.ToString().Length);
+							}
+
 							DateTime parsedDateTime;
 
 							if (DateTime.TryParse(articleText, out parsedDateTime))
@@ -99,7 +110,7 @@ namespace MovieMiner
 
 					// Get the data
 
-					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post__content']");
+					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='topic-item__body']");
 
 					if (node != null)
 					{
@@ -139,15 +150,23 @@ namespace MovieMiner
 
 									// Might switch this to RegEx...
 
-									var multiplier = Multiplier(nodeText.Substring(index, nodeText.Length - index));
+									//var multiplier = Multiplier(nodeText.Substring(index, nodeText.Length - index));
 									var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace(DELIMITER2, string.Empty).Replace("million", string.Empty).Replace("k", string.Empty);
 
-									var parenIndex = estimatedBoxOffice.IndexOf("(");
+									var trimIndex = estimatedBoxOffice.IndexOf("(");
 
-									if (parenIndex > 0)
+									if (trimIndex > 0)
 									{
-										// Trim out the FML bux.
-										estimatedBoxOffice = estimatedBoxOffice.Substring(0, parenIndex - 1);
+										// Trim out the drop percentage.
+										estimatedBoxOffice = estimatedBoxOffice.Substring(0, trimIndex - 1);
+									}
+
+									trimIndex = estimatedBoxOffice.IndexOf("|");
+
+									if (trimIndex > 0)
+									{
+										// Trim out the COUPE label.
+										estimatedBoxOffice = estimatedBoxOffice.Substring(0, trimIndex - 1);
 									}
 
 									if (!string.IsNullOrEmpty(movieName))
@@ -160,11 +179,11 @@ namespace MovieMiner
 											movie = new Movie
 											{
 												MovieName = MapName(ParseName(name)),
-												Day = ParseDayOfWeek(name),
-												Earnings = decimal.Parse(estimatedBoxOffice) * multiplier
+												//Day = ParseDayOfWeek(name),
+												Earnings = ParseEarnings(estimatedBoxOffice)
 											};
 										}
-										catch(Exception exception)
+										catch (Exception exception)
 										{
 											Error = "Some bad data";
 											ErrorDetail = $"The movie did not parse correctly \"{name}\" - {exception.Message}";

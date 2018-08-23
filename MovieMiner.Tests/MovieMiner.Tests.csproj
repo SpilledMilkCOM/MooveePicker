@@ -90,6 +90,7 @@
     <Compile Include="MineBoxOfficeProTests.cs" />
     <Compile Include="MineAllTests.cs" />
     <Compile Include="MineFantasyMovieLeagueBoxOfficeTests.cs" />
+    <Compile Include="MineCoupeTests.cs" />
     <Compile Include="MineToddThatcherTests.cs" />
     <Compile Include="MineNerdTests.cs" />
     <Compile Include="MineTestBase.cs" />
