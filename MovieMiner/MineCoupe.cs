@@ -19,7 +19,7 @@ namespace MovieMiner
 		private readonly Dictionary<string, DayOfWeek> _daysOfWeek;
 
 		public MineCoupe(string articleTitle = null)
-			: base("Coupe", "Coupe", DEFAULT_URL)
+			: base("Coupe's Movie Picks", "Coupe", DEFAULT_URL)
 		{
 			TwitterID = "coupedevilles";
 

@@ -415,7 +415,7 @@ namespace MoviePicker.WebApp.Controllers
 				bonusMovieName = "it";
 			}
 
-			bonusMovieName = (bonusOn) ? $", counting on {bonusMovieName} as my bonus movie" : $", hoping for {bonusMovieName} as my bonus movie";
+			bonusMovieName = (bonusOn) ? $", counting on {bonusMovieName} as the bonus movie" : $", hoping for {bonusMovieName} as the bonus movie";
 
 			viewModel.TwitterDescription = $"{leadingMovieName} leads {lineupArticle} lineup{bonusMovieName}{spentBuxText}.";
 			viewModel.TwitterImageFileName = viewModel.ImageFileName.Replace("Shared_", "Twitter_");
