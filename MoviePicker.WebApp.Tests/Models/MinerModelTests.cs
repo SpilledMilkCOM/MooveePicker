@@ -2,6 +2,8 @@
 using MoviePicker.Common;
 using MoviePicker.Tests;
 using MoviePicker.WebApp.Models;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Unity;
 
@@ -13,6 +15,7 @@ namespace MoviePicker.WebApp.Tests.Models
 	public class MinerModelTests : MoviePickerTestBase
 	{
 		private const int TODD_INDEX = 2;
+		private const int MAX_MINERS = 6;
 
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
@@ -96,12 +99,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		{
 			var test = new MinerModel(true);
 
-			test.Miners[TODD_INDEX].Weight = 3;
-			test.Miners[3].Weight = 3;              // Box Office Pro
-			test.Miners[4].Weight = 4;              // Box Office Mojo
-			test.Miners[5].Weight = 1;              // Cultured Vultures
-			test.Miners[6].Weight = 1;              // Box Office Prophet
-			test.Miners[7].Weight = 6;              // Box Office Report
+			SetWeights(test, CreateDefaultWeights());
 
 			var myPicks = test.CreateWeightedList();
 
@@ -119,6 +117,36 @@ namespace MoviePicker.WebApp.Tests.Models
 			foreach (var movie in test.Miners[TODD_INDEX].Movies)
 			{
 				Logger.WriteLine($"movies.Add(ConstructMovie(id++, \"{movie.Name}\", {movie.EarningsBase / 1000000m}m, {movie.Cost}));");
+			}
+		}
+
+		//----==== PRIVATE ====---------------------------------------------------------------------------
+
+		private List<int> CreateDefaultWeights()
+		{
+			return new List<int>
+			{
+				3,			// Todd Thatcher
+				3,			// Box Office Pro
+				4,			// Box Office Mojo
+				2,			// Coupe (Cultured Vultures)
+				1,			// Box Office Prophet
+				6			// Box Office Report
+			};
+		}
+
+		private void SetWeights(MinerModel model, List<int> weights)
+		{
+			if (weights.Count != MAX_MINERS)
+			{
+				throw new ArgumentException($"The weight list MUST contain {MAX_MINERS} weights.");
+			}
+
+			int index = TODD_INDEX;
+
+			foreach (var weight in weights)
+			{
+				model.Miners[index++].Weight = weight;
 			}
 		}
 	}

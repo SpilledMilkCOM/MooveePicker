@@ -357,6 +357,36 @@ namespace MoviePicker.Tests
 			return movies;
 		}
 
+		private List<IMovie> ConstructMovieList_20180826()
+		{
+			var movies = new List<IMovie>();
+			int id = 1;
+
+			// Movie list generated from MinerModelTests.MinerModel_WriteCodedOutput
+
+			movies.Add(ConstructMovie(id++, "Crazy Rich Asians", 18.289473684210526315789473684m, 318));
+			movies.Add(ConstructMovie(id++, "The Happytime Murders", 13.35m, 264));
+			movies.Add(ConstructMovie(id++, "The Meg", 12.036842105263157894736842105m, 201));
+			movies.Add(ConstructMovie(id++, "Mile 22", 6.475m, 129));
+			movies.Add(ConstructMovie(id++, "Mission Impossible  Fallout", 6.8578947368421052631578947368m, 127));
+			movies.Add(ConstructMovie(id++, "Christopher Robin", 5.9842105263157894736842105263m, 106));
+			movies.Add(ConstructMovie(id++, "Alpha", 5.675m, 102));
+			movies.Add(ConstructMovie(id++, "BlacKkKlansman", 5.13125m, 84));
+			movies.Add(ConstructMovie(id++, "AXL", 2.5033333333333333333333333333m, 58));
+			movies.Add(ConstructMovie(id++, "Hotel Transylvania 3 Summer Vacation", 2.6375m, 45));
+			movies.Add(ConstructMovie(id++, "Slender Man", 2.18m, 40));
+			movies.Add(ConstructMovie(id++, "Mamma Mia Here We Go Again", 2.0m, 35));
+			movies.Add(ConstructMovie(id++, "AntMan  the Wasp", 1.66m, 29));
+			movies.Add(ConstructMovie(id++, "The Equalizer 2", 1.68m, 28));
+			movies.Add(ConstructMovie(id++, "Incredibles 2", 1.5m, 27));
+
+			IgnoreMovies(movies);
+			IncludeMoviesByEfficiency(movies, 6);
+			IncludeMoviesByBoxOffice(movies, 1);
+
+			return movies;
+		}
+
 		protected IMoviePicker ConstructTestObject(bool earningsAdjustmentByPercent = false)
         {
             var result = base.ConstructTestObject() as MoviePickerVariantsAll;

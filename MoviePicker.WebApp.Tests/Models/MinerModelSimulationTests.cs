@@ -99,7 +99,7 @@ namespace MoviePicker.WebApp.Tests.Models
 				3,			// Todd Thatcher
 				3,			// Box Office Pro
 				4,			// Box Office Mojo
-				1,			// Cultured Vultures
+				2,			// Coupe (Cultured Vultures)
 				1,			// Box Office Prophet
 				6			// Box Office Report
 			};

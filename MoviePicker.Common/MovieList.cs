@@ -162,7 +162,6 @@ namespace MoviePicker.Common
 
 		public override string ToString()
 		{
-			bool first = true;
 			var result = new StringBuilder();
 			var grouping = from movie in Movies
 						   orderby movie.Cost descending
@@ -176,14 +175,7 @@ namespace MoviePicker.Common
 				// Now that Twitter is up to 280 characters you'll get more visibility if you #hashtag the movie name (or maybe use its @idname)
 				var abbreviation = movie.Hashtag; //movie.Abbreviation;
 
-				//if (!first)
-				//{
-				//	result.Append(",");
-				//}
-
 				result.Append($" {abbreviation}{multiplier}");
-
-				first = false;
 			}
 
 			return result.ToString();
