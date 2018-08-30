@@ -1,6 +1,8 @@
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
+using MoviePicker.Repository.Interfaces;
+using MoviePicker.Repository.Models;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
 using MoviePicker.WebApp.Utilities;
@@ -73,6 +75,8 @@ namespace MoviePicker.WebApp
 			container.RegisterType<IMovieList, MovieList>();
 			container.RegisterType<IServerInfoModel, ServerInfoModel>();
 			container.RegisterType<ISimulationModel, SimulationModel>();
+
+			container.RegisterType<IBoxOfficeSource, BoxOfficeSource>();
 		}
 	}
 }

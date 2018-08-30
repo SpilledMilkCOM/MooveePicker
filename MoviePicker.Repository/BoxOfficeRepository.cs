@@ -1,10 +1,12 @@
-﻿using System;
+﻿using MoviePicker.Repository.Interfaces;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MoviePicker.Repository
 {
-	public class BoxOfficeRepository
-    {
-    }
+	public class BoxOfficeRepository : IBoxOfficeRepository
+	{
+		public void UpdateBoxOfficeValues(List<IBoxOfficeValue> values)
+		{
+		}
+	}
 }
