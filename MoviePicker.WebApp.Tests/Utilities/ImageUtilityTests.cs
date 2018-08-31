@@ -32,7 +32,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void ImageUtility_CombineImages()
+		public void ImageUtility_CombineImages_8xAntman()
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 			var test = CreateTestObject();
@@ -43,6 +43,45 @@ namespace MoviePicker.WebApp.Tests.Models
 				files.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
 			}
 
+			var filePath = test.CombineImages(cwd, files);
+
+			Assert.IsNotNull(filePath);
+		}
+
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void ImageUtility_CombineImages_8xSearching()
+		{
+			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
+			var test = CreateTestObject();
+			var files = new List<string>();
+
+			for (int count = 0; count < 8; count++)
+			{
+				files.Add($"{cwd}\\Images\\TestPoster_searchingposter2.jpg");
+			}
+
+			var filePath = test.CombineImages(cwd, files);
+
+			Assert.IsNotNull(filePath);
+		}
+
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void ImageUtility_CombineImages_4xAntman4xSearching()
+		{
+			//TestPoster_searchingposter2.jpg
+
+			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
+			var test = CreateTestObject();
+			var files = new List<string>();
+
+			for (int count = 0; count < 4; count++)
+			{
+				files.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+			}
+			for (int count = 0; count < 4; count++)
+			{
+				files.Add($"{cwd}\\Images\\TestPoster_searchingposter2.jpg");
+			}
 			var filePath = test.CombineImages(cwd, files);
 
 			Assert.IsNotNull(filePath);
