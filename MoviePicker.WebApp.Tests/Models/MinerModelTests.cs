@@ -79,12 +79,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		{
 			var test = new MinerModel(true);
 
-			test.Miners[TODD_INDEX].Weight = 3;
-			test.Miners[3].Weight = 3;              // Box Office Pro
-			test.Miners[4].Weight = 4;              // Box Office Mojo
-			test.Miners[5].Weight = 1;              // Cultured Vultures
-			test.Miners[6].Weight = 1;              // Box Office Prophet
-			test.Miners[7].Weight = 6;              // Box Office Report
+			SetWeights(test, CreateDefaultWeights());
 
 			var myPicks = test.CreateWeightedList();
 
@@ -129,7 +124,7 @@ namespace MoviePicker.WebApp.Tests.Models
 				3,			// Todd Thatcher
 				3,			// Box Office Pro
 				4,			// Box Office Mojo
-				2,			// Coupe (Cultured Vultures)
+				3,			// Coupe (Cultured Vultures)
 				1,			// Box Office Prophet
 				6			// Box Office Report
 			};
