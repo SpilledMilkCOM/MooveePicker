@@ -36,10 +36,12 @@ namespace MoviePicker.WebApp.Tests.Models
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 			var test = CreateTestObject();
-			var files = new List<string>()
+			var files = new List<string>();
+
+			for (int count = 0; count < 8; count++)
 			{
-				$"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg",
-			};
+				files.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+			}
 
 			var filePath = test.CombineImages(cwd, files);
 

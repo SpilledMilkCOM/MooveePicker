@@ -75,9 +75,10 @@ namespace MoviePicker.WebApp.Utilities
 		/// <param name="webRootPath"></param>
 		/// <param name="fileNames"></param>
 		/// <returns>The result file name.</returns>
-		public string CombineImages(string webRootPath, List<string> fileNames)
+		public string CombineImages(string webRootPath, List<string> fileNames, string bonusFileName = null)
 		{
 			const int COLUMNS = 4;
+			const int BORDER_PIXELS = 3;
 
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
@@ -112,11 +113,11 @@ namespace MoviePicker.WebApp.Utilities
 
 			// Use a constant width for each image.
 
-			width = minWidth.Value * COLUMNS;
+			width = minWidth.Value * COLUMNS + (COLUMNS - 1) * BORDER_PIXELS * 2;
 
 			// Since the aspect ratio should be the same for each image then the height will be the same as well (using a constant width)
 
-			height = minHeight.Value * 2;
+			height = (minHeight.Value + BORDER_PIXELS) * 2;
 
 			using (var destBitmap = new Bitmap(width, height))
 			{
@@ -135,9 +136,10 @@ namespace MoviePicker.WebApp.Utilities
 								offset = 0;
 							}
 
-							graphics.DrawImage(image, offset, column < COLUMNS ? 0 : minHeight.Value, minWidth.Value, minHeight.Value);
+							graphics.DrawImage(image, offset, column < COLUMNS ? 0 : minHeight.Value + BORDER_PIXELS * 2
+															, minWidth.Value, minHeight.Value);
 
-							offset += minWidth.Value;
+							offset += minWidth.Value + BORDER_PIXELS * 2;
 							column++;
 						}
 					}
@@ -172,7 +174,7 @@ namespace MoviePicker.WebApp.Utilities
 				{
 					graphics.Clear(Color.Black);
 
-					// Draw the previous image into the horizontall padded bitmap.
+					// Draw the previous image into the horizontally padded bitmap.
 
 					using (var image = Image.FromFile(resultFileName))
 					{
