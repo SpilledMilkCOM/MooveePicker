@@ -113,34 +113,46 @@ namespace MoviePicker.WebApp.Utilities
 
 			// Use a constant width for each image.
 
-			width = minWidth.Value * COLUMNS + (COLUMNS - 1) * BORDER_PIXELS * 2;
+			width = (minWidth.Value + BORDER_PIXELS * 2) * COLUMNS;
 
 			// Since the aspect ratio should be the same for each image then the height will be the same as well (using a constant width)
 
-			height = (minHeight.Value + BORDER_PIXELS) * 2;
+			height = (minHeight.Value + BORDER_PIXELS * 2) * 2;
 
 			using (var destBitmap = new Bitmap(width, height))
 			{
 				using (var graphics = Graphics.FromImage(destBitmap))
 				{
-					var column = 0;
-
-					graphics.Clear(Color.Black);
-
-					foreach (var fileName in fileNames)
+					using (var bonusBorderPen = new Pen(Color.LightGreen))
 					{
-						using (var image = Image.FromFile(fileName))
+						var column = 0;
+
+						// Fill the background with the "border" color
+						graphics.Clear(Color.Black);
+
+						foreach (var fileName in fileNames)
 						{
-							if (column % COLUMNS == 0)
+							using (var image = Image.FromFile(fileName))
 							{
-								offset = 0;
+								if (column % COLUMNS == 0)
+								{
+									offset = BORDER_PIXELS;
+								}
+
+								var yLoc = column < COLUMNS ? BORDER_PIXELS : minHeight.Value + BORDER_PIXELS * 2;
+
+								if (fileName == bonusFileName)
+								{
+									var rect = new Rectangle(offset - BORDER_PIXELS, yLoc - BORDER_PIXELS, minWidth.Value + 2 * BORDER_PIXELS, minHeight.Value + 2 * BORDER_PIXELS);
+
+									graphics.DrawRectangle(bonusBorderPen, rect);
+								}
+
+								graphics.DrawImage(image, offset, yLoc, minWidth.Value, minHeight.Value);
+
+								offset += minWidth.Value + BORDER_PIXELS * 2;
+								column++;
 							}
-
-							graphics.DrawImage(image, offset, column < COLUMNS ? 0 : minHeight.Value + BORDER_PIXELS * 2
-															, minWidth.Value, minHeight.Value);
-
-							offset += minWidth.Value + BORDER_PIXELS * 2;
-							column++;
 						}
 					}
 				}
