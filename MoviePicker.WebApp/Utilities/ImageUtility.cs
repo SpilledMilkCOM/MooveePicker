@@ -78,7 +78,7 @@ namespace MoviePicker.WebApp.Utilities
 		public string CombineImages(string webRootPath, List<string> fileNames, string bonusFileName = null)
 		{
 			const int COLUMNS = 4;
-			const int BORDER_PIXELS = 3;
+			const int BORDER_PIXELS = 5;
 
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
@@ -123,7 +123,7 @@ namespace MoviePicker.WebApp.Utilities
 			{
 				using (var graphics = Graphics.FromImage(destBitmap))
 				{
-					using (var bonusBorderPen = new Pen(Color.LightGreen))
+					using (var bonusBorderBrush = new SolidBrush(Color.LightGreen))
 					{
 						var column = 0;
 
@@ -139,13 +139,13 @@ namespace MoviePicker.WebApp.Utilities
 									offset = BORDER_PIXELS;
 								}
 
-								var yLoc = column < COLUMNS ? BORDER_PIXELS : minHeight.Value + BORDER_PIXELS * 2;
+								var yLoc = column < COLUMNS ? BORDER_PIXELS : minHeight.Value + BORDER_PIXELS * 3;
 
 								if (fileName == bonusFileName)
 								{
 									var rect = new Rectangle(offset - BORDER_PIXELS, yLoc - BORDER_PIXELS, minWidth.Value + 2 * BORDER_PIXELS, minHeight.Value + 2 * BORDER_PIXELS);
 
-									graphics.DrawRectangle(bonusBorderPen, rect);
+									graphics.FillRectangle(bonusBorderBrush, rect);
 								}
 
 								graphics.DrawImage(image, offset, yLoc, minWidth.Value, minHeight.Value);
@@ -195,6 +195,28 @@ namespace MoviePicker.WebApp.Utilities
 						graphics.DrawImage(image, offset, 0, oldWidth, height);
 					}
 
+					// Draw the posters down the left.
+
+					for (int count = 0; count < 7; count++)
+					{
+						using (var image = Image.FromFile(fileNames[count % fileNames.Count]))
+						{
+							var yOffset = 32 - 50;
+
+							if (count == 1)
+							{
+								yOffset = 32;
+							}
+							else if(count > 1)
+							{
+								yOffset = (count - 1) * 50 + 32;
+							}
+
+							// Scale the branding to fit within the offset
+							graphics.DrawImage(image, 0, yOffset, offset, (int)((double)image.Height / image.Width * offset));
+						}
+					}
+
 					// Draw branding on the left.
 
 					using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Moovee Picker Logo Vertical Strip.png"))
@@ -202,6 +224,30 @@ namespace MoviePicker.WebApp.Utilities
 						// Scale the branding to fit within the offset
 						graphics.DrawImage(image, 0, 0, offset, (int)((double)image.Height / image.Width * offset));
 					}
+
+					// Draw the posters down the right.
+
+					for (int count = 0; count < 7; count++)
+					{
+						using (var image = Image.FromFile(fileNames[count % fileNames.Count]))
+						{
+							var yOffset = 32 - 50;
+
+							if (count == 1)
+							{
+								yOffset = 32;
+							}
+							else if (count > 1)
+							{
+								yOffset = (count - 1) * 50 + 32;
+							}
+
+							// Scale the branding to fit within the offset
+							graphics.DrawImage(image, width - offset, yOffset, offset, (int)((double)image.Height / image.Width * offset));
+						}
+					}
+
+					// Draw branding on the right.
 
 					using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Moovee Picker Logo Vertical Strip Right.png"))
 					{
