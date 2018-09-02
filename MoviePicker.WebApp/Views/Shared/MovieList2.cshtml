@@ -36,8 +36,11 @@
 						var foundMovie = Model.ComparisonMovies.FirstOrDefault(movie => movie.Name == pick.Name);
 						var rankStyle2 = foundMovie.IsBestPerformer ? "text-align: right; font-weight: bold; color: #33cc33" : "text-align: right";
 
-						<div style="font-weight: bold">@Model.ComparisonHeader</div>
-						<div style="@rankStyle2">@string.Format("$ {0:N0}{1}", foundMovie?.Earnings, foundMovie.IsBestPerformer ? " *" : string.Empty)</div>
+						if (foundMovie != null && foundMovie.EarningsBase != 0)
+						{
+							<div style="font-weight: bold">@Model.ComparisonHeader</div>
+							<div style="@rankStyle2">@string.Format("$ {0:N0}{1}", foundMovie.Earnings, foundMovie.IsBestPerformer ? " *" : string.Empty)</div>
+						}
 					}
 				</div>
 			</div>
