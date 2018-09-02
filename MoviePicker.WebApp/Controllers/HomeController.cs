@@ -389,10 +389,21 @@ namespace MoviePicker.WebApp.Controllers
 			//FileUtility.DownloadFiles(movieImages, localFilePrefix);
 
 			var localFiles = FileUtility.LocalFiles(movieImages, $"{localFilePrefix}MoviePoster_");
+			string bonusFile = null;
+
+			if (bonusOn)
+			{
+				var bonusMovie = picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer);
+
+				if (bonusMovie != null && bonusMovie.ImageUrl != null)
+				{
+					bonusFile = FileUtility.LocalFile(bonusMovie.ImageUrl.Replace("MoviePoster_", string.Empty), $"{localFilePrefix}MoviePoster_");
+				}
+			}
 
 			var viewModel = new SharePicksViewModel()
 			{
-				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles)
+				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, bonusFile)
 			};
 
 			// Ordering by Cost is the same sort as the file names.

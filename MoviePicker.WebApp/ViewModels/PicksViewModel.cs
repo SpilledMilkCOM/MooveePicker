@@ -33,65 +33,12 @@ namespace MoviePicker.WebApp.Models
 
 		public string SharedPicksUrl { get; set; }
 
-		public string GenerateSharedImage(string webRootPath, List<string> files)
+		public string GenerateSharedImage(string webRootPath, List<string> files, string bonusFile)
 		{
 			var imageUtil = new ImageUtility();
 
-			return imageUtil.CombineImages(webRootPath, files);
+			return imageUtil.CombineImages(webRootPath, files, bonusFile);
 		}
-
-		///// <summary>
-		///// TODO: Consolidate
-		///// </summary>
-		///// <param name="miner"></param>
-		///// <returns></returns>
-		//public string GetFMLNerdLink()
-		//{
-		//	// TODO: Consolidate
-
-		//	string url = "http://analyzer.fmlnerd.com/lineups/?ests=";
-		//	string movieList = null;
-
-		//	foreach (var movie in Movies)
-		//	{
-		//		if (movieList != null)
-		//		{
-		//			movieList += ",";
-		//		}
-
-		//		movieList += movie == null ? "0" : ((int)movie.EarningsBase).ToString("D");
-		//	}
-
-		//	return url + movieList;
-		//}
-
-		///// <summary>
-		///// TODO: Consolidate
-		///// </summary>
-		///// <param name="miner"></param>
-		///// <returns></returns>
-		//public string GetFMLNerdLink(IMiner miner)
-		//{
-		//	// TODO: Consolidate
-
-		//	string url = "http://analyzer.fmlnerd.com/lineups/?ests=";
-		//	string movieList = null;
-		//	var nerdList = Miners.First();
-
-		//	foreach (var movie in nerdList.Movies)
-		//	{
-		//		var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
-
-		//		if (movieList != null)
-		//		{
-		//			movieList += ",";
-		//		}
-
-		//		movieList += minerMovie == null ? "0" : minerMovie.EarningsBase.ToString();
-		//	}
-
-		//	return url + movieList;
-		//}
 
 		public int Rank(IMovie movie)
 		{
