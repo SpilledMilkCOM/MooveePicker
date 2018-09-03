@@ -197,11 +197,15 @@ namespace MoviePicker.WebApp.Utilities
 						graphics.DrawImage(image, offset, 0, oldWidth, height);
 					}
 
+					// Keep track of the posters in the film cells for BOTH left and right sides.
+
+					int totalCount = 0;
+
 					// Draw the posters down the left.
 
-					for (int count = 0; count < 7; count++)
+					for (var count = 0; count < 7; count++, totalCount++)
 					{
-						using (var image = Image.FromFile(fileNames[count % fileNames.Count]))
+						using (var image = Image.FromFile(fileNames[totalCount % fileNames.Count]))
 						{
 							var yOffset = FIRST_CELL_HEIGHT_PIXELS - CELL_HEIGHT_PIXELS;
 
@@ -214,7 +218,11 @@ namespace MoviePicker.WebApp.Utilities
 								yOffset = (count - 1) * CELL_HEIGHT_PIXELS + FIRST_CELL_HEIGHT_PIXELS;
 							}
 
-							// Scale the branding to fit within the offset
+							//var clipRect = new Rectangle(0, yOffset, offset, (int)((double)image.Height / image.Width * offset));
+
+							//graphics.SetClip(clipRect);
+
+							// Scale the poster to fit within the offset
 							graphics.DrawImage(image, 0, yOffset, offset, (int)((double)image.Height / image.Width * offset));
 						}
 					}
@@ -229,9 +237,9 @@ namespace MoviePicker.WebApp.Utilities
 
 					// Draw the posters down the right.
 
-					for (int count = 0; count < 7; count++)
+					for (var count = 0; count < 7; count++, totalCount++)
 					{
-						using (var image = Image.FromFile(fileNames[count % fileNames.Count]))
+						using (var image = Image.FromFile(fileNames[totalCount % fileNames.Count]))
 						{
 							var yOffset = FIRST_CELL_HEIGHT_PIXELS - CELL_HEIGHT_PIXELS;
 
@@ -244,7 +252,7 @@ namespace MoviePicker.WebApp.Utilities
 								yOffset = (count - 1) * CELL_HEIGHT_PIXELS + FIRST_CELL_HEIGHT_PIXELS;
 							}
 
-							// Scale the branding to fit within the offset
+							// Scale the poster to fit within the offset
 							graphics.DrawImage(image, width - offset, yOffset, offset, (int)((double)image.Height / image.Width * offset));
 						}
 					}
