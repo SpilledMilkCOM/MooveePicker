@@ -2,6 +2,8 @@
 {
 	public class SharePicksViewModel
 	{
+		public long Duration { get; set; }
+
 		/// <summary>
 		/// The Url of the Bonus On movie posters
 		/// </summary>

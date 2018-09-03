@@ -202,6 +202,11 @@ namespace MoviePicker.WebApp.Controllers
 
 			var viewModel = ConstructPicksViewModel();
 
+			// Assign perfect pick to movie list so it is shared.
+			viewModel.MovieList = viewModel.MovieListPerfectPick;
+
+			var sharedViewModel = ConstructSharePicksViewModel(true, viewModel);
+
 			// Show the values for the FML Estimate data.
 
 			_minerModel.Miners.First().IsHidden = false;
@@ -210,14 +215,15 @@ namespace MoviePicker.WebApp.Controllers
 
 			_minerModel.Miners.Last().IsHidden = true;
 
-			ControllerUtility.SetTwitterCard(ViewBag);
+			//ControllerUtility.SetTwitterCard(ViewBag);
 
-			ControllerUtility.SetTwitterCard(ViewBag, null, null
+			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image", null
 								, "Tracking my picks against the perfect pick to see where I went right or horribly wrong."
-								, null, null
+								, $"{Constants.WEBSITE_URL}/images/{sharedViewModel.TwitterImageFileName}"
+								, "Collage of the perfect pick lineup."
 								, "Check out my picks against the perfect pick.");
 
-			DownloadMoviePosters();
+			//DownloadMoviePosters();
 
 			stopWatch.Stop();
 
@@ -371,14 +377,17 @@ namespace MoviePicker.WebApp.Controllers
 			return result;
 		}
 
-		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn, int index = 0)
+		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn, PicksViewModel picksViewModel = null, int index = 0)
 		{
 			ViewBag.Title = bonusOn ? "Share Bonus ON Picks" : "Share Bonus OFF Picks";
 			var subTitle = bonusOn ? "Bonus ON" : "Bonus OFF";
 
 			ParseBoxOfficeWeightRequest();
 
-			var picksViewModel = ConstructPicksViewModel();
+			if (picksViewModel == null)
+			{
+				picksViewModel = ConstructPicksViewModel();
+			}
 
 			var webRootPath = Server.MapPath("~");
 			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
@@ -442,7 +451,7 @@ namespace MoviePicker.WebApp.Controllers
 											, viewModel.TwitterTitle
 											, viewModel.TwitterDescription
 											, $"{Constants.WEBSITE_URL}/images/{viewModel.TwitterImageFileName}"
-											, $"Collage of my movie lineups."
+											, "Collage of my movie lineups."
 											, defaultTwitterText);
 
 			DownloadMoviePosters();
