@@ -67,7 +67,7 @@ namespace MovieMiner
 						Error = string.Empty;
 						result = MineForecast(pastArticles);
 
-						if (string.IsNullOrEmpty(Error))
+						if (string.IsNullOrEmpty(Error) || Error == FOUR_DAY)
 						{
 							break;
 						}
@@ -284,7 +284,7 @@ namespace MovieMiner
 												result.Remove(found);
 												result.Add(movie);
 
-												Error = "4-day";
+												Error = FOUR_DAY;
 											}
 										}
 									}

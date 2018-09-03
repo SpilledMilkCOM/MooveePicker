@@ -68,7 +68,7 @@ namespace MovieMiner
 					{
 						node = doc.DocumentNode.SelectSingleNode("//body//h2[text()='4-Day Weekend Predictions']");
 
-						Error = "4-day";
+						Error = FOUR_DAY;
 					}
 
 					if (node != null)

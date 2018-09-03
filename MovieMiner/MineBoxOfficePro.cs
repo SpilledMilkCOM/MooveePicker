@@ -32,7 +32,7 @@ namespace MovieMiner
 		{
 			var weekend = new DateTime(2018, 9, 2);
 
-			Error = "4-day";
+			Error = FOUR_DAY;
 
 			return new List<IMovie>
 			{

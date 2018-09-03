@@ -79,6 +79,8 @@ namespace MoviePicker.WebApp.Utilities
 		{
 			const int COLUMNS = 4;
 			const int BORDER_PIXELS = 5;
+			const int CELL_HEIGHT_PIXELS = 50;
+			const int FIRST_CELL_HEIGHT_PIXELS = 32;
 
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
@@ -201,15 +203,15 @@ namespace MoviePicker.WebApp.Utilities
 					{
 						using (var image = Image.FromFile(fileNames[count % fileNames.Count]))
 						{
-							var yOffset = 32 - 50;
+							var yOffset = FIRST_CELL_HEIGHT_PIXELS - CELL_HEIGHT_PIXELS;
 
 							if (count == 1)
 							{
-								yOffset = 32;
+								yOffset = FIRST_CELL_HEIGHT_PIXELS;
 							}
 							else if(count > 1)
 							{
-								yOffset = (count - 1) * 50 + 32;
+								yOffset = (count - 1) * CELL_HEIGHT_PIXELS + FIRST_CELL_HEIGHT_PIXELS;
 							}
 
 							// Scale the branding to fit within the offset
@@ -231,15 +233,15 @@ namespace MoviePicker.WebApp.Utilities
 					{
 						using (var image = Image.FromFile(fileNames[count % fileNames.Count]))
 						{
-							var yOffset = 32 - 50;
+							var yOffset = FIRST_CELL_HEIGHT_PIXELS - CELL_HEIGHT_PIXELS;
 
 							if (count == 1)
 							{
-								yOffset = 32;
+								yOffset = FIRST_CELL_HEIGHT_PIXELS;
 							}
 							else if (count > 1)
 							{
-								yOffset = (count - 1) * 50 + 32;
+								yOffset = (count - 1) * CELL_HEIGHT_PIXELS + FIRST_CELL_HEIGHT_PIXELS;
 							}
 
 							// Scale the branding to fit within the offset

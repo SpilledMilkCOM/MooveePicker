@@ -10,6 +10,8 @@ namespace MovieMiner
 {
 	public abstract class MinerBase : IMiner, ICache
 	{
+		protected const string FOUR_DAY = "4-Day";
+
 		// To make this thread safe so the miners can become singletons and shared across threads/requests.
 		private readonly object _isLoadingLock;
 		private readonly object _errorLock;

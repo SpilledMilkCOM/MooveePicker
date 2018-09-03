@@ -164,7 +164,7 @@ namespace MovieMiner
 
 										if (!string.IsNullOrEmpty(fourDayMatch.Value))
 										{
-											Error = "4-day";
+											Error = FOUR_DAY;
 											movie.Earnings = ParseEarnings(fourDayMatch.Value.Replace(",", string.Empty).Replace("(4-day", string.Empty));
 										}
 										else if (!string.IsNullOrEmpty(earningsMatch.Value))
