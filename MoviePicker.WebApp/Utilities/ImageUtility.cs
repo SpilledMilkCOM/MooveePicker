@@ -27,7 +27,6 @@ namespace MoviePicker.WebApp.Utilities
 
 			if (File.Exists(localFile))
 			{
-
 				// Move actual file to the temporary name.
 
 				File.Move(localFile, tempFileName);
@@ -42,7 +41,7 @@ namespace MoviePicker.WebApp.Utilities
 						{
 							using (var graphics = Graphics.FromImage(destBitmap))
 							{
-								graphics.Clear(Color.White);
+								graphics.Clear(Color.Black);
 
 								graphics.DrawImage(image, 0, 0, image.Width, image.Height);
 							}
@@ -130,6 +129,7 @@ namespace MoviePicker.WebApp.Utilities
 						var column = 0;
 
 						// Fill the background with the "border" color
+						//graphics.Clear(Color.White);
 						graphics.Clear(Color.Black);
 
 						foreach (var fileName in fileNames)
@@ -186,6 +186,8 @@ namespace MoviePicker.WebApp.Utilities
 
 				using (var graphics = Graphics.FromImage(destBitmap))
 				{
+					var entireViewportClip = new Rectangle(0, 0, width, height);
+
 					graphics.Clear(Color.Black);
 
 					// Draw the previous image into the horizontally padded bitmap.
@@ -218,14 +220,22 @@ namespace MoviePicker.WebApp.Utilities
 								yOffset = (count - 1) * CELL_HEIGHT_PIXELS + FIRST_CELL_HEIGHT_PIXELS;
 							}
 
-							//var clipRect = new Rectangle(0, yOffset, offset, (int)((double)image.Height / image.Width * offset));
+							// Clip the viewport to the film cell height.
 
-							//graphics.SetClip(clipRect);
+							var clipRect = new Rectangle(0, yOffset, offset, CELL_HEIGHT_PIXELS);
+
+							graphics.SetClip(clipRect);
 
 							// Scale the poster to fit within the offset
-							graphics.DrawImage(image, 0, yOffset, offset, (int)((double)image.Height / image.Width * offset));
+							// Adjust Y value so the image is centered within the film cell
+
+							var scaledHeight = (double)image.Height / image.Width * offset;
+
+							graphics.DrawImage(image, 0, yOffset - (int)(scaledHeight - CELL_HEIGHT_PIXELS) / 2, offset, (int)scaledHeight);
 						}
 					}
+
+					graphics.SetClip(entireViewportClip);
 
 					// Draw branding on the left.
 
@@ -252,10 +262,22 @@ namespace MoviePicker.WebApp.Utilities
 								yOffset = (count - 1) * CELL_HEIGHT_PIXELS + FIRST_CELL_HEIGHT_PIXELS;
 							}
 
+							// Clip the viewport to the film cell height.
+
+							var clipRect = new Rectangle(width - offset, yOffset, offset, CELL_HEIGHT_PIXELS);
+
+							graphics.SetClip(clipRect);
+
 							// Scale the poster to fit within the offset
-							graphics.DrawImage(image, width - offset, yOffset, offset, (int)((double)image.Height / image.Width * offset));
+							// Adjust Y value so the image is centered within the film cell
+
+							var scaledHeight = (double)image.Height / image.Width * offset;
+
+							graphics.DrawImage(image, width - offset, yOffset - (int)(scaledHeight - CELL_HEIGHT_PIXELS) / 2, offset, (int)((double)image.Height / image.Width * offset));
 						}
 					}
+
+					graphics.SetClip(entireViewportClip);
 
 					// Draw branding on the right.
 
@@ -264,13 +286,6 @@ namespace MoviePicker.WebApp.Utilities
 						// Scale the branding to fit within the offset
 						graphics.DrawImage(image, width - offset, 0, offset, (int)((double)image.Height / image.Width * offset));
 					}
-
-					//// Draw Spilled Milk logo in the bottom right.
-
-					//using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Spilled Milk Logo 400x420.png"))
-					//{
-					//	graphics.DrawImage(image, width - logoInset, height - logoInset, logoWidth, (int)((double)logoWidth / image.Width * image.Height));
-					//}
 				}
 
 				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{twitterFileName}";
