@@ -214,6 +214,7 @@
     </Content>
     <Content Include="Images\Friday-mask.png" />
     <Content Include="Images\GitHub-Mark-32px.png" />
+    <Content Include="Images\green-plus-hi.png" />
     <Content Include="Images\Monday-mask.png" />
     <Content Include="Images\MooV64x64.png" />
     <Content Include="Images\Moovee Picker Cow.png" />

@@ -77,7 +77,9 @@ namespace MoviePicker.WebApp.Utilities
 		public string CombineImages(string webRootPath, List<string> fileNames, string bonusFileName = null)
 		{
 			const int COLUMNS = 4;
-			const int BORDER_PIXELS = 5;
+			const int BONUS_INSET_PIXELS = 5;
+			const int BONUS_SCALE = 5;
+			const int BORDER_PIXELS = 3;
 			const int CELL_HEIGHT_PIXELS = 50;
 			const int FIRST_CELL_HEIGHT_PIXELS = 32;
 
@@ -134,7 +136,8 @@ namespace MoviePicker.WebApp.Utilities
 
 						foreach (var fileName in fileNames)
 						{
-							using (var image = Image.FromFile(fileName))
+							using (Image image = Image.FromFile(fileName)
+								, plusImage = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}green-plus-hi.png"))
 							{
 								if (column % COLUMNS == 0)
 								{
@@ -151,6 +154,17 @@ namespace MoviePicker.WebApp.Utilities
 								}
 
 								graphics.DrawImage(image, offset, yLoc, minWidth.Value, minHeight.Value);
+
+								if (fileName == bonusFileName)
+								{
+									// The plus image is effectively square so use 1/6 of the width of the poster size.
+
+									graphics.DrawImage(plusImage
+											, offset + minWidth.Value * (BONUS_SCALE - 1) / BONUS_SCALE - BONUS_INSET_PIXELS
+											, yLoc + minHeight.Value - minWidth.Value / BONUS_SCALE - BONUS_INSET_PIXELS
+											, minWidth.Value / BONUS_SCALE
+											, minWidth.Value / BONUS_SCALE);
+								}
 
 								offset += minWidth.Value + BORDER_PIXELS * 2;
 								column++;
@@ -215,7 +229,7 @@ namespace MoviePicker.WebApp.Utilities
 							{
 								yOffset = FIRST_CELL_HEIGHT_PIXELS;
 							}
-							else if(count > 1)
+							else if (count > 1)
 							{
 								yOffset = (count - 1) * CELL_HEIGHT_PIXELS + FIRST_CELL_HEIGHT_PIXELS;
 							}
