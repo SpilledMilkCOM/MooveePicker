@@ -9,6 +9,11 @@ namespace MoviePicker.WebApp.Utilities
 {
 	public static class ViewUtility
 	{
+		/// <summary>
+		/// Return a background-color based on a percentage (positive or negative)
+		/// </summary>
+		/// <param name="percent">A positive or negative percentage.</param>
+		/// <returns>A background-color</returns>
 		public static string PercentColor(decimal percent)
 		{
 			string color = null;
@@ -36,6 +41,81 @@ namespace MoviePicker.WebApp.Utilities
 			else if (Math.Abs(percent) > 0.05m)
 			{
 				color = "#e6ffff";
+			}
+
+			return (color != null) ? $"background-color: {color};" : string.Empty;
+		}
+
+		/// <summary>
+		/// Return a background-color based on a percentage (positive or negative)
+		/// </summary>
+		/// <param name="percent">A positive or negative percentage.</param>
+		/// <returns>A background-color</returns>
+		public static string PercentColorFromLastWeek(decimal percent)
+		{
+			string color = null;
+			percent /= 100;
+
+			if (percent > 1.0m)
+			{
+				// This is uber green.
+				color = "#00ff00";
+			}
+			else if (percent > 0.75m)
+			{
+				color = "#33ff33";
+			}
+			else if (percent > 0.50m)
+			{
+				color = "#66ff66";
+			}
+			else if (percent > 0.25m)
+			{
+				color = "#99ff99";
+			}
+			else if (percent > 0.1m)
+			{
+				color = "#bbffbb";
+			}
+			else if (Math.Abs(percent) < 0.1m)
+			{
+				color = "#ffffff";
+			}
+			else if (Math.Abs(percent) < 0.20m)
+			{
+				color = "#ffeeee";
+			}
+			else if (Math.Abs(percent) < 0.30m)
+			{
+				color = "#ffdddd";
+			}
+			else if (Math.Abs(percent) < 0.40m)
+			{
+				color = "#ffcccc";
+			}
+			else if (Math.Abs(percent) < 0.50m)
+			{
+				color = "#ffbbbb";
+			}
+			else if (Math.Abs(percent) < 0.60m)
+			{
+				color = "#ffaaaa";
+			}
+			else if (Math.Abs(percent) < 0.70m)
+			{
+				color = "#ff9999";
+			}
+			else if (Math.Abs(percent) < 0.80m)
+			{
+				color = "#ff8888";
+			}
+			else if (Math.Abs(percent) < 1.0m)
+			{
+				color = "#ff6666";
+			}
+			else
+			{
+				color = "#ff0000";
 			}
 
 			return (color != null) ? $"background-color: {color};" : string.Empty;
