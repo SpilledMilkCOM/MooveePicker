@@ -326,13 +326,29 @@ namespace MovieMiner
 			{
 				multiplier = 1000000m;
 
-				earnings = earnings.Replace("million", string.Empty).Replace("m", string.Empty);
+				// Anything after the "million" or "m" should be removed.
+
+				var index = earnings.IndexOf("m");
+
+				if (index > 0)
+				{
+					earnings = earnings.Substring(0, index);
+				}
+
+				// earnings = earnings.Replace("million", string.Empty).Replace("m", string.Empty);
 			}
 			else if (earnings.Contains("k"))
 			{
 				multiplier = 1000m;
 
-				earnings = earnings.Replace("k", string.Empty);
+				var index = earnings.IndexOf("k");
+
+				if (index > 0)
+				{
+					earnings = earnings.Substring(0, index);
+				}
+
+				// earnings = earnings.Replace("k", string.Empty);
 			}
 
 			earnings = earnings.Replace("$", string.Empty);
