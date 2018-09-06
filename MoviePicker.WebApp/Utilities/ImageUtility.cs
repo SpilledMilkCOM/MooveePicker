@@ -230,7 +230,7 @@ namespace MoviePicker.WebApp.Utilities
 							filmCellNames = new List<string>(savedFilmCellNames);
 						}
 
-						var cellFileName = filmCellNames == null ? fileNames[totalCount % fileNames.Count] : RemoveRandomItem(filmCellNames);
+						var cellFileName = (filmCellNames == null || filmCellNames.Count == 0) ? fileNames[totalCount % fileNames.Count] : RemoveRandomItem(filmCellNames);
 
 						using (var image = Image.FromFile(cellFileName))
 						{
@@ -281,7 +281,7 @@ namespace MoviePicker.WebApp.Utilities
 							filmCellNames = new List<string>(savedFilmCellNames);
 						}
 
-						var cellFileName = filmCellNames == null ? fileNames[totalCount % fileNames.Count] : RemoveRandomItem(filmCellNames);
+						var cellFileName = (filmCellNames == null || filmCellNames.Count == 0) ? fileNames[totalCount % fileNames.Count] : RemoveRandomItem(filmCellNames);
 
 						using (var image = Image.FromFile(cellFileName))
 						{

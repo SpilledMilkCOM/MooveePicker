@@ -85,6 +85,25 @@ namespace MoviePicker.WebApp.Tests.Models
 			Assert.IsNotNull(filePath);
 		}
 
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void ImageUtility_CombineImages_8xAntmanWithRandomTemp()
+		{
+			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
+			var test = CreateTestObject();
+			var files = new List<string>();
+
+			for (int count = 0; count < 8; count++)
+			{
+				files.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+			}
+
+			var filmCellFileNames = FileUtility.FilterImagesInPath($"{cwd}\\Images", "TestPoster_*.temp.*");
+			var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, $"{cwd}\\Images\\");
+
+			var filePath = test.CombineImages(cwd, files, null, filmCellFiles);
+
+			Assert.IsNotNull(filePath);
+		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void ImageUtility_CombineImages_8xSearching()

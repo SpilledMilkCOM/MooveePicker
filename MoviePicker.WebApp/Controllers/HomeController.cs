@@ -410,11 +410,22 @@ namespace MoviePicker.WebApp.Controllers
 				}
 			}
 
+			// Attempt to use the temp posters first since that is more restrictive, otherwise you might get BOTH sets and you'll see duplicates in the randomization.
+
 			var filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.temp.*");
+
+			if (filmCellFileNames == null || filmCellFileNames.Count == 0)
+			{
+				// Just in case there are no "temp" names.
+
+				filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.*");
+			}
+
 			var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, localFilePrefix);
 
 			var viewModel = new SharePicksViewModel()
 			{
+				//ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, bonusFile, null)
 				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, bonusFile, filmCellFiles)
 			};
 
