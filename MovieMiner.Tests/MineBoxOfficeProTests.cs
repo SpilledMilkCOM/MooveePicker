@@ -40,7 +40,7 @@ namespace MovieMiner.Tests
 
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
-		public void MineBoxOfficePro_Mine_GeneratePicks()
+		public void MineBoxOfficePro_Mine_GenerateBoxOfficeValues()
 		{
 			// http://pro.boxoffice.com/
 
