@@ -410,9 +410,12 @@ namespace MoviePicker.WebApp.Controllers
 				}
 			}
 
+			var filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.temp.*");
+			var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, localFilePrefix);
+
 			var viewModel = new SharePicksViewModel()
 			{
-				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, bonusFile)
+				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, bonusFile, filmCellFiles)
 			};
 
 			// Ordering by Cost is the same sort as the file names.
