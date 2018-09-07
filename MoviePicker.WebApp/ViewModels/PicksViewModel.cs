@@ -33,11 +33,11 @@ namespace MoviePicker.WebApp.Models
 
 		public string SharedPicksUrl { get; set; }
 
-		public string GenerateSharedImage(string webRootPath, List<string> files, string bonusFile)
+		public string GenerateSharedImage(string webRootPath, List<string> files, string bonusFile, List<string> cellFilmFiles)
 		{
 			var imageUtil = new ImageUtility();
 
-			return imageUtil.CombineImages(webRootPath, files, bonusFile);
+			return imageUtil.CombineImages(webRootPath, files, bonusFile, cellFilmFiles);
 		}
 
 		public int Rank(IMovie movie)

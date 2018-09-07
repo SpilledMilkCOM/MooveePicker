@@ -74,7 +74,7 @@ namespace MoviePicker.WebApp.Utilities
 		/// <param name="webRootPath"></param>
 		/// <param name="fileNames"></param>
 		/// <returns>The result file name.</returns>
-		public string CombineImages(string webRootPath, List<string> fileNames, string bonusFileName = null)
+		public string CombineImages(string webRootPath, List<string> fileNames, string bonusFileName = null, List<string> filmCellNames = null)
 		{
 			const int COLUMNS = 4;
 			const int BONUS_INSET_PIXELS = 5;
@@ -89,6 +89,8 @@ namespace MoviePicker.WebApp.Utilities
 			var outFileName = $"Shared_{guid}.jpg";
 			var twitterFileName = $"Twitter_{guid}.jpg";
 			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
+			// Just in case only a few cell names are sent in, the original list can be used.
+			var savedFilmCellNames = filmCellNames == null ? null : new List<string>(filmCellNames);
 			string resultFileName = null;
 			int? minWidth = null;
 			int? minHeight = null;
@@ -221,7 +223,16 @@ namespace MoviePicker.WebApp.Utilities
 
 					for (var count = 0; count < 7; count++, totalCount++)
 					{
-						using (var image = Image.FromFile(fileNames[totalCount % fileNames.Count]))
+						if (filmCellNames != null && filmCellNames.Count == 0)
+						{
+							// Start over if the list is empty.
+
+							filmCellNames = new List<string>(savedFilmCellNames);
+						}
+
+						var cellFileName = (filmCellNames == null || filmCellNames.Count == 0) ? fileNames[totalCount % fileNames.Count] : RemoveRandomItem(filmCellNames);
+
+						using (var image = Image.FromFile(cellFileName))
 						{
 							var yOffset = FIRST_CELL_HEIGHT_PIXELS - CELL_HEIGHT_PIXELS;
 
@@ -263,7 +274,16 @@ namespace MoviePicker.WebApp.Utilities
 
 					for (var count = 0; count < 7; count++, totalCount++)
 					{
-						using (var image = Image.FromFile(fileNames[totalCount % fileNames.Count]))
+						if (filmCellNames != null && filmCellNames.Count == 0)
+						{
+							// Start over if the list is empty.
+
+							filmCellNames = new List<string>(savedFilmCellNames);
+						}
+
+						var cellFileName = (filmCellNames == null || filmCellNames.Count == 0) ? fileNames[totalCount % fileNames.Count] : RemoveRandomItem(filmCellNames);
+
+						using (var image = Image.FromFile(cellFileName))
 						{
 							var yOffset = FIRST_CELL_HEIGHT_PIXELS - CELL_HEIGHT_PIXELS;
 
@@ -305,6 +325,8 @@ namespace MoviePicker.WebApp.Utilities
 				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{twitterFileName}";
 
 				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+				// TODO: Add a black border/bleed for Twitter while still keeping the 2:1 aspect ratio.
 			}
 
 			return outFileName;
@@ -356,6 +378,19 @@ namespace MoviePicker.WebApp.Utilities
 				var resultFileName = Path.Combine(baseDirectory, resultImageName);
 
 				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+			}
+
+			return result;
+		}
+
+		private string RemoveRandomItem(List<string> list)
+		{
+			var index = new Random().Next(list.Count);
+			string result = list.ElementAt(index);
+
+			if(result != null)
+			{
+				list.Remove(result);
 			}
 
 			return result;

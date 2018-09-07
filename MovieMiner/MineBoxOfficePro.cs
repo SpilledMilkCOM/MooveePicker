@@ -30,19 +30,15 @@ namespace MovieMiner
 
 		public override List<IMovie> Mine()
 		{
-			var weekend = new DateTime(2018, 9, 2);
-
-			Error = FOUR_DAY;
-
+			var weekend = new DateTime(2018, 9, 9);
 			return new List<IMovie>
 			{
-				new Movie { MovieName = "Crazy Rich Asians", Earnings = 29500000, WeekendEnding = weekend },
-				new Movie { MovieName = "The Meg", Earnings = 15000000, WeekendEnding = weekend },
-				new Movie { MovieName = "Operation Finale", Earnings = 10400000, WeekendEnding = weekend },
-				new Movie { MovieName = "Mission Impossible  Fallout", Earnings = 10200000, WeekendEnding = weekend },
-				new Movie { MovieName = "Disneys Christopher Robin", Earnings = 8000000, WeekendEnding = weekend },
-				new Movie { MovieName = "Searching", Earnings = 3600000, WeekendEnding = weekend },
-				new Movie { MovieName = "Kin", Earnings = 3500000, WeekendEnding = weekend },
+				new Movie { MovieName = "The Nun", Earnings = 45000000, WeekendEnding = weekend },
+				new Movie { MovieName = "Crazy Rich Asians", Earnings = 14000000, WeekendEnding = weekend },
+				new Movie { MovieName = "Peppermint", Earnings = 13000000, WeekendEnding = weekend },
+				new Movie { MovieName = "The Meg", Earnings = 5400000, WeekendEnding = weekend },
+				new Movie { MovieName = "Mission Impossible  Fallout", Earnings = 4000000, WeekendEnding = weekend },
+				new Movie { MovieName = "Searching", Earnings = 4000000, WeekendEnding = weekend },
 			};
 		}
 

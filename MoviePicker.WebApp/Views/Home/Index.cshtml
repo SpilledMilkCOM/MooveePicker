@@ -2,6 +2,7 @@
 
 @using MovieMiner;
 @using MoviePicker.Common.Interfaces;
+@using MoviePicker.WebApp.Utilities;
 
 @{
 	ViewBag.Title = "Home";
@@ -603,8 +604,7 @@
 
 														//var bootstrapClass = percent <= -20 ? (percent <= -40 ? "table-danger" : "table-warning")
 														//									: (percent > 0 ? "table-success" : "table-info");
-														var divColorStyle = "background-color: " + (percent <= -20 ? (percent <= -40 ? "Crimson" : "Gold")
-																							: (percent > 0 ? "LightGreen" : "LightSkyBlue"));
+														var divColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 
 														<div style="@divColorStyle">
 															@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "% " : string.Empty)
