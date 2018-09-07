@@ -249,15 +249,20 @@
 			var value = (decimal)Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model);
 			var valueString = string.Format("{0:N0}", value);
 
-			<div class="col-xs-6 col-md-3">
-				<img class="img-responsive" src="@movie.ImageUrl" />
-				<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">
-					<div>
-						@movie.Name
-					</div>
-					<div style="font-weight: bold;">
-						@movie.Cost
-					</div>
+			<div class="col-xs-6 col-md-3 col-lg-2">
+				<img class="img-responsive img-rounded" src="@movie.ImageUrl" />
+				@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
+				<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">
+					@*<div>
+							@movie.Name
+						</div>
+					*@
+
+					@*<div style="font-weight: bold;">
+							@movie.Cost
+						</div>
+					*@
+
 					@*<rect width="200px" height="100px" style="background-color: white; opacity: 0.6;" />*@
 
 					<input name="@name"
@@ -270,7 +275,10 @@
 						   data-val-number="The field Box Office @movieCount must be a number."
 						   data-val="true">
 				</div>
+
 			</div>
+
+			movieCount++;
 		}
 	</div>
 

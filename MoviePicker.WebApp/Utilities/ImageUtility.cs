@@ -14,6 +14,12 @@ namespace MoviePicker.WebApp.Utilities
 		/// <returns>The file name to be served up.</returns>
 		private const string DEFAULT_IMAGE_DIR = "images";
 
+		/// <summary>
+		/// Adjust the file aspect ratio while preserving the width.
+		/// </summary>
+		/// <param name="localFile">The path to the file</param>
+		/// <param name="aspectRatio">The specified aspect ratio</param>
+		/// <returns></returns>
 		public string AdjustAspectRatio(string localFile, decimal aspectRatio)
 		{
 			var tempFileName = $"{Path.GetDirectoryName(localFile)}{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(localFile)}.temp{Path.GetExtension(localFile)}";
@@ -38,6 +44,68 @@ namespace MoviePicker.WebApp.Utilities
 					if (image.Width / aspectRatio != image.Height)
 					{
 						using (var destBitmap = new Bitmap(image.Width, (int)(image.Width / aspectRatio)))
+						{
+							using (var graphics = Graphics.FromImage(destBitmap))
+							{
+								graphics.Clear(Color.Black);
+
+								graphics.DrawImage(image, 0, 0, image.Width, image.Height);
+							}
+
+							// Save the resized image to the 
+
+							destBitmap.Save(localFile, System.Drawing.Imaging.ImageFormat.Jpeg);
+						}
+					}
+					else
+					{
+						// No changes needed so move the file back.
+
+						File.Move(tempFileName, localFile);
+					}
+				}
+			}
+
+			// Rename doesn't work because the local file is still in use.
+
+			//File.Delete(localFile);
+			//File.Move(tempFileName, localFile);
+
+			return tempFileName;
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="localFile"></param>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <returns></returns>
+		public string AdjustSize(string localFile, decimal width, decimal height)
+		{
+			var aspectRatio = width / height;
+			var tempFileName = $"{Path.GetDirectoryName(localFile)}{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(localFile)}.temp{Path.GetExtension(localFile)}";
+
+			// Delete the temporary destination file if it exists.
+
+			if (File.Exists(tempFileName))
+			{
+				File.Delete(tempFileName);
+			}
+
+			if (File.Exists(localFile))
+			{
+				// Move actual file to the temporary name.
+
+				File.Move(localFile, tempFileName);
+
+				using (var image = Image.FromFile(tempFileName))
+				{
+					// Make sure the aspect ratio needs to be adjusted before adjusting it.
+
+					if (image.Width / aspectRatio != image.Height)
+					{
+						using (var destBitmap = new Bitmap((int)width, (int)height))
 						{
 							using (var graphics = Graphics.FromImage(destBitmap))
 							{

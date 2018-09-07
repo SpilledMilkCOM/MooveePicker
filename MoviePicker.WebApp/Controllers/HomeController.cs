@@ -112,6 +112,19 @@ namespace MoviePicker.WebApp.Controllers
 
 			ViewBag.IsGoogleAdValid = true;
 
+			// Set the weights to 1 across the board. (treat all sources equal)
+
+			foreach (var miner in _minerModel.Miners)
+			{
+				miner.Weight = 1;
+			}
+
+			// Refresh my picks based on the weights above.
+
+			((ICache)_minerModel.Miners[MY_MINER_IDX]).Load();
+
+			// Adjust the weights
+
 			ParseBoxOfficeWeightRequest();
 			ParseViewRequest();
 
@@ -538,10 +551,10 @@ namespace MoviePicker.WebApp.Controllers
 				{
 					movie.Earnings = decimalList[idx++];
 				}
-				else
-				{
-					movie.Earnings = 0;
-				}
+				//else
+				//{
+				//	movie.Earnings = 0;
+				//}
 			}
 
 			var intList = _controllerUtility.GetRequestIntList(Request, "wl");

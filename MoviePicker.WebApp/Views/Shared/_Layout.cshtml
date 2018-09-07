@@ -72,8 +72,9 @@
 
 				@*@Html.ActionLink("Moovee Picker", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
 			</div>
+
 			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav">
+				<ul class="nav navbar-nav navbar-right">
 					<li>@Html.ActionLink("Home", "Index", "Home", ViewUtility.RequestParamsToDynamic(Request), null)</li>
 					<li>@Html.ActionLink("About", "About", $"LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
 					<li>@Html.ActionLink("Contact", "Contact", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
