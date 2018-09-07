@@ -99,6 +99,37 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult Index2()
+		{
+			// TODO: Collapse this down to a method call.
+
+			var stopWatch = new Stopwatch();
+
+			stopWatch.Start();
+
+			_viewModel.ViewGridOpen = !Request.Browser.IsMobileDevice;
+			_viewModel.ViewMobileOpen = Request.Browser.IsMobileDevice;
+
+			ViewBag.IsGoogleAdValid = true;
+
+			ParseBoxOfficeWeightRequest();
+			ParseViewRequest();
+
+			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
+			//_viewModel.IsTracking = true;
+
+			ControllerUtility.SetTwitterCard(ViewBag);
+
+			DownloadMoviePosters();
+
+			stopWatch.Stop();
+
+			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			return View(_viewModel);
+		}
+
+		[HttpGet]
 		public FileStreamResult ExtractToCSV()
 		{
 			StringBuilder builder = new StringBuilder();
