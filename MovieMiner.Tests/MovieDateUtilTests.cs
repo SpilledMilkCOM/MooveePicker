@@ -91,6 +91,22 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MovieDateUtil_GameSunday_IsASunday()
+		{
+			var actual = MovieDateUtil.GameSunday();
+
+			Assert.AreEqual(DayOfWeek.Sunday, actual.DayOfWeek);
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
+		public void MovieDateUtil_GameSunday_OnMonday_IsASunday()
+		{
+			var actual = MovieDateUtil.GameSunday(new DateTime(2018, 9, 10), true);
+
+			Assert.AreEqual(DayOfWeek.Sunday, actual.DayOfWeek);
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MovieDateUtil_LastSunday_IsASunday()
 		{
 			var actual = MovieDateUtil.LastSunday();

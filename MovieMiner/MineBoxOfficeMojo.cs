@@ -34,6 +34,8 @@ namespace MovieMiner
 
 			Clone(result);
 
+			result._weekendEnding = _weekendEnding;
+
 			return result;
 		}
 
@@ -43,7 +45,8 @@ namespace MovieMiner
 
 			if (_weekendEnding.HasValue)
 			{
-				var lastSunday = MovieDateUtil.LastSunday();
+				var lastSunday = MovieDateUtil.LastSunday(MovieDateUtil.GameSunday().AddDays(-1));
+				//var lastSunday = MovieDateUtil.LastSunday();
 
 				// Check to see if the weekend ending is out of date.
 
