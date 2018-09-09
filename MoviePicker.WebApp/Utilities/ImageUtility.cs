@@ -75,9 +75,9 @@ namespace MoviePicker.WebApp.Utilities
 		}
 
 		/// <summary>
-		/// 
+		/// Adjust the size of the image to the specified width and height.
 		/// </summary>
-		/// <param name="localFile"></param>
+		/// <param name="localFile">The path to the file</param>
 		/// <param name="width"></param>
 		/// <param name="height"></param>
 		/// <returns></returns>
@@ -145,9 +145,9 @@ namespace MoviePicker.WebApp.Utilities
 		public string CombineImages(string webRootPath, List<string> fileNames, string bonusFileName = null, List<string> filmCellNames = null)
 		{
 			const int COLUMNS = 4;
-			const int BONUS_INSET_PIXELS = 5;
-			const int BONUS_SCALE = 5;
-			const int BORDER_PIXELS = 3;
+			const int BONUS_INSET_PIXELS = 10;
+			const int BONUS_SCALE = 4;
+			const int BORDER_PIXELS = 0;
 			const int CELL_HEIGHT_PIXELS = 50;
 			const int FIRST_CELL_HEIGHT_PIXELS = 32;
 
