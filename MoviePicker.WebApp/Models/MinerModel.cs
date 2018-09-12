@@ -21,6 +21,8 @@ namespace MoviePicker.WebApp.Models
 		private const int MY_INDEX = FML_INDEX + 1;
 		private const int TODD_INDEX = FML_INDEX + 2;
 
+		private bool _postersDownloaded;
+
 		public MinerModel(bool createWithData)
 		{
 			if (createWithData)
@@ -35,6 +37,10 @@ namespace MoviePicker.WebApp.Models
 		{
 			var clone = new MinerModel(false) { Miners = new List<IMiner>() };
 			int idx = 0;
+
+			// Only download the posters once.
+
+			clone._postersDownloaded = _postersDownloaded;
 
 			foreach (var miner in Miners)
 			{
@@ -161,16 +167,16 @@ namespace MoviePicker.WebApp.Models
 		}
 
 		/// <summary>
-		/// Makes sure that the movie posters are downloaded locally.
-		/// This is so the URL referenced isn't used a TON.
+		/// Makes sure that the movie posters are downloaded locally.  (This is so the URL referenced isn't used a TON.)
+		/// Whether the file was downloaded or not, the ImageUrl is updated to the local file (provided it exists).
+		/// 
 		/// </summary>
+		/// <returns>A flag to update the image URL</returns>
 		public bool DownloadMoviePosters(string localFilePrefix)
 		{
 			var imageUtil = new ImageUtility();
-
 			var miner = Miners[FML_INDEX];
-
-			var filesDownloaded = FileUtility.DownloadFiles(miner.Movies.Select(movie => movie.ImageUrlSource), localFilePrefix);
+			var result = FileUtility.DownloadFiles(miner.Movies.Select(movie => movie.ImageUrlSource), localFilePrefix);
 
 			foreach (var movie in miner.Movies)
 			{
@@ -181,10 +187,10 @@ namespace MoviePicker.WebApp.Models
 				{
 					// If the file was actually downloaded then use the local file.
 
-					if (filesDownloaded)
+					if (result)
 					{
-						//imageUtil.AdjustAspectRatio(localFileName, 2 / 3m);
 						imageUtil.AdjustSize(localFileName, 300, 450);
+						//imageUtil.AdjustAspectRatio(localFileName, 2 / 3m);
 						//imageUtil.AdjustSize(localFileName, 200, 300);
 					}
 
@@ -206,7 +212,13 @@ namespace MoviePicker.WebApp.Models
 				}
 			}
 
-			return filesDownloaded;
+			result |= !_postersDownloaded;
+
+			// Only download ONCE per instance. (Meaning only update the ImageUrl once per instance since there is a lock() used to do this.)
+
+			_postersDownloaded = true;
+
+			return result;
 		}
 
 		/// <summary>

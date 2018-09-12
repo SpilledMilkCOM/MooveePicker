@@ -47,6 +47,16 @@ textarea {
 	padding: 5px;
 }
 
+.movie-card-mini {
+	background-color: lightyellow;
+	border-style: solid;
+	border-width: thin;
+	border-color: grey;
+	border-radius: 3px;
+
+	padding: 3px;
+}
+
 .movie-card-title {
 	background-color: khaki;
 

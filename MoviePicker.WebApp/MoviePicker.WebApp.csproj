@@ -321,6 +321,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\Index2.cshtml" />
+    <Content Include="Views\Shared\MovieListMini2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

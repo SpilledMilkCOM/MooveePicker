@@ -1,0 +1,31 @@
+﻿@model MoviePicker.WebApp.Interfaces.IMovieListModel
+
+@foreach (var pick in Model.Picks)
+{
+	<div class="col-sm-6">
+		<h4>Total Cost (BUX): @pick.TotalCost</h4>
+	</div>
+	<div class="col-sm-6">
+		<h4>Total Earnings: $@pick.TotalEarnings.ToString("N0")</h4>
+		@*<h5>@Model.ComparisonHeader: $@Model.TotalPicksFromComparison.ToString("N0")</h5>*@
+	</div>
+
+	@*<div class="clearfix"></div>*@
+
+	foreach (var movie in pick.Movies.OrderByDescending(item => item.Cost))
+	{
+		@* This should override what's in the style (for now) *@
+		var backgroundStyle = (movie.IsBestPerformer) ? "background-color: lightgreen;" : string.Empty;
+
+		<div class="col-xs-2" style="padding: 1px">
+			<div class="movie-card-mini" data-toggle="tooltip" data-placement="bottom"
+				 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)"
+				 style="@backgroundStyle">
+
+				<img class="img-responsive" src="@movie.ImageUrl" alt="@movie.Name" />
+			</div>
+		</div>
+	}
+
+	<div class="clearfix"></div>
+}

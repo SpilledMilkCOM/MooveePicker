@@ -103,10 +103,6 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			// TODO: Collapse this down to a method call.
 
-			var stopWatch = new Stopwatch();
-
-			stopWatch.Start();
-
 			_viewModel.ViewGridOpen = !Request.Browser.IsMobileDevice;
 			_viewModel.ViewMobileOpen = Request.Browser.IsMobileDevice;
 
@@ -119,27 +115,21 @@ namespace MoviePicker.WebApp.Controllers
 				miner.Weight = 1;
 			}
 
-			// Refresh my picks based on the weights above.
-
-			((ICache)_minerModel.Miners[MY_MINER_IDX]).Load();
-
-			// Adjust the weights
+			// Adjust the weights (possibly adjust the defaults above).
 
 			ParseBoxOfficeWeightRequest();
 			ParseViewRequest();
+
+			// Refresh my picks based on the weights above.
+
+			((ICache)_minerModel.Miners[MY_MINER_IDX]).Load();
 
 			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
 			//_viewModel.IsTracking = true;
 
 			ControllerUtility.SetTwitterCard(ViewBag);
 
-			DownloadMoviePosters();
-
-			stopWatch.Stop();
-
-			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
-
-			return View(_viewModel);
+			return View(ConstructPicksViewModel());
 		}
 
 		[HttpGet]
@@ -267,8 +257,6 @@ namespace MoviePicker.WebApp.Controllers
 								, "Collage of the perfect pick lineup."
 								, "Check out my picks against the perfect pick.");
 
-			//DownloadMoviePosters();
-
 			stopWatch.Stop();
 
 			viewModel.Duration = stopWatch.ElapsedMilliseconds;
@@ -350,6 +338,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			stopWatch.Start();
 
+			DownloadMoviePosters();
+
 			result.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
 
 			result.Miners = _minerModel.Miners;
@@ -411,8 +401,6 @@ namespace MoviePicker.WebApp.Controllers
 
 			// Needs to be put in the ViewBag since this value is on the footer.
 			ViewBag.TwitterTweetUrl = $"https://twitter.com/intent/tweet?text={leadMovie} leads my lineup @fml_movies {result.SharedPicksUrl.Replace("?", "%3F")}";
-
-			DownloadMoviePosters();
 
 			stopWatch.Stop();
 
@@ -525,10 +513,10 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				// If the posters were downloaded then update the cached image urls to the local files.
 
-				//lock (_minerModelCache)
-				//{
-				//	_minerModelCache.Miners[FML_INDEX].SetMovies(new List<IMovie>(_minerModel.Miners[FML_INDEX].Movies));
-				//}
+				lock (_minerModelCache)
+				{
+					_minerModelCache.Miners[FML_INDEX].SetMovies(new List<IMovie>(_minerModel.Miners[FML_INDEX].Movies));
+				}
 			}
 		}
 
