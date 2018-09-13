@@ -56,13 +56,13 @@ namespace MovieMiner.Tests
 
 			Logger.WriteLine($"{tab}{tab}{tab}var weekend = new DateTime({weekendEnding.Year}, {weekendEnding.Month}, {weekendEnding.Day});");
 			Logger.WriteLine($"{tab}{tab}{tab}return new List<IMovie>");
-			Logger.WriteLine($"{tab}{tab}{tab}{{");
+			Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{{");
 
 			foreach (var movie in actual.OrderByDescending(item => item.Cost))
 			{
-				Logger.WriteLine($"{tab}{tab}{tab}{tab}new Movie {{ MovieName = \"{movie.MovieName}\", Earnings = {movie.Earnings}, WeekendEnding = weekend }},");
+				Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}new Movie {{ MovieName = \"{movie.MovieName}\", Earnings = {movie.Earnings}, WeekendEnding = weekend }},");
 			}
-			Logger.WriteLine($"{tab}{tab}{tab}}};");
+			Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}}};");
 		}
 	}
 }
