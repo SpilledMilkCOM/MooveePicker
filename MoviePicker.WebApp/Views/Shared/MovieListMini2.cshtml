@@ -3,13 +3,13 @@
 @foreach (var pick in Model.Picks)
 {
 	<div class="col-sm-3">
-		<h4>@Model.ComparisonHeader</h4>
+		<h5>@Model.ComparisonHeader</h5>
 	</div>
 	<div class="col-sm-5">
-		<h4>Earnings: $@pick.TotalEarnings.ToString("N0")</h4>
+		<h5>Earnings: $@pick.TotalEarnings.ToString("N0")</h5>
 	</div>
 	<div class="col-sm-4">
-		<h4>Cost (BUX): @pick.TotalCost</h4>
+		<h5>Cost (BUX): @pick.TotalCost</h5>
 	</div>
 
 	<div class="clearfix"></div>
@@ -34,21 +34,6 @@
 			</tr>
 		</table>
 	</div>
-
-	@*foreach (var movie in pick.Movies.OrderByDescending(item => item.Cost))
-	{
-		@* This should override what's in the style (for now) *@
-		@*var backgroundStyle = (movie.IsBestPerformer) ? "background-color: lightgreen;" : string.Empty;
-
-		<div class="col-xs-2" style="padding: 1px">
-			<div class="movie-card-mini" data-toggle="tooltip" data-placement="bottom"
-				 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)"
-				 style="@backgroundStyle">
-
-				<img class="img-responsive" src="@movie.ImageUrl" alt="@movie.Name" />
-			</div>
-		</div>
-	}*@
 
 	<div class="clearfix"></div>
 }

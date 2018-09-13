@@ -350,42 +350,45 @@ namespace MoviePicker.WebApp.Controllers
 			result.Miners = _minerModel.Miners;
 			result.Movies = _minerModel.CreateWeightedList();
 
-			_moviePicker.AddMovies(result.Movies);
-
-			var pickList = _moviePicker.ChooseBest(3);
-
-			result.MovieList = new MovieListModel()
+			if (result.Movies.Count() > 0)
 			{
-				ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus ON",
-				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
-				Picks = pickList
-			};
+				_moviePicker.AddMovies(result.Movies);
 
-			if (!onlyBestPerformer)
-			{
-				// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
+				var pickList = _moviePicker.ChooseBest(3);
 
-				var clonedList = new List<IMovie>();
-
-				foreach (var movie in result.Movies)
+				result.MovieList = new MovieListModel()
 				{
-					clonedList.Add(movie.Clone());
-				}
-
-				_moviePicker.AddMovies(clonedList);
-				_moviePicker.EnableBestPerformer = false;
-
-				pickList = _moviePicker.ChooseBest(3);
-
-				result.MovieListBonusOff = new MovieListModel()
-				{
-					ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus OFF",
+					ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus ON",
 					ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
 					Picks = pickList
 				};
+
+				if (!onlyBestPerformer)
+				{
+					// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
+
+					var clonedList = new List<IMovie>();
+
+					foreach (var movie in result.Movies)
+					{
+						clonedList.Add(movie.Clone());
+					}
+
+					_moviePicker.AddMovies(clonedList);
+					_moviePicker.EnableBestPerformer = false;
+
+					pickList = _moviePicker.ChooseBest(3);
+
+					result.MovieListBonusOff = new MovieListModel()
+					{
+						ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus OFF",
+						ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
+						Picks = pickList
+					};
+				}
 			}
 
-			if (result.IsTracking)
+			if (result.IsTracking && _minerModel.Miners[FML_INDEX].Movies.Count > 0)
 			{
 				// Don't need to use clones, because the BONUS is always used for best possible values.
 
@@ -402,7 +405,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			result.SharedPicksUrl = SharedPicksFromModels();
 
-			var leadMovie = result.MovieList.Picks?.First().Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
+			var leadMovie = result.MovieList?.Picks?.First().Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
 
 			// Needs to be put in the ViewBag since this value is on the footer.
 			ViewBag.TwitterTweetUrl = $"https://twitter.com/intent/tweet?text={leadMovie} leads my lineup @fml_movies {result.SharedPicksUrl.Replace("?", "%3F")}";

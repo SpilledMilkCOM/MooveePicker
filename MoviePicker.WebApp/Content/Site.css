@@ -52,8 +52,8 @@ textarea {
 	border-style: solid;
 	border-width: thin;
 	border-color: grey;
-	border-radius: 5px;
-	padding: 5px;
+	border-radius: 2px;
+	padding: 2px;
 }
 
 .movie-card-title {
@@ -78,4 +78,13 @@ textarea {
 
 .row-divider {
 	height: 20px;
+}
+
+.tooltip-extra {
+	max-width: 400px;
+	padding: 3px 8px;
+	color: #fff;
+	text-align: left;
+	background-color: #000;
+	border-radius: 4px;
 }
