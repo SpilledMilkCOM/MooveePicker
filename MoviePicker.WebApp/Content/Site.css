@@ -52,9 +52,8 @@ textarea {
 	border-style: solid;
 	border-width: thin;
 	border-color: grey;
-	border-radius: 3px;
-
-	padding: 3px;
+	border-radius: 5px;
+	padding: 5px;
 }
 
 .movie-card-title {

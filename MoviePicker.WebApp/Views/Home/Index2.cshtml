@@ -48,7 +48,7 @@
 
 		var parameters = parseBoxOfficeWeights();
 
-		var url = "/home/picks?" + parameters;
+		var url = "/home/index2?" + parameters;
 
 		var baseUrl = parseBaseUrl();
 
@@ -60,19 +60,6 @@
 		var parameters = parseBoxOfficeWeights();
 
 		var url = "/home/tracking?" + parameters;
-
-		var baseUrl = parseBaseUrl();
-
-		window.location.href = baseUrl + url;
-	}
-
-	function clickRecalc(viewName) {
-
-		synchronizeBoxOfficeWeights(viewName);
-
-		var parameters = parseBoxOfficeWeights(viewName);
-
-		var url = "/home/index?" + parameters;
 
 		var baseUrl = parseBaseUrl();
 
@@ -153,112 +140,128 @@
 	var weekendEnding = Model.Miners.First().ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Model.Miners.First().ContainsEstimates).ToShortDateString() : Model.Miners.First().Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString();
 
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
-	bool first = true;
-}
 
-@* Showing the data from ALL of the sources/miners ====================================================================================== GRID VIEW ==== *@
-
-@{
-	movieCount = 1;
-	first = true;
 	var compoundMovie = Model.Miners.FirstOrDefault(miner => miner.CompoundMovie != null)?.CompoundMovie;
 
 	@*style = "background-image: url('@movie.ImageUrl')"*@
 
-<div class="row">
-	<div class="col-sm-7">
-		<div class="col-xs-4" style="padding-top: 20px;">
-			<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
+	<div class="row">
+
+		@* ================================================================================================================================== PICKS COLUMN ==== *@
+
+		<div class="col-sm-7">
+			<div class="col-xs-4" style="padding-top: 20px;">
+				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
+			</div>
+
+			<div class="col-xs-8">
+				<h2>
+					WELCOME
+				</h2>
+
+				This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
+				This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
+				You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
+			</div>
+
+			<div class="clearfix"></div>
+
+			<div class="row-divider"> </div>
+
+			@Html.Partial("MovieListMini2", Model.MovieList)
+
+			@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
+
+			<input class="btn btn-success btn-lg"
+				   onclick="clickPicks()"
+				   type="button"
+				   value="Calculate Picks..."
+				   data-toggle="tooltip"
+				   data-placement="bottom"
+				   title="Click to apply weights and recalculate Custom column...">
 		</div>
 
-		<div class="col-xs-8">
-			<h2>
-				WELCOME
-			</h2>
+		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
 
-			This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
-			This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
-			You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
-		</div>
+		<div class="col-sm-5">
 
-		<div class="clearfix"></div>
+			<div class="col-md-12">
+				<h4>Weekend ending @weekendEnding (@Model.Duration.ToString("N0") ms)</h4>
 
-		<div class="row-divider"> </div>
-
-		@Html.Partial("MovieListMini2", Model.MovieList)
-
-		@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
-	</div>
-
-	<div class="col-sm-5">
-
-		<div class="col-md-12">
-			<h4>Weekend ending @weekendEnding (@Model.Duration.ToString("N0") ms)</h4>
-
-			<div class="col-sm-5">
-				<textarea class="col-xs-12 form-control" id="pasteAreaId" rows="5" style="background-color: lightcyan; vertical-align: top;"
-						  placeholder="Paste your 15 Box Office values here (use CR/LF to separate values)"></textarea>
+				<div class="col-sm-5">
+					<textarea class="col-xs-12 form-control" id="pasteAreaId" rows="5" style="background-color: lightcyan; vertical-align: top;"
+							  placeholder="Paste your 15 Box Office values here (use CR/LF to separate values)"></textarea>
+				</div>
+				<div class="col-sm-7 hidden-xs hidden-sm">
+					<div>Paste your Box Office values into the field to load your custom picks and then press "Import Box Office"</div>
+				</div>
+				<div class="col-sm-5">
+					<input class="btn btn-info" onclick="clickPasteBoxOffice()" type="button" value="Import Box Office" data-toggle="tooltip" data-placement="bottom" title="Click to set Box Office predictions." />
+				</div>
 			</div>
-			<div class="col-sm-7 hidden-xs hidden-sm">
-				<div>Paste your Box Office values into the field to load your custom picks and then press "Import Box Office"</div>
-			</div>
-			<div class="col-sm-5">
-				<input class="btn btn-info" onclick="clickPasteBoxOffice()" type="button" value="Import Box Office" data-toggle="tooltip" data-placement="bottom" title="Click to set Box Office predictions." />
-			</div>
-		</div>
 
-		@foreach (var movie in Model.Miners.First().Movies)
-		{
-			var id = string.Format("boId{0}", movieCount);
-			var name = string.Format("BoxOffice{0}", movieCount);
+			<div class="clearfix"></div>
 
-			// TODO: May want to use a utility to speed up the reflection.
+			@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
+			{
+				var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
 
-			var value = (decimal)Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model);
-			var valueString = string.Format("{0:N0}", value);
+				<div class="col-xs-2" style="text-align: center">
+					<a class="btn @buttonStyle btn-xs"
+					   href="@miner.UrlSource"
+					   target="_blank"
+					   data-toggle="tooltip"
+					   data-placement="left"
+					   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
+						@miner.Abbreviation
+					</a>
+				</div>
+			}
 
-			<div class="col-xs-4" style="padding-top: 5px; padding-bottom: 5px;">
-				<img class="img-responsive img-rounded" src="@movie.ImageUrl" />
-				@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
-				@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
-				@*<div>
+			<div class="clearfix"></div>
+
+			@foreach (var movie in Model.Miners.First().Movies)
+			{
+				var id = string.Format("boId{0}", movieCount);
+				var name = string.Format("BoxOffice{0}", movieCount);
+
+				// TODO: May want to use a utility to speed up the reflection.
+
+				var value = (decimal)Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model);
+				var valueString = string.Format("{0:N0}", value);
+
+				<div class="col-xs-4" style="padding-top: 5px; padding-bottom: 5px;">
+					<img class="img-responsive img-rounded" src="@movie.ImageUrl" />
+					@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
+					@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
+					@*<div>
 					@movie.Name
 				</div>
-				*@
+					*@
 
-				@*<div style="font-weight: bold;">
+					@*<div style="font-weight: bold;">
 					@movie.Cost
 				</div>
-				*@
+					*@
 
-				@*<rect width="200px" height="100px" style="background-color: white; opacity: 0.6;" />*@
+					@*<rect width="200px" height="100px" style="background-color: white; opacity: 0.6;" />*@
 
-				<input name="@name"
-					   class="form-control"
-					   id="@id"
-					   style="background-color: lightcyan; width: 100px;"
-					   type="text"
-					   value="@valueString"
-					   data-val-required="The Box Office @movieCount field is required."
-					   data-val-number="The field Box Office @movieCount must be a number."
-					   data-val="true">
+					<input name="@name"
+						   class="form-control"
+						   id="@id"
+						   style="background-color: lightcyan; width: 100px;"
+						   type="text"
+						   value="@valueString"
+						   data-val-required="The Box Office @movieCount field is required."
+						   data-val-number="The field Box Office @movieCount must be a number."
+						   data-val="true">
 
-				@*</div>*@
+					@*</div>*@
 
-			</div>
+				</div>
 
-			movieCount++;
-		}
+				movieCount++;
+			}
+		</div>
 	</div>
-</div>
-
-	<div class="row-divider"> </div>
-
-	<input class="btn btn-success btn-lg"
-		   onclick="clickPicks()"
-		   type="button"
-		   value="Calculate Picks..."
-		   data-toggle="tooltip"
-		   data-placement="bottom"
-		   title="Click to apply weights and recalculate Custom column...">
 }

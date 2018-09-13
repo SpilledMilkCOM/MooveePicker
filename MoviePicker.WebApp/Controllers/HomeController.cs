@@ -115,21 +115,26 @@ namespace MoviePicker.WebApp.Controllers
 				miner.Weight = 1;
 			}
 
+			// Do NOT include MY numbers when pre-populating the box office values;
+
+			_minerModel.Miners[MY_MINER_IDX].Weight = 0;
+			((ICache)_minerModel.Miners[MY_MINER_IDX]).Load();
+
 			// Adjust the weights (possibly adjust the defaults above).
 
 			ParseBoxOfficeWeightRequest();
 			ParseViewRequest();
 
-			// Refresh my picks based on the weights above.
+			// Hide the last miner (BO Mojo for previous week).
 
-			((ICache)_minerModel.Miners[MY_MINER_IDX]).Load();
+			_minerModel.Miners.Last().IsHidden = true;
 
 			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
 			//_viewModel.IsTracking = true;
 
 			ControllerUtility.SetTwitterCard(ViewBag);
 
-			return View(ConstructPicksViewModel());
+			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
 		}
 
 		[HttpGet]
@@ -351,7 +356,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			result.MovieList = new MovieListModel()
 			{
-				ComparisonHeader = result.IsTracking ? "Estimated" : null,
+				ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus ON",
 				ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
 				Picks = pickList
 			};
@@ -374,7 +379,7 @@ namespace MoviePicker.WebApp.Controllers
 
 				result.MovieListBonusOff = new MovieListModel()
 				{
-					ComparisonHeader = result.IsTracking ? "Estimated" : null,
+					ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus OFF",
 					ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
 					Picks = pickList
 				};
@@ -491,7 +496,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			defaultTwitterText += picks.ToString();
 			defaultTwitterText += minerPick == null ? " only cost me " : " cost ";
-			defaultTwitterText += $"{spentBux.ToString("N0")} BUX #ShowYourScreens @SpilledMilkCOM";
+			defaultTwitterText += $"{spentBux.ToString("N0")} BUX #ShowYourScreens @SpilledMilkCOM RT if you like this pick #PerfectPick";
 
 			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image"
 											, viewModel.TwitterTitle
@@ -695,6 +700,46 @@ namespace MoviePicker.WebApp.Controllers
 			}
 
 			return request;
+		}
+
+		private PicksViewModel UpdatePicksViewModel(PicksViewModel viewModel)
+		{
+			// TODO: Use reflection...
+
+			int index = 1;
+
+			viewModel.Weight1 = _minerModel.Miners[index++].Weight;
+			viewModel.Weight2 = _minerModel.Miners[index++].Weight;
+			viewModel.Weight3 = _minerModel.Miners[index++].Weight;
+			viewModel.Weight4 = _minerModel.Miners[index++].Weight;
+			viewModel.Weight5 = _minerModel.Miners[index++].Weight;
+			viewModel.Weight6 = _minerModel.Miners[index++].Weight;
+			viewModel.Weight7 = _minerModel.Miners[index++].Weight;
+
+			var myBoxOffice = _minerModel.Miners[MY_MINER_IDX].Movies;
+
+			index = 0;
+
+			if (myBoxOffice != null && myBoxOffice.Count >= 15)
+			{
+				viewModel.BoxOffice1 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice2 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice3 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice4 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice5 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice6 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice7 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice8 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice9 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice10 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice11 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice12 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice13 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice14 = myBoxOffice[index++].EarningsBase;
+				viewModel.BoxOffice15 = myBoxOffice[index++].EarningsBase;
+			}
+
+			return viewModel;
 		}
 
 		private void UpdateViewModel()
