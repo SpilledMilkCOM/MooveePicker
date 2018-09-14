@@ -17,7 +17,7 @@
 		@* This should override what's in the style (for now) *@
 		var backgroundStyle = (movie.IsBestPerformer) ? "background-color: lightgreen;" : string.Empty;
 
-		<div class="col-xs-3 col-sm-1" style="padding: 3px">
+		<div class="col-xs-3 col-sm-1" style="padding: 2px">
 			<div class="movie-card" data-toggle="tooltip" data-placement="bottom"
 				 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)"
 				 style="@backgroundStyle">
