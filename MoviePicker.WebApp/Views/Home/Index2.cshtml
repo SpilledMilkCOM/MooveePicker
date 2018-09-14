@@ -138,7 +138,7 @@
 
 		@* ================================================================================================================================== PICKS COLUMN ==== *@
 
-		<div class="col-md-7">
+		<div id="picksColumn" class="col-md-7">
 			<div class="col-xs-4" style="padding-top: 20px;">
 				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
 			</div>
@@ -178,6 +178,20 @@
 				   data-toggle="tooltip"
 				   data-placement="bottom"
 				   title="Click to recalculate page...">
+
+			@if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
+			{
+				<a class="btn btn-info btn-xs"
+				   href="@string.Format("MorePicks?{0}", Request.QueryString)"
+				   data-toggle="tooltip"
+				   data-placement="bottom"
+				   title="View the top 10 picks for both bonus ON and OFF (this is a bit slow... please be patient.)">
+					<h4>
+						10 More Picks...
+					</h4>
+				</a>
+			}
+
 		</div>
 
 		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
@@ -256,6 +270,8 @@
 							var valueString = string.Format("{0:N0}", value);
 							var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
 							var inputBackgroundColor = lastWeek == null ? "lightgreen" : "cyan";
+							string divBackgroundColorStyle = null;
+							decimal percent = 0;
 
 							// Build the tooltip from the miner values.
 
@@ -284,8 +300,8 @@
 
 									if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
 									{
-										decimal percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-										var divBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+										percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+										divBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 
 										toolTip.Append($"</td><td style=\"padding: 4px; color: black; {divBackgroundColorStyle}\">{percent.ToString("N0")}%</td></tr>");
 									}
@@ -298,7 +314,21 @@
 
 							toolTip.Append("</table>");
 
+							divBackgroundColorStyle = null;
+							percent = 0;
+
+							var myMovie = Model.Miners.ToList()[1].Movies.FirstOrDefault(item => item.Name == movie.Name);
+
+							if (lastWeek != null && myMovie != null && lastWeek.EarningsBase > 0)
+							{
+								percent = (myMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+								divBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+							}
+
+							var tableIndent = (percent == 0) ? "20px" : "5px";
+
 							<td style="padding: 1px;">
+
 								<div style="padding-top: 5px; padding-bottom: 5px;"
 									 data-toggle="tooltip" data-placement="top"
 									 data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
@@ -322,16 +352,30 @@
 
 									@*<rect width="200px" height="100px" style="background-color: white; opacity: 0.6;" />*@
 
-									<input name="@name"
-										   class="form-control"
-										   id="@boId"
-										   onblur="boxOfficeLostFocus('@valueString')"
-										   style="background-color: @inputBackgroundColor; width: 100px; position: relative; top: -50px; left: 10px; float: left; opacity: 0.8"
-										   type="text"
-										   value="@valueString"
-										   data-val-required="The Box Office @movieCount field is required."
-										   data-val-number="The field Box Office @movieCount must be a number."
-										   data-val="true">
+									<table style="position: relative; top: -50px; left: @tableIndent; float: left;">
+										<tr>
+											<td>
+												<input name="@name"
+													   class="form-control"
+													   id="@boId"
+													   onblur="boxOfficeLostFocus('@valueString')"
+													   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8"
+													   type="text"
+													   value="@valueString"
+													   data-val-required="The Box Office @movieCount field is required."
+													   data-val-number="The field Box Office @movieCount must be a number."
+													   data-val="true">
+											</td>
+											@if (percent == 0)
+											{
+												<td></td>
+											}
+											else
+											{
+												<td style="padding-left: 3px;"><div style="@divBackgroundColorStyle; border-radius: 3px; padding: 3px;">@percent.ToString("N0")%</div></td>
+											}
+										</tr>
+									</table>
 								</div>
 							</td>
 
@@ -436,3 +480,21 @@
 		</table>
 	</div>
 </div>
+
+<script type="text/javascript">
+	//window.onscroll = function () { scrollPicksColumn() };
+
+	//var picksColumn = document.getElementById("picksColumn");
+	//var picksColumnOffset = picksColumn.offsetTop;
+
+	//function scrollPicksColumn() {
+	//	console.log(window.pageYOffset);
+	//	console.log(picksColumnOffset);
+
+	//	if (window.pageYOffset >= picksColumnOffset) {
+	//		picksColumn.classList.add("sticky");
+	//	} else {
+	//		picksColumn.classList.remove("sticky");
+	//	}
+	//}
+</script>

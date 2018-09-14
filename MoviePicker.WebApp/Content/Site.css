@@ -80,6 +80,13 @@ textarea {
 	height: 20px;
 }
 
+/* The sticky class is added to any content with Javascript when it reaches its scroll position */
+.sticky {
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
 .tooltip-extra {
 	max-width: 400px;
 	padding: 3px 8px;

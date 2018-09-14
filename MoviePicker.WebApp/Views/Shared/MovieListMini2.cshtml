@@ -5,12 +5,39 @@
 	<div class="col-sm-3">
 		<h5>@Model.ComparisonHeader</h5>
 	</div>
-	<div class="col-sm-5">
+	<div class="col-sm-4">
 		<h5>Earnings: $@pick.TotalEarnings.ToString("N0")</h5>
 	</div>
-	<div class="col-sm-4">
+	<div class="col-sm-3">
 		<h5>Cost (BUX): @pick.TotalCost</h5>
 	</div>
+
+	if (Model.ComparisonHeader == "Bonus ON")
+	{
+		<div class="col-sm-2">
+			<a class="btn btn-info btn-xs"
+			   @* Generate a unique ID so Twitter won't cache the image and share them to other tweets. *@
+			   href="@string.Format("ShareBonusOnPicks?{0}&id={1}", Request.QueryString, Guid.NewGuid())"
+			   data-toggle="tooltip"
+			   data-placement="bottom"
+			   title="Click to share your @Model.ComparisonHeader picks...">
+				Share &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+			</a>
+		</div>
+	}
+	else
+	{
+		<div class="col-sm-2">
+			<a class="btn btn-info btn-xs"
+			   @* Generate a unique ID so Twitter won't cache the image and share them to other tweets. *@
+			   href="@string.Format("ShareBonusOffPicks?{0}&id={1}", Request.QueryString, Guid.NewGuid())"
+			   data-toggle="tooltip"
+			   data-placement="bottom"
+			   title="Click to share your @Model.ComparisonHeader picks...">
+				Share  &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-share" aria-hidden="true"></span>
+			</a>
+		</div>
+	}
 
 	<div class="clearfix"></div>
 
