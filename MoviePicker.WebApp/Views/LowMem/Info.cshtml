@@ -13,9 +13,84 @@
 <h4>Now: @Model.ServerInfo.Now</h4>
 <h4>Now (UTC): @Model.ServerInfo.NowUtc</h4>
 <h4>Process Bytes Used: @Model.ServerInfo.ProcessBytes.ToString("N0")</h4>
-<h4>Movie Poster File Count: @Model.ServerInfo.MoviePosterFileCount</h4>
-<h4>Shared File Count: @Model.ServerInfo.SharedFileCount</h4>
-<h4>Twitter File Count: @Model.ServerInfo.TwitterFileCount</h4>
+
+<div class="row-divider"> </div>
+
+<div class="row">
+	<div id="moviePosterFilesAccordionRoot" class="col-md-4">
+		<div>
+			<a data-toggle="collapse" data-parent="#moviePosterFilesAccordionRoot" href="#moviePosterFilesAccordionPanel" class="btn btn-info btn-md">
+				Movie Poster Files (@Model.ServerInfo.MoviePosterFiles.Count()) &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+			</a>
+
+			<div id="moviePosterFilesAccordionPanel" class="panel-collapse collapse" )">
+				<!--  style="margin-left: -30px;" -->
+				<div class="panel-body">
+
+					@*BEGIN Accordion body*@
+
+					@foreach (var item in Model.ServerInfo.MoviePosterFiles)
+					{
+						<ul>@item</ul>
+					}
+
+					@*END of Accordion panel *@
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="sharedFilesAccordionRoot" class="col-md-4">
+		<div>
+			<a data-toggle="collapse" data-parent="#sharedFilesAccordionRoot" href="#sharedFilesAccordionPanel" class="btn btn-info btn-md">
+				Shared Files (@Model.ServerInfo.SharedFiles.Count()) &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+			</a>
+
+			<div id="sharedFilesAccordionPanel" class="panel-collapse collapse" )">
+				<!--  style="margin-left: -30px;" -->
+				<div class="panel-body">
+
+					@*BEGIN Accordion body*@
+
+					@foreach (var item in Model.ServerInfo.SharedFiles)
+					{
+						<ul>@item</ul>
+					}
+
+					@*END of Accordion panel *@
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="twitterFilesAccordionRoot" class="col-md-4">
+		<div>
+			<a data-toggle="collapse" data-parent="#twitterFilesAccordionRoot" href="#twitterFilesAccordionPanel" class="btn btn-info btn-md">
+				Shared Files (@Model.ServerInfo.TwitterFiles.Count()) &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+			</a>
+
+			<div id="twitterFilesAccordionPanel" class="panel-collapse collapse" )">
+				<!--  style="margin-left: -30px;" -->
+				<div class="panel-body">
+
+					@*BEGIN Accordion body*@
+
+					@foreach (var item in Model.ServerInfo.TwitterFiles)
+					{
+						<ul>@item</ul>
+					}
+
+					@*END of Accordion panel *@
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row-divider"> </div>
 
 @Html.ActionLink("Clear Files", "ClearFiles", null, htmlAttributes: new { @class = "btn btn-info" })
 
@@ -28,8 +103,8 @@
 
 <div class="row">
 
-	<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
-	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Error</div>
+	<div class="col-sm-3 hidden-xs" style="font-weight: bold;">Name</div>
+	<div class="col-sm-3 hidden-xs" style="font-weight: bold;">Error</div>
 	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Movie Count</div>
 	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Last Update</div>
 	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Expires</div>
@@ -38,15 +113,16 @@
 	{
 		<div class="col-sm-3" style="font-weight: bold;">@Html.ActionLink(miner.Name, "Miner", "LowMem", routeValues: new { name = miner.Name }, htmlAttributes: null)</div>
 
-		<div class="col-sm-3">@miner.Error</div>
+		<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Error:</div>
+		<div class="col-xs-6 col-sm-3">@string.Format("{0}", string.IsNullOrEmpty(miner.Error) ? "--" : miner.Error)</div>
 
-		<div class="col-xs-6 col-sm-3 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Movie Count:</div>
+		<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Movie Count:</div>
 		<div class="col-xs-6 col-sm-2">@string.Format("{0}", miner.Movies.Count)</div>
 
-		<div class="col-xs-6 col-sm-3 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Last Update:</div>
+		<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Last Update:</div>
 		<div class="col-xs-6 col-sm-2">@string.Format("{0}", ((ICache)miner)?.LastLoaded)</div>
 
-		<div class="col-xs-6 col-sm-3 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Expires:</div>
+		<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Expires:</div>
 		<div class="col-xs-6 col-sm-2">@string.Format("{0}", ((ICache)miner)?.Expiration)</div>
 	}
 </div>

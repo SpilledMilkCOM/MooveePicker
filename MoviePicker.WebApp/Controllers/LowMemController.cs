@@ -61,9 +61,9 @@ namespace MoviePicker.WebApp.Controllers
 
 			var imagePath = $"{Server.MapPath("~")}{Path.DirectorySeparatorChar}images";
 
-			_infoViewModel.ServerInfo.MoviePosterFileCount = FileUtility.FilterImagesInPath(imagePath, "MoviePoster_*")?.Count ?? 0;
-			_infoViewModel.ServerInfo.SharedFileCount = FileUtility.FilterImagesInPath(imagePath, "Shared_*")?.Count ?? 0;
-			_infoViewModel.ServerInfo.TwitterFileCount = FileUtility.FilterImagesInPath(imagePath, "Twitter_*")?.Count ?? 0;
+			_infoViewModel.ServerInfo.MoviePosterFiles = FileUtility.FilterImagesInPath(imagePath, "MoviePoster_*");
+			_infoViewModel.ServerInfo.SharedFiles = FileUtility.FilterImagesInPath(imagePath, "Shared_*");
+			_infoViewModel.ServerInfo.TwitterFiles = FileUtility.FilterImagesInPath(imagePath, "Twitter_*");
 
 			_infoViewModel.ClientInfo.Device = Request.Browser.IsMobileDevice ? "Mobile" : "Desktop";
 			_infoViewModel.ClientInfo.Name = Request.Browser.Type;
