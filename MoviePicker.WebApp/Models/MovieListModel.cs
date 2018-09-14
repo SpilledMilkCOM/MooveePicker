@@ -11,6 +11,8 @@ namespace MoviePicker.WebApp.Models
 
 		public IEnumerable<IMovie> ComparisonMovies { get; set; }
 
+		public string Id { get; set; }
+
 		public List<IMovieList> Picks { get; set; }
 
 		public List<IMovieList> PicksTheRest { get; set; }

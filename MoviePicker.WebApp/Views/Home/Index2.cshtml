@@ -14,15 +14,33 @@
 
 <script type="text/javascript">
 
-	function boxOfficeLostFocus(oldValueString) {
+	var SCREEN_COUNT_MAX = 8;
 
-		//console.log(oldValueString);
+	function boxOfficeLostFocus(oldValue, newValue) {
 
-		clickClearWeights();
+		if (oldValue != newValue) {
+			clearWeights();
+
+			clearMoviePicksPosters('bonusOnMovieList');
+			clearMoviePicksPosters('bonusOffMovieList');
+		}
 	}
 
-	function clickClearWeights() {
-		//console.log("clickClearWeights");
+	function clearMoviePicksPosters(movieListId) {
+
+		for (var movieCount = 0; movieCount < SCREEN_COUNT_MAX; movieCount++) {
+			var image = $('#' + movieListId + '0' + movieCount);
+
+			if (image != null) {
+				//console.log(image.attr('src'));
+
+				image.attr('src', '/Images/MooveePosterRecalculate.jpg');
+			}
+		}
+	}
+
+	function clearWeights() {
+		//console.log("clearWeights");
 
 		for (idx = @minerCount; idx <= 7; idx++) {
 			$("#weightId" + idx).val(0);
@@ -99,7 +117,8 @@
 	function parseBoxOfficeWeights() {
 
 		var boList = "";
-		var weightList = "1,";
+		var weightList = "";
+		var weightTotal = 0;
 
 		// The values should be synchronized so the values can be pulled from one set of fields.
 
@@ -119,10 +138,28 @@
 
 			// TODO: Request encode this.
 
-			weightList += $("#weightId" + idx).val().replace(",", "").replace("$", "");
+			var weight = $("#weightId" + idx).val().replace(",", "").replace("$", "");
+
+			weightList += weight;
+			weightTotal += weight;
+		}
+
+		if (weightTotal == 0) {
+			weightList = "1," + weightList;
+		}
+		else {
+			weightList = "0," + weightList;
 		}
 
 		return "bo=" + boList + "&wl=" + weightList;
+	}
+
+	function weightLostFocus(oldValue, newValue) {
+
+		if (oldValue != newValue) {
+			clearMoviePicksPosters('bonusOnMovieList');
+			clearMoviePicksPosters('bonusOffMovieList');
+		}
 	}
 </script>
 
@@ -191,12 +228,6 @@
 					</h4>
 				</a>
 			}
-
-			<a class="btn btn-success btn-lg"
-			   href="@string.Format("ExpertPicks?{0}", Request.QueryString)"
-			   data-toggle="tooltip"
-			   data-placement="bottom"
-			   title="Click to see the available picks by the experts...">Expert Picks...</a>
 		</div>
 
 		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
@@ -221,39 +252,51 @@
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
 
-			@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
-			{
-				var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
-				var weightId = string.Format("weightId{0}", minerCount);
-				var name = string.Format("Weight{0}", minerCount);
+			<div class="col-xs-10">
 
-				// TODO: May want to use a utility to speed up the reflection.
+				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
+				{
+					var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
+					var weightId = string.Format("weightId{0}", minerCount);
+					var name = string.Format("Weight{0}", minerCount);
 
-				var value = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
+					// TODO: May want to use a utility to speed up the reflection.
 
-				<div class="col-xs-2" style="text-align: center">
-					<a class="btn @buttonStyle btn-xs"
-					   href="@miner.UrlSource"
-					   target="_blank"
-					   data-toggle="tooltip"
-					   data-placement="bottom"
-					   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
-						@miner.Abbreviation
-					</a>
+					var valueString = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
 
-					<input name="@name"
-						   class="form-control"
-						   id="@weightId"
-						   style="background-color: #dfffdf; width: 50px;"
-						   type="text"
-						   value="@value"
-						   data-val-required="The Weight @minerCount field is required."
-						   data-val-number="The field Weight @minerCount must be a number."
-						   data-val="true">
-				</div>
+					<div class="col-xs-2" style="text-align: center;">
+						<a class="btn @buttonStyle btn-xs"
+						   href="@miner.UrlSource"
+						   target="_blank"
+						   data-toggle="tooltip"
+						   data-placement="bottom"
+						   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
+							@miner.Abbreviation
+						</a>
 
-				minerCount++;
-			}
+						<input name="@name"
+							   class="form-control"
+							   id="@weightId"
+							   onblur="weightLostFocus('@valueString', this.value)"
+							   style="background-color: #dfffdf; width: 50px;"
+							   type="text"
+							   value="@valueString"
+							   data-val-required="The Weight @minerCount field is required."
+							   data-val-number="The field Weight @minerCount must be a number."
+							   data-val="true">
+					</div>
+
+					minerCount++;
+				}
+			</div>
+
+			<div class="col-xs-2">
+				<a class="btn btn-success btn-xs"
+				   href="@string.Format("ExpertPicks?{0}", Request.QueryString)"
+				   data-toggle="tooltip"
+				   data-placement="bottom"
+				   title="Click to see the available picks by the experts...">Expert<br/>Picks...</a>
+			</div>
 
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
@@ -363,7 +406,7 @@
 												<input name="@name"
 													   class="form-control"
 													   id="@boId"
-													   onblur="boxOfficeLostFocus('@valueString')"
+													   onblur="boxOfficeLostFocus('@valueString', this.value)"
 													   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8"
 													   type="text"
 													   value="@valueString"
@@ -487,19 +530,19 @@
 </div>
 
 <script type="text/javascript">
-			//window.onscroll = function () { scrollPicksColumn() };
+					//window.onscroll = function () { scrollPicksColumn() };
 
-			//var picksColumn = document.getElementById("picksColumn");
-			//var picksColumnOffset = picksColumn.offsetTop;
+					//var picksColumn = document.getElementById("picksColumn");
+					//var picksColumnOffset = picksColumn.offsetTop;
 
-			//function scrollPicksColumn() {
-			//	console.log(window.pageYOffset);
-			//	console.log(picksColumnOffset);
+					//function scrollPicksColumn() {
+					//	console.log(window.pageYOffset);
+					//	console.log(picksColumnOffset);
 
-			//	if (window.pageYOffset >= picksColumnOffset) {
-			//		picksColumn.classList.add("sticky");
-			//	} else {
-			//		picksColumn.classList.remove("sticky");
-			//	}
-			//}
+					//	if (window.pageYOffset >= picksColumnOffset) {
+					//		picksColumn.classList.add("sticky");
+					//	} else {
+					//		picksColumn.classList.remove("sticky");
+					//	}
+					//}
 </script>

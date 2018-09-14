@@ -232,6 +232,7 @@
     <Content Include="Images\MooveePickerCow512x512.png" />
     <Content Include="Images\MooveePickerLogo512x512.png" />
     <Content Include="Images\MooveePosterNotFound.jpg" />
+    <Content Include="Images\MooveePosterRecalculate.jpg" />
     <Content Include="Images\Saturday-mask.png" />
     <Content Include="Images\Spilled Milk Logo 400x420.png" />
     <Content Include="Images\Sunday-mask.png" />

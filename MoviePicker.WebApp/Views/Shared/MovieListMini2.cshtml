@@ -1,5 +1,9 @@
 ﻿@model MoviePicker.WebApp.Interfaces.IMovieListModel
 
+@{
+	int pickCount = 0;
+}
+
 @foreach (var pick in Model.Picks)
 {
 	<div class="col-sm-3">
@@ -44,23 +48,31 @@
 	<div class="col-xs-12">
 		<table class="table table-responsive">
 			<tr>
-				@foreach (var movie in pick.Movies.OrderByDescending(item => item.Cost))
-				{
-					@* This should override what's in the style (for now) *@
-					var backgroundStyle = (movie.IsBestPerformer) ? "background-color: lightgreen;" : string.Empty;
+				@{
+					int movieCount = 0;
 
-					<td style="padding: 1px;">
-						<div class="movie-card-mini" data-toggle="tooltip" data-placement="bottom"
-							 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)"
-							 style="@backgroundStyle">
+					foreach (var movie in pick.Movies.OrderByDescending(item => item.Cost))
+					{
+						@* This should override what's in the style (for now) *@
+						var backgroundStyle = (movie.IsBestPerformer) ? "background-color: lightgreen;" : string.Empty;
 
-							<img class="img-responsive" src="@movie.ImageUrl" alt="@movie.Name" />
-						</div>
-					</td>
+						<td style="padding: 1px;">
+							<div class="movie-card-mini" data-toggle="tooltip" data-placement="bottom"
+								 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)"
+								 style="@backgroundStyle">
+
+								<img id="@string.Format("{0}{1}{2}", Model.Id, pickCount, movieCount)" class="img-responsive" src="@movie.ImageUrl" alt="@movie.Name" />
+							</div>
+						</td>
+
+						movieCount++;
+					}
 				}
 			</tr>
 		</table>
 	</div>
 
 	<div class="clearfix"></div>
+
+	pickCount++;
 }

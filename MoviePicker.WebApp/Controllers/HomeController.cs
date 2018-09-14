@@ -429,6 +429,7 @@ namespace MoviePicker.WebApp.Controllers
 				{
 					ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus ON",
 					ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
+					Id = "bonusOnMovieList",
 					Picks = pickList
 				};
 
@@ -452,6 +453,7 @@ namespace MoviePicker.WebApp.Controllers
 					{
 						ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus OFF",
 						ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
+						Id = "bonusOffMovieList",
 						Picks = pickList
 					};
 				}

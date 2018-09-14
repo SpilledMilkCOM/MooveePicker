@@ -1,11 +1,12 @@
 ﻿using MoviePicker.WebApp.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace MoviePicker.WebApp.Models
 {
 	public class ServerInfoModel : IServerInfoModel
 	{
-		public int MoviePosterFileCount { get; set; }
+		public IEnumerable<string> MoviePosterFiles { get; set; }
 
 		public DateTime Now { get; set; }
 
@@ -15,8 +16,8 @@ namespace MoviePicker.WebApp.Models
 
 		public long ProcessBytes { get; set; }
 
-		public int SharedFileCount { get; set; }
+		public IEnumerable<string> SharedFiles { get; set; }
 	
-		public int TwitterFileCount { get; set; }
+		public IEnumerable<string> TwitterFiles { get; set; }
 	}
 }

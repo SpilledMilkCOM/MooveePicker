@@ -14,6 +14,11 @@ namespace MoviePicker.WebApp.Interfaces
 		string ComparisonHeader { get; set; }
 
 		/// <summary>
+		/// The prefix used for any HTML controls' id attribute.
+		/// </summary>
+		string Id { set; get; }
+
+		/// <summary>
 		/// These can be either YOUR picks with the bonus on or off,
 		/// or this can be the FML Perfect Picks based on the estimated actuals.
 		/// </summary>

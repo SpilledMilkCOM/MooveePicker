@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MoviePicker.WebApp.Interfaces
 {
 	public interface IServerInfoModel
 	{
-		int MoviePosterFileCount { get; set; }
+		IEnumerable<string> MoviePosterFiles { get; set; }
 
 		long ProcessBytes { get; set; }
 
@@ -23,8 +24,8 @@ namespace MoviePicker.WebApp.Interfaces
 		/// </summary>
 		DateTime NowUtc { get; set; }
 
-		int SharedFileCount { get; set; }
+		IEnumerable<string> SharedFiles { get; set; }
 
-		int TwitterFileCount { get; set; }
+		IEnumerable<string> TwitterFiles { get; set; }
 	}
 }
