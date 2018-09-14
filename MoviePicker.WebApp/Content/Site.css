@@ -42,9 +42,9 @@ textarea {
 	border-style: solid;
 	border-width: thin;
 	border-color: grey;
-	border-radius: 5px;
+	border-radius: 3px;
 
-	padding: 5px;
+	padding: 3px;
 }
 
 .movie-card-mini {
