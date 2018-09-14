@@ -49,6 +49,7 @@ namespace MovieMiner.Tests
 			actual = actual.GroupBy(movie => movie.Name)
 							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
 							.Cast<IMovie>()
+							.Where(movie => movie.Earnings > 1000)
 							.OrderByDescending(movie => movie.Earnings)
 							.ToList();
 
