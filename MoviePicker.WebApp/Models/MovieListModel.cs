@@ -17,6 +17,8 @@ namespace MoviePicker.WebApp.Models
 
 		public List<IMovieList> PicksTheRest { get; set; }
 
+		public string ShareQueryString { get; set; }
+
 		public decimal TotalPicksFromComparison
 		{
 			get

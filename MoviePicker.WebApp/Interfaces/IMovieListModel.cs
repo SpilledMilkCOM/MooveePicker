@@ -30,6 +30,8 @@ namespace MoviePicker.WebApp.Interfaces
 		/// </summary>
 		List<IMovieList> PicksTheRest { get; set; }
 
+		string ShareQueryString { get; set; }
+
 		/// <summary>
 		/// The total value of the picks using the Box Office of the comparison.
 		/// (Will calculate the total Box Offce of a list of picks using FML Estimated values.)

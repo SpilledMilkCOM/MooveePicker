@@ -21,6 +21,7 @@ namespace MoviePicker.WebApp.Controllers
 	{
 		private const int FML_INDEX = 0;
 		private const int MY_MINER_IDX = FML_INDEX + 1;
+		private const int DATA_MINER_COUNT = 6;
 
 		private IControllerUtility _controllerUtility;
 		private IMinerModel _minerModel;
@@ -78,6 +79,7 @@ namespace MoviePicker.WebApp.Controllers
 			var result = new ExpertPicksViewModel();
 			var baseMovies = _minerModel.Miners[FML_INDEX].Movies;
 			var lastMiner = _minerModel.Miners.Last();
+			var minerCount = 0;
 
 			foreach (var miner in _minerModel.Miners.Skip(2))
 			{
@@ -85,6 +87,7 @@ namespace MoviePicker.WebApp.Controllers
 				{
 					var expert = new ExpertPickModel { Miner = miner };
 					var minerMovies = miner.Movies.Where(movie => movie.Id != 0);
+					var shareQueryString = WeightListFromCounter(minerCount);
 
 					// Make sure the images are synchronized.
 
@@ -106,7 +109,8 @@ namespace MoviePicker.WebApp.Controllers
 					expert.MovieList = new MovieListModel()
 					{
 						ComparisonHeader = "Bonus ON",
-						Picks = pickList
+						Picks = pickList,
+						ShareQueryString = shareQueryString
 					};
 
 					// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
@@ -126,11 +130,14 @@ namespace MoviePicker.WebApp.Controllers
 					expert.MovieListBonusOff = new MovieListModel()
 					{
 						ComparisonHeader = "Bonus OFF",
-						Picks = pickList
+						Picks = pickList,
+						ShareQueryString = shareQueryString
 					};
 
 					result.ExpertPicks.Add(expert);
 				}
+
+				minerCount++;
 			}
 
 			stopWatch.Stop();
@@ -174,9 +181,6 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			// TODO: Collapse this down to a method call.
 
-			_viewModel.ViewGridOpen = !Request.Browser.IsMobileDevice;
-			_viewModel.ViewMobileOpen = Request.Browser.IsMobileDevice;
-
 			ViewBag.IsGoogleAdValid = true;
 
 			// Set the weights to 1 across the board. (treat all sources equal)
@@ -199,9 +203,6 @@ namespace MoviePicker.WebApp.Controllers
 			// Hide the last miner (BO Mojo for previous week).
 
 			_minerModel.Miners.Last().IsHidden = true;
-
-			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
-			//_viewModel.IsTracking = true;
 
 			ControllerUtility.SetTwitterCard(ViewBag);
 
@@ -423,6 +424,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			if (result.Movies.Count() > 0)
 			{
+				var shareQueryString = QueryStringFromModel();
+
 				_moviePicker.AddMovies(result.Movies);
 
 				var pickList = _moviePicker.ChooseBest(3);
@@ -432,7 +435,8 @@ namespace MoviePicker.WebApp.Controllers
 					ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus ON",
 					ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
 					Id = "bonusOnMovieList",
-					Picks = pickList
+					Picks = pickList,
+					ShareQueryString = shareQueryString
 				};
 
 				if (!onlyBestPerformer)
@@ -456,7 +460,8 @@ namespace MoviePicker.WebApp.Controllers
 						ComparisonHeader = result.IsTracking ? "Estimated" : "Bonus OFF",
 						ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
 						Id = "bonusOffMovieList",
-						Picks = pickList
+						Picks = pickList,
+						ShareQueryString = shareQueryString
 					};
 				}
 			}
@@ -601,6 +606,47 @@ namespace MoviePicker.WebApp.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Coverts the weight list in the request to a miner.
+		/// </summary>
+		/// <param name="weightList">The weight list from the request</param>
+		/// <returns></returns>
+		private IMiner MinerWeightToMiner()
+		{
+			IMiner result = null;
+			int index = 0;
+			char[] delimiters = new char[] { ',' };
+			var weightList = ControllerUtility.GetRequestString(Request, "wl");
+
+			if (weightList != null)
+			{
+				var weights = weightList.Split(delimiters);
+
+				if (weightList != null && weights[0] == "0")
+				{
+					foreach (var miner in _minerModel.Miners.Skip(1))
+					{
+						if (index < weights.Length && weights[index] == "1")
+						{
+							if (result != null)
+							{
+								// If there are MORE than one, then fail.
+
+								result = null;
+								break;
+							}
+
+							result = miner;
+						}
+
+						index++;
+					}
+				}
+			}
+
+			return result;
+		}
+
 		private void ParseBoxOfficeWeightRequest()
 		{
 			char[] listDelimiter = { ',' };
@@ -656,6 +702,47 @@ namespace MoviePicker.WebApp.Controllers
 		{
 		}
 
+		private string QueryStringFromModel()
+		{
+			var stringBuilder = new StringBuilder();
+			bool first = true;
+
+			stringBuilder.Append("bo=");
+
+			foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
+			{
+				if (!first)
+				{
+					stringBuilder.Append(",");
+				}
+				else
+				{
+					first = false;
+				}
+
+				stringBuilder.Append(movie.EarningsBase.ToString("F0"));
+			}
+
+			first = true;
+			stringBuilder.Append("&wl=");
+
+			for (int idx = MY_MINER_IDX; idx < _minerModel.Miners.Count; idx++)
+			{
+				if (!first)
+				{
+					stringBuilder.Append(",");
+				}
+				else
+				{
+					first = false;
+				}
+
+				stringBuilder.Append(_minerModel.Miners[idx].Weight.ToString("F0"));
+			}
+
+			return stringBuilder.ToString();
+		}
+
 		private void RunSimulation(PicksViewModel picksViewModel)
 		{
 			var stopwatch = new Stopwatch();
@@ -690,80 +777,9 @@ namespace MoviePicker.WebApp.Controllers
 			picksViewModel.Duration += stopwatch.ElapsedMilliseconds;
 		}
 
-		/// <summary>
-		/// Coverts the weight list in the request to a miner.
-		/// </summary>
-		/// <param name="weightList">The weight list from the request</param>
-		/// <returns></returns>
-		private IMiner MinerWeightToMiner()
-		{
-			IMiner result = null;
-			int index = 0;
-			char[] delimiters = new char[] { ',' };
-			var weightList = ControllerUtility.GetRequestString(Request, "wl");
-
-			if (weightList != null)
-			{
-				var weights = weightList.Split(delimiters);
-				bool minerWeightsOnly = ControllerUtility.GetRequestString(Request, "bo") == null && weightList != null;
-
-				if (minerWeightsOnly)
-				{
-					foreach (var miner in _minerModel.Miners.Skip(1))
-					{
-						if (index < weights.Length && weights[index] == "1")
-						{
-							result = miner;
-						}
-
-						index++;
-					}
-				}
-			}
-
-			return result;
-		}
-
 		private string SharedPicksFromModels()
 		{
-			var stringBuilder = new StringBuilder();
-			bool first = true;
-
-			stringBuilder.Append(TrimParameters(Request.Url.ToString()));
-			stringBuilder.Append("?bo=");
-
-			foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
-			{
-				if (!first)
-				{
-					stringBuilder.Append(",");
-				}
-				else
-				{
-					first = false;
-				}
-
-				stringBuilder.Append(movie.EarningsBase.ToString("F0"));
-			}
-
-			first = true;
-			stringBuilder.Append("&wl=");
-
-			for (int idx = MY_MINER_IDX; idx < _minerModel.Miners.Count; idx++)
-			{
-				if (!first)
-				{
-					stringBuilder.Append(",");
-				}
-				else
-				{
-					first = false;
-				}
-
-				stringBuilder.Append(_minerModel.Miners[idx].Weight.ToString("F0"));
-			}
-
-			return stringBuilder.ToString();
+			return $"{TrimParameters(Request.Url.ToString())}?{QueryStringFromModel()}";
 		}
 
 		private string TrimParameters(string request)
@@ -854,6 +870,27 @@ namespace MoviePicker.WebApp.Controllers
 				_viewModel.BoxOffice14 = myBoxOffice[index++].EarningsBase;
 				_viewModel.BoxOffice15 = myBoxOffice[index++].EarningsBase;
 			}
+		}
+
+		private string WeightListFromCounter(int minerIndex)
+		{
+			var result = new StringBuilder();
+
+			result.Append("wl=0");
+
+			for (int counter = 0; counter < DATA_MINER_COUNT; counter++)
+			{
+				if (counter == minerIndex)
+				{
+					result.Append(",1");
+				}
+				else
+				{
+					result.Append(",0");
+				}
+			}
+
+			return result.ToString();
 		}
 	}
 }
