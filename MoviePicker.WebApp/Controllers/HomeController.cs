@@ -77,10 +77,11 @@ namespace MoviePicker.WebApp.Controllers
 
 			var result = new ExpertPicksViewModel();
 			var baseMovies = _minerModel.Miners[FML_INDEX].Movies;
+			var lastMiner = _minerModel.Miners.Last();
 
 			foreach (var miner in _minerModel.Miners.Skip(2))
 			{
-				if (miner.Movies.Count > 0 && !miner.IsHidden)
+				if (miner.Movies.Count > 0 && !miner.IsHidden && miner != lastMiner)
 				{
 					var expert = new ExpertPickModel { Miner = miner };
 					var minerMovies = miner.Movies.Where(movie => movie.Id != 0);
@@ -97,6 +98,7 @@ namespace MoviePicker.WebApp.Controllers
 						}
 					}
 
+					_moviePicker.EnableBestPerformer = true;
 					_moviePicker.AddMovies(minerMovies);
 
 					var pickList = _moviePicker.ChooseBest(3);

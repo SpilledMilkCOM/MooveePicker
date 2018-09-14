@@ -56,6 +56,9 @@ namespace MoviePicker.Msf
 				}
 				else
 				{
+					_bestPerformer = null;
+					_bestPerformers = null;
+
 					foreach (var movie in _movies)
 					{
 						movie.IsBestPerformer = false;
