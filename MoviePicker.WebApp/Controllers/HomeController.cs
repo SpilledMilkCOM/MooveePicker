@@ -70,6 +70,75 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult ExpertPicks()
+		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+
+			var result = new ExpertPicksViewModel();
+			var baseMovies = _minerModel.Miners[FML_INDEX].Movies;
+
+			foreach (var miner in _minerModel.Miners.Skip(2))
+			{
+				if (miner.Movies.Count > 0 && !miner.IsHidden)
+				{
+					var expert = new ExpertPickModel { Miner = miner };
+					var minerMovies = miner.Movies.Where(movie => movie.Id != 0);
+
+					// Make sure the images are synchronized.
+
+					foreach (var movie in minerMovies)
+					{
+						var baseMovie = baseMovies.FirstOrDefault(item => item.MovieName == movie.MovieName);
+
+						if (baseMovie != null)
+						{
+							movie.ImageUrl = baseMovie.ImageUrl;
+						}
+					}
+
+					_moviePicker.AddMovies(minerMovies);
+
+					var pickList = _moviePicker.ChooseBest(3);
+
+					expert.MovieList = new MovieListModel()
+					{
+						ComparisonHeader = "Bonus ON",
+						Picks = pickList
+					};
+
+					// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
+
+					var clonedList = new List<IMovie>();
+
+					foreach (var movie in minerMovies)
+					{
+						clonedList.Add(movie.Clone());
+					}
+
+					_moviePicker.AddMovies(clonedList);
+					_moviePicker.EnableBestPerformer = false;
+
+					pickList = _moviePicker.ChooseBest(3);
+
+					expert.MovieListBonusOff = new MovieListModel()
+					{
+						ComparisonHeader = "Bonus OFF",
+						Picks = pickList
+					};
+
+					result.ExpertPicks.Add(expert);
+				}
+			}
+
+			stopWatch.Stop();
+
+			result.Duration = stopWatch.ElapsedMilliseconds;
+
+			return View(result);
+		}
+
+		[HttpGet]
 		public ActionResult Index()
 		{
 			var stopWatch = new Stopwatch();

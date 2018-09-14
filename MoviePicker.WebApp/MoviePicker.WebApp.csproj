@@ -188,7 +188,9 @@
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\ViewUtility.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />
+    <Compile Include="Models\ExpertPickModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
+    <Compile Include="ViewModels\ExpertPicksViewModel.cs" />
     <Compile Include="ViewModels\MorePicksViewModel.cs" />
     <Compile Include="ViewModels\SharePicksViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
@@ -322,6 +324,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Home\Index2.cshtml" />
     <Content Include="Views\Shared\MovieListMini2.cshtml" />
+    <Content Include="Views\Home\ExpertPicks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

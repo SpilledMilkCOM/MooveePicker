@@ -1,7 +1,7 @@
 ﻿using MoviePicker.WebApp.Interfaces;
 using System.Collections.Generic;
 
-namespace MoviePicker.WebApp.Models
+namespace MoviePicker.WebApp.ViewModels
 {
 	public class MorePicksViewModel
 	{

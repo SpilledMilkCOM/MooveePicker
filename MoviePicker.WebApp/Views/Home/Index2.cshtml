@@ -174,7 +174,7 @@
 			<input class="btn btn-success btn-lg"
 				   onclick="clickPicks()"
 				   type="button"
-				   value="Calculate Picks..."
+				   value="Calculate Picks"
 				   data-toggle="tooltip"
 				   data-placement="bottom"
 				   title="Click to recalculate page...">
@@ -192,6 +192,11 @@
 				</a>
 			}
 
+			<a class="btn btn-success btn-lg"
+			   href="@string.Format("ExpertPicks?{0}", Request.QueryString)"
+			   data-toggle="tooltip"
+			   data-placement="bottom"
+			   title="Click to see the available picks by the experts...">Expert Picks...</a>
 		</div>
 
 		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
@@ -482,19 +487,19 @@
 </div>
 
 <script type="text/javascript">
-	//window.onscroll = function () { scrollPicksColumn() };
+			//window.onscroll = function () { scrollPicksColumn() };
 
-	//var picksColumn = document.getElementById("picksColumn");
-	//var picksColumnOffset = picksColumn.offsetTop;
+			//var picksColumn = document.getElementById("picksColumn");
+			//var picksColumnOffset = picksColumn.offsetTop;
 
-	//function scrollPicksColumn() {
-	//	console.log(window.pageYOffset);
-	//	console.log(picksColumnOffset);
+			//function scrollPicksColumn() {
+			//	console.log(window.pageYOffset);
+			//	console.log(picksColumnOffset);
 
-	//	if (window.pageYOffset >= picksColumnOffset) {
-	//		picksColumn.classList.add("sticky");
-	//	} else {
-	//		picksColumn.classList.remove("sticky");
-	//	}
-	//}
+			//	if (window.pageYOffset >= picksColumnOffset) {
+			//		picksColumn.classList.add("sticky");
+			//	} else {
+			//		picksColumn.classList.remove("sticky");
+			//	}
+			//}
 </script>

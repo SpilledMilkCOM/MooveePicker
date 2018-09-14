@@ -1,0 +1,21 @@
+﻿@model MoviePicker.WebApp.ViewModels.ExpertPicksViewModel
+
+@{
+	ViewBag.Title = "Expert Picks";
+}
+
+<h2>@ViewBag.Title</h2>
+<h5>(@Model.Duration.ToString("N0") ms)</h5>
+
+<div class="row">
+	@foreach (var expertPick in Model.ExpertPicks)
+	{
+		<h3>@expertPick.Miner.Name</h3>
+		<h4>Bonus ON</h4>
+		@Html.Partial("MovieListMini", expertPick.MovieList)
+		<div class="clearfix"></div>
+		<h4>Bonus OFF</h4>
+		@Html.Partial("MovieListMini", expertPick.MovieListBonusOff)
+		<div class="clearfix"></div>
+	}
+</div>
