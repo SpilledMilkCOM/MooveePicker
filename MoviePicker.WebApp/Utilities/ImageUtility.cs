@@ -149,7 +149,7 @@ namespace MoviePicker.WebApp.Utilities
 			const int BONUS_SCALE = 4;
 			const int BORDER_PIXELS = 0;
 			const int CELL_HEIGHT_PIXELS = 50;
-			const int FIRST_CELL_HEIGHT_PIXELS = 32;
+			const int FIRST_CELL_HEIGHT_PIXELS = 36;
 
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
