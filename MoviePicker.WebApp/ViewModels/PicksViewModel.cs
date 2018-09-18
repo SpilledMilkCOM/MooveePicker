@@ -79,15 +79,24 @@ namespace MoviePicker.WebApp.Models
 		public int Rank(IMovie movie)
 		{
 			int rank = 1;
+			int movieCount = 0;
+			decimal lastEfficiency = 0;
 
 			foreach (var ranked in Movies.OrderByDescending(item => item.Efficiency))
 			{
-				if (movie == ranked)
+				movieCount++;
+
+				if (lastEfficiency != ranked.Efficiency)
+				{
+					rank = movieCount;
+				}
+
+				if (movie.Equals(ranked))
 				{
 					break;
 				}
 
-				rank++;
+				lastEfficiency = ranked.Efficiency;
 			}
 
 			return rank;

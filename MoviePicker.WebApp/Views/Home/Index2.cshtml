@@ -203,11 +203,15 @@
 				@if (Model.MovieList != null)
 				{
 					@Html.Partial("MovieListMini2", Model.MovieList)
+
+					<div class="row-divider"> </div>
 				}
 
 				@if (Model.MovieListBonusOff != null)
 				{
 					@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
+
+					<div class="row-divider"> </div>
 				}
 			</div>
 
@@ -298,7 +302,7 @@
 				   href="@string.Format("ExpertPicks?{0}", Request.QueryString)"
 				   data-toggle="tooltip"
 				   data-placement="bottom"
-				   title="Click to see the available picks by the experts...">Expert<br/>Picks...</a>
+				   title="Click to see the available picks by the experts...">Expert<br />Picks...</a>
 			</div>
 
 			<div class="clearfix"></div>
@@ -323,6 +327,7 @@
 							var inputBackgroundColor = lastWeek == null ? "lightgreen" : "cyan";
 							string divBackgroundColorStyle = null;
 							decimal percent = 0;
+							var hasRows = false;
 
 							// Build the tooltip from the miner values.
 
@@ -360,7 +365,14 @@
 									{
 										toolTip.Append("</td><td></td></tr>");
 									}
+
+									hasRows = true;
 								}
+							}
+
+							if (!hasRows)
+							{
+								toolTip.Append("<tr><td>No data available (yet)</td></tr>");
 							}
 
 							toolTip.Append("</table>");
@@ -376,16 +388,16 @@
 								divBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 							}
 
-							var tableIndent = (percent == 0) ? "20px" : "5px";
+							var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "0px";
+							var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px lightgreen;" : "box-shadow: 2px 4px 8px 0px grey";
 
-							<td style="padding: 1px;">
+							<td style="padding: 3px;">
 
-								<div style="padding-top: 5px; padding-bottom: 5px;"
-									 data-toggle="tooltip" data-placement="top"
+								<div data-toggle="tooltip" data-placement="top"
 									 data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
 									 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
 
-									<img class="img-responsive img-rounded" src="@movie.ImageUrl" />
+									<img class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
 
 									@*title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"*@
 
@@ -410,14 +422,14 @@
 													   class="form-control"
 													   id="@boId"
 													   onblur="boxOfficeLostFocus('@valueString', this.value)"
-													   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8"
+													   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
 													   type="text"
 													   value="@valueString"
 													   data-val-required="The Box Office @movieCount field is required."
 													   data-val-number="The field Box Office @movieCount must be a number."
 													   data-val="true">
 											</td>
-											@if (percent == 0)
+											@if (percent == 0 || percent == -100m)
 											{
 												<td></td>
 											}
@@ -533,19 +545,19 @@
 </div>
 
 <script type="text/javascript">
-					//window.onscroll = function () { scrollPicksColumn() };
+						//window.onscroll = function () { scrollPicksColumn() };
 
-					//var picksColumn = document.getElementById("picksColumn");
-					//var picksColumnOffset = picksColumn.offsetTop;
+						//var picksColumn = document.getElementById("picksColumn");
+						//var picksColumnOffset = picksColumn.offsetTop;
 
-					//function scrollPicksColumn() {
-					//	console.log(window.pageYOffset);
-					//	console.log(picksColumnOffset);
+						//function scrollPicksColumn() {
+						//	console.log(window.pageYOffset);
+						//	console.log(picksColumnOffset);
 
-					//	if (window.pageYOffset >= picksColumnOffset) {
-					//		picksColumn.classList.add("sticky");
-					//	} else {
-					//		picksColumn.classList.remove("sticky");
-					//	}
-					//}
+						//	if (window.pageYOffset >= picksColumnOffset) {
+						//		picksColumn.classList.add("sticky");
+						//	} else {
+						//		picksColumn.classList.remove("sticky");
+						//	}
+						//}
 </script>

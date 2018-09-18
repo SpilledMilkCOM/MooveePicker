@@ -46,7 +46,7 @@
 	<div class="clearfix"></div>
 
 	<div class="col-xs-12">
-		<table class="table table-responsive">
+		<table>
 			<tr>
 				@{
 					int movieCount = 0;
@@ -54,14 +54,15 @@
 					foreach (var movie in pick.Movies.OrderByDescending(item => item.Cost))
 					{
 						@* This should override what's in the style (for now) *@
-						var backgroundStyle = (movie.IsBestPerformer) ? "background-color: lightgreen;" : string.Empty;
 
-						<td style="padding: 1px;">
-							<div class="movie-card-mini" data-toggle="tooltip" data-placement="bottom"
-								 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)"
-								 style="@backgroundStyle">
+						//var backgroundStyle = (movie.IsBestPerformer) ? "background-color: lightgreen;" : string.Empty;
+						var backgroundStyle = (movie.IsBestPerformer) ? "box-shadow: 2px 4px 8px 0px lightgreen;" : "box-shadow: 2px 4px 8px 0px grey";
 
-								<img id="@string.Format("{0}{1}{2}", Model.Id, pickCount, movieCount)" class="img-responsive" src="@movie.ImageUrl" alt="@movie.Name" />
+						<td>
+							<div style="border-radius: 3px; padding: 3px;" data-toggle="tooltip" data-placement="bottom"
+								 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)">
+
+								<img id="@string.Format("{0}{1}{2}", Model.Id, pickCount, movieCount)" class="img-responsive" src="@movie.ImageUrl" alt="@movie.Name" style="@backgroundStyle" />
 							</div>
 						</td>
 

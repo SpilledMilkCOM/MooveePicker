@@ -1,5 +1,7 @@
 ﻿@model MoviePicker.WebApp.ViewModels.ExpertPicksViewModel
 
+@using MovieMiner;
+
 @{
 	ViewBag.Title = "Expert Picks";
 }
@@ -8,14 +10,36 @@
 <h5>(@Model.Duration.ToString("N0") ms)</h5>
 
 <div class="row">
-	@foreach (var expertPick in Model.ExpertPicks)
+
+	@if (Model.ExpertPicks.Count > 0)
 	{
-		<h3>@expertPick.Miner.Name</h3>
-		<h4>Bonus ON</h4>
-		@Html.Partial("MovieListMini2", expertPick.MovieList)
-		<div class="clearfix"></div>
-		<h4>Bonus OFF</h4>
-		@Html.Partial("MovieListMini2", expertPick.MovieListBonusOff)
-		<div class="clearfix"></div>
+		foreach (var expertPick in Model.ExpertPicks)
+		{
+			<a class="btn btn-info btn-xs"
+			   href="@expertPick.Miner.UrlSource"
+			   target="_blank"
+			   data-toggle="tooltip"
+			   data-placement="bottom"
+			   title="Click for '@expertPick.Miner.Name' source page... (last updated @string.Format("{0}", ((ICache)expertPick.Miner).LastLoaded.ToString()))">
+				<h3>@expertPick.Miner.Name</h3>
+			</a>
+
+			<h4>Bonus ON</h4>
+			@Html.Partial("MovieListMini2", expertPick.MovieList)
+			<div class="clearfix"></div>
+
+			<h4>Bonus OFF</h4>
+			@Html.Partial("MovieListMini2", expertPick.MovieListBonusOff)
+			<div class="clearfix"></div>
+		}
+	}
+	else
+	{
+		<p>
+			<h4>No experts have weighed in just yet.</h4>
+		</p>
+		<p>
+			<h4>Todd's box office predictions are usually out Tuesday, so stayed tuned!</h4>
+		</p>
 	}
 </div>

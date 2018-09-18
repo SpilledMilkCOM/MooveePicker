@@ -23,11 +23,6 @@ textarea {
     max-width: 280px;
 }
 
-.movie-card-spacing {
-	border-style: none;
-	border-width: thick;
-}
-
 /* Put stuff in this class style for later use. */
 
 .movie-holding-pen {
@@ -48,12 +43,13 @@ textarea {
 }
 
 .movie-card-mini {
-	background-color: lightyellow;
-	border-style: solid;
-	border-width: thin;
-	border-color: grey;
-	border-radius: 2px;
-	padding: 2px;
+	border-radius: 3px;
+	padding: 3px;
+}
+
+.movie-card-spacing {
+	border-style: none;
+	border-width: thick;
 }
 
 .movie-card-title {
