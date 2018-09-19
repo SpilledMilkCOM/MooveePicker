@@ -255,7 +255,8 @@ namespace MoviePicker.WebApp.Utilities
 
 			// Twitter render size for large format.
 			width = 600;
-			height = 300;
+			//height = 300;
+			height = 314;
 
 			// Scale the image width (down) proportionate to the height.
 			oldWidth = (int)(oldWidth * (double)height / oldHeight);
