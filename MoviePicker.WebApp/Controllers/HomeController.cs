@@ -666,10 +666,6 @@ namespace MoviePicker.WebApp.Controllers
 				{
 					movie.Earnings = decimalList[idx++];
 				}
-				//else
-				//{
-				//	movie.Earnings = 0;
-				//}
 			}
 
 			var intList = _controllerUtility.GetRequestIntList(Request, "wl");
@@ -848,7 +844,7 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.Weight6 = _minerModel.Miners[index++].Weight;
 			_viewModel.Weight7 = _minerModel.Miners[index++].Weight;
 
-			var myBoxOffice = _minerModel.Miners[1].Movies;
+			var myBoxOffice = _minerModel.Miners[MY_MINER_IDX].Movies;
 
 			index = 0;
 

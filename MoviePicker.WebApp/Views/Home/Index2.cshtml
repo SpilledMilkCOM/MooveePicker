@@ -59,16 +59,26 @@
 
 			if (idx < splitValues.length) {
 				$("#boId" + (idx + 1)).val(splitValues[idx].trim());
-				$("#boId" + (idx + 1)).val(splitValues[idx].trim());
+			}
+			else {
+				$("#boId" + (idx + 1)).val("0");
 			}
 		}
 
-		clearMoviePicksPosters('bonusOnMovieList');
-		clearMoviePicksPosters('bonusOffMovieList');
+		clearWeights();
+
+		var parameters = parseBoxOfficeAndWeights();
+
+		console.log(parameters);
+
+		clickPicks();
+
+		//clearMoviePicksPosters('bonusOnMovieList');
+		//clearMoviePicksPosters('bonusOffMovieList');
 
 		// Blank out the field so you know you clicked on something.
 
-		$("#pasteAreaId").val("");
+		//$("#pasteAreaId").val("");
 	}
 
 	function clickPicks() {
@@ -131,7 +141,7 @@
 			// Replace all commas (global g parameter on regular expression)
 			boList += $("#boId" + idx).val().replace(/\,/g, "").replace("$", "");
 
-			console.log("boList");
+			console.log(boList);
 		}
 
 		for (idx = @minerCount; idx <= 7; idx++) {
