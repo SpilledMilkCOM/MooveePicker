@@ -28,7 +28,15 @@ namespace MoviePicker.Msf
 			EnableBestPerformer = true;
 		}
 
-        public bool DisplayDebugMessage { get; set; }
+		public void Clear()
+		{
+			_bestPerformer = null;
+			_bestPerformers = null;
+			_enableBestPerformer = true;
+			_movies.Clear();
+		}
+
+		public bool DisplayDebugMessage { get; set; }
 
 		/// <summary>
 		/// Best Performer will return a value ONLY if it is the BEST performer (and there are no ties)

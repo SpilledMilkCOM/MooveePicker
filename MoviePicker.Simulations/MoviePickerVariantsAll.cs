@@ -46,6 +46,9 @@ namespace MooveePicker.Simulations
 			EarningsAdjustmentMax = EARNINGS_ADJUSTMENT_MAX;
 		}
 
+		public void Clear()
+		{ }
+
 		public IMovie BestPerformer
 		{
 			get

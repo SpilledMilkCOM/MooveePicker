@@ -25,6 +25,13 @@ namespace MoviePicker.Msf
 			EnableBestPerformer = true;
 		}
 
+		public void Clear()
+		{
+			_movies.Clear();
+			EnableBestPerformer = false;
+			EnableBestPerformer = true;
+		}
+
 		public bool DisplayDebugMessage { get; set; }
 
 		/// <summary>

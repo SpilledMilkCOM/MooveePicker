@@ -157,6 +157,14 @@ namespace MooveePicker
 			return _topLists.OrderByDescending(list => list.TotalEarnings).ToList();
 		}
 
+		public void Clear()
+		{
+			_enableBestPerformer = true;
+			_bestPerformers = null;
+			_movies.Clear();
+			_processedHashes.Clear();
+		}
+
 		//----==== PRIVATE ====----------------------------------------------------------------------
 
 		private void AddToTopList(IMovieList sample)

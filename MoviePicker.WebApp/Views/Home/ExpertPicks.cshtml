@@ -15,13 +15,13 @@
 	{
 		foreach (var expertPick in Model.ExpertPicks)
 		{
-			<a class="btn btn-info btn-xs"
+			<a class="btn btn-info btn-lg"
 			   href="@expertPick.Miner.UrlSource"
 			   target="_blank"
 			   data-toggle="tooltip"
 			   data-placement="bottom"
 			   title="Click for '@expertPick.Miner.Name' source page... (last updated @string.Format("{0}", ((ICache)expertPick.Miner).LastLoaded.ToString()))">
-				<h3>@expertPick.Miner.Name</h3>
+					@expertPick.Miner.Name
 			</a>
 
 			<h4>Bonus ON</h4>

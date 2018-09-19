@@ -28,5 +28,7 @@ namespace MoviePicker.Common.Interfaces
 		IMovieList ChooseBest();
 
 		List<IMovieList> ChooseBest(int topCount);
+
+		void Clear();
 	}
 }

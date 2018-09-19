@@ -101,7 +101,7 @@ namespace MoviePicker.WebApp.Controllers
 						}
 					}
 
-					_moviePicker.EnableBestPerformer = true;
+					_moviePicker.Clear();
 					_moviePicker.AddMovies(minerMovies);
 
 					var pickList = _moviePicker.ChooseBest(3);

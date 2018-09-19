@@ -53,19 +53,18 @@
 		var boValues = $("#pasteAreaId").val();
 		var splitValues = boValues.split("\n");
 
-		for (idx = 0; idx < 15; idx++) {
+		for (idx = 0; idx < 15 && idx < splitValues.length; idx++) {
 
 			//console.log(idx + " = " + splitValues[idx]);
 
 			if (idx < splitValues.length) {
 				$("#boId" + (idx + 1)).val(splitValues[idx].trim());
-				$("#bomId" + (idx + 1)).val(splitValues[idx].trim());
-			}
-			else {
 				$("#boId" + (idx + 1)).val(splitValues[idx].trim());
-				$("#bomId" + (idx + 1)).val(splitValues[idx].trim());
 			}
 		}
+
+		clearMoviePicksPosters('bonusOnMovieList');
+		clearMoviePicksPosters('bonusOffMovieList');
 
 		// Blank out the field so you know you clicked on something.
 
@@ -74,24 +73,26 @@
 
 	function clickPicks() {
 
-		//console.log("clickPicks");
+		console.log("clickPicks");
 
-		var parameters = parseBoxOfficeWeights();
+		var parameters = parseBoxOfficeAndWeights();
 
-		//console.log(parameters);
+		console.log(parameters);
 
 		var url = "/home/index2?" + parameters;
 
 		var baseUrl = parseBaseUrl();
 
+		console.log(baseUrl + url);
+
 		window.location.href = baseUrl + url;
 
-		//console.log(window.location.href);
+		console.log(window.location.href);
 	}
 
 	function clickTracking() {
 
-		var parameters = parseBoxOfficeWeights();
+		var parameters = parseBoxOfficeAndWeights();
 
 		var url = "/home/tracking?" + parameters;
 
@@ -114,7 +115,7 @@
 		return baseUrl;
 	}
 
-	function parseBoxOfficeWeights() {
+	function parseBoxOfficeAndWeights() {
 
 		var boList = "";
 		var weightList = "";
@@ -129,6 +130,8 @@
 
 			// Replace all commas (global g parameter on regular expression)
 			boList += $("#boId" + idx).val().replace(/\,/g, "").replace("$", "");
+
+			console.log("boList");
 		}
 
 		for (idx = @minerCount; idx <= 7; idx++) {
@@ -153,6 +156,8 @@
 		else {
 			weightList = "0," + weightList;
 		}
+
+		console.log(boList);
 
 		return "bo=" + boList + "&wl=" + weightList;
 	}

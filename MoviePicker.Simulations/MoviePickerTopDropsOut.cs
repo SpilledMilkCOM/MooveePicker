@@ -25,6 +25,11 @@ namespace MooveePicker
 			_movieListPrototype = movieListPrototype;
 		}
 
+		public void Clear()
+		{
+
+		}
+
 		public IEnumerable<IMovie> Movies => _moviePicker.Movies;
 
 		public int TotalComparisons { get; set; }
