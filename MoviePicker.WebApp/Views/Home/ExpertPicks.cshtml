@@ -21,7 +21,7 @@
 			   data-toggle="tooltip"
 			   data-placement="bottom"
 			   title="Click for '@expertPick.Miner.Name' source page... (last updated @string.Format("{0}", ((ICache)expertPick.Miner).LastLoaded.ToString()))">
-					@expertPick.Miner.Name
+				@expertPick.Miner.Name
 			</a>
 
 			<h4>Bonus ON</h4>
@@ -31,6 +31,9 @@
 			<h4>Bonus OFF</h4>
 			@Html.Partial("MovieListMini2", expertPick.MovieListBonusOff)
 			<div class="clearfix"></div>
+
+			<div class="row-divider"> </div>
+			<div class="row-divider"> </div>
 		}
 	}
 	else
