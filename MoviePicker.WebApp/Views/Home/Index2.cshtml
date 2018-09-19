@@ -72,13 +72,6 @@
 		console.log(parameters);
 
 		clickPicks();
-
-		//clearMoviePicksPosters('bonusOnMovieList');
-		//clearMoviePicksPosters('bonusOffMovieList');
-
-		// Blank out the field so you know you clicked on something.
-
-		//$("#pasteAreaId").val("");
 	}
 
 	function clickPicks() {
@@ -175,8 +168,10 @@
 	function weightLostFocus(oldValue, newValue) {
 
 		if (oldValue != newValue) {
-			clearMoviePicksPosters('bonusOnMovieList');
-			clearMoviePicksPosters('bonusOffMovieList');
+			//clearMoviePicksPosters('bonusOnMovieList');
+			//clearMoviePicksPosters('bonusOffMovieList');
+
+			clickPicks();
 		}
 	}
 </script>
