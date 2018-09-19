@@ -12,18 +12,16 @@
 <div class="row">
 	<div class="col-sm-1"> </div>
 	<div class="col-sm-8">
-		I'm still not sold as to why the 2nd, 3rd, etc. slots are valuable so only the winner is posted.
-		Oh sure, the loser places are somewhat interesting, but if you're confident with your numbers then that's all they are...  Lineups that will lose.
 		There are two tables that show the picks WITH the bonus ON and with it turned off.
 		The third table shows how the effeciencies stack up.  <strong>REMEMBER</strong>, these are <strong>YOUR</strong> numbers.
-		The last table only takes the top 5 ranked by efficiency and shows in red what percentage that movie has to drop in order to be overtaken by second place.
 		The other percentages are the values that those movies would have to GAIN if the top ranked movie held its number.
-		I feel like this table is more helpful that knowing what the 2nd, 3rd, etc. slots will be.
+		I feel like this table is more helpful than knowing what the 2nd, 3rd, etc. slots will be.
 		This may sway your decision on what your bonus movie might be.
-
 
 		@if (Model.IsTracking)
 		{
+			<div class="row-divider"> </div>
+
 			<a class="btn btn-info btn-xs"
 			   href="@string.Format("Tracking?{0}", Request.QueryString)"
 			   data-toggle="tooltip"
