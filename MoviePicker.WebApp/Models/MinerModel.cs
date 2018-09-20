@@ -190,9 +190,9 @@ namespace MoviePicker.WebApp.Models
 
 					if (result)
 					{
-						//imageUtil.AdjustSize(localFileName, 300, 450);
+						//imageUtil.AdjustSize(localFileName, 300, 450);		// Closer to original size
 						//imageUtil.AdjustAspectRatio(localFileName, 2 / 3m);
-						imageUtil.AdjustSize(localFileName, 200, 300);
+						imageUtil.AdjustSize(localFileName, 200, 300);			// Shrink image a bit.
 					}
 
 					if (movie.Day.HasValue)
