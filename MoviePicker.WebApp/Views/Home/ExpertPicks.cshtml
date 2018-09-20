@@ -15,25 +15,25 @@
 	{
 		foreach (var expertPick in Model.ExpertPicks)
 		{
-			<a class="btn btn-info btn-lg"
-			   href="@expertPick.Miner.UrlSource"
-			   target="_blank"
-			   data-toggle="tooltip"
-			   data-placement="bottom"
-			   title="Click for '@expertPick.Miner.Name' source page... (last updated @string.Format("{0}", ((ICache)expertPick.Miner).LastLoaded.ToString()))">
-				@expertPick.Miner.Name
-			</a>
+			<div class="col-md-6">
+				<div class="row-divider"> </div>
 
-			<h4>Bonus ON</h4>
-			@Html.Partial("MovieListMini2", expertPick.MovieList)
-			<div class="clearfix"></div>
+				<div class="col-xs-12">
+					<a class="btn btn-info"
+					   href="@expertPick.Miner.UrlSource"
+					   target="_blank"
+					   data-toggle="tooltip"
+					   data-placement="bottom"
+					   title="Click for '@expertPick.Miner.Name' source page... (last updated @string.Format("{0}", ((ICache)expertPick.Miner).LastLoaded.ToString()))">
+						@expertPick.Miner.Name
+					</a>
+				</div>
 
-			<h4>Bonus OFF</h4>
-			@Html.Partial("MovieListMini2", expertPick.MovieListBonusOff)
-			<div class="clearfix"></div>
+				@Html.Partial("MovieListMini2", expertPick.MovieList)
 
-			<div class="row-divider"> </div>
-			<div class="row-divider"> </div>
+				@Html.Partial("MovieListMini2", expertPick.MovieListBonusOff)
+
+			</div>
 		}
 	}
 	else
@@ -45,4 +45,5 @@
 			<h4>Todd's box office predictions are usually out Tuesday, so stayed tuned!</h4>
 		</p>
 	}
+
 </div>

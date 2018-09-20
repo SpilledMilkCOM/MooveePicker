@@ -1,10 +1,16 @@
 ﻿// ----==== For Bootstrap ====-------------------------------------------------------------------
 
+// Uses JQuery to attach a function to load and resize events.
+
 $(window).on("load resize", function () {
+	// Change the height style attribute of the class .fill-screen to the window's inner height.
+
 	$(".fill-screen").css("height", window.innerHeight);
 });
 
 $(document).ready(function () {
+	// Change any element whose data-toggle attribute equals "tooltip" to execute the tooltip() method.
+
 	$('[data-toggle="tooltip"]').tooltip();
 });
 

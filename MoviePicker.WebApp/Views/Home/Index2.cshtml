@@ -253,8 +253,8 @@
 			<div>
 				<h4>Bonus Comparisons</h4>
 
-				<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Rank</div>
-				<div class="col-sm-3 hidden-xs" style="font-weight: bold;">Name</div>
+				@*<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Rank</div>*@
+				<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
 				<div class="col-sm-1 hidden-xs" style="font-weight: bold;">BUX</div>
 				<div class="col-sm-2 hidden-xs" style="font-weight: bold; text-align: right;">Earnings</div>
 				<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: center;">Efficiency</div>
@@ -269,11 +269,11 @@
 
 						foreach (var movie in Model.Movies.OrderByDescending(item => item.Efficiency))
 						{
-							var backgroundColor = movieCount % 2 == 0 ? "background-color: lightgrey;" : string.Empty;
+							var backgroundColor = movieCount == 0 ? "background-color: lightgreen;" : (movieCount % 2 == 0 ? "background-color: lightgrey;" : string.Empty);
 							var rank = Model.Rank(movie);
 
-							<div class="col-sm-1 hidden-xs" style="@backgroundColor text-align: right;">@rank</div>
-							<div class="col-xs-12 col-sm-3" style="@backgroundColor font-weight: bold;">@movie.Name</div>
+							@*<div class="col-sm-1 hidden-xs" style="@backgroundColor text-align: right;">@rank</div>*@
+							<div class="col-xs-12 col-sm-4" style="@backgroundColor font-weight: bold;">@movie.Name</div>
 							<div class="col-xs-3 hidden-sm hidden-md hidden-lg" style="@backgroundColor font-weight: bold;">BUX:</div>
 							<div class="col-xs-3 col-sm-1" style="@backgroundColor text-align: right;">@movie.Cost</div>
 
@@ -496,7 +496,7 @@
 								}
 
 								var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "0px";
-								var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px lightgreen;" : "box-shadow: 2px 4px 8px 0px grey";
+								var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey";
 
 								<td style="padding: 3px;">
 
@@ -506,21 +506,8 @@
 
 										<img class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
 
-										@*title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"*@
-
 										@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
 										@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
-										@*<div>
-												@movie.Name
-											</div>
-										*@
-
-										@*<div style="font-weight: bold;">
-												@movie.Cost
-											</div>
-										*@
-
-										@*<rect width="200px" height="100px" style="background-color: white; opacity: 0.6;" />*@
 
 										<table style="position: relative; top: -50px; left: @tableIndent; float: left;">
 											<tr>

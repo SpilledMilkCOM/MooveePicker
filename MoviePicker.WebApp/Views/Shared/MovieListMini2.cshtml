@@ -7,7 +7,7 @@
 @foreach (var pick in Model.Picks)
 {
 	<div class="col-sm-3">
-		<h5>@Model.ComparisonHeader</h5>
+		<h5 style="font-weight: bold;">@Model.ComparisonHeader</h5>
 	</div>
 	<div class="col-sm-4">
 		<h5>Earnings: $@pick.TotalEarnings.ToString("N0")</h5>
@@ -43,8 +43,6 @@
 		</div>
 	}
 
-	<div class="clearfix"></div>
-
 	<div class="col-xs-12">
 		<table>
 			<tr>
@@ -56,13 +54,13 @@
 						@* This should override what's in the style (for now) *@
 
 						//var backgroundStyle = (movie.IsBestPerformer) ? "background-color: lightgreen;" : string.Empty;
-						var backgroundStyle = (movie.IsBestPerformer) ? "box-shadow: 2px 4px 8px 0px lightgreen;" : "box-shadow: 2px 4px 8px 0px grey";
+						var backgroundStyle = (movie.IsBestPerformer) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey;";
 
-						<td>
-							<div style="border-radius: 3px; padding: 3px;" data-toggle="tooltip" data-placement="bottom"
+						<td style="padding: 3px;">
+							<div data-toggle="tooltip" data-placement="bottom"
 								 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)">
 
-								<img id="@string.Format("{0}{1}{2}", Model.Id, pickCount, movieCount)" class="img-responsive" src="@movie.ImageUrl" alt="@movie.Name" style="@backgroundStyle" />
+								<img id="@string.Format("{0}{1}{2}", Model.Id, pickCount, movieCount)" class="img-responsive" src="@movie.ImageUrl" alt="@movie.Name" style="border-radius: 3px; @backgroundStyle" />
 							</div>
 						</td>
 
@@ -72,8 +70,6 @@
 			</tr>
 		</table>
 	</div>
-
-	<div class="clearfix"></div>
 
 	pickCount++;
 }
