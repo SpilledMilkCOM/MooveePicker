@@ -7,7 +7,7 @@ namespace MoviePicker.Msf
 	/// <summary>
 	/// needed as MSF solves with doubles not decimals
 	/// </summary>
-	[DebuggerDisplay("Id = {Id} - Name = {Name} ${Earnings}")]
+	[DebuggerDisplay("Id = {Id} - Name = {Name} ${Earnings} {IsBestPerformerDebugTag}")]
 	public class MsfMovieWrapper : IMovie
 	{
 		private IMovie _movie;
@@ -80,6 +80,8 @@ namespace MoviePicker.Msf
 			get { return _movie.IsBestPerformer; }
 			set { _movie.IsBestPerformer = value; }
 		}
+
+		public string IsBestPerformerDebugTag => IsBestPerformer ? "BEST" : string.Empty;
 
 		public string ImageUrl
 		{

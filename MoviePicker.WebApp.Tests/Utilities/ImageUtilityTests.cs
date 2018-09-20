@@ -162,6 +162,17 @@ namespace MoviePicker.WebApp.Tests.Models
 			Assert.IsNotNull(filePath);
 		}
 
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void ImageUtility_AdjustSize_Antman()
+		{
+			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
+			var test = CreateTestObject();
+
+			var filePath = test.AdjustSize($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg", 200, 300);
+
+			Assert.IsNotNull(filePath);
+		}
+
 		private ImageUtility CreateTestObject()
 		{
 			return _unity.Resolve<ImageUtility>();

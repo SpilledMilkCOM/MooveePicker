@@ -101,8 +101,10 @@ namespace MoviePicker.WebApp.Controllers
 						}
 					}
 
+					var clonedMovies = CloneList(minerMovies);
+
 					_moviePicker.Clear();
-					_moviePicker.AddMovies(minerMovies);
+					_moviePicker.AddMovies(clonedMovies);
 
 					var pickList = _moviePicker.ChooseBest(3);
 
@@ -115,15 +117,11 @@ namespace MoviePicker.WebApp.Controllers
 
 					// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
 
-					var clonedList = new List<IMovie>();
+					clonedMovies = CloneList(minerMovies);
 
-					foreach (var movie in minerMovies)
-					{
-						clonedList.Add(movie.Clone());
-					}
-
-					_moviePicker.AddMovies(clonedList);
+					_moviePicker.Clear();
 					_moviePicker.EnableBestPerformer = false;
+					_moviePicker.AddMovies(minerMovies);
 
 					pickList = _moviePicker.ChooseBest(3);
 
@@ -347,6 +345,18 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
+
+		private List<IMovie> CloneList(IEnumerable<IMovie> list)
+		{
+			var result = new List<IMovie>();
+
+			foreach (var movie in list)
+			{
+				result.Add(movie.Clone());
+			}
+
+			return result;
+		}
 
 		private MorePicksViewModel ConstructMorePicksViewModel()
 		{

@@ -111,7 +111,8 @@ namespace MoviePicker.WebApp.Utilities
 							{
 								graphics.Clear(Color.Black);
 
-								graphics.DrawImage(image, 0, 0, image.Width, image.Height);
+								// Make sure you scale down the original image to the size of the new bitmap.
+								graphics.DrawImage(image, 0, 0, (float)width, (float)height);
 							}
 
 							// Save the resized image to the 
