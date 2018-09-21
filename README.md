@@ -57,3 +57,14 @@ http://mooveepicker.azurewebsites.net/home/picks?wl=0,3,3,3,1,1,6
 * More about Bootstrap and columns within columns.
 * Phone browsers are weird.
 * Browsers support PNG file format as a "[favicon](https://en.wikipedia.org/wiki/Favicon)" (don't need the old ICO file anymore - YAY!)
+
+##### Azure Notes
+* Application Settings
+  * Change from default 32 bit to 64 bit
+  * Turned OFF ARR Affinity to improve performance
+  * Added connection string here
+* Added some alerts
+  * A classic alert for memory
+  * A new alert that encomasses just about everything else.
+* Added an auto scale out in the App Service Plan  >80% memory +1 instance.
+  * Added notification
