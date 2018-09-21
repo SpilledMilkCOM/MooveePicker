@@ -205,8 +205,17 @@ namespace MoviePicker.WebApp.Utilities
 						//graphics.Clear(Color.White);
 						graphics.Clear(Color.Black);
 
-						foreach (var fileName in fileNames)
+						for (int fileIndex = 0; fileIndex < COLUMNS * 2; fileIndex++)
 						{
+							var fileName = $"{imagePath}{Path.DirectorySeparatorChar}MooveePosterBlank.jpg";
+
+							if (fileIndex < fileNames.Count)
+							{
+								// Override the blank file with one that was chosen.
+
+								fileName = fileNames[fileIndex];
+							}
+
 							using (Image image = Image.FromFile(fileName)
 								, plusImage = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}green-plus-hi.png"))
 							{
