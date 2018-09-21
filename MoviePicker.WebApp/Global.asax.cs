@@ -36,7 +36,7 @@ namespace MoviePicker.WebApp
 
 			var abbreviatedStackTrace = ex.StackTrace.Substring(0, trimIndex);
 
-			string url = helper.Action("error", "home", routeValues: new { message = $"{ex.Message} -- {abbreviatedStackTrace}" });
+			string url = helper.Action("Error", "Home", routeValues: new { message = $"{ex.Message} -- {abbreviatedStackTrace}" });
 
 			Response.Redirect(url);
 		}

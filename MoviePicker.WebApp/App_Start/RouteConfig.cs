@@ -13,6 +13,9 @@ namespace MoviePicker.WebApp
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+			// Make sure if you use capitals you stick to it.
+			// Application Insights is case sensitive so "operations" will be grouped accordingly (and scattered if you don't get your case right).
+
 			routes.MapRoute(
 				name: "Default",
 				url: "{controller}/{action}/{id}",

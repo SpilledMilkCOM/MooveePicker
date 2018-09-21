@@ -50,7 +50,7 @@
 
 		var parameters = parseBoxOfficeWeights()
 
-		var url = "/home/picks?" + parameters
+		var url = "/Home/Picks?" + parameters
 
 		var baseUrl = parseBaseUrl()
 
@@ -61,7 +61,7 @@
 
 		var parameters = parseBoxOfficeWeights()
 
-		var url = "/home/tracking?" + parameters
+		var url = "/Home/Tracking?" + parameters
 
 		var baseUrl = parseBaseUrl()
 
@@ -74,7 +74,7 @@
 
 		var parameters = parseBoxOfficeWeights(viewName)
 
-		var url = "/home/index?" + parameters
+		var url = "/Home/Index?" + parameters
 
 		var baseUrl = parseBaseUrl()
 
@@ -352,7 +352,7 @@
 								else
 								{
 									<a class="btn btn-success"
-									   href="~/home/picks?@string.Format("{0}", Model.WeightListForMiner(miner))"
+									   href="~/Home/Picks?@string.Format("{0}", Model.WeightListForMiner(miner))"
 									   data-toggle="tooltip"
 									   data-placement="bottom"
 									   title="Click for '@miner.Name' dedicated picks...">@miner.Name</a>
@@ -640,7 +640,7 @@
 										else
 										{
 											<a class="btn btn-success btn-xs"
-											   href="~/home/picks?@string.Format("{0}", Model.WeightListForMiner(miner))"
+											   href="~/Home/Picks?@string.Format("{0}", Model.WeightListForMiner(miner))"
 											   data-toggle="tooltip"
 											   data-placement="bottom"
 											   title="Click for '@miner.Name' dedicated picks...">@miner.Abbreviation</a>
