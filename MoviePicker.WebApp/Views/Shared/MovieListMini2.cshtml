@@ -58,15 +58,16 @@
 					{
 						var backgroundStyle = "box-shadow: 2px 4px 8px 0px grey;";
 						var imageUrl = "/Images/MooveePosterBlank.jpg";
-						var movieEarnings = 0;
+						var movieEarnings = -2000000m;
 						var movieName = "This Screen Intentionally Left Blank";
 
 						if (movieIndex < orderedMovies.Count)
 						{
 							var movie = orderedMovies[movieIndex];
 
-							imageUrl = orderedMovies[movieIndex].ImageUrl;
-							movieName = orderedMovies[movieIndex].Name;
+							imageUrl = movie.ImageUrl;
+							movieEarnings = movie.Earnings;
+							movieName = movie.Name;
 
 							if (movie.IsBestPerformer)
 							{
