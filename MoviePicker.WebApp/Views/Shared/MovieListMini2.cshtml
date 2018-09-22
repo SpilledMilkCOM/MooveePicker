@@ -1,6 +1,10 @@
 ﻿@model MoviePicker.WebApp.Interfaces.IMovieListModel
 
+@using MoviePicker.Common.Interfaces;
+
 @{
+	const int MAX_SCREENS = 8;
+
 	int pickCount = 0;
 }
 
@@ -48,19 +52,40 @@
 			<tr>
 				@{
 					int movieCount = 0;
+					var orderedMovies = pick.Movies.OrderByDescending(item => item.Cost).ToList();
 
-					foreach (var movie in pick.Movies.OrderByDescending(item => item.Cost))
+					for (int movieIndex = 0; movieIndex < MAX_SCREENS; movieIndex++)
 					{
-						@* This should override what's in the style (for now) *@
+						var backgroundStyle = "box-shadow: 2px 4px 8px 0px grey;";
+						var imageUrl = "/Images/MooveePosterBlank.jpg";
+						var movieEarnings = -2000000m;
+						var movieName = "This Screen Intentionally Left Blank";
 
-						//var backgroundStyle = (movie.IsBestPerformer) ? "background-color: lightgreen;" : string.Empty;
-						var backgroundStyle = (movie.IsBestPerformer) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey;";
+						if (movieIndex < orderedMovies.Count)
+						{
+							var movie = orderedMovies[movieIndex];
+
+							imageUrl = movie.ImageUrl;
+							movieEarnings = movie.Earnings;
+							movieName = movie.Name;
+
+							if (movie.IsBestPerformer)
+							{
+								backgroundStyle = "box-shadow: 2px 4px 8px 0px green;";
+							}
+						}
+
+						@* This should override what's in the style (for now) *@
 
 						<td style="padding: 3px;">
 							<div data-toggle="tooltip" data-placement="bottom"
-								 title="@string.Format("{0} - ${1:N0}", movie.Name, movie.Earnings)">
+								 title="@string.Format("{0} - ${1:N0}", movieName, movieEarnings)">
 
-								<img id="@string.Format("{0}{1}{2}", Model.Id, pickCount, movieCount)" class="img-responsive" src="@movie.ImageUrl" alt="@movie.Name" style="border-radius: 3px; @backgroundStyle" />
+								<img id="@string.Format("{0}{1}{2}", Model.Id, pickCount, movieCount)"
+									 class="img-responsive"
+									 src="@imageUrl"
+									 alt="@movieName"
+									 style="border-radius: 3px; @backgroundStyle" />
 							</div>
 						</td>
 

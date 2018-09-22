@@ -231,6 +231,7 @@
     <Content Include="Images\Moovee Picker Logo Vertical Strip.png" />
     <Content Include="Images\MooveePickerCow512x512.png" />
     <Content Include="Images\MooveePickerLogo512x512.png" />
+    <Content Include="Images\MooveePosterBlank.jpg" />
     <Content Include="Images\MooveePosterNotFound.jpg" />
     <Content Include="Images\MooveePosterRecalculate.jpg" />
     <Content Include="Images\Saturday-mask.png" />
