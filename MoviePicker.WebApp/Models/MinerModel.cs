@@ -356,6 +356,12 @@ namespace MoviePicker.WebApp.Models
 
 					minerData[index].Clear();
 				}
+				else
+				{
+					// Remove movies that did not get mapped.  Most likely duplicates or bad data.
+
+					FilterOutMovieIdZero(minerData[index]);
+				}
 			}
 
 			// BO Mojo has a HUGE list of movies that were mined
@@ -378,12 +384,15 @@ namespace MoviePicker.WebApp.Models
 			var movies = miner.Movies;                                              // Returns a copy of the the movies.
 			var moviesToRemove = movies.Where(movie => movie.Id == 0).ToList();     // Need a new list of this
 
-			foreach (var movie in moviesToRemove)
+			if (moviesToRemove.Any())
 			{
-				movies.Remove(movie);
-			}
+				foreach (var movie in moviesToRemove)
+				{
+					movies.Remove(movie);
+				}
 
-			miner.SetMovies(movies);     // Update the internal list with the reduced size.
+				miner.SetMovies(movies);     // Update the internal list with the reduced size.
+			}
 		}
 
 		/// <summary>

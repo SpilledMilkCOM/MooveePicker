@@ -190,7 +190,7 @@ namespace MovieMiner
 											movie = null;
 										}
 
-										if (movie != null)
+										if (movie != null && !result.Contains(movie))
 										{
 											if (articleDate.HasValue)
 											{

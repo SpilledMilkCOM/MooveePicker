@@ -203,6 +203,16 @@ namespace MoviePicker.Common
 					result = movieName.EndsWith(testMovieName) || testMovieName.EndsWith(movieName);
 				}
 
+				if (result)
+				{
+					// Fail if there is a lot of noise.
+
+					if(movieName.Length > testMovieName.Length * 2 || testMovieName.Length > movieName.Length * 2)
+					{
+						result = false;
+					}
+				}
+
 				if (!result)
 				{
 					// Compare the first X characters

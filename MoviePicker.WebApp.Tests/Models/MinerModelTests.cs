@@ -55,9 +55,9 @@ namespace MoviePicker.WebApp.Tests.Models
 
 			Logger.WriteLine("=========================== COUPE'S NUMBERS ===========================");
 
-			foreach (var movie in test.Miners[3].Movies)
+			foreach (var movie in test.Miners[5].Movies)
 			{
-				Logger.WriteLine($"{movie.Id}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost}));");
+				Logger.WriteLine($"{movie.Id}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
 			}
 		}
 

@@ -54,5 +54,23 @@ namespace MoviePicker.Tests
 
 			Assert.IsTrue(movie1.Equals(movie2), "The movie names do NOT equal");
 		}
+
+		[TestMethod, TestCategory("Mock")]
+		public void Movie_Equals_Case_Insensitive_Match()
+		{
+			var movie1 = new Movie { Name = "The House with a Clock in its Walls" };
+			var movie2 = new Movie { Name = "The House with a Clock in Its Walls" };
+
+			Assert.IsTrue(movie1.Equals(movie2), "The movie names do NOT equal");
+		}
+
+		[TestMethod, TestCategory("Mock")]
+		public void Movie_Equals_Case_Insensitive_Match_With_Noise()
+		{
+			var movie1 = new Movie { Name = "Hey Im Coupe blah blah blah blah blah The House with a Clock in its Walls" };
+			var movie2 = new Movie { Name = "The House with a Clock in Its Walls" };
+
+			Assert.IsFalse(movie1.Equals(movie2), "The movie names equal");
+		}
 	}
 }
