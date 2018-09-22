@@ -46,6 +46,22 @@ namespace MoviePicker.WebApp.Tests.Models
 		}
 
 		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_CoupesNumbers()
+		{
+			var test = new MinerModel(true);
+
+			Assert.IsNotNull(test.Miners);
+			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
+
+			Logger.WriteLine("=========================== COUPE'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners[3].Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost}));");
+			}
+		}
+
+		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_To10pMoviePicker()
 		{
 			var test = new MinerModel(true);
@@ -124,7 +140,7 @@ namespace MoviePicker.WebApp.Tests.Models
 				3,			// Todd Thatcher
 				3,			// Box Office Pro
 				4,			// Box Office Mojo
-				3,			// Coupe (Cultured Vultures)
+				3,			// Coupe (was Cultured Vultures)
 				1,			// Box Office Prophet
 				6			// Box Office Report
 			};

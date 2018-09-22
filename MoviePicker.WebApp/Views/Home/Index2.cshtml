@@ -188,7 +188,7 @@
 
 		@* ================================================================================================================================== PICKS COLUMN ==== *@
 
-		<div id="picksColumn" class="col-md-7">
+		<div class="col-md-7">
 			<div class="col-xs-4" style="padding-top: 20px;">
 				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
 			</div>
@@ -208,7 +208,7 @@
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
 
-			<div>
+			<div  id="picksColumn">
 				@if (Model.MovieList != null)
 				{
 					@Html.Partial("MovieListMini2", Model.MovieList)
@@ -350,15 +350,12 @@
 			<div class="col-md-12">
 				<h4>Weekend ending @weekendEnding (@Model.Duration.ToString("N0") ms)</h4>
 
-				<div class="col-sm-5">
-					<textarea class="col-xs-12 form-control" id="pasteAreaId" rows="5" style="background-color: lightcyan; vertical-align: top;"
-							  placeholder="Paste your 15 Box Office values here (use CR/LF to separate values)"></textarea>
+				<div class="col-xs-10">
+					<textarea class="form-control" id="pasteAreaId" rows="3" style="background-color: lightcyan; vertical-align: top;"
+							  placeholder="Paste your 15 Box Office values here (use CR/LF to separate values) and then press 'Import'"></textarea>
 				</div>
-				<div class="col-sm-7 hidden-xs hidden-sm">
-					<div>Paste your Box Office values into the field to load your custom picks and then press "Import Box Office"</div>
-				</div>
-				<div class="col-sm-5">
-					<input class="btn btn-info" onclick="clickPasteBoxOffice()" type="button" value="Import Box Office" data-toggle="tooltip" data-placement="bottom" title="Click to set Box Office predictions." />
+				<div class="col-xs-2">
+					<input class="btn btn-info" onclick="clickPasteBoxOffice()" type="button" value="Import" data-toggle="tooltip" data-placement="bottom" title="Click to set Box Office predictions." />
 				</div>
 			</div>
 
@@ -497,7 +494,7 @@
 									divBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 								}
 
-								var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "0px";
+								var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "2px";
 								var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey";
 
 								<td style="padding: 3px;">
@@ -549,19 +546,19 @@
 }
 
 <script type="text/javascript">
-		//window.onscroll = function () { scrollPicksColumn() };
+		window.onscroll = function () { scrollPicksColumn() };
 
-		//var picksColumn = document.getElementById("picksColumn");
-		//var picksColumnOffset = picksColumn.offsetTop;
+		var picksColumn = document.getElementById("picksColumn");
+		var picksColumnOffset = picksColumn.offsetTop;
 
-		//function scrollPicksColumn() {
-		//	console.log(window.pageYOffset);
-		//	console.log(picksColumnOffset);
+		function scrollPicksColumn() {
+			console.log(window.pageYOffset);
+			console.log(picksColumnOffset);
 
-		//	if (window.pageYOffset >= picksColumnOffset) {
-		//		picksColumn.classList.add("sticky");
-		//	} else {
-		//		picksColumn.classList.remove("sticky");
-		//	}
-		//}
+			if (window.pageYOffset >= picksColumnOffset) {
+				picksColumn.classList.add("sticky");
+			} else {
+				picksColumn.classList.remove("sticky");
+			}
+		}
 </script>

@@ -80,7 +80,6 @@ textarea {
 .sticky {
 	position: fixed;
 	top: 0;
-	width: 100%;
 }
 
 .tooltip-extra {

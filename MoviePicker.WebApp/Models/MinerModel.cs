@@ -50,7 +50,7 @@ namespace MoviePicker.WebApp.Models
 
 				if (idx == MY_INDEX)
 				{
-					// The custom (numbers) miner needs a reference to THIS model
+					// The custom/mine/my (numbers) miner needs a reference to THIS model
 
 					var mineMine = clone.Miners[idx] as MineMine;
 
