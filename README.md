@@ -57,6 +57,8 @@ http://mooveepicker.azurewebsites.net/home/picks?wl=0,3,3,3,1,1,6
 * More about Bootstrap and columns within columns.
 * Phone browsers are weird.
 * Browsers support PNG file format as a "[favicon](https://en.wikipedia.org/wiki/Favicon)" (don't need the old ICO file anymore - YAY!)
+* How to add Application Insights to monitor the web app.
+* How to add Adsterra.com ads
 
 ##### Azure Notes
 * Application Settings
