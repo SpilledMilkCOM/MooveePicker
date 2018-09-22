@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MovieMiner;
 using MoviePicker.Common;
 using MoviePicker.Tests;
 using MoviePicker.WebApp.Models;
@@ -52,6 +53,35 @@ namespace MoviePicker.WebApp.Tests.Models
 
 			Assert.IsNotNull(test.Miners);
 			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
+
+			Logger.WriteLine("=========================== COUPE'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners[5].Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+			}
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_CoupesNumbers_ExpireAndReload()
+		{
+			var test = new MinerModel(true);
+
+			Assert.IsNotNull(test.Miners);
+			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
+
+			Logger.WriteLine("=========================== COUPE'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners[5].Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+			}
+
+			((ICache)test.Miners[5]).Expire();
+
+			//((ICache)test.Miners[5]).Load();
+
+			test = test.Clone() as MinerModel;
 
 			Logger.WriteLine("=========================== COUPE'S NUMBERS ===========================");
 
