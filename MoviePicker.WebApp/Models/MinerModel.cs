@@ -1,6 +1,7 @@
 ﻿using MovieMiner;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
+using MoviePicker.Msf;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Utilities;
 using System;
@@ -22,6 +23,7 @@ namespace MoviePicker.WebApp.Models
 		private const int MY_INDEX = FML_INDEX + 1;
 		private const int TODD_INDEX = FML_INDEX + 2;
 
+		private readonly IMoviePicker _moviePickerPrototype = null;
 		private bool _postersDownloaded;
 
 		public MinerModel(bool createWithData)
@@ -113,6 +115,11 @@ namespace MoviePicker.WebApp.Models
 						// The MinerBase.Clone() method for explation of cloning this list.
 
 						masterMiner.SetMovies(new List<IMovie>(miner.Movies));
+
+						// Only need to make the picks ONCE after it's loaded.
+						// (no need to make the picks in the controller for every request).
+
+						MakePicks(masterMiner);
 					}
 				}
 			}
@@ -137,6 +144,8 @@ namespace MoviePicker.WebApp.Models
 			MineMiners(miners);
 
 			FilterMinerMovies(miners);
+
+			MakePicks(miners);
 
 			return miners;
 		}
@@ -393,6 +402,47 @@ namespace MoviePicker.WebApp.Models
 
 				miner.SetMovies(movies);     // Update the internal list with the reduced size.
 			}
+		}
+
+		/// <summary>
+		/// Make the FML picks for a miner (both with bonus and without)
+		/// </summary>
+		/// <param name="miner">The miner to adjust the picks.</param>
+		private void MakePicks(IMiner miner)
+		{
+			if (miner.Movies != null && miner.Movies.Any())
+			{
+				// TODO: This needs to be an injected prototype.
+
+				IMoviePicker moviePicker = new MsfMovieSolver();
+
+				moviePicker.AddMovies(miner.Movies);
+
+				miner.Picks = moviePicker.ChooseBest();
+
+				// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
+
+				var clonedList = new List<IMovie>();
+
+				foreach (var movie in miner.Movies)
+				{
+					clonedList.Add(movie.Clone());
+				}
+
+				moviePicker.AddMovies(clonedList);
+				moviePicker.EnableBestPerformer = false;
+
+				miner.PicksBonusOff = moviePicker.ChooseBest();
+			}
+		}
+
+		private void MakePicks(List<IMiner> miners)
+		{
+			//Parallel.ForEach(miners.Skip(TODD_INDEX).Take(miners.Count - TODD_INDEX - 1), miner =>
+			foreach (var miner in miners.Skip(TODD_INDEX).Take(miners.Count - TODD_INDEX - 1))
+			{
+				MakePicks(miner);
+			}//);
 		}
 
 		/// <summary>

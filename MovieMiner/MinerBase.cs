@@ -174,6 +174,10 @@ namespace MovieMiner
 
 		public bool OkToMine { get; set; }
 
+		public IMovieList Picks { get; set; }
+
+		public IMovieList PicksBonusOff { get; set; }
+
 		public string TwitterID { get; protected set; }
 
 		public string Url { get; private set; }
@@ -297,6 +301,9 @@ namespace MovieMiner
 			// (you can't just assign the list over otherwise the list will be shared too and you'll get iteration problems amongst the threads)
 
 			clone.Movies = new List<IMovie>(Movies);
+
+			clone.Picks = Picks?.Clone();
+			clone.PicksBonusOff = PicksBonusOff?.Clone();
 
 			return clone;
 		}

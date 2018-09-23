@@ -42,6 +42,10 @@ namespace MovieMiner
 		/// </summary>
 		bool OkToMine { get; set; }
 
+		IMovieList Picks { get; set; }
+
+		IMovieList PicksBonusOff { get; set; }
+
 		/// <summary>
 		/// The Twitter handle/ID of the miner source.  Do NOT include the @ sign.
 		/// </summary>

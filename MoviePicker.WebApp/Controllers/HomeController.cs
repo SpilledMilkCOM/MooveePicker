@@ -81,17 +81,16 @@ namespace MoviePicker.WebApp.Controllers
 			var lastMiner = _minerModel.Miners.Last();
 			var minerCount = 0;
 
-			foreach (var miner in _minerModel.Miners.Skip(2))
+			foreach (var miner in _minerModel.Miners.Skip(2).Where(item => item.Picks != null))
 			{
 				if (miner.Movies.Count > 0 && !miner.IsHidden && miner != lastMiner)
 				{
 					var expert = new ExpertPickModel { Miner = miner };
-					var minerMovies = miner.Movies.Where(movie => movie.Id != 0);
 					var shareQueryString = WeightListFromCounter(minerCount);
 
 					// Make sure the images are synchronized.
 
-					foreach (var movie in minerMovies)
+					foreach (var movie in miner.Picks.Movies)
 					{
 						var baseMovie = baseMovies.FirstOrDefault(item => item.MovieName == movie.MovieName);
 
@@ -101,34 +100,27 @@ namespace MoviePicker.WebApp.Controllers
 						}
 					}
 
-					var clonedMovies = CloneList(minerMovies);
+					foreach (var movie in miner.PicksBonusOff.Movies)
+					{
+						var baseMovie = baseMovies.FirstOrDefault(item => item.MovieName == movie.MovieName);
 
-					_moviePicker.Clear();
-					_moviePicker.AddMovies(clonedMovies);
-
-					var pickList = _moviePicker.ChooseBest(3);
+						if (baseMovie != null)
+						{
+							movie.ImageUrl = baseMovie.ImageUrl;
+						}
+					}
 
 					expert.MovieList = new MovieListModel()
 					{
 						ComparisonHeader = "Bonus ON",
-						Picks = pickList,
+						Picks = new List<IMovieList> { miner.Picks },
 						ShareQueryString = shareQueryString
 					};
-
-					// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
-
-					clonedMovies = CloneList(minerMovies);
-
-					_moviePicker.Clear();
-					_moviePicker.EnableBestPerformer = false;
-					_moviePicker.AddMovies(minerMovies);
-
-					pickList = _moviePicker.ChooseBest(3);
 
 					expert.MovieListBonusOff = new MovieListModel()
 					{
 						ComparisonHeader = "Bonus OFF",
-						Picks = pickList,
+						Picks = new List<IMovieList> { miner.PicksBonusOff },
 						ShareQueryString = shareQueryString
 					};
 
