@@ -261,7 +261,7 @@
 
 			@* TODO - Put this in a partial view. *@
 
-			<div>
+			<div style="border: solid; border-radius: 4px; border-width: 1px; padding: 8px;">
 				<h4>Bonus Comparisons</h4>
 
 				@*<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Rank</div>*@
@@ -339,7 +339,6 @@
 					}
 				}
 
-				<div class="clearfix"></div>
 				<div class="row-divider"> </div>
 
 				<div class="col-sm-10 col-sm-offset-1">
@@ -378,6 +377,7 @@
 					var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
 					var weightId = string.Format("weightId{0}", minerCount);
 					var name = string.Format("Weight{0}", minerCount);
+					//var badge = miner.Movies.Any() ? string.Format("<span class=\"badge badge-pill badge-light\">{0}</span>", miner.Movies.Count) : string.Empty;
 
 					// TODO: May want to use a utility to speed up the reflection.
 
@@ -391,6 +391,7 @@
 						   data-placement="bottom"
 						   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
 							@miner.Abbreviation
+							@*<span class="badge badge-pill badge-light">@miner.Movies.Count</span>*@
 						</a>
 
 						<input name="@name"
@@ -555,19 +556,19 @@
 }
 
 <script type="text/javascript">
-					//window.onscroll = function () { scrollPicksColumn() };
+							//window.onscroll = function () { scrollPicksColumn() };
 
-					//var picksColumn = document.getElementById("picksColumn");
-					//var picksColumnOffset = picksColumn.offsetTop;
+							//var picksColumn = document.getElementById("picksColumn");
+							//var picksColumnOffset = picksColumn.offsetTop;
 
-					//function scrollPicksColumn() {
-					//	console.log(window.pageYOffset);
-					//	console.log(picksColumnOffset);
+							//function scrollPicksColumn() {
+							//	console.log(window.pageYOffset);
+							//	console.log(picksColumnOffset);
 
-					//	if (window.pageYOffset >= picksColumnOffset) {
-					//		picksColumn.classList.add("sticky");
-					//	} else {
-					//		picksColumn.classList.remove("sticky");
-					//	}
-					//}
+							//	if (window.pageYOffset >= picksColumnOffset) {
+							//		picksColumn.classList.add("sticky");
+							//	} else {
+							//		picksColumn.classList.remove("sticky");
+							//	}
+							//}
 </script>

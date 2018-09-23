@@ -182,6 +182,7 @@
     <Compile Include="Interfaces\IServerInfoModel.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\ClientInfoModel.cs" />
+    <Compile Include="Models\FileModel.cs" />
     <Compile Include="Utilities\ControllerUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\HttpRequestUtility.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Utilities\ViewUtility.cs" />
     <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="Models\ExpertPickModel.cs" />
+    <Compile Include="ViewModels\ImagesViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\ExpertPicksViewModel.cs" />
     <Compile Include="ViewModels\MorePicksViewModel.cs" />
@@ -327,6 +329,7 @@
     <Content Include="Views\Home\Index2.cshtml" />
     <Content Include="Views\Shared\MovieListMini2.cshtml" />
     <Content Include="Views\Home\ExpertPicks.cshtml" />
+    <Content Include="Views\LowMem\Images.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

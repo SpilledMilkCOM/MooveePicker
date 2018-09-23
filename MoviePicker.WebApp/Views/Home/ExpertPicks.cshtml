@@ -3,6 +3,8 @@
 @using MovieMiner;
 
 @{
+	/**/
+
 	ViewBag.Title = "Expert Picks";
 }
 
@@ -16,28 +18,28 @@
 	{
 		foreach (var expertPick in Model.ExpertPicks)
 		{
-	<div class="col-md-6">
-		<div class="row-divider"> </div>
+			<div class="col-md-6">
+				<div class="col-xs-12">
+					<a class="btn btn-info"
+					   href="@expertPick.Miner.UrlSource"
+					   target="_blank"
+					   data-toggle="tooltip"
+					   data-placement="bottom"
+					   title="Click for '@expertPick.Miner.Name' source page... (last updated @string.Format("{0}", ((ICache)expertPick.Miner).LastLoaded.ToString()))">
+						@expertPick.Miner.Name
+					</a>
+				</div>
 
-		<div class="col-xs-12">
-			<a class="btn btn-info"
-			   href="@expertPick.Miner.UrlSource"
-			   target="_blank"
-			   data-toggle="tooltip"
-			   data-placement="bottom"
-			   title="Click for '@expertPick.Miner.Name' source page... (last updated @string.Format("{0}", ((ICache)expertPick.Miner).LastLoaded.ToString()))">
-				@expertPick.Miner.Name
-			</a>
-		</div>
+				@Html.Partial("MovieListMini2", expertPick.MovieList)
 
-		@Html.Partial("MovieListMini2", expertPick.MovieList)
+				<div class="clearfix"></div>
+				<div class="row-divider"> </div>
 
-		<div class="clearfix"></div>
-		<div class="row-divider"> </div>
+				@Html.Partial("MovieListMini2", expertPick.MovieListBonusOff)
 
-		@Html.Partial("MovieListMini2", expertPick.MovieListBonusOff)
-
-	</div>
+				<div class="clearfix"></div>
+				<div class="row-divider"> </div>
+			</div>
 		}
 	}
 	else

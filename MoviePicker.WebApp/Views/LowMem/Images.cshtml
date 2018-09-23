@@ -1,0 +1,74 @@
+﻿@model MoviePicker.WebApp.ViewModels.ImagesViewModel
+
+@using MovieMiner
+
+@{
+	ViewBag.Title = "Images";
+
+	var fileCount = 1;
+}
+
+<script type="text/javascript">
+
+	function clickFilter() {
+		var url = "/LowMem/Images?filter=" + $("#filterInput").val();
+
+		var baseUrl = parseBaseUrl();
+
+		window.location.href = baseUrl + url;
+	}
+
+	function parseBaseUrl() {
+		var baseUrl = window.location.href;
+
+		if (baseUrl != null) {
+			var slashIdx = baseUrl.indexOf("/", "https://".length);
+
+			if (slashIdx > 0) {
+				baseUrl = baseUrl.substring(0, slashIdx);
+			}
+		}
+
+		return baseUrl;
+	}
+
+</script>
+
+<h2>@ViewBag.Title</h2>
+
+<div class="input-group">
+	<input id="filterInput" class="form-control" placeholder="Filter (contains)" value="@Request.Params["filter"]" />
+
+	<div class="input-group-btn">
+		<button class="btn btn-default" type="button" onclick="clickFilter()">Filter</button>
+	</div>
+</div>
+
+<div class="row-divider"> </div>
+
+<div class="row">
+	@foreach (var file in Model.Images)
+	{
+		<div class="col-sm-4" style="border: solid; border-radius: 4px; border-width: 1px; padding: 8px;">
+			<div class="col-xs-3">
+				<img class="img-responsive" src="@file.ImageUrl" alt="@file.Name" style="max-height: 40px;" />
+			</div>
+			<div class="col-xs-2">
+				@file.SizeInBytes.ToString("N0")
+			</div>
+			<div class="col-xs-7">
+				@file.CreationDateUTC
+			</div>
+			<div class="col-xs-12">
+				@file.Name
+			</div>
+		</div>
+
+		if (fileCount % 3 == 0)
+		{
+			<div class="clearfix"></div>
+		}
+
+		fileCount++;
+	}
+</div>

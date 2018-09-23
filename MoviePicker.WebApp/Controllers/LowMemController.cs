@@ -1,6 +1,8 @@
 ﻿using MovieMiner;
 using MoviePicker.WebApp.Interfaces;
+using MoviePicker.WebApp.Models;
 using MoviePicker.WebApp.Utilities;
+using MoviePicker.WebApp.ViewModels;
 using System;
 using System.IO;
 using System.Linq;
@@ -48,6 +50,29 @@ namespace MoviePicker.WebApp.Controllers
 			ViewBag.IsGoogleAdValid = false;
 
 			return View();
+		}
+
+		public ActionResult Images()
+		{
+			var viewModel = new ImagesViewModel();
+			var webRootPath = Server.MapPath("~");
+			var localFilePrefix = $"{webRootPath}images";
+			var filter = Request.Params["filter"];
+			var files = string.IsNullOrEmpty(filter) ? Directory.GetFiles(localFilePrefix) : Directory.GetFiles(localFilePrefix, filter);
+
+			foreach (var filePath in files)
+			{
+				var fileModel = new FileModel { Name = Path.GetFileName(filePath) };
+				var fileInfo = new FileInfo(filePath);
+
+				fileModel.CreationDateUTC = fileInfo.CreationTimeUtc;
+				fileModel.ImageUrl = $"/images/{fileModel.Name}";
+				fileModel.SizeInBytes = fileInfo.Length;
+
+				viewModel.Images.Add(fileModel);
+			} 
+
+			return View(viewModel);
 		}
 
 		public ActionResult Info()
