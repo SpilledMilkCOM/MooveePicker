@@ -208,7 +208,7 @@
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
 
-			<div  id="picksColumn">
+			<div id="picksColumn">
 				@if (Model.MovieList != null)
 				{
 					@Html.Partial("MovieListMini2", Model.MovieList)
@@ -236,15 +236,24 @@
 
 			@if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
 			{
-				<a class="btn btn-info btn-xs"
+				<a class="btn btn-info btn-lg"
 				   href="@string.Format("MorePicks?{0}", Request.QueryString)"
 				   data-toggle="tooltip"
 				   data-placement="bottom"
 				   title="View the top 10 picks for both bonus ON and OFF (this is a bit slow... please be patient.)">
-					<h4>
-						10 More Picks...
-					</h4>
+					10 More Picks...
 				</a>
+			}
+
+			@if (Model.IsTracking)
+			{
+				<input class="btn btn-info btn-lg"
+					   onclick="clickTracking()"
+					   type="button"
+					   value="Perfect Pick"
+					   data-toggle="tooltip"
+					   data-placement="bottom"
+					   title="Click to track all the miners against the estimates..." />
 			}
 
 			<div class="clearfix"></div>
@@ -546,19 +555,19 @@
 }
 
 <script type="text/javascript">
-		//window.onscroll = function () { scrollPicksColumn() };
+					//window.onscroll = function () { scrollPicksColumn() };
 
-		//var picksColumn = document.getElementById("picksColumn");
-		//var picksColumnOffset = picksColumn.offsetTop;
+					//var picksColumn = document.getElementById("picksColumn");
+					//var picksColumnOffset = picksColumn.offsetTop;
 
-		//function scrollPicksColumn() {
-		//	console.log(window.pageYOffset);
-		//	console.log(picksColumnOffset);
+					//function scrollPicksColumn() {
+					//	console.log(window.pageYOffset);
+					//	console.log(picksColumnOffset);
 
-		//	if (window.pageYOffset >= picksColumnOffset) {
-		//		picksColumn.classList.add("sticky");
-		//	} else {
-		//		picksColumn.classList.remove("sticky");
-		//	}
-		//}
+					//	if (window.pageYOffset >= picksColumnOffset) {
+					//		picksColumn.classList.add("sticky");
+					//	} else {
+					//		picksColumn.classList.remove("sticky");
+					//	}
+					//}
 </script>

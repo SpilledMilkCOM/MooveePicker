@@ -13,56 +13,53 @@
 
 @if (Model.IsTracking)
 {
-	<div class="row">
+<div class="row">
 
-		<div class="col-sm-3">
-			<h4>FML Perfect Pick (estimated)</h4>
-		</div>
+	@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
 
-		@Html.Partial("MovieList2", Model.MovieListPerfectPick)
+	<div class="clearfix"></div>
+	<div class="row-divider"> </div>
 
-		<div class="clearfix"></div>
+	<div class="col-sm-8 col-lg-6">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Your Pick</th>
+					<th>Estimated</th>
+					<th>PP Diff</th>
+					<th>PP Diff %</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Bonus ON</td>
+					<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
+					<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
+					<td>@string.Format("{0:F2} %", Model.MovieList.TotalPicksFromComparison > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
+				</tr>
+				<tr>
+					@* REMEMBER!! TotalPicksFromComparison are YOUR picks with the current estimates. *@
 
-		<div class="col-lg-4">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Your Pick</th>
-						<th>Estimated</th>
-						<th>PP Diff</th>
-						<th>PP Diff %</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>Bonus ON</td>
-						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
-						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
-						<td>@string.Format("{0:F2} %", Model.MovieList.TotalPicksFromComparison > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
-					</tr>
-					<tr>
-						@* REMEMBER!! TotalPicksFromComparison are YOUR picks with the current estimates. *@
-
-						<td>Bonus OFF</td>
-						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
-						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
-						<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks[0].TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="col-lg-4">
-			<a class="btn btn-info btn-xs"
-			   href="@string.Format("Picks?bo={0}&wl=1,0,0,0,0,0,0", Model.Miners.First().BoxOfficeListCSV)"
-			   data-toggle="tooltip"
-			   data-placement="bottom"
-			   title="">
-				<h4>
-					Pick using estimates...
-				</h4>
-			</a>
-		</div>
+					<td>Bonus OFF</td>
+					<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
+					<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
+					<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks[0].TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
+	<div class="col-sm-4">
+		<a class="btn btn-info btn-xs"
+		   href="@string.Format("Index2?bo={0}&wl=1,0,0,0,0,0,0", Model.Miners.First().BoxOfficeListCSV)"
+		   data-toggle="tooltip"
+		   data-placement="bottom"
+		   title="">
+			<h4>
+				Pick using estimates...
+			</h4>
+		</a>
+	</div>
+</div>
 
 	<div class="row">
 
