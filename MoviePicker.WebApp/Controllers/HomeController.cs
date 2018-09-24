@@ -19,9 +19,10 @@ namespace MoviePicker.WebApp.Controllers
 {
 	public class HomeController : Controller
 	{
-		private const int FML_INDEX = 0;
-		private const int MY_MINER_IDX = FML_INDEX + 1;
 		private const int DATA_MINER_COUNT = 6;
+		private const int FML_INDEX = 0;
+		private const int MORE_PICKS_COUNT = 5;
+		private const int MY_MINER_IDX = FML_INDEX + 1;
 
 		private IControllerUtility _controllerUtility;
 		private IMinerModel _minerModel;
@@ -361,22 +362,27 @@ namespace MoviePicker.WebApp.Controllers
 			var moviePicker = new TopMoviePicker(new MovieList());
 			var moviePickerBonusOff = new TopMoviePicker(new MovieList());
 
+
 			moviePicker.AddMovies(movies);
 
 			var bonusThread = new Thread(new ThreadStart(() =>
 			{
-				foreach (var movieList in moviePicker.ChooseBest(10))
+				var pickCount = 1;
+
+				foreach (var movieList in moviePicker.ChooseBest(MORE_PICKS_COUNT))
 				{
-					result.MorePicks.Add(new MovieListModel { Picks = new List<IMovieList> { movieList } });
+					result.MorePicks.Add(new MovieListModel { ComparisonHeader = $"Picks {pickCount++}", Picks = new List<IMovieList> { movieList } });
 				}
 			}))
 			{ Name = "bonusThread" };
 
 			var bonusOffThread = new Thread(new ThreadStart(() =>
 			{
-				foreach (var movieList in moviePickerBonusOff.ChooseBest(10))
+				var pickCount = 1;
+
+				foreach (var movieList in moviePickerBonusOff.ChooseBest(MORE_PICKS_COUNT))
 				{
-					result.MorePicksBonusOff.Add(new MovieListModel { Picks = new List<IMovieList> { movieList } });
+					result.MorePicksBonusOff.Add(new MovieListModel { ComparisonHeader = $"Picks {pickCount++}", Picks = new List<IMovieList> { movieList } });
 				}
 			}))
 			{ Name = "bonusOffThread" };
