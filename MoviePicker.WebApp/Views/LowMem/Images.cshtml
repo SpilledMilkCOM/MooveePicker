@@ -50,8 +50,11 @@
 	@foreach (var file in Model.Images)
 	{
 		<div class="col-sm-4" style="border: solid; border-radius: 4px; border-width: 1px; padding: 8px;">
+
 			<div class="col-xs-3">
-				<img class="img-responsive" src="@file.ImageUrl" alt="@file.Name" style="max-height: 40px;" />
+				<a href="@file.ImageUrl">
+					<img class="img-responsive" src="@file.ImageUrl" alt="@file.Name" style="max-height: 40px;" />
+				</a>
 			</div>
 			<div class="col-xs-2">
 				@file.SizeInBytes.ToString("N0")
@@ -60,7 +63,9 @@
 				@file.CreationDateUTC
 			</div>
 			<div class="col-xs-12">
-				@file.Name
+				<a href="@file.ImageUrl">
+					@file.Name
+				</a>
 			</div>
 		</div>
 

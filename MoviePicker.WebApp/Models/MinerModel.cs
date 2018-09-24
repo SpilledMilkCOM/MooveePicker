@@ -39,7 +39,8 @@ namespace MoviePicker.WebApp.Models
 		public IMinerModel Clone()
 		{
 			var clone = new MinerModel(false) { Miners = new List<IMiner>() };
-			int idx = 0;
+			var idx = 0;
+			var containsEstimates = clone.Miners.Any() ? clone.Miners[FML_INDEX].ContainsEstimates : false;
 
 			// Only download the posters once.
 
@@ -47,6 +48,8 @@ namespace MoviePicker.WebApp.Models
 
 			foreach (var miner in Miners)
 			{
+				miner.ContainsEstimates = containsEstimates;
+
 				// Clone could possibly load in fresh data.
 				clone.Miners.Add(miner.Clone());
 
@@ -463,6 +466,8 @@ namespace MoviePicker.WebApp.Models
 			baseList = miners.First().Movies;
 			result.Add(baseList);
 
+			var containsEstimates = miners.First().ContainsEstimates;
+
 			// TODO: Fix this for the FML base list.  This will break when another compound movie (multi-day) comes into play.
 
 			compoundMovies = CompoundMovies(baseList);
@@ -490,6 +495,8 @@ namespace MoviePicker.WebApp.Models
 				{
 					if (miner != baseList)
 					{
+						miner.ContainsEstimates = containsEstimates;
+
 						List<IMovie> movieList = null;
 
 						if (miner.OkToMine)

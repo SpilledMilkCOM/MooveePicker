@@ -80,7 +80,7 @@ namespace MovieMiner
 		/// <summary>
 		/// Whether or not the values are estimates or actuals.
 		/// </summary>
-		public bool ContainsEstimates { get; protected set; }
+		public bool ContainsEstimates { get; set; }
 
 		/// <summary>
 		/// A thread safe version of setting the Error (the Error can be set in the Loading thread or when filtering)

@@ -20,7 +20,7 @@ namespace MovieMiner
 
 		decimal CompoundTotal { get; }
 
-		bool ContainsEstimates { get; }
+		bool ContainsEstimates { get; set; }
 
 		bool CloneCausedReload { get; }
 
