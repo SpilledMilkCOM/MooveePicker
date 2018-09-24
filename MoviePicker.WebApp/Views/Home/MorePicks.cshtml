@@ -26,10 +26,9 @@
 <div class="row">
 	@foreach (var movieList in Model.MorePicks)
 	{
-		@Html.Partial("MovieListMini2", movieList)
-
-		<div class="clearfix"> </div>
-		<div class="row-divider"> </div>
+		<div class="col-md-6">
+			@Html.Partial("MovieListMini2", movieList)
+		</div>
 	}
 </div>
 
@@ -40,9 +39,8 @@
 <div class="row">
 	@foreach (var movieList in Model.MorePicksBonusOff)
 	{
-		@Html.Partial("MovieListMini2", movieList)
-
-		<div class="clearfix"> </div>
-		<div class="row-divider"> </div>
+		<div class="col-md-6">
+			@Html.Partial("MovieListMini2", movieList)
+		</div>
 	}
 </div>

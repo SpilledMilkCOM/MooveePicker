@@ -212,17 +212,11 @@
 				@if (Model.MovieList != null)
 				{
 					@Html.Partial("MovieListMini2", Model.MovieList)
-
-					<div class="clearfix"></div>
-					<div class="row-divider"> </div>
 				}
 
 				@if (Model.MovieListBonusOff != null)
 				{
 					@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
-
-					<div class="clearfix"></div>
-					<div class="row-divider"> </div>
 				}
 			</div>
 
@@ -240,8 +234,8 @@
 				   href="@string.Format("MorePicks?{0}", Request.QueryString)"
 				   data-toggle="tooltip"
 				   data-placement="bottom"
-				   title="View the top 5 picks for both bonus ON and OFF (this is a bit slow... please be patient.)">
-						5 More Picks...
+				   title="View the top picks for both bonus ON and OFF (this is a bit slow... please be patient.)">
+						More Picks...
 				</a>
 			}
 

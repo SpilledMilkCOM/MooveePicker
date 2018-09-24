@@ -21,7 +21,7 @@ namespace MoviePicker.WebApp.Controllers
 	{
 		private const int DATA_MINER_COUNT = 6;
 		private const int FML_INDEX = 0;
-		private const int MORE_PICKS_COUNT = 5;
+		private const int MORE_PICKS_COUNT = 6;
 		private const int MY_MINER_IDX = FML_INDEX + 1;
 
 		private IControllerUtility _controllerUtility;
