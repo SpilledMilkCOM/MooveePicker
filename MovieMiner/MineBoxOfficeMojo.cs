@@ -46,11 +46,10 @@ namespace MovieMiner
 			if (_weekendEnding.HasValue)
 			{
 				var lastSunday = MovieDateUtil.LastSunday(MovieDateUtil.GameSunday(null, ContainsEstimates).AddDays(-1));
-				//var lastSunday = MovieDateUtil.LastSunday();
 
 				// Check to see if the weekend ending is out of date.
 
-				if (_weekendEnding.Value < lastSunday)
+				if (ContainsEstimates || (_weekendEnding.Value < lastSunday && !ContainsEstimates))
 				{
 					_weekendEnding = lastSunday;
 				}
