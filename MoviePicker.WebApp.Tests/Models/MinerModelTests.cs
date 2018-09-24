@@ -6,6 +6,7 @@ using MoviePicker.WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Unity;
 
 using TopMoviePicker = MooveePicker.MoviePicker;
@@ -88,6 +89,93 @@ namespace MoviePicker.WebApp.Tests.Models
 			foreach (var movie in test.Miners[5].Movies)
 			{
 				Logger.WriteLine($"{movie.Id}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+			}
+		}
+
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_FMLNumbers()
+		{
+			var test = new MinerModel(true);
+
+			Assert.IsNotNull(test.Miners);
+			Assert.IsTrue(test.Miners.First().Movies.Count > 0);
+
+			Logger.WriteLine("=========================== FML'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners.First().Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+			}
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_FMLNumbers_ExpireAndReload()
+		{
+			var test = new MinerModel(true);
+
+			Assert.IsNotNull(test.Miners);
+			Assert.IsTrue(test.Miners.First().Movies.Count > 0);
+
+			Logger.WriteLine("=========================== FML'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners.First().Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+			}
+
+			((ICache)test.Miners.First()).Expire();
+
+			test = test.Clone() as MinerModel;
+
+			Logger.WriteLine("=========================== FML'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners.First().Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+			}
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_MojosNumbers()
+		{
+			var test = new MinerModel(true);
+
+			Assert.IsNotNull(test.Miners);
+			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
+
+			Logger.WriteLine("=========================== MOJO'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners.Last().Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+			}
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_MojosNumbers_ExpireAndReload()
+		{
+			var test = new MinerModel(true);
+
+			Assert.IsNotNull(test.Miners);
+			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
+
+			Logger.WriteLine("=========================== MOJO'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners.Last().Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+			}
+
+			((ICache)test.Miners.Last()).Expire();
+
+			test = test.Clone() as MinerModel;
+
+			Logger.WriteLine("=========================== MOJO'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners.Last().Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
 			}
 		}
 
