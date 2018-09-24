@@ -131,77 +131,19 @@ namespace MoviePicker.Msf
 
 		public IMovieList ChooseBest()
 		{
-			var context = CreateSolver();
-
-			Solution solution = context.Solve(new SimplexDirective());
-
-			var decision = solution.Decisions.First();
-			var fmlBuxUsed = 0;
-			decimal estimatedBoxOfficeTotal = 0;
-			var screensUsed = 0;
-			Dictionary<string, MsfMovieWrapper> movies = _movies.ToDictionary(p => p.Name);
 			MovieList cinePlexMovies = new MovieList();
 
-			foreach (var v in decision.GetValues())
+			if (_movies.Any())
 			{
-				int count = Convert.ToInt32(v.GetValue(0));
-				var title = Convert.ToString(v.GetValue(1));
-				var movie = movies[title];
+				var context = CreateSolver();
 
-				if (count > 0)
-				{
-					screensUsed += count;
-					fmlBuxUsed += (int)(count * movie.Cost);
-					estimatedBoxOfficeTotal += (count * movie.Earnings);
+				Solution solution = context.Solve(new SimplexDirective());
 
-					for (int i = 0; i < count; i++)
-					{
-						cinePlexMovies.Add(movie);
-					}
-				}
-			}
-
-			decimal penalty = (AvailableScreens - screensUsed) * PenaltyForUnusedScreens;
-
-			if (DisplayDebugMessage)
-			{
-				Console.WriteLine($"Total Estimated BoxOffice:\t${estimatedBoxOfficeTotal:n} M Total FmlBux spent: ${fmlBuxUsed:n} Screens utilized: {screensUsed} Total Penalty: ${penalty:n} M");
-				Console.WriteLine($"Cineplex Total: \t\t\t\t\t\t\t\t\t${estimatedBoxOfficeTotal - penalty:n} M");
-
-				Console.WriteLine();
-				Console.WriteLine();
-
-				Report report = solution.GetReport();
-				Console.WriteLine(report.ToString());
-			}
-			return cinePlexMovies;
-		}
-
-		public List<IMovieList> ChooseBest(int topCount)
-		{
-			var result = new List<IMovieList>();
-			var context = CreateSolver();
-			Solution solution = context.Solve(new SimplexDirective());
-			//Solution solution = context.Solve(new ConstraintProgrammingDirective());
-			//Solution solution = context.Solve();
-
-			Dictionary<string, MsfMovieWrapper> movies = _movies.ToDictionary(p => p.Name);
-
-			if (topCount > 1)
-			{
-				// For now only do this once.
-				topCount = 1;
-			}
-
-			while (topCount > 0)
-			{
 				var decision = solution.Decisions.First();
-
 				var fmlBuxUsed = 0;
 				decimal estimatedBoxOfficeTotal = 0;
 				var screensUsed = 0;
-
-				MovieList cinePlexMovies = new MovieList();
+				Dictionary<string, MsfMovieWrapper> movies = _movies.ToDictionary(p => p.Name);
 
 				foreach (var v in decision.GetValues())
 				{
@@ -235,14 +177,87 @@ namespace MoviePicker.Msf
 					Report report = solution.GetReport();
 					Console.WriteLine(report.ToString());
 				}
+			}
 
-				if (!result.Any() || result.Last().TotalEarnings > cinePlexMovies.TotalEarnings)
+			return cinePlexMovies;
+		}
+
+		public List<IMovieList> ChooseBest(int topCount)
+		{
+			var result = new List<IMovieList>();
+
+			if (_movies.Any())
+			{
+				var context = CreateSolver();
+				Solution solution = context.Solve(new SimplexDirective());
+				//Solution solution = context.Solve(new ConstraintProgrammingDirective());
+				//Solution solution = context.Solve();
+
+				Dictionary<string, MsfMovieWrapper> movies = _movies.ToDictionary(p => p.Name);
+
+				if (topCount > 1)
 				{
-					result.Add(cinePlexMovies);
+					// For now only do this once.
+					topCount = 1;
 				}
 
-				solution.GetNext();
-				topCount--;
+				while (topCount > 0)
+				{
+					var decision = solution.Decisions.First();
+
+					var fmlBuxUsed = 0;
+					decimal estimatedBoxOfficeTotal = 0;
+					var screensUsed = 0;
+
+					MovieList cinePlexMovies = new MovieList();
+
+					foreach (var v in decision.GetValues())
+					{
+						int count = Convert.ToInt32(v.GetValue(0));
+						var title = Convert.ToString(v.GetValue(1));
+						var movie = movies[title];
+
+						if (count > 0)
+						{
+							screensUsed += count;
+							fmlBuxUsed += (int)(count * movie.Cost);
+							estimatedBoxOfficeTotal += (count * movie.Earnings);
+
+							for (int i = 0; i < count; i++)
+							{
+								cinePlexMovies.Add(movie);
+							}
+						}
+					}
+
+					decimal penalty = (AvailableScreens - screensUsed) * PenaltyForUnusedScreens;
+
+					if (DisplayDebugMessage)
+					{
+						Console.WriteLine($"Total Estimated BoxOffice:\t${estimatedBoxOfficeTotal:n} M Total FmlBux spent: ${fmlBuxUsed:n} Screens utilized: {screensUsed} Total Penalty: ${penalty:n} M");
+						Console.WriteLine($"Cineplex Total: \t\t\t\t\t\t\t\t\t${estimatedBoxOfficeTotal - penalty:n} M");
+
+						Console.WriteLine();
+						Console.WriteLine();
+
+						Report report = solution.GetReport();
+						Console.WriteLine(report.ToString());
+					}
+
+					if (!result.Any() || result.Last().TotalEarnings > cinePlexMovies.TotalEarnings)
+					{
+						result.Add(cinePlexMovies);
+					}
+
+					solution.GetNext();
+					topCount--;
+				}
+			}
+			else
+			{
+				// Add an empty one if there are no picks/movies
+
+				result.Add(new MovieList());
 			}
 
 			return result;
