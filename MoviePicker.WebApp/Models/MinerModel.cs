@@ -40,7 +40,9 @@ namespace MoviePicker.WebApp.Models
 		{
 			var clone = new MinerModel(false) { Miners = new List<IMiner>() };
 			var idx = 0;
-			var containsEstimates = clone.Miners.Any() ? clone.Miners[FML_INDEX].ContainsEstimates : false;
+			var containsEstimates = Miners.Any() ? Miners[FML_INDEX].ContainsEstimates : false;
+
+			// FML could change below which means ContainsEstimates might be out of date for these clones, it will be correct the NEXT time around.
 
 			// Only download the posters once.
 
