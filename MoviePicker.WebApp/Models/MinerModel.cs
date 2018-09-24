@@ -117,14 +117,19 @@ namespace MoviePicker.WebApp.Models
 
 					if (masterMiner != null)
 					{
-						// The MinerBase.Clone() method for explation of cloning this list.
+						// The MinerBase.Clone() method for explanation of cloning this list.
 
 						masterMiner.SetMovies(new List<IMovie>(miner.Movies));
 
 						// Only need to make the picks ONCE after it's loaded.
 						// (no need to make the picks in the controller for every request).
 
-						MakePicks(masterMiner);
+						if (masterMiner != Miners[MY_INDEX])
+						{
+							// Do not make picks for "my picks" because the BO values have not been set yet (from request string)
+
+							MakePicks(masterMiner);
+						}
 					}
 				}
 			}
@@ -381,16 +386,6 @@ namespace MoviePicker.WebApp.Models
 			// BO Mojo has a HUGE list of movies that were mined
 
 			FilterOutMovieIdZero(minerData.Last());
-
-			//var lastWeekMovies = minerData.Last().Movies;       // Returns a copy of the the movies.
-			//var moviesToRemove = minerData.Last().Movies.Where(movie => movie.Id == 0);
-
-			//foreach (var movie in moviesToRemove)
-			//{
-			//	lastWeekMovies.Remove(movie);
-			//}
-
-			//minerData.Last().SetMovies(lastWeekMovies);     // Update the internal list with the reduced size.
 		}
 
 		private void FilterOutMovieIdZero(IMiner miner)
@@ -417,19 +412,26 @@ namespace MoviePicker.WebApp.Models
 		{
 			if (miner.Movies != null && miner.Movies.Any())
 			{
-				// TODO: This needs to be an injected prototype.
-
-				IMoviePicker moviePicker = new MsfMovieSolver();
-
-				moviePicker.AddMovies(miner.Movies);
-
-				miner.Picks = moviePicker.ChooseBest();
-
 				// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
 
 				var clonedList = new List<IMovie>();
 
-				foreach (var movie in miner.Movies)
+				foreach (var movie in miner.Movies.Where(item => item.Earnings > 0))
+				{
+					clonedList.Add(movie.Clone());
+				}
+
+				// TODO: This needs to be an injected prototype.
+
+				IMoviePicker moviePicker = new MsfMovieSolver();
+
+				moviePicker.AddMovies(clonedList);
+
+				miner.Picks = moviePicker.ChooseBest();
+
+				clonedList.Clear();
+
+				foreach (var movie in miner.Movies.Where(item => item.Earnings > 0))
 				{
 					clonedList.Add(movie.Clone());
 				}
@@ -556,6 +558,21 @@ namespace MoviePicker.WebApp.Models
 			miners.ToList()[MY_INDEX].Mine();
 
 			return result;
+		}
+
+		/// <summary>
+		/// Remove movies in picks whose box office value is 0.
+		/// </summary>
+		/// <param name="picks"></param>
+		/// <param name="clonedList"></param>
+		private void RemoveZeroPicks(IMovieList picks)
+		{
+			var removaList = picks.Movies.Where(movie => movie.Earnings == 0);
+
+			foreach (var toRemove in removaList)
+			{
+				picks.Remove(toRemove);
+			}
 		}
 
 		private List<IMovie> SpreadCompoundMovies(List<IMovie> compoundMovies, List<IMovie> movies)

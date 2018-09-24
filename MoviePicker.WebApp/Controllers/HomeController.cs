@@ -343,7 +343,7 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			var result = new List<IMovie>();
 
-			foreach (var movie in list)
+			foreach (var movie in list.Where(item => item.Earnings > 0))
 			{
 				result.Add(movie.Clone());
 			}
@@ -432,9 +432,10 @@ namespace MoviePicker.WebApp.Controllers
 
 			if (result.Movies.Count() > 0)
 			{
+				var clonedList = CloneList(result.Movies);
 				var shareQueryString = QueryStringFromModel();
 
-				_moviePicker.AddMovies(result.Movies);
+				_moviePicker.AddMovies(clonedList);
 
 				var pickList = _moviePicker.ChooseBest(3);
 
@@ -451,12 +452,7 @@ namespace MoviePicker.WebApp.Controllers
 				{
 					// Need to clone the list otherwise the above MovieList will lose its BestPerformer.
 
-					var clonedList = new List<IMovie>();
-
-					foreach (var movie in result.Movies)
-					{
-						clonedList.Add(movie.Clone());
-					}
+					clonedList = CloneList(result.Movies);
 
 					_moviePicker.AddMovies(clonedList);
 					_moviePicker.EnableBestPerformer = false;
