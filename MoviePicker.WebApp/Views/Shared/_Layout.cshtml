@@ -73,7 +73,7 @@
 				<a class="navbar-brand" href="@Url.Action("Index", "Home")">
 					<span>
 						<img src="~/Images/Moovee Picker Cow32x32.png" alt="Moovee Picker Logo" width="32" height="32" />
-						@Constants.APPLICATION_NAME
+						&nbsp;&nbsp;@Constants.APPLICATION_NAME
 					</span>
 				</a>
 
@@ -83,7 +83,7 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li>@Html.ActionLink("Home", "Index", "Home", ViewUtility.RequestParamsToDynamic(Request), null)</li>
-					<li>@Html.ActionLink("About", "About", $"LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
+					<li>@Html.ActionLink("About", "About", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
 					<li>@Html.ActionLink("Contact", "Contact", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
 				</ul>
 			</div>

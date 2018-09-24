@@ -6,7 +6,7 @@
 @using System.Text;
 
 @{
-	ViewBag.Title = "Home";
+	ViewBag.Title = "Home2";
 
 	// The start of a miner traversal (skip custom)
 	int minerCount = 2;     // This scope is pretty far, sorry  :(
@@ -195,7 +195,7 @@
 
 			<div class="col-xs-8">
 				<h2>
-					WELCOME
+					Welcome to Moovee Picker
 				</h2>
 
 				This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
@@ -209,6 +209,11 @@
 			<div class="row-divider"> </div>
 
 			<div id="picksColumn">
+				@if (Model.MovieListPerfectPick != null)
+				{
+					@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
+				}
+
 				@if (Model.MovieList != null)
 				{
 					@Html.Partial("MovieListMini2", Model.MovieList)
@@ -221,6 +226,7 @@
 			</div>
 
 			<input class="btn btn-success btn-lg"
+				   style="margin-top: 10px;"
 				   onclick="clickPicks()"
 				   type="button"
 				   value="Calculate Picks"
@@ -231,20 +237,22 @@
 			@if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
 			{
 				<a class="btn btn-info btn-lg"
+				   style="margin-top: 10px;"
 				   href="@string.Format("MorePicks?{0}", Request.QueryString)"
 				   data-toggle="tooltip"
 				   data-placement="bottom"
 				   title="View the top picks for both bonus ON and OFF (this is a bit slow... please be patient.)">
-						More Picks...
+					More Picks...
 				</a>
 			}
 
 			@if (Model.IsTracking)
 			{
 				<input class="btn btn-info btn-lg"
+					   style="margin-top: 10px;"
 					   onclick="clickTracking()"
 					   type="button"
-					   value="Perfect Pick"
+					   value="Perfect Pick Comparison"
 					   data-toggle="tooltip"
 					   data-placement="bottom"
 					   title="Click to track all the miners against the estimates..." />
@@ -550,19 +558,19 @@
 }
 
 <script type="text/javascript">
-							//window.onscroll = function () { scrollPicksColumn() };
+									//window.onscroll = function () { scrollPicksColumn() };
 
-							//var picksColumn = document.getElementById("picksColumn");
-							//var picksColumnOffset = picksColumn.offsetTop;
+									//var picksColumn = document.getElementById("picksColumn");
+									//var picksColumnOffset = picksColumn.offsetTop;
 
-							//function scrollPicksColumn() {
-							//	console.log(window.pageYOffset);
-							//	console.log(picksColumnOffset);
+									//function scrollPicksColumn() {
+									//	console.log(window.pageYOffset);
+									//	console.log(picksColumnOffset);
 
-							//	if (window.pageYOffset >= picksColumnOffset) {
-							//		picksColumn.classList.add("sticky");
-							//	} else {
-							//		picksColumn.classList.remove("sticky");
-							//	}
-							//}
+									//	if (window.pageYOffset >= picksColumnOffset) {
+									//		picksColumn.classList.add("sticky");
+									//	} else {
+									//		picksColumn.classList.remove("sticky");
+									//	}
+									//}
 </script>

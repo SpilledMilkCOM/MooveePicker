@@ -9,64 +9,62 @@
 	ViewBag.Title = "Tracking Estimates";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>
+	@ViewBag.Title
+	<a class="btn btn-info btn-xs"
+	   data-toggle="tooltip"
+	   data-placement="bottom"
+	   title="Below is a table that compares your Custom value to the estimates as well as all the other miners.  Were you close?  Were the 'experts' close?	There's still time as these estimates change over the weekend, but typically not by much since the 'experts' are pretty good once the data starts rolling in. The differences are whether the estimated numbers are higher (+) or lower (-) than your numbers.">
+		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+	</a>
+</h2>
 
 @if (Model.IsTracking)
 {
-<div class="row">
-
-	@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
-
-	<div class="clearfix"></div>
-	<div class="row-divider"> </div>
-
-	<div class="col-sm-8 col-lg-6">
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Your Pick</th>
-					<th>Estimated</th>
-					<th>PP Diff</th>
-					<th>PP Diff %</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>Bonus ON</td>
-					<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
-					<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
-					<td>@string.Format("{0:F2} %", Model.MovieList.TotalPicksFromComparison > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
-				</tr>
-				<tr>
-					@* REMEMBER!! TotalPicksFromComparison are YOUR picks with the current estimates. *@
-
-					<td>Bonus OFF</td>
-					<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
-					<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
-					<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks[0].TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<div class="col-sm-4">
-		<a class="btn btn-info btn-xs"
-		   href="@string.Format("Index2?bo={0}&wl=1,0,0,0,0,0,0", Model.Miners.First().BoxOfficeListCSV)"
-		   data-toggle="tooltip"
-		   data-placement="bottom"
-		   title="">
-			<h4>
-				Pick using estimates...
-			</h4>
-		</a>
-	</div>
-</div>
-
 	<div class="row">
 
-		<div class="col-sm-6">
-			Below is a table that compares your Custom value to the estimates as well as all the other miners.  Were you close?  Were the "experts" close?
-			There's still time as these estimates change over the weekend, but typically not by much since the "experts" are pretty good once the data starts rolling in.
-			The differences are whether the <strong>Estimated</strong> numbers are higher (+) or lower (-) than <strong>your</strong> numbers.
+		<div class="col-md-6">
+			@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
+		</div>
+
+		<div class="col-sm-8 col-md-6">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>Your Pick</th>
+						<th>Estimated</th>
+						<th>PP Diff</th>
+						<th>PP Diff %</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Bonus ON</td>
+						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieList.TotalPicksFromComparison > 0 ? (Model.MovieList.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieList.TotalPicksFromComparison * 100 : 0)</td>
+					</tr>
+					<tr>
+						@* REMEMBER!! TotalPicksFromComparison are YOUR picks with the current estimates. *@
+
+						<td>Bonus OFF</td>
+						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison)</td>
+						<td>@string.Format("{0:N0}", Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings)</td>
+						<td>@string.Format("{0:F2} %", Model.MovieListBonusOff.Picks[0].TotalEarnings > 0 ? (Model.MovieListBonusOff.TotalPicksFromComparison - Model.MovieListPerfectPick.Picks[0].TotalEarnings) / Model.MovieListBonusOff.TotalPicksFromComparison * 100 : 0)</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-4" style="margin-top: 10px;">
+			<a class="btn btn-info btn-xs"
+			   href="@string.Format("Index2?bo={0}&wl=1,0,0,0,0,0,0", Model.Miners.First().BoxOfficeListCSV)"
+			   data-toggle="tooltip"
+			   data-placement="bottom"
+			   title="Replace your numbers with the tracked estimates so you can view the Best Performer rankings/comparisons.">
+				<h4>
+					Pick using estimates...
+				</h4>
+			</a>
 		</div>
 	</div>
 
