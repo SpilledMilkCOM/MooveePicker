@@ -58,6 +58,7 @@ namespace MoviePicker.WebApp.Controllers
 			var webRootPath = Server.MapPath("~");
 			var localFilePrefix = $"{webRootPath}images";
 			var filter = Request.Params["filter"];
+			var sortBy = Request.Params["sortBy"];
 			var files = string.IsNullOrEmpty(filter) ? Directory.GetFiles(localFilePrefix) : Directory.GetFiles(localFilePrefix, filter);
 
 			foreach (var filePath in files)
@@ -71,6 +72,11 @@ namespace MoviePicker.WebApp.Controllers
 
 				viewModel.Images.Add(fileModel);
 			} 
+
+			if (sortBy == "size")
+			{
+				viewModel.Images = viewModel.Images.OrderBy(item => item.SizeInBytes).ToList();
+			}
 
 			return View(viewModel);
 		}

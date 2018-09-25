@@ -200,7 +200,6 @@ namespace MoviePicker.WebApp.Models
 
 			foreach (var movie in miner.Movies)
 			{
-				//var localFileName = Path.GetFileName(FileUtility.LocalFile(movie.ImageUrlSource, localFilePrefix));
 				var localFileName = FileUtility.LocalFile(movie.ImageUrlSource, localFilePrefix);
 
 				if (File.Exists(localFileName))

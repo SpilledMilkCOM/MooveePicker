@@ -11,8 +11,33 @@
 
 <script type="text/javascript">
 
+	// A generic "refresh" function
+
 	function clickFilter() {
-		var url = "/LowMem/Images?filter=" + $("#filterInput").val();
+		var filterInput = $("#filterInputId").val();
+		var sortBy = $("#sortById").val();
+		var url = "/LowMem/Images";
+
+		console.log("clickFilter");
+
+		if (filterInput != null || sortBy != null) {
+			url = url + "?";
+		}
+
+		if (filterInput != null) {
+			url = url + "filter=" + filterInput;
+		}
+
+		if (sortBy != null) {
+
+			if (filterInput != null) {
+				url = url + "&";
+			}
+
+			url = "sortBy=" + sortBy;
+		}
+
+		console.log(url);
 
 		var baseUrl = parseBaseUrl();
 
@@ -39,8 +64,15 @@
 <h5>(@ViewUtility.BytesToAbbreviation(Model.TotalSize))</h5>
 
 <div class="row">
-	<div class="col-xs-5 col-sm-2 col-md-3  input-group">
-		<input id="filterInput" class="form-control" placeholder="Filter (contains)" value="@Request.Params["filter"]" />
+	<div class="dropdown col-xs-7 col-sm-3 col-md-3">
+		<select id="sortById" class="form-control" onchange="clickFilter()">
+			<option value="name">Name</option>
+			<option value="size" selected="selected">Size</option>
+		</select>
+	</div>
+
+	<div class="input-group col-xs-5 col-sm-2 col-md-3">
+		<input id="filterInputId" class="form-control" placeholder="Filter (contains)" value="@Request.Params["filter"]" />
 
 		<div class="input-group-btn">
 			<button class="btn btn-default" type="button" onclick="clickFilter()">Filter</button>
