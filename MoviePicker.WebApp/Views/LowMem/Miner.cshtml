@@ -1,6 +1,7 @@
 ﻿@model MovieMiner.IMiner
 
 @using MovieMiner
+@using MoviePicker.WebApp.Models
 
 @{
 	ViewBag.Title = "Miner";
@@ -32,3 +33,13 @@
 		<div class="col-sm-5 hidden-xs">@string.Format("{0}", movie.WeekendEnding.ToShortDateString())</div>
 	}
 </div>
+
+@if (Model.Picks != null && Model.Picks.Movies != null && Model.Picks.Movies.Any())
+{
+	@Html.Partial("MovieListMini2", new MovieListModel("Bonus ON", Model.Picks))
+}
+
+@if (Model.PicksBonusOff != null && Model.PicksBonusOff.Movies != null && Model.PicksBonusOff.Movies.Any())
+{
+	@Html.Partial("MovieListMini2", new MovieListModel("Bonus OFF", Model.PicksBonusOff))
+}

@@ -7,6 +7,15 @@ namespace MoviePicker.WebApp.Models
 {
 	public class MovieListModel : IMovieListModel
 	{
+		public MovieListModel() { }
+
+		public MovieListModel(string name, IMovieList movieList)
+		{
+			ComparisonHeader = name;
+
+			Picks = new List<IMovieList> { movieList };
+		}
+
 		public string ComparisonHeader { get; set; }
 
 		public IEnumerable<IMovie> ComparisonMovies { get; set; }
