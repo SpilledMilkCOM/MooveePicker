@@ -9,6 +9,37 @@ namespace MoviePicker.WebApp.Utilities
 {
 	public static class ViewUtility
 	{
+		private const long KB = 1024;
+		private const int SHIFT_KB = 8;
+
+		public static string BytesToAbbreviation(long bytes)
+		{
+			var result = $"{bytes:N0} bytes";
+
+			if (bytes < KB)
+			{
+				return result;
+			}
+			else if (bytes < KB << SHIFT_KB)
+			{
+				result = $"{bytes / KB:N1} KB";
+			}
+			else if (bytes < KB << SHIFT_KB << SHIFT_KB)
+			{
+				result = $"{bytes / (KB << SHIFT_KB):N1} MB";
+			}
+			else if (bytes < KB << SHIFT_KB << SHIFT_KB << SHIFT_KB)
+			{
+				result = $"{bytes / (KB << SHIFT_KB << SHIFT_KB):N1} GB";
+			}
+			else // if (bytes < KB << SHIFT_KB << SHIFT_KB << SHIFT_KB << SHIFT_KB)
+			{
+				result = $"{bytes / (KB << SHIFT_KB << SHIFT_KB << SHIFT_KB):N1} TB";
+			}
+
+			return result;
+		}
+
 		/// <summary>
 		/// Return a background-color based on a percentage (positive or negative)
 		/// </summary>

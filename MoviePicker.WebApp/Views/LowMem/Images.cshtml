@@ -1,6 +1,7 @@
 ﻿@model MoviePicker.WebApp.ViewModels.ImagesViewModel
 
 @using MovieMiner
+@using MoviePicker.WebApp.Utilities
 
 @{
 	ViewBag.Title = "Images";
@@ -35,6 +36,7 @@
 </script>
 
 <h2>@ViewBag.Title</h2>
+<h5>(@ViewUtility.BytesToAbbreviation(Model.TotalSize))</h5>
 
 <div class="input-group">
 	<input id="filterInput" class="form-control" placeholder="Filter (contains)" value="@Request.Params["filter"]" />

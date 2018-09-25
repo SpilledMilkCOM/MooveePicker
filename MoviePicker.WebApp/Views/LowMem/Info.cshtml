@@ -1,6 +1,7 @@
 ﻿@model MoviePicker.WebApp.Models.InfoViewModel
 
 @using MovieMiner
+@using MoviePicker.WebApp.Utilities
 
 @{
 	ViewBag.Title = "Info";
@@ -12,7 +13,7 @@
 
 <h4>Now: @Model.ServerInfo.Now</h4>
 <h4>Now (UTC): @Model.ServerInfo.NowUtc</h4>
-<h4>Process Bytes Used: @Model.ServerInfo.ProcessBytes.ToString("N0")</h4>
+<h4>Process Bytes Used: @Model.ServerInfo.ProcessBytes.ToString("N0") (@ViewUtility.BytesToAbbreviation(Model.ServerInfo.ProcessBytes))</h4>
 
 <div class="row-divider"> </div>
 
