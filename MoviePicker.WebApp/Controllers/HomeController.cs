@@ -513,8 +513,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			var webRootPath = Server.MapPath("~");
 			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
-			var picks = bonusOn ? picksViewModel.MovieList.Picks[index] : picksViewModel.MovieListBonusOff.Picks[index];
-			var movieImages = picks.MovieImages.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
+			var picks = bonusOn ? picksViewModel.MovieList?.Picks[index] : picksViewModel.MovieListBonusOff?.Picks[index];
+			var movieImages = picks?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
 
 			// Files should already be there now.
 			//FileUtility.DownloadFiles(movieImages, localFilePrefix);

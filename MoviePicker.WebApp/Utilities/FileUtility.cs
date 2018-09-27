@@ -168,17 +168,20 @@ namespace MoviePicker.WebApp.Utilities
 		{
 			var result = new List<string>();
 
-			foreach (var fileUrl in files)
+			if (files != null)
 			{
-				var localFile = LocalFile(fileUrl, localFilePrefix);
+				foreach (var fileUrl in files)
+				{
+					var localFile = LocalFile(fileUrl, localFilePrefix);
 
-				if (File.Exists(localFile))
-				{
-					result.Add(localFile);
-				}
-				else if (Path.GetExtension(localFile).ToLower() == ".jpg")
-				{
-					result.Add($"{Path.GetDirectoryName(localFile)}{Path.DirectorySeparatorChar}MooveePosterNotFound.jpg");
+					if (File.Exists(localFile))
+					{
+						result.Add(localFile);
+					}
+					else if (Path.GetExtension(localFile).ToLower() == ".jpg")
+					{
+						result.Add($"{Path.GetDirectoryName(localFile)}{Path.DirectorySeparatorChar}MooveePosterNotFound.jpg");
+					}
 				}
 			}
 
