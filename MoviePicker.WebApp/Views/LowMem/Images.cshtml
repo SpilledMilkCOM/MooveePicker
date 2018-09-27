@@ -65,11 +65,12 @@
 </script>
 
 <h2>@ViewBag.Title</h2>
-<h5>(@ViewUtility.BytesToAbbreviation(Model.TotalSize))</h5>
+<h5>@Model.TotalSize.ToString("N0") (@ViewUtility.BytesToAbbreviation(Model.TotalSize))</h5>
 
 <div class="row">
 	<div class="dropdown col-xs-7 col-sm-3 col-md-3">
 		<select id="sortById" class="form-control" onchange="clickFilter()">
+			<option value="date" @string.Format("{0}", Request.Params["sortBy"] == "date" ? "selected" : string.Empty)>Date</option>
 			<option value="name" @string.Format("{0}", Request.Params["sortBy"] == "name" ? "selected" : string.Empty)>Name</option>
 			<option value="size" @string.Format("{0}", Request.Params["sortBy"] == "size" ? "selected" : string.Empty)>Size</option>
 		</select>

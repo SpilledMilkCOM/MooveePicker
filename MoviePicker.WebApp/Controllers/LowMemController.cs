@@ -67,6 +67,7 @@ namespace MoviePicker.WebApp.Controllers
 				var fileInfo = new FileInfo(filePath);
 
 				fileModel.CreationDateUTC = fileInfo.CreationTimeUtc;
+				fileModel.CreationDateUTC = fileInfo.CreationTimeUtc.AddHours(-6);		// Daylight savings
 				fileModel.ImageUrl = $"/images/{fileModel.Name}";
 				fileModel.SizeInBytes = fileInfo.Length;
 
@@ -76,6 +77,10 @@ namespace MoviePicker.WebApp.Controllers
 			if (sortBy == "size")
 			{
 				viewModel.Images = viewModel.Images.OrderByDescending(item => item.SizeInBytes).ToList();
+			}
+			else if (sortBy == "date")
+			{
+				viewModel.Images = viewModel.Images.OrderByDescending(item => item.CreationDateUTC).ToList();
 			}
 
 			return View(viewModel);
