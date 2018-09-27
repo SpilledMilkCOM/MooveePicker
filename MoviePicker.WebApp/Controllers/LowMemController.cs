@@ -75,7 +75,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			if (sortBy == "size")
 			{
-				viewModel.Images = viewModel.Images.OrderBy(item => item.SizeInBytes).ToList();
+				viewModel.Images = viewModel.Images.OrderByDescending(item => item.SizeInBytes).ToList();
 			}
 
 			return View(viewModel);

@@ -367,61 +367,59 @@
 				<div class="col-xs-2">
 					<input class="btn btn-info" onclick="clickPasteBoxOffice()" type="button" value="Import" data-toggle="tooltip" data-placement="bottom" title="Click to set Box Office predictions." />
 				</div>
+
+				<div class="col-xs-2" style="margin-top: 5px;">
+					<a class="btn btn-success"
+					   href="@string.Format("ExpertPicks?{0}", Request.QueryString)"
+					   data-toggle="tooltip"
+					   data-placement="bottom"
+					   title="Click to see the available picks by the experts..."><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+				</div>
 			</div>
 
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
 
-			<div class="col-xs-10">
+			<table class="table table-responsive" style="border: none;">
+				<tr>
+					@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
+					{
+						var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
+						var weightId = string.Format("weightId{0}", minerCount);
+						var name = string.Format("Weight{0}", minerCount);
+						//var badge = miner.Movies.Any() ? string.Format("<span class=\"badge badge-pill badge-light\">{0}</span>", miner.Movies.Count) : string.Empty;
 
-				@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
-				{
-					var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
-					var weightId = string.Format("weightId{0}", minerCount);
-					var name = string.Format("Weight{0}", minerCount);
-					//var badge = miner.Movies.Any() ? string.Format("<span class=\"badge badge-pill badge-light\">{0}</span>", miner.Movies.Count) : string.Empty;
+						// TODO: May want to use a utility to speed up the reflection.
 
-					// TODO: May want to use a utility to speed up the reflection.
+						var valueString = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
 
-					var valueString = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
+						<td>
+							<a class="btn @buttonStyle btn-xs"
+							   href="@miner.UrlSource"
+							   target="_blank"
+							   data-toggle="tooltip"
+							   data-placement="bottom"
+							   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
+								@miner.Abbreviation
+								@*<span class="badge badge-pill badge-light">@miner.Movies.Count</span>*@
+							</a>
 
-					<div class="col-xs-2" style="text-align: center;">
-						<a class="btn @buttonStyle btn-xs"
-						   href="@miner.UrlSource"
-						   target="_blank"
-						   data-toggle="tooltip"
-						   data-placement="bottom"
-						   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
-							@miner.Abbreviation
-							@*<span class="badge badge-pill badge-light">@miner.Movies.Count</span>*@
-						</a>
+							<input name="@name"
+								   class="form-control"
+								   id="@weightId"
+								   onblur="weightLostFocus('@valueString', this.value)"
+								   style="background-color: #dfffdf; width: 50px;"
+								   type="text"
+								   value="@valueString"
+								   data-val-required="The Weight @minerCount field is required."
+								   data-val-number="The field Weight @minerCount must be a number."
+								   data-val="true">
+						</td>
 
-						<input name="@name"
-							   class="form-control"
-							   id="@weightId"
-							   onblur="weightLostFocus('@valueString', this.value)"
-							   style="background-color: #dfffdf; width: 50px;"
-							   type="text"
-							   value="@valueString"
-							   data-val-required="The Weight @minerCount field is required."
-							   data-val-number="The field Weight @minerCount must be a number."
-							   data-val="true">
-					</div>
-
-					minerCount++;
-				}
-			</div>
-
-			<div class="col-xs-2">
-				<a class="btn btn-success btn-xs"
-				   href="@string.Format("ExpertPicks?{0}", Request.QueryString)"
-				   data-toggle="tooltip"
-				   data-placement="bottom"
-				   title="Click to see the available picks by the experts...">Expert<br />Picks...</a>
-			</div>
-
-			<div class="clearfix"></div>
-			<div class="row-divider"> </div>
+						minerCount++;
+					}
+				</tr>
+			</table>
 
 			<table>
 				@{
@@ -558,19 +556,19 @@
 }
 
 <script type="text/javascript">
-									//window.onscroll = function () { scrollPicksColumn() };
+										//window.onscroll = function () { scrollPicksColumn() };
 
-									//var picksColumn = document.getElementById("picksColumn");
-									//var picksColumnOffset = picksColumn.offsetTop;
+										//var picksColumn = document.getElementById("picksColumn");
+										//var picksColumnOffset = picksColumn.offsetTop;
 
-									//function scrollPicksColumn() {
-									//	console.log(window.pageYOffset);
-									//	console.log(picksColumnOffset);
+										//function scrollPicksColumn() {
+										//	console.log(window.pageYOffset);
+										//	console.log(picksColumnOffset);
 
-									//	if (window.pageYOffset >= picksColumnOffset) {
-									//		picksColumn.classList.add("sticky");
-									//	} else {
-									//		picksColumn.classList.remove("sticky");
-									//	}
-									//}
+										//	if (window.pageYOffset >= picksColumnOffset) {
+										//		picksColumn.classList.add("sticky");
+										//	} else {
+										//		picksColumn.classList.remove("sticky");
+										//	}
+										//}
 </script>

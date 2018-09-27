@@ -24,9 +24,13 @@
 			url = url + "?";
 		}
 
+		console.log(url);
+
 		if (filterInput != null) {
 			url = url + "filter=" + filterInput;
 		}
+
+		console.log(url);
 
 		if (sortBy != null) {
 
@@ -34,7 +38,7 @@
 				url = url + "&";
 			}
 
-			url = "sortBy=" + sortBy;
+			url = url + "sortBy=" + sortBy;
 		}
 
 		console.log(url);
@@ -66,8 +70,8 @@
 <div class="row">
 	<div class="dropdown col-xs-7 col-sm-3 col-md-3">
 		<select id="sortById" class="form-control" onchange="clickFilter()">
-			<option value="name">Name</option>
-			<option value="size" selected="selected">Size</option>
+			<option value="name" @string.Format("{0}", Request.Params["sortBy"] == "name" ? "selected" : string.Empty)>Name</option>
+			<option value="size" @string.Format("{0}", Request.Params["sortBy"] == "size" ? "selected" : string.Empty)>Size</option>
 		</select>
 	</div>
 
