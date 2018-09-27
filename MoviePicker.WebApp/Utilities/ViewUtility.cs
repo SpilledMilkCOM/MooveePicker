@@ -20,21 +20,21 @@ namespace MoviePicker.WebApp.Utilities
 			{
 				return result;
 			}
-			else if (bytes < KB << SHIFT_KB)
+			else if (bytes < KB * KB)
 			{
 				result = $"{bytes / KB:N1} KB";
 			}
-			else if (bytes < KB << SHIFT_KB << SHIFT_KB)
+			else if (bytes < KB * KB * KB)
 			{
-				result = $"{bytes / (KB << SHIFT_KB):N1} MB";
+				result = $"{bytes / (KB * KB):N1} MB";
 			}
-			else if (bytes < KB << SHIFT_KB << SHIFT_KB << SHIFT_KB)
+			else if (bytes < KB * KB * KB * KB)
 			{
-				result = $"{bytes / (KB << SHIFT_KB << SHIFT_KB):N1} GB";
+				result = $"{bytes / (KB * KB * KB):N1} GB";
 			}
 			else // if (bytes < KB << SHIFT_KB << SHIFT_KB << SHIFT_KB << SHIFT_KB)
 			{
-				result = $"{bytes / (KB << SHIFT_KB << SHIFT_KB << SHIFT_KB):N1} TB";
+				result = $"{bytes / (KB * KB * KB * KB):N1} TB";
 			}
 
 			return result;
