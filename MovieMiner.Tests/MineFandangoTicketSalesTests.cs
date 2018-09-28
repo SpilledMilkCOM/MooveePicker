@@ -217,27 +217,6 @@ namespace MovieMiner.Tests
 			WriteMovies(bonusPicks);
 		}
 
-		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
-		public void MineFandangoTicketSales_TotalsFiltered()
-		{
-			var test = new MineFandangoTicketSales();
-			var movies = new List<string>() { "Crazy Rich Asians", "The Meg", "Mission Impossible - Fallout", "Mile 22" };
-
-			var actual = test.Mine();
-
-			Assert.IsNotNull(actual);
-			Assert.IsTrue(actual.Any(), "The list was empty.");
-
-			actual = actual.Where(movie => movies.Contains(movie.Name))
-							.GroupBy(movie => movie.Name)
-							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
-							.Cast<IMovie>()
-							.OrderByDescending(movie => movie.Earnings)
-							.ToList();
-
-			WriteMovies(actual);
-		}
-
 		private void RemoveSameName(List<IMovie> list, IMovie toRemove)
 		{
 			var indexToRemove = 0;
