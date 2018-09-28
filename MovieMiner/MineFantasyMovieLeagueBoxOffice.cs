@@ -149,6 +149,8 @@ namespace MovieMiner
 			return result;
 		}
 
+		//----==== PRIVATE ====--------------------------------------------------------------------
+
 		private int GetIdFromClass(string nodeClass)
 		{
 			int result = -1;
