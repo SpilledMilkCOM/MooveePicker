@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
+using MoviePicker.Msf;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -23,6 +25,7 @@ namespace MovieMiner.Tests
 			_unity = new UnityContainer();
 
 			_unity.RegisterType<ILogger, DebugLogger>();
+			_unity.RegisterType<IMoviePicker, MsfMovieSolver>();
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
@@ -54,8 +57,31 @@ namespace MovieMiner.Tests
 							.ToList();
 
 			WriteMovies(actual);
+		}
 
-			Logger.WriteLine("");
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineFandangoTicketSales_TotalsCompressed()
+		{
+			var test = new MineFandangoTicketSales();
+			var fmlMiner = new MineFantasyMovieLeagueBoxOffice();
+
+			var actual = test.Mine();
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			var gameMovies = fmlMiner.Mine();
+
+			Assert.IsNotNull(gameMovies);
+			Assert.IsTrue(gameMovies.Any(), "The game list was empty.");
+
+			actual = actual.GroupBy(movie => movie.Name)
+							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
+							.Cast<IMovie>()
+							.OrderByDescending(movie => movie.Earnings)
+							.ToList();
+
+			actual = actual.Where(movie => gameMovies.Contains(movie)).ToList();
 
 			var copy = new List<IMovie>(actual);
 			var toRemove = new List<IMovie>();
@@ -89,9 +115,106 @@ namespace MovieMiner.Tests
 				}
 			}
 
-			actual = actual.OrderByDescending(item => item.Earnings).ToList();
+			// Assign the cost for WriteMovies to compute Efficiency.
 
-			WriteMovies(actual);
+			var now = DateTime.Now;
+
+			foreach (var movie in actual)
+			{
+				var found = gameMovies.FirstOrDefault(item => item.Equals(movie));
+
+				if (found != null)
+				{
+					movie.Cost = found.Cost;
+					movie.WeekendEnding = now;
+				}
+			}
+
+			WriteMovies(actual, true);
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineFandangoTicketSales_TotalsCompressed_MakePicks()
+		{
+			var test = new MineFandangoTicketSales();
+			var fmlMiner = new MineFantasyMovieLeagueBoxOffice();
+
+			var actual = test.Mine();
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			var gameMovies = fmlMiner.Mine();
+
+			Assert.IsNotNull(gameMovies);
+			Assert.IsTrue(gameMovies.Any(), "The game list was empty.");
+
+			actual = actual.GroupBy(movie => movie.Name)
+							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
+							.Cast<IMovie>()
+							.OrderByDescending(movie => movie.Earnings)
+							.ToList();
+
+			actual = actual.Where(movie => gameMovies.Contains(movie)).ToList();
+
+			var copy = new List<IMovie>(actual);
+			var toRemove = new List<IMovie>();
+
+			foreach (var movie in actual)
+			{
+				// Find a simlarly named movie
+
+				var likeMovie = copy.FirstOrDefault(item => item.Equals(movie) && item.MovieName != movie.MovieName);
+
+				if (likeMovie != null && !toRemove.Contains(likeMovie))
+				{
+					// Add the totals.
+
+					movie.Earnings += likeMovie.Earnings;
+
+					// Remove the movie so it can't be found again.
+
+					RemoveSameName(copy, likeMovie);
+					toRemove.Add(likeMovie);
+				}
+			}
+
+			foreach (var movie in toRemove)
+			{
+				var found = actual.FirstOrDefault(item => item.MovieName == movie.MovieName);
+
+				if (found != null)
+				{
+					RemoveSameName(actual, found);
+				}
+			}
+
+			// Assign the cost for WriteMovies to compute Efficiency.
+
+			var now = DateTime.Now;
+
+			foreach (var movie in actual)
+			{
+				var found = gameMovies.FirstOrDefault(item => item.Equals(movie));
+
+				if (found != null)
+				{
+					movie.Cost = found.Cost;
+					movie.WeekendEnding = now;
+				}
+			}
+
+			WriteMovies(actual, true);
+
+			var moviePicker = _unity.Resolve<IMoviePicker>();
+
+			moviePicker.AddMovies(actual);
+			//moviePicker.EnableBestPerformer = false;
+
+			var bonusPicks = moviePicker.ChooseBest();
+
+			WritePicker(moviePicker);
+			WriteMovies(bonusPicks);
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]

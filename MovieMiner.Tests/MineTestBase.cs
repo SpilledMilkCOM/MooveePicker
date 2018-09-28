@@ -73,11 +73,13 @@ namespace MovieMiner.Tests
 			WriteMovies(movies.Movies);
 		}
 
-		protected void WriteMovies(IEnumerable<IMovie> movies)
+		protected void WriteMovies(IEnumerable<IMovie> movies, bool orderByEffeciency = false)
 		{
 			Logger.WriteLine($"Total Movies In List: {movies.Count()}");
 
-			foreach (var movie in movies.OrderByDescending(item => item.Cost))
+			var orderedList = orderByEffeciency ? movies.OrderByDescending(item => item.Efficiency) : movies.OrderByDescending(item => item.Cost);
+
+			foreach (var movie in orderedList)
 			{
 				var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
 
