@@ -54,6 +54,44 @@ namespace MovieMiner.Tests
 							.ToList();
 
 			WriteMovies(actual);
+
+			Logger.WriteLine("");
+
+			var copy = new List<IMovie>(actual);
+			var toRemove = new List<IMovie>();
+
+			foreach (var movie in actual)
+			{
+				// Find a simlarly named movie
+
+				var likeMovie = copy.FirstOrDefault(item => item.Equals(movie) && item.MovieName != movie.MovieName);
+
+				if (likeMovie != null && !toRemove.Contains(likeMovie))
+				{
+					// Add the totals.
+
+					movie.Earnings += likeMovie.Earnings;
+
+					// Remove the movie so it can't be found again.
+
+					RemoveSameName(copy, likeMovie);
+					toRemove.Add(likeMovie);
+				}
+			}
+
+			foreach (var movie in toRemove)
+			{
+				var found = actual.FirstOrDefault(item => item.MovieName == movie.MovieName);
+
+				if (found != null)
+				{
+					RemoveSameName(actual, found);
+				}
+			}
+
+			actual = actual.OrderByDescending(item => item.Earnings).ToList();
+
+			WriteMovies(actual);
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
@@ -75,6 +113,26 @@ namespace MovieMiner.Tests
 							.ToList();
 
 			WriteMovies(actual);
+		}
+
+		private void RemoveSameName(List<IMovie> list, IMovie toRemove)
+		{
+			var indexToRemove = 0;
+
+			foreach (var movie in list)
+			{
+				if (movie.MovieName == toRemove.MovieName)
+				{
+					break;
+				}
+
+				indexToRemove++;
+			}
+
+			if (indexToRemove < list.Count)
+			{
+				list.RemoveAt(indexToRemove);
+			}
 		}
 	}
 }
