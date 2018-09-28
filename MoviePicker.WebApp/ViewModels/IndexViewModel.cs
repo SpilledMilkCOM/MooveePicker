@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MoviePicker.WebApp.Models
+namespace MoviePicker.WebApp.ViewModels
 {
 	/// <summary>
 	/// The ViewModel for the Index page.  Flattening out the data seems to help with the Post back to the controller.

@@ -6,6 +6,7 @@ using MoviePicker.Repository.Interfaces;
 using MoviePicker.Repository.Models;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
+using MoviePicker.WebApp.ViewModels;
 using MoviePicker.WebApp.Utilities;
 using System;
 
@@ -70,6 +71,7 @@ namespace MoviePicker.WebApp
 
 			container.RegisterType<IClientInfoModel, ClientInfoModel>();
 			container.RegisterType<IControllerUtility, ControllerUtility>();
+			container.RegisterType<IFandangoViewModel, FandangoViewModel>();
 			container.RegisterType<IInfoViewModel, InfoViewModel>();
 			container.RegisterType<IMoviePicker, MsfMovieSolver>();
 			//container.RegisterType<IMoviePicker, MooveePicker.MoviePicker>();		Still too slow.

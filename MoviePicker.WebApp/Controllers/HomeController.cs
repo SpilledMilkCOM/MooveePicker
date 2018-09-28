@@ -139,6 +139,27 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult Fandango()
+		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+
+			IFandangoViewModel viewModel = new FandangoViewModel(_minerModel.Miners[FML_INDEX], _moviePicker);
+
+			viewModel.PastHours = _controllerUtility.GetRequestInt(Request, "past") ?? 24;
+
+			DownloadMoviePosters();
+
+			viewModel.Load();
+
+			stopWatch.Stop();
+
+			viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			return View(viewModel);
+		}
+
+		[HttpGet]
 		public ActionResult Index()
 		{
 			var stopWatch = new Stopwatch();

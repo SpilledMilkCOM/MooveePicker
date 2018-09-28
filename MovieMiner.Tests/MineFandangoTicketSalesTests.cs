@@ -149,7 +149,10 @@ namespace MovieMiner.Tests
 			Assert.IsNotNull(gameMovies);
 			Assert.IsTrue(gameMovies.Any(), "The game list was empty.");
 
-			actual = actual.GroupBy(movie => movie.Name)
+			var now = DateTime.Now;
+
+			actual = actual.Where(movie => movie.WeekendEnding > now.AddHours(-24))
+							.GroupBy(movie => movie.Name)
 							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
 							.Cast<IMovie>()
 							.OrderByDescending(movie => movie.Earnings)
@@ -191,8 +194,6 @@ namespace MovieMiner.Tests
 
 			// Assign the cost for WriteMovies to compute Efficiency.
 
-			var now = DateTime.Now;
-
 			foreach (var movie in actual)
 			{
 				var found = gameMovies.FirstOrDefault(item => item.Equals(movie));
@@ -215,7 +216,7 @@ namespace MovieMiner.Tests
 
 			WritePicker(moviePicker);
 			WriteMovies(bonusPicks);
-		}
+		}                                           
 
 		private void RemoveSameName(List<IMovie> list, IMovie toRemove)
 		{

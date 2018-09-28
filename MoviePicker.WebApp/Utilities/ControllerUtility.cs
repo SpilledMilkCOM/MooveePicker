@@ -36,6 +36,19 @@ namespace MoviePicker.WebApp.Utilities
 			return result;
 		}
 
+		public int? GetRequestInt(HttpRequestBase request, string key)
+		{
+			int? result = null;
+			int parsed = 0;
+
+			if (int.TryParse(request.Params[key], out parsed))
+			{
+				result = parsed;
+			}
+
+			return result;
+		}
+
 		public List<int> GetRequestIntList(HttpRequestBase request, string key)
 		{
 			char[] listDelimiter = { ',' };

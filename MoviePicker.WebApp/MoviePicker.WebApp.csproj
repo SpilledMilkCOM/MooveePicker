@@ -173,6 +173,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IControllerUtility.cs" />
+    <Compile Include="Interfaces\IFandangoViewModel.cs" />
     <Compile Include="Interfaces\IMinerModel.cs" />
     <Compile Include="Interfaces\IIndexViewModel.cs" />
     <Compile Include="Interfaces\IClientInfoModel.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="ViewModels\ImagesViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />
     <Compile Include="ViewModels\ExpertPicksViewModel.cs" />
+    <Compile Include="ViewModels\FandangoViewModel.cs" />
     <Compile Include="ViewModels\MorePicksViewModel.cs" />
     <Compile Include="ViewModels\SharePicksViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
@@ -330,6 +332,7 @@
     <Content Include="Views\Shared\MovieListMini2.cshtml" />
     <Content Include="Views\Home\ExpertPicks.cshtml" />
     <Content Include="Views\LowMem\Images.cshtml" />
+    <Content Include="Views\Home\Fandango.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
