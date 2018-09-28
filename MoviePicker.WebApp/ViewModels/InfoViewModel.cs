@@ -1,6 +1,6 @@
 ﻿using MoviePicker.WebApp.Interfaces;
 
-namespace MoviePicker.WebApp.Models
+namespace MoviePicker.WebApp.ViewModels
 {
 	public class InfoViewModel : IInfoViewModel
 	{

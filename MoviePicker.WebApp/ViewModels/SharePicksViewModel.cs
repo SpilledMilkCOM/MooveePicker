@@ -1,4 +1,4 @@
-﻿namespace MoviePicker.WebApp.Models
+﻿namespace MoviePicker.WebApp.ViewModels
 {
 	public class SharePicksViewModel
 	{
