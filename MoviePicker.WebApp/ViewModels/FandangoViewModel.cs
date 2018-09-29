@@ -32,6 +32,8 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public long Duration { get; set; }
 
+		public DateTime FilteredTo => LastUpdated.AddHours(-PastHours);
+
 		/// <summary>
 		/// The estimated values are in (typically on a Saturday)
 		/// </summary>
@@ -49,9 +51,13 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public int PastHours { get; set; }
 
+		public DateTime LastUpdated { get; private set; }
+
 		public void Load()
 		{
 			((ICache)Miner).Load();
+
+			LastUpdated = Miner.Movies.Max(movie => movie.WeekendEnding);
 
 			_movies = FilterMovies();
 			MovieList = MakePick(true);
@@ -143,7 +149,7 @@ namespace MoviePicker.WebApp.ViewModels
 			// Filter the list (last 24 hours)
 			// Group the movies by name.
 
-			var result = Miner.Movies.Where(movie => movie.WeekendEnding > now.AddHours(-PastHours))
+			var result = Miner.Movies.Where(movie => movie.WeekendEnding > FilteredTo)
 							.GroupBy(movie => movie.Name)
 							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
 							.Cast<IMovie>()
