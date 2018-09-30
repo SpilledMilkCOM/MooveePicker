@@ -329,11 +329,15 @@ namespace MoviePicker.WebApp.Controllers
 			ParseBoxOfficeWeightRequest();
 
 			var viewModel = ConstructPicksViewModel();
+			var savedMovieList = viewModel.MovieList;
 
 			// Assign perfect pick to movie list so it is shared.
 			viewModel.MovieList = viewModel.MovieListPerfectPick;
 
 			var sharedViewModel = ConstructSharePicksViewModel(true, viewModel);
+
+			viewModel.MovieList = savedMovieList;
+			viewModel.MovieList.ComparisonHeader = "Your Custom Picks";
 
 			// Show the values for the FML Estimate data.
 
