@@ -34,6 +34,8 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public DateTime FilteredTo => LastUpdated.AddHours(-PastHours);
 
+		public bool IsDaily { get; set; }
+
 		/// <summary>
 		/// The estimated values are in (typically on a Saturday)
 		/// </summary>

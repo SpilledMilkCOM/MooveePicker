@@ -10,8 +10,7 @@ namespace MovieMiner
 	{
 		private const decimal AVERAGE_COST_PER_TICKET = 10;
 
-		private const string DEFAULT_URL = "http://akvalley.pythonanywhere.com/static/Fandango_report.txt";
-		private const string DELIMITER = "- $";
+		private const string DEFAULT_URL = "http://akvalley.pythonanywhere.com/static/fandango_report.txt";
 
 		/// <summary>
 		/// 
@@ -41,13 +40,13 @@ namespace MovieMiner
 				{
 					var tokens = line?.Split(tokenDelimiters);
 
-					if (tokens != null && tokens.Length == 3)
+					if (tokens != null && tokens.Length == 4)
 					{
 						var movie = new Movie
 						{
-							WeekendEnding = Convert.ToDateTime(tokens[0]),
-							Earnings = Convert.ToDecimal(tokens[1]) * AVERAGE_COST_PER_TICKET,
-							Name = tokens[2]
+							WeekendEnding = Convert.ToDateTime(tokens[1]),
+							Earnings = Convert.ToDecimal(tokens[0]) * AVERAGE_COST_PER_TICKET,
+							Name = tokens[3]
 						};
 						result.Add(movie);
 					}
