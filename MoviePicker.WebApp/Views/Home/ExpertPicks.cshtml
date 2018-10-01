@@ -25,30 +25,34 @@
 					   data-toggle="tooltip"
 					   data-placement="bottom"
 					   title="Click for '@expertPick.Miner.Name' source page... (last updated @string.Format("{0}", ((ICache)expertPick.Miner).LastLoaded.ToString()))">
-						@expertPick.Miner.Name
-					</a>
+						@expertPick.Miner.Name &nbsp;&nbsp;&nbsp;
+						<span class="badge badge-pill badge-light"
+							  data-toggle="tooltip"
+							  data-placement="right"
+							  title="This badge is their total movie count.">@expertPick.Miner.Movies.Count</span>
+						</a>
+					</div>
+
+					@Html.Partial("MovieListMini2", expertPick.MovieList)
+
+					@*<div class="clearfix"></div>
+						<div class="row-divider"> </div>*@
+
+					@Html.Partial("MovieListMini2", expertPick.MovieListBonusOff)
+
+					@*<div class="clearfix"></div>
+						<div class="row-divider"> </div>*@
 				</div>
-
-				@Html.Partial("MovieListMini2", expertPick.MovieList)
-
-				@*<div class="clearfix"></div>
-				<div class="row-divider"> </div>*@
-
-				@Html.Partial("MovieListMini2", expertPick.MovieListBonusOff)
-
-				@*<div class="clearfix"></div>
-				<div class="row-divider"> </div>*@
-			</div>
+			}
 		}
-	}
-	else
-	{
-		<p>
-			<h4>No experts have weighed in just yet.</h4>
-		</p>
-		<p>
-			<h4>Todd's box office predictions are usually out Tuesday, so stayed tuned!</h4>
-		</p>
-	}
+		else
+		{
+			<p>
+				<h4>No experts have weighed in just yet.</h4>
+			</p>
+			<p>
+				<h4>Todd's box office predictions are usually out Tuesday, so stayed tuned!</h4>
+			</p>
+		}
 
 </div>
