@@ -78,6 +78,11 @@ namespace MoviePicker.WebApp.Utilities
 			return request.Params[key];
 		}
 
+		public static void SetOpenGraph(dynamic viewBag, HttpRequestBase request)
+		{
+			viewBag.OpenGraphUrl = request.Url;
+		}
+
 		/// <summary>
 		/// Initialize the ViewBag with the Twitter Card "meta" tag info.
 		/// </summary>

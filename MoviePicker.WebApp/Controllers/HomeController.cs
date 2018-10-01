@@ -611,6 +611,8 @@ namespace MoviePicker.WebApp.Controllers
 											, "Collage of my movie lineups."
 											, defaultTwitterText);
 
+			ControllerUtility.SetOpenGraph(ViewBag, Request);
+
 			DownloadMoviePosters();
 
 			return viewModel;
