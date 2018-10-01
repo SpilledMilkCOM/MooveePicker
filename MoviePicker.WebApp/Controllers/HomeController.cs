@@ -152,6 +152,11 @@ namespace MoviePicker.WebApp.Controllers
 
 			viewModel.Load();
 
+			if (viewModel.IsTracking && _minerModel.Miners[FML_INDEX].Movies.Count > 0)
+			{
+				viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
+			}
+
 			stopWatch.Stop();
 
 			viewModel.Duration = stopWatch.ElapsedMilliseconds;
@@ -324,11 +329,15 @@ namespace MoviePicker.WebApp.Controllers
 			ParseBoxOfficeWeightRequest();
 
 			var viewModel = ConstructPicksViewModel();
+			var savedMovieList = viewModel.MovieList;
 
 			// Assign perfect pick to movie list so it is shared.
 			viewModel.MovieList = viewModel.MovieListPerfectPick;
 
 			var sharedViewModel = ConstructSharePicksViewModel(true, viewModel);
+
+			viewModel.MovieList = savedMovieList;
+			viewModel.MovieList.ComparisonHeader = "Your Custom Picks";
 
 			// Show the values for the FML Estimate data.
 
@@ -493,17 +502,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			if (result.IsTracking && _minerModel.Miners[FML_INDEX].Movies.Count > 0)
 			{
-				// Don't need to use clones, because the BONUS is always used for best possible values.
-
-				_moviePicker.EnableBestPerformer = true;
-				_moviePicker.AddMovies(_minerModel.Miners[FML_INDEX].Movies);
-
-				result.MovieListPerfectPick = new MovieListModel()
-				{
-					ComparisonHeader = "Perfect Pick (estimated)",
-					ComparisonMovies = result.Movies,
-					Picks = new List<IMovieList> { _moviePicker.ChooseBest() }
-				};
+				result.MovieListPerfectPick = PerfectPick(result.Movies);
 			}
 
 			result.SharedPicksUrl = SharedPicksFromModels();
@@ -518,6 +517,21 @@ namespace MoviePicker.WebApp.Controllers
 			result.Duration = stopWatch.ElapsedMilliseconds;
 
 			return result;
+		}
+
+		private IMovieListModel PerfectPick(IEnumerable<IMovie> movies)
+		{
+			// Don't need to use clones, because the BONUS is always used for best possible values.
+
+			_moviePicker.EnableBestPerformer = true;
+			_moviePicker.AddMovies(_minerModel.Miners[FML_INDEX].Movies);
+
+			return new MovieListModel()
+			{
+				ComparisonHeader = "Perfect Pick (estimated)",
+				ComparisonMovies = movies,
+				Picks = new List<IMovieList> { _moviePicker.ChooseBest() }
+			};
 		}
 
 		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn, PicksViewModel picksViewModel = null, int index = 0)
