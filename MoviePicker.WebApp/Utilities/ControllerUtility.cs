@@ -126,6 +126,7 @@ namespace MoviePicker.WebApp.Utilities
 				viewBag.TwitterImage = imageUrl;
 				viewBag.TwitterImageAlt = imageUrlAlt ?? "Logo of a piece of movie film with a finger pointing at a frame.";
 				viewBag.OpenGraphUrl = Constants.WEBSITE_URL;
+				viewBag.OpenGraphSiteName = Constants.APPLICATION_NAME;
 			}
 		}
 	}

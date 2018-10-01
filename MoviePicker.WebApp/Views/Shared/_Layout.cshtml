@@ -26,6 +26,8 @@
 		<meta property="og:title" content="@ViewBag.TwitterTitle" />
 		<meta property="og:description" content="@ViewBag.TwitterDescription" />
 		<meta property="og:image" content="@ViewBag.TwitterImage" />
+		<meta property="og:image:alt" content="@ViewBag.TwitterImageAlt" />
+		<meta property="og:site_name" content="@ViewBag.OpenGraphSiteName" />
 		<meta property="og:url" content="@ViewBag.OpenGraphUrl">
 	}
 
@@ -33,6 +35,9 @@
 
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
+
+
+	<link rel="icon" type="image/png" href="http://mooveepicker.azurewebsites.net/images/favicon.png">
 
 	@* Only spit out the Google Ad script on SELECT pages. *@
 
@@ -49,8 +54,6 @@
 					});
 				</script>
 		}*@
-
-	<link rel="icon" type="image/png" href="http://mooveepicker.azurewebsites.net/images/favicon.png">
 
 	@* This is for Adsterra.com
 
@@ -76,8 +79,6 @@
 						&nbsp;&nbsp;@Constants.APPLICATION_NAME
 					</span>
 				</a>
-
-				@*@Html.ActionLink("Moovee Picker", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
 			</div>
 
 			<div class="navbar-collapse collapse">

@@ -355,6 +355,8 @@ namespace MoviePicker.WebApp.Controllers
 								, "Collage of the perfect pick lineup."
 								, "Check out my picks against the perfect pick.");
 
+			ControllerUtility.SetOpenGraph(ViewBag, Request);
+
 			stopWatch.Stop();
 
 			viewModel.Duration = stopWatch.ElapsedMilliseconds;

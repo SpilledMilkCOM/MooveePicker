@@ -52,13 +52,14 @@ The current defaults that I use are on the [About](http://mooveepicker.azurewebs
 
 
 ##### Things I learned in this project
-* More Javascript and shortcuts
+* More Javascript and JQuery shortcuts
 * I didn't know that hsl() was a thing in CSS (pretty cool)
 * More about Bootstrap and columns within columns.
 * Phone browsers are weird.
 * Browsers support PNG file format as a "[favicon](https://en.wikipedia.org/wiki/Favicon)" (don't need the old ICO file anymore - YAY!)
 * How to add Application Insights to monitor the web app.
 * How to add Adsterra.com ads (removed them due to ads that take over your browser - NOT GOOD)
+* More about [Open Graph](http://ogp.me/) Facebook's standard for web page metadata.
 
 ##### Azure Notes
 * Application Settings
