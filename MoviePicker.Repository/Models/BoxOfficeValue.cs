@@ -22,6 +22,9 @@ namespace MoviePicker.Repository.Models
 		public bool IsActual { get; set; }
 
 		[Required]          // NOT NULL
+		public int MovieId { get; set; }
+
+		[Required]          // NOT NULL
 		public DateTime Start { get; set; }
 
 		[Required]          // NOT NULL
