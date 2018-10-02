@@ -13,13 +13,13 @@
 @foreach (var pick in Model.Picks)
 {
 	<div class="col-xs-12 col-sm-3">
-		<h5 style="font-weight: bold;">@Model.ComparisonHeader</h5>
+		<h5 id="@string.Format("{0}ComparisonHeaderId", Model.Id)" style="font-weight: bold;">@Model.ComparisonHeader</h5>
 	</div>
 	<div class="col-xs-5 col-sm-4">
-		<h5>Earnings: $@pick.TotalEarnings.ToString("N0")</h5>
+		<h5 id="@string.Format("{0}TotalEarningsId", Model.Id)">Earnings: $@pick.TotalEarnings.ToString("N0")</h5>
 	</div>
 	<div class="col-xs-5 col-sm-3">
-		<h5>@pick.TotalCost BUX</h5>
+		<h5 id="@string.Format("{0}TotalCostId", Model.Id)">@pick.TotalCost BUX</h5>
 	</div>
 
 	if (!string.IsNullOrEmpty(Model.ShareQueryString))
@@ -27,7 +27,7 @@
 		var pagePiece = Model.ComparisonHeader == "Bonus ON" ? "On" : "Off";
 
 		<div class="col-xs-2">
-			<a class="btn btn-info btn-xs" style="margin-top: 7px;"
+			<a id="@string.Format("{0}SharePicksId", Model.Id)" class="btn btn-info btn-xs" style="margin-top: 7px;"
 			   @* Generate a unique ID so Twitter won't cache the image and share them to other tweets. *@
 			   href="@string.Format("ShareBonus{0}Picks?{1}&id={2}", pagePiece, Model.ShareQueryString, Guid.NewGuid())"
 			   data-toggle="tooltip"
@@ -69,10 +69,10 @@
 						@* This should override what's in the style (for now) *@
 
 						<td style="padding: 3px;">
-							<div data-toggle="tooltip" data-placement="bottom"
+							<div id="@string.Format("{0}TooltipId{1}{2}", Model.Id, pickCount, movieCount)" data-toggle="tooltip" data-placement="bottom"
 								 title="@string.Format("{0} - ${1:N0}", movieName, movieEarnings)">
 
-								<img id="@string.Format("{0}{1}{2}", Model.Id, pickCount, movieCount)"
+								<img id="@string.Format("{0}moviePosterId{1}{2}", Model.Id, pickCount, movieCount)"
 									 class="img-responsive"
 									 src="@imageUrl"
 									 alt="@movieName"
