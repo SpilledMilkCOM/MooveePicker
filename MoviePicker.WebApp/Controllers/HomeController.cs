@@ -58,6 +58,15 @@ namespace MoviePicker.WebApp.Controllers
 			UpdateViewModel();
 		}
 
+		[HttpGet]
+		public ActionResult Calculate()
+		{
+			var result = ConstructPicksViewModel();
+
+			return Json(result, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpGet]
 		public ActionResult Error(string message)
 		{
 			return View(new ErrorViewModel { MainMessage = message ?? "An unknown error occurred." });
