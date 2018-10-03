@@ -28,21 +28,43 @@
 		@* ================================================================================================================================== PICKS COLUMN ==== *@
 
 		<div class="col-md-7">
-			<div class="col-xs-4" style="padding-top: 20px;">
+
+			<h2 class="col-sm-8 col-sm-push-4">
+				Welcome to Moovee Picker
+			</h2>
+
+			<div class="col-xs-4 col-sm-pull-8 hidden-sm hidden-md hidden-lg" style="padding-top: 20px;">
 				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
 			</div>
 
-			<div class="col-xs-8">
-				<h2>
-					Welcome to Moovee Picker
-				</h2>
-
+			<div class="col-sm-8 col-sm-push-4">
 				This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
 				This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
 				You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
 
 				@Html.ActionLink("Old Look", "Index", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
 			</div>
+
+			<div class="hidden-xs col-xs-4 col-sm-pull-8" style="padding-top: 20px;">
+				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
+			</div>
+
+
+			@*<div class="col-xs-4" style="padding-top: 20px;">
+			<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
+		</div>
+
+		<div class="col-xs-8">
+			<h2>
+				Welcome to Moovee Picker
+			</h2>
+
+			This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
+			This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
+			You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
+
+			@Html.ActionLink("Old Look", "Index", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
+		</div>*@
 
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
@@ -394,19 +416,19 @@
 }
 
 <script type="text/javascript">
-											//window.onscroll = function () { scrollPicksColumn() };
+												//window.onscroll = function () { scrollPicksColumn() };
 
-											//var picksColumn = document.getElementById("picksColumn");
-											//var picksColumnOffset = picksColumn.offsetTop;
+												//var picksColumn = document.getElementById("picksColumn");
+												//var picksColumnOffset = picksColumn.offsetTop;
 
-											//function scrollPicksColumn() {
-											//	console.log(window.pageYOffset);
-											//	console.log(picksColumnOffset);
+												//function scrollPicksColumn() {
+												//	console.log(window.pageYOffset);
+												//	console.log(picksColumnOffset);
 
-											//	if (window.pageYOffset >= picksColumnOffset) {
-											//		picksColumn.classList.add("sticky");
-											//	} else {
-											//		picksColumn.classList.remove("sticky");
-											//	}
-											//}
+												//	if (window.pageYOffset >= picksColumnOffset) {
+												//		picksColumn.classList.add("sticky");
+												//	} else {
+												//		picksColumn.classList.remove("sticky");
+												//	}
+												//}
 </script>
