@@ -57,6 +57,9 @@ The current defaults that I use are on the [About](http://mooveepicker.azurewebs
 * More about Bootstrap
   * Columns within columns.
   * Grids with headers which switch to labels in mobile view.
+* Twitter
+  * Large summary cards are clipped, supposed to be 2:1 aspect but 600x314 works better
+  * [Emoji's](https://www.piliapp.com/twitter-symbols/)
 * Phone browsers are weird.
 * Browsers support PNG file format as a "[favicon](https://en.wikipedia.org/wiki/Favicon)" (don't need the old ICO file anymore - YAY!)
 * How to add Application Insights to monitor the web app.
