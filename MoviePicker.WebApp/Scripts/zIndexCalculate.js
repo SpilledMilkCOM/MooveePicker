@@ -29,30 +29,8 @@ function calculate(endPoint) {
 			console.log(jsonData.TotalEarnings);
 			console.log(jsonData.TotalCost);
 
-			var totalEarnings = $('#bonusOnMovieListTotalEarningsId');
-
-			if (totalEarnings != null) {
-				//totalEarnings.text("Earnings: $" + (jsonData.TotalEarnings).toFixed().replace(/\d(?=(\d{3})+\.)/g, '$&,'));
-				totalEarnings.text("Earnings: $" + (jsonData.TotalEarnings).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-			}
-
-			var totalCost = $('#bonusOnMovieListTotalCostId');
-
-			if (totalCost != null) {
-				totalCost.text(jsonData.TotalCost + " BUX");
-			}
-
-			for (var movieCount = 0, length = jsonData.MovieImages.length; movieCount < length; movieCount++) {
-				var image = $('#bonusOnMovieListMoviePosterId0' + movieCount);
-				var tooltip = $('#bonusOnMovieListTooltipId0' + movieCount);
-
-				console.log(tooltip);
-				console.log(jsonData.Movies[movieCount].Name + ' - $' + (jsonData.Movies[movieCount].Earnings).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-
-				tooltip.attr('title', jsonData.Movies[movieCount].Name + ' - $' + (jsonData.Movies[movieCount].Earnings).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-				tooltip.attr('data-original-title', jsonData.Movies[movieCount].Name + ' - $' + (jsonData.Movies[movieCount].Earnings).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-				image.attr('src', jsonData.MovieImages[movieCount]);
-			}
+			movieListMini(jsonData.MovieList.Picks[0], 'bonusOnMovieList');
+			movieListMini(jsonData.MovieListBonusOff.Picks[0], 'bonusOffMovieList');
 
 			inCallback = false;
 		},
@@ -63,4 +41,40 @@ function calculate(endPoint) {
 			inCallback = false;
 		}
 	});
+}
+
+function formatWithCommas(value) {
+	return (value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function movieListMini(movieList, idPrefix) {
+	setText(idPrefix + 'TotalEarningsId', "Earnings: $" + formatWithCommas(movieList.TotalEarnings));
+	setText(idPrefix + 'TotalCostId', movieList.TotalCost + " BUX");
+
+	for (var movieCount = 0, length = movieList.MovieImages.length; movieCount < length; movieCount++) {
+		var movie = movieList.Movies[movieCount];
+		var image = $('#' + idPrefix + 'MoviePosterId0' + movieCount);
+		var tooltip = $('#' + idPrefix +'TooltipId0' + movieCount);
+		var backgroundStyle = "border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;";
+
+		console.log(tooltip);
+		console.log(movie.Name + ' - $' + formatWithCommas(movie.Earnings));
+
+		if (movie.IsBestPerformer) {
+			backgroundStyle = "border-radius: 3px; box-shadow: 2px 4px 8px 0px green;";
+		}
+
+		//tooltip.attr('title', movie.Name + ' - $' + formatWithCommas(movie.Earnings));
+		tooltip.attr('data-original-title', movie.Name + ' - $' + formatWithCommas(movie.Earnings));
+		image.attr('src', movieList.MovieImages[movieCount]);
+		image.attr('style', backgroundStyle);
+	}
+}
+
+function setText(id, value) {
+	var ctrl = $('#' + id);
+
+	if (ctrl != null) {
+		ctrl.text(value);
+	}
 }

@@ -20,6 +20,7 @@ function clearMoviePicksPosters(movieListId) {
 			//console.log(image.attr('src'));
 
 			image.attr('src', '/Images/MooveePosterRecalculate.jpg');
+			image.attr('style', 'border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;');
 		}
 	}
 }
@@ -73,25 +74,25 @@ function clickPicks() {
 
 	console.log(baseUrl + url);
 
-	calculate(url.replace(/Index2/, "Calculate"));
+	window.location.href = baseUrl + url;
 
-	//window.location.href = baseUrl + url;
-
-	//console.log(window.location.href);
+	console.log(window.location.href);
 }
 
 function clickPicks2() {
-	console.log("clickPicks");
+	console.log("clickPicks2");
 
 	var parameters = parseBoxOfficeAndWeights();
 
 	console.log(parameters);
 
-	var url = "/Home/Index2?" + parameters;
+	var url = "/Home/Calculate?" + parameters;
 
 	var baseUrl = parseBaseUrl();
 
 	console.log(baseUrl + url);
+
+	calculate(url);
 }
 
 function clickTracking() {

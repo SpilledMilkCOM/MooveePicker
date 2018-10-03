@@ -81,13 +81,13 @@ namespace MoviePicker.Common
 			{
 				var result = new List<string>();
 
-				_movies?.OrderByDescending(movie => movie.Cost).ToList().ForEach(movie => result.Add(movie.ImageUrl));
+				Movies.ToList().ForEach(movie => result.Add(movie.ImageUrl));
 
 				return result;
 			}
 		}
 
-		public IEnumerable<IMovie> Movies => _movies;
+		public IEnumerable<IMovie> Movies => _movies?.OrderByDescending(movie => movie.Cost);
 
 		public decimal TotalCost => _totalCost;
 

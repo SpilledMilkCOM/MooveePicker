@@ -196,6 +196,7 @@
     <Compile Include="ViewModels\ExpertPicksViewModel.cs" />
     <Compile Include="ViewModels\FandangoViewModel.cs" />
     <Compile Include="ViewModels\MorePicksViewModel.cs" />
+    <Compile Include="ViewModels\CalculateViewModel.cs" />
     <Compile Include="ViewModels\SharePicksViewModel.cs" />
     <Compile Include="ViewModels\InfoViewModel.cs" />
     <Compile Include="Models\MineMine.cs" />
