@@ -25,198 +25,9 @@
 
 	<div class="row">
 
-		@* ================================================================================================================================== PICKS COLUMN ==== *@
-
-		<div class="col-md-7">
-
-			<h2 class="col-sm-8 col-sm-push-4">
-				Welcome to Moovee Picker
-			</h2>
-
-			<div class="col-xs-4 col-sm-pull-8 hidden-sm hidden-md hidden-lg" style="padding-top: 20px;">
-				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
-			</div>
-
-			<div class="col-sm-8 col-sm-push-4">
-				This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
-				This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
-				You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
-
-				@Html.ActionLink("Old Look", "Index", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
-			</div>
-
-			<div class="hidden-xs col-xs-4 col-sm-pull-8" style="padding-top: 20px;">
-				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
-			</div>
-
-
-			@*<div class="col-xs-4" style="padding-top: 20px;">
-			<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
-		</div>
-
-		<div class="col-xs-8">
-			<h2>
-				Welcome to Moovee Picker
-			</h2>
-
-			This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
-			This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
-			You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
-
-			@Html.ActionLink("Old Look", "Index", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
-		</div>*@
-
-			<div class="clearfix"></div>
-			<div class="row-divider"> </div>
-
-			<div id="picksColumn">
-				@if (Model.MovieListPerfectPick != null)
-				{
-					@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
-				}
-
-				@if (Model.MovieList != null)
-				{
-					@Html.Partial("MovieListMini2", Model.MovieList)
-				}
-
-				@if (Model.MovieListBonusOff != null)
-				{
-					@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
-				}
-			</div>
-
-			<input class="btn btn-success btn-lg"
-				   style="margin-top: 10px;"
-				   onclick="clickPicks()"
-				   type="button"
-				   value="Calculate Picks"
-				   data-toggle="tooltip"
-				   data-placement="bottom"
-				   title="Click to recalculate page...">
-
-			@if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
-			{
-				<a class="btn btn-info btn-lg"
-				   style="margin-top: 10px;"
-				   href="@string.Format("MorePicks?{0}", Request.QueryString)"
-				   data-toggle="tooltip"
-				   data-placement="bottom"
-				   title="View the top picks for both bonus ON and OFF (this is a bit slow... please be patient.)">
-					More Picks...
-				</a>
-			}
-
-			@if (Model.IsTracking)
-			{
-				<input class="btn btn-info btn-lg"
-					   style="margin-top: 10px;"
-					   onclick="clickTracking()"
-					   type="button"
-					   value="Perfect Pick Comparison"
-					   data-toggle="tooltip"
-					   data-placement="bottom"
-					   title="Click to track all the miners against the estimates..." />
-			}
-
-			<div class="clearfix"></div>
-			<div class="row-divider"> </div>
-
-			@* TODO - Put this in a partial view. *@
-
-			<div style="border: solid; border-radius: 4px; border-width: 1px; padding: 8px;">
-				<h4>Bonus Comparisons</h4>
-
-				@*<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Rank</div>*@
-				<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
-				<div class="col-sm-1 hidden-xs" style="font-weight: bold;">BUX</div>
-				<div class="col-sm-2 hidden-xs" style="font-weight: bold; text-align: right;">Earnings</div>
-				<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: center;">Efficiency</div>
-				<div class="col-sm-4 hidden-xs" style="font-weight: bold; text-align: center;">Difference</div>
-
-				@{
-					if (Model.Movies.Count() > 0)
-					{
-						var mostEfficient = Model.Movies.OrderByDescending(item => item.Efficiency).FirstOrDefault();
-
-						movieCount = 0;
-
-						foreach (var movie in Model.Movies.OrderByDescending(item => item.Efficiency))
-						{
-							var backgroundColor = movieCount == 0 ? "background-color: lightgreen;" : (movieCount % 2 == 0 ? "background-color: lightgrey;" : string.Empty);
-							var rank = Model.Rank(movie);
-
-							@*<div class="col-sm-1 hidden-xs" style="@backgroundColor text-align: right;">@rank</div>*@
-							<div class="col-xs-12 col-sm-4" style="@backgroundColor font-weight: bold;">@movie.Name</div>
-							<div class="col-xs-3 hidden-sm hidden-md hidden-lg" style="@backgroundColor font-weight: bold;">BUX:</div>
-							<div class="col-xs-3 col-sm-1" style="@backgroundColor text-align: right;">@movie.Cost</div>
-
-							<div class="col-xs-3 hidden-sm hidden-md hidden-lg" style="@backgroundColor font-weight: bold;">Earnings:</div>
-							<div class="col-xs-3 col-sm-2" style="@backgroundColor text-align: right;">@string.Format("{0:N0}", movie.Earnings)</div>
-
-							<div class="col-xs-3 hidden-sm hidden-md hidden-lg" style="@backgroundColor font-weight: bold;">Efficiency:</div>
-							<div class="col-xs-3 col-sm-1" style="@backgroundColor text-align: right;">@string.Format("{0:N2}", movie.Efficiency / 1000m)</div>
-
-							<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="@backgroundColor">--</div>
-
-							<div class="col-xs-3 hidden-sm hidden-md hidden-lg" style="@backgroundColor font-weight: bold;">Difference:</div>
-
-							if (movie.EarningsBase > 0)
-							{
-								var nextRankedMovie = Model.Movies.FirstOrDefault(item => Model.Rank(item) == rank + 1);
-
-								// Compute difference columns.
-
-								if (rank == 1)
-								{
-									if (nextRankedMovie != null)
-									{
-										//How much does the top rank have to LOSE before it's no longer the TOP
-										<div class="col-xs-3 col-sm-2" style="@backgroundColor text-align: right;">@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)</div>
-										<div class="col-xs-2 col-sm-1" style="@backgroundColor text-align: right;">--</div>
-										<div class="col-xs-2 col-sm-1" style="@backgroundColor text-align: right; color: #cc3333;">@string.Format("{0:N1}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</div>
-									}
-								}
-								else
-								{
-									//How much does current rank to GAIN to be the TOP
-
-									<div class="col-xs-3 col-sm-2" style="@backgroundColor text-align: right;">@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)</div>
-									<div class="col-xs-2 col-sm-1" style="@backgroundColor text-align: right; color: #33cc33">@string.Format("{0:N1}%", (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</div>
-
-									if (nextRankedMovie != null)
-									{
-										<div class="col-xs-2 col-sm-1" style="@backgroundColor text-align: right; color: #cc3333">@string.Format("{0:N1}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)</div>
-									}
-									else
-									{
-										<div class="col-xs-2 col-sm-1" style="@backgroundColor text-align: right;">--</div>
-									}
-								}
-							}
-
-							movieCount++;
-
-							<div class="clearfix"></div>
-						}
-					}
-				}
-
-				<div class="row-divider"> </div>
-
-				<div class="col-sm-10 col-sm-offset-1">
-					The table above compares ALL of the movies to the MOST efficient one.
-					The Bonus Earnings column is the value that the movie WOULD need to have the top efficiency or at least MATCH top efficiency.
-					The Difference column is the dollar amount of gain, and the % Difference is just that; Difference divided the actual earnings (percentage gain).
-					The MOST efficient movie shows how much it would have to drop to match second place.
-				</div>
-
-			</div>
-		</div>
-
 		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
 
-		<div class="col-md-5">
+		<div class="col-md-5 col-md-push-7">
 
 			<div class="col-md-12">
 				<h4>Weekend ending @weekendEnding (@Model.Duration.ToString("N0") ms)</h4>
@@ -412,23 +223,251 @@
 				}
 			</table>
 		</div>
+
+		@* ================================================================================================================================== PICKS COLUMN ==== *@
+
+		<div class="col-md-7 col-md-pull-5">
+
+			<h2 class="col-sm-8 col-sm-push-4">
+				Welcome to Moovee Picker
+			</h2>
+
+			<div class="col-xs-4 col-sm-pull-8 hidden-sm hidden-md hidden-lg" style="padding-top: 20px;">
+				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
+			</div>
+
+			<div class="col-sm-8 col-sm-push-4">
+				This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
+				This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
+				You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
+
+				@Html.ActionLink("Old Look", "Index", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
+			</div>
+
+			<div class="hidden-xs col-xs-4 col-sm-pull-8" style="padding-top: 20px;">
+				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
+			</div>
+
+
+			@*<div class="col-xs-4" style="padding-top: 20px;">
+					<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
+				</div>
+
+				<div class="col-xs-8">
+					<h2>
+						Welcome to Moovee Picker
+					</h2>
+
+					This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
+					This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
+					You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
+
+					@Html.ActionLink("Old Look", "Index", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
+				</div>*@
+
+			<div class="clearfix"></div>
+			<div class="row-divider"> </div>
+
+			<div id="picksColumn">
+				@if (Model.MovieListPerfectPick != null)
+				{
+					@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
+				}
+
+				@if (Model.MovieList != null)
+				{
+					@Html.Partial("MovieListMini2", Model.MovieList)
+				}
+
+				@if (Model.MovieListBonusOff != null)
+				{
+					@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
+				}
+			</div>
+
+			<input class="btn btn-success btn-lg"
+				   style="margin-top: 10px;"
+				   onclick="clickPicks()"
+				   type="button"
+				   value="Calculate Picks"
+				   data-toggle="tooltip"
+				   data-placement="bottom"
+				   title="Click to recalculate page...">
+
+			@if (!string.IsNullOrEmpty(Request.QueryString.ToString()))
+			{
+				<a class="btn btn-info btn-lg"
+				   style="margin-top: 10px;"
+				   href="@string.Format("MorePicks?{0}", Request.QueryString)"
+				   data-toggle="tooltip"
+				   data-placement="bottom"
+				   title="View the top picks for both bonus ON and OFF (this is a bit slow... please be patient.)">
+					More Picks...
+				</a>
+			}
+
+			@if (Model.IsTracking)
+			{
+				<input class="btn btn-info btn-lg"
+					   style="margin-top: 10px;"
+					   onclick="clickTracking()"
+					   type="button"
+					   value="Perfect Pick Comparison"
+					   data-toggle="tooltip"
+					   data-placement="bottom"
+					   title="Click to track all the miners against the estimates..." />
+			}
+		</div>
+
+		@*<div class="clearfix"></div>
+			<div class="row-divider"> </div>*@
+
+		@* ================================================================================================================================== BONUS COMPARISON COLUMN ==== *@
+
+		@* TODO - Put this in a partial view. *@
+
+		<div class="col-md-7 col-md-pull-5" style="border: solid; border-radius: 4px; border-width: 1px; padding: 8px;">
+			<h4>Bonus Comparisons</h4>
+
+			@*<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Rank</div>*@
+			<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
+			<div class="col-sm-1 hidden-xs" style="font-weight: bold;">BUX</div>
+			<div class="col-sm-2 hidden-xs" style="font-weight: bold; text-align: right;">Earnings</div>
+			<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: center;">Efficiency</div>
+			<div class="col-sm-4 hidden-xs" style="font-weight: bold; text-align: center;">Difference</div>
+
+			@{
+				if (Model.Movies.Count() > 0)
+				{
+					var mostEfficient = Model.Movies.OrderByDescending(item => item.Efficiency).FirstOrDefault();
+
+					movieCount = 0;
+
+					foreach (var movie in Model.Movies.OrderByDescending(item => item.Efficiency))
+					{
+						var backgroundColor = movieCount == 0 ? "background-color: lightgreen;" : (movieCount % 2 == 0 ? "background-color: lightgrey;" : string.Empty);
+						var rank = Model.Rank(movie);
+
+						@*<div class="col-sm-1 hidden-xs" style="@backgroundColor text-align: right;">@rank</div>*@
+						<div id="@string.Format("bonusCompMovieName{0}", movieCount)"
+							 class="col-xs-12 col-sm-4"
+							 style="@backgroundColor font-weight: bold;">@movie.Name</div>
+							<div class="col-xs-3 hidden-sm hidden-md hidden-lg"
+								 style="@backgroundColor font-weight: bold;">BUX:</div>
+							<div id="@string.Format("bonusCompMovieCost{0}", movieCount)"
+								 class="col-xs-3 col-sm-1"
+								 style="@backgroundColor text-align: right;">@movie.Cost</div>
+
+								<div class="col-xs-3 hidden-sm hidden-md hidden-lg"
+									 style="@backgroundColor font-weight: bold;">Earnings:</div>
+								<div id="@string.Format("bonusCompMovieEarnings{0}", movieCount)"
+									 class="col-xs-3 col-sm-2"
+									 style="@backgroundColor text-align: right;">@string.Format("{0:N0}", movie.Earnings)</div>
+
+									<div class="col-xs-3 hidden-sm hidden-md hidden-lg"
+										 style="@backgroundColor font-weight: bold;">Efficiency:</div>
+									<div id="@string.Format("bonusCompMovieEfficiency{0}", movieCount)"
+										 class="col-xs-3 col-sm-1"
+										 style="@backgroundColor text-align: right;">@string.Format("{0:N2}", movie.Efficiency / 1000m)</div>
+
+										<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="@backgroundColor">--</div>
+
+										<div class="col-xs-3 hidden-sm hidden-md hidden-lg" style="@backgroundColor font-weight: bold;">Difference:</div>
+
+										if (movie.EarningsBase > 0)
+										{
+											var nextRankedMovie = Model.Movies.FirstOrDefault(item => Model.Rank(item) == rank + 1);
+
+											// Compute difference columns.
+
+											if (rank == 1)
+											{
+												if (nextRankedMovie != null)
+												{
+													//How much does the top rank have to LOSE before it's no longer the TOP
+
+													<div id="@string.Format("bonusCompDifference{0}", movieCount)"
+														 class="col-xs-3 col-sm-2"
+														 style="@backgroundColor text-align: right;">
+														@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)
+													</div>
+													<div id="@string.Format("bonusCompDiffPctUp{0}", movieCount)"
+														 class="col-xs-2 col-sm-1"
+														 style="@backgroundColor text-align: right;">--</div>
+													<div id="@string.Format("bonusCompDiffPctDown{0}", movieCount)"
+														 class="col-xs-2 col-sm-1"
+														 style="@backgroundColor text-align: right; color: #cc3333;">
+														@string.Format("{0:N1}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)
+													</div>
+												}
+											}
+											else
+											{
+												//How much does current rank to GAIN to be the TOP
+
+												<div id="@string.Format("bonusCompDifference{0}", movieCount)"
+													 class="col-xs-3 col-sm-2"
+													 style="@backgroundColor text-align: right;">
+													@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)
+												</div>
+												<div id="@string.Format("bonusCompDiffPctUp{0}", movieCount)"
+													 class="col-xs-2 col-sm-1"
+													 style="@backgroundColor text-align: right; color: #33cc33">
+													@string.Format("{0:N1}%", (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)
+												</div>
+
+												//How much does the current rank have to LOSE before it's no longer that rank
+
+												if (nextRankedMovie != null)
+												{
+													<div id="@string.Format("bonusCompDiffPctDown{0}", movieCount)"
+														 class="col-xs-2 col-sm-1"
+														 style="@backgroundColor text-align: right; color: #cc3333">
+														@string.Format("{0:N1}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)
+													</div>
+												}
+												else
+												{
+													<div id="@string.Format("bonusCompDiffPctDown{0}", movieCount)"
+														 class="col-xs-2 col-sm-1"
+														 style="@backgroundColor text-align: right;">--</div>
+												}
+											}
+										}
+
+										movieCount++;
+
+										<div class="clearfix"></div>
+									}
+								}
+			}
+
+			<div class="col-sm-10 col-sm-offset-1" style="margin-top: 10px;">
+				The table above compares ALL of the movies to the MOST efficient one.
+				The Bonus Earnings column is the value that the movie WOULD need to have the top efficiency or at least MATCH top efficiency.
+				The Difference column is the dollar amount of gain, and the % Difference is just that; Difference divided the actual earnings (percentage gain).
+				The MOST efficient movie shows how much it would have to drop to match second place.
+			</div>
+
+		</div>
+
 	</div>
 }
 
 <script type="text/javascript">
-												//window.onscroll = function () { scrollPicksColumn() };
+																									//window.onscroll = function () { scrollPicksColumn() };
 
-												//var picksColumn = document.getElementById("picksColumn");
-												//var picksColumnOffset = picksColumn.offsetTop;
+																									//var picksColumn = document.getElementById("picksColumn");
+																									//var picksColumnOffset = picksColumn.offsetTop;
 
-												//function scrollPicksColumn() {
-												//	console.log(window.pageYOffset);
-												//	console.log(picksColumnOffset);
+																									//function scrollPicksColumn() {
+																									//	console.log(window.pageYOffset);
+																									//	console.log(picksColumnOffset);
 
-												//	if (window.pageYOffset >= picksColumnOffset) {
-												//		picksColumn.classList.add("sticky");
-												//	} else {
-												//		picksColumn.classList.remove("sticky");
-												//	}
-												//}
+																									//	if (window.pageYOffset >= picksColumnOffset) {
+																									//		picksColumn.classList.add("sticky");
+																									//	} else {
+																									//		picksColumn.classList.remove("sticky");
+																									//	}
+																									//}
 </script>

@@ -90,24 +90,21 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="container body-content">
 		@RenderBody()
 		<hr />
 		<footer>
 			<div class="row">
-				<div class="col-sm-3">
+				<div class="col-xs-6 col-sm-3">
 					&copy; 2017-@DateTime.Now.Year - <a href="http://SpilledMilk.com" target="_blank">@Constants.COMPANY_NAME</a>
 				</div>
 
-				<div class="col-sm-3">
-					<!-- Just some spacing -->
-				</div>
-
-				<div class="col-sm-4">
+				<div class="col-xs-6 col-sm-3 col-sm-offset-3">
 					<a href="https://twitter.com/SpilledMilkCOM" class="twitter-follow-button" data-show-count="true">Follow @@SpilledMilkCOM</a>
 				</div>
 
-				<div class="col-sm-2">
+				<div class="col-sm-2 col-sm-offset-1">
 					@if (string.IsNullOrEmpty(ViewBag.TwitterTweetText))
 					{
 						<a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a>
