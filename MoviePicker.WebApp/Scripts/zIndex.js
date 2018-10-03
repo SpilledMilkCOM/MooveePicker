@@ -125,6 +125,25 @@ function clickTracking() {
 	window.location.href = baseUrl + url;
 }
 
+function navigateTo(relativeUrl) {
+
+	logit("navigateTo");
+
+	var parameters = parseBoxOfficeAndWeights();
+
+	logit(parameters);
+
+	var url = relativeUrl +'?' + parameters;
+
+	var baseUrl = parseBaseUrl();
+
+	logit(baseUrl + url);
+
+	window.location.href = baseUrl + url;
+
+	logit(window.location.href);
+}
+
 function parseBaseUrl() {
 	var baseUrl = window.location.href;
 
