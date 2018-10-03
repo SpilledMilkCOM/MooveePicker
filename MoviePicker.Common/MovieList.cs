@@ -162,11 +162,14 @@ namespace MoviePicker.Common
 
 		public override string ToString()
 		{
+			const string BEST_PICK_EMOJI = "%F0%9F%92%9A";      // Green Heart 💚
 			var result = new StringBuilder();
 			var grouping = from movie in Movies
 						   orderby movie.Cost descending
 						   group movie by movie.Id into grp
 						   select grp;
+
+			// TODO: Add in the best performer emoji
 
 			foreach (var movieGroup in grouping)
 			{
