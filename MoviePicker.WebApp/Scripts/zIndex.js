@@ -1,7 +1,5 @@
-﻿
-var MINER_COUNT = 2;
+﻿var MINER_COUNT = 2;
 var SCREEN_COUNT_MAX = 8;
-var inCallback = false;		// Prevent multiple retrievals of the same data recursion
 
 function boxOfficeLostFocus(oldValue, newValue) {
 
@@ -16,7 +14,7 @@ function boxOfficeLostFocus(oldValue, newValue) {
 function clearMoviePicksPosters(movieListId) {
 
 	for (var movieCount = 0; movieCount < SCREEN_COUNT_MAX; movieCount++) {
-		var image = $('#' + movieListId + 'moviePosterId0' + movieCount);
+		var image = $('#' + movieListId + 'MoviePosterId0' + movieCount);
 
 		if (image != null) {
 			//console.log(image.attr('src'));
@@ -63,7 +61,7 @@ function clickPasteBoxOffice() {
 
 function clickPicks() {
 
-	console.log("clickPicks");
+	//console.log("clickPicks");
 
 	var parameters = parseBoxOfficeAndWeights();
 
@@ -75,9 +73,11 @@ function clickPicks() {
 
 	console.log(baseUrl + url);
 
-	window.location.href = baseUrl + url;
+	calculate(url.replace(/Index2/, "Calculate"));
 
-	console.log(window.location.href);
+	//window.location.href = baseUrl + url;
+
+	//console.log(window.location.href);
 }
 
 function clickPicks2() {
@@ -135,7 +135,7 @@ function parseBoxOfficeAndWeights() {
 		// Replace all commas (global g parameter on regular expression)
 		boList += $("#boId" + idx).val().replace(/\,/g, "").replace("$", "");
 
-		console.log(boList);
+		//console.log(boList);
 	}
 
 	for (idx = MINER_COUNT; idx <= 7; idx++) {
@@ -150,8 +150,8 @@ function parseBoxOfficeAndWeights() {
 		weightList += weight;
 		weightTotal += weight;
 
-		console.log(weightList);
-		console.log(weightTotal);
+		//console.log(weightList);
+		//console.log(weightTotal);
 	}
 
 	if (weightTotal == 0) {
@@ -161,7 +161,7 @@ function parseBoxOfficeAndWeights() {
 		weightList = "0," + weightList;
 	}
 
-	console.log(boList);
+	//console.log(boList);
 
 	return "bo=" + boList + "&wl=" + weightList;
 }

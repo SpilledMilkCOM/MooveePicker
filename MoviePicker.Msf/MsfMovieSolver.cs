@@ -71,7 +71,7 @@ namespace MoviePicker.Msf
 			}
 		}
 
-		public IEnumerable<IMovie> Movies => _movies;
+		public IEnumerable<IMovie> Movies => _movies.OrderByDescending(movie => movie.Cost);
 
 		public int AvailableScreens { get; set; }
 

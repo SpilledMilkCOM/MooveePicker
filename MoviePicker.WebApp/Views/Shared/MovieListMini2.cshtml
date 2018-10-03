@@ -43,7 +43,7 @@
 			<tr>
 				@{
 					int movieCount = 0;
-					var orderedMovies = pick.Movies.OrderByDescending(item => item.Cost).ToList();
+					var orderedMovies = pick.Movies.ToList();
 
 					for (int movieIndex = 0; movieIndex < MAX_SCREENS; movieIndex++)
 					{
@@ -72,7 +72,7 @@
 							<div id="@string.Format("{0}TooltipId{1}{2}", Model.Id, pickCount, movieCount)" data-toggle="tooltip" data-placement="bottom"
 								 title="@string.Format("{0} - ${1:N0}", movieName, movieEarnings)">
 
-								<img id="@string.Format("{0}moviePosterId{1}{2}", Model.Id, pickCount, movieCount)"
+								<img id="@string.Format("{0}MoviePosterId{1}{2}", Model.Id, pickCount, movieCount)"
 									 class="img-responsive"
 									 src="@imageUrl"
 									 alt="@movieName"

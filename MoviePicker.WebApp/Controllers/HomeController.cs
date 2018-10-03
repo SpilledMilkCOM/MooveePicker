@@ -61,9 +61,11 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Calculate()
 		{
+			ParseBoxOfficeWeightRequest();
+
 			var result = ConstructPicksViewModel();
 
-			return Json(result, JsonRequestBehavior.AllowGet);
+			return Json(result.MovieList.Picks[0], JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpGet]
