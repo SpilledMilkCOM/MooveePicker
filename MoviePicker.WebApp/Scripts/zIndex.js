@@ -8,6 +8,8 @@ function boxOfficeLostFocus(oldValue, newValue) {
 
 		clearMoviePicksPosters('bonusOnMovieList');
 		clearMoviePicksPosters('bonusOffMovieList');
+
+		clickPicks2();
 	}
 }
 
@@ -26,12 +28,12 @@ function clearMoviePicksPosters(movieListId) {
 }
 
 function clearWeights() {
-	//console.log("clearWeights");
+	logit("clearWeights");
 
 	for (idx = MINER_COUNT; idx <= 7; idx++) {
 		$("#weightId" + idx).val(0);
 
-		//console.log("#weightId" + idx + " = " + $("#weightId" + idx).val());
+		logit("#weightId" + idx + " = " + $("#weightId" + idx).val());
 	}
 }
 
@@ -41,7 +43,7 @@ function clickPasteBoxOffice() {
 
 	for (idx = 0; idx < 15 && idx < splitValues.length; idx++) {
 
-		//console.log(idx + " = " + splitValues[idx]);
+		logit(idx + " = " + splitValues[idx]);
 
 		if (idx < splitValues.length) {
 			$("#boId" + (idx + 1)).val(splitValues[idx].trim());
@@ -55,42 +57,59 @@ function clickPasteBoxOffice() {
 
 	var parameters = parseBoxOfficeAndWeights();
 
-	console.log(parameters);
+	logit(parameters);
 
 	clickPicks();
 }
 
-function clickPicks() {
+function clickMorePicks() {
 
-	//console.log("clickPicks");
+	logit("clickPicks");
 
 	var parameters = parseBoxOfficeAndWeights();
 
-	console.log(parameters);
+	logit(parameters);
+
+	var url = "/Home/MorePicks?" + parameters;
+
+	var baseUrl = parseBaseUrl();
+
+	logit(baseUrl + url);
+
+	window.location.href = baseUrl + url;
+}
+
+function clickPicks() {
+
+	logit("clickPicks");
+
+	var parameters = parseBoxOfficeAndWeights();
+
+	logit(parameters);
 
 	var url = "/Home/Index2?" + parameters;
 
 	var baseUrl = parseBaseUrl();
 
-	console.log(baseUrl + url);
+	logit(baseUrl + url);
 
 	window.location.href = baseUrl + url;
 
-	console.log(window.location.href);
+	logit(window.location.href);
 }
 
 function clickPicks2() {
-	console.log("clickPicks2");
+	logit("clickPicks2");
 
 	var parameters = parseBoxOfficeAndWeights();
 
-	console.log(parameters);
+	logit(parameters);
 
 	var url = "/Home/Calculate?" + parameters;
 
 	var baseUrl = parseBaseUrl();
 
-	console.log(baseUrl + url);
+	logit(baseUrl + url);
 
 	calculate(url);
 }
@@ -136,7 +155,7 @@ function parseBoxOfficeAndWeights() {
 		// Replace all commas (global g parameter on regular expression)
 		boList += $("#boId" + idx).val().replace(/\,/g, "").replace("$", "");
 
-		//console.log(boList);
+		logit(boList);
 	}
 
 	for (idx = MINER_COUNT; idx <= 7; idx++) {
@@ -151,8 +170,8 @@ function parseBoxOfficeAndWeights() {
 		weightList += weight;
 		weightTotal += weight;
 
-		//console.log(weightList);
-		//console.log(weightTotal);
+		logit(weightList);
+		logit(weightTotal);
 	}
 
 	if (weightTotal == 0) {
@@ -162,7 +181,7 @@ function parseBoxOfficeAndWeights() {
 		weightList = "0," + weightList;
 	}
 
-	//console.log(boList);
+	logit(boList);
 
 	return "bo=" + boList + "&wl=" + weightList;
 }
@@ -170,9 +189,11 @@ function parseBoxOfficeAndWeights() {
 function weightLostFocus(oldValue, newValue) {
 
 	if (oldValue != newValue) {
+		console.log('weightLostFocus');
+
 		clearMoviePicksPosters('bonusOnMovieList');
 		clearMoviePicksPosters('bonusOffMovieList');
 
-		clickPicks();
+		clickPicks2();
 	}
 }
