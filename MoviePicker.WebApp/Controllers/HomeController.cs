@@ -238,6 +238,40 @@ namespace MoviePicker.WebApp.Controllers
 			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
 		}
 
+
+		[HttpGet]
+		public ActionResult Index3()
+		{
+			// TODO: Collapse this down to a method call.
+
+			ViewBag.IsGoogleAdValid = true;
+
+			// Set the weights to 1 across the board. (treat all sources equal)
+
+			foreach (var miner in _minerModel.Miners)
+			{
+				miner.Weight = 1;
+			}
+
+			// Do NOT include MY numbers when pre-populating the box office values;
+
+			_minerModel.Miners[MY_MINER_IDX].Weight = 0;
+			((ICache)_minerModel.Miners[MY_MINER_IDX]).Load();
+
+			// Adjust the weights (possibly adjust the defaults above).
+
+			ParseBoxOfficeWeightRequest();
+			ParseViewRequest();
+
+			// Hide the last miner (BO Mojo for previous week).
+
+			_minerModel.Miners.Last().IsHidden = true;
+
+			ControllerUtility.SetTwitterCard(ViewBag);
+
+			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
+		}
+
 		[HttpGet]
 		public FileStreamResult ExtractToCSV()
 		{
