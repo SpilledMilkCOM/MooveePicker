@@ -47,6 +47,24 @@ namespace MoviePicker.WebApp.Tests.Models
 			}
 		}
 
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_BoxOfficeReportNumbers()
+		{
+			var test = new MinerModel(true);
+
+			Assert.IsNotNull(test.Miners);
+			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
+
+			Logger.WriteLine("=========================== BO REPORT'S NUMBERS ===========================");
+
+			foreach (var movie in test.Miners[7].Movies)
+			{
+				Logger.WriteLine($"{movie.Id}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+			}
+		}
+
+
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_CoupesNumbers()
 		{

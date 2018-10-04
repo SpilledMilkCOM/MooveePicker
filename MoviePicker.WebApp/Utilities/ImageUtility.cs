@@ -169,6 +169,11 @@ namespace MoviePicker.WebApp.Utilities
 			int oldWidth = 0;
 			int oldHeight = 0;
 
+			if (!fileNames.Any())
+			{
+				return null;
+			}
+
 			// The default is 8 (or less) picks
 
 			// Determine width and height of the 1st row.

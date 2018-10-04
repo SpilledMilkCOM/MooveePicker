@@ -5,6 +5,7 @@ using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
 using MoviePicker.WebApp.Utilities;
 using MoviePicker.WebApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -94,9 +95,9 @@ namespace MoviePicker.WebApp.Controllers
 			var lastMiner = _minerModel.Miners.Last();
 			var minerCount = 0;
 
-			foreach (var miner in _minerModel.Miners.Skip(2).Where(item => item.Picks != null))
+			foreach (var miner in _minerModel.Miners.Skip(2))
 			{
-				if (miner.Movies.Count > 0 && !miner.IsHidden && miner != lastMiner)
+				if (miner.Picks != null && miner.Movies.Count > 0 && !miner.IsHidden && miner != lastMiner)
 				{
 					var expert = new ExpertPickModel { Miner = miner };
 					var shareQueryString = WeightListFromCounter(minerCount);
@@ -127,14 +128,14 @@ namespace MoviePicker.WebApp.Controllers
 					{
 						ComparisonHeader = "Bonus ON",
 						Picks = new List<IMovieList> { miner.Picks },
-						ShareQueryString = shareQueryString
+						ShareQueryString = $"/Home/ShareBonusOnPicks?{shareQueryString}"
 					};
 
 					expert.MovieListBonusOff = new MovieListModel()
 					{
 						ComparisonHeader = "Bonus OFF",
 						Picks = new List<IMovieList> { miner.PicksBonusOff },
-						ShareQueryString = shareQueryString
+						ShareQueryString = $"/Home/ShareBonusOffPicks?{shareQueryString}"
 					};
 
 					result.ExpertPicks.Add(expert);
@@ -148,6 +149,46 @@ namespace MoviePicker.WebApp.Controllers
 			result.Duration = stopWatch.ElapsedMilliseconds;
 
 			return View(result);
+		}
+
+		[HttpGet]
+		public FileStreamResult ExtractToCSV()
+		{
+			StringBuilder builder = new StringBuilder();
+
+			// Column headers are FIRST!
+
+			builder.Append("BUX,Movie");
+
+			foreach (var miner in _minerModel.Miners)
+			{
+				builder.Append(",");
+				builder.Append(miner.Abbreviation);
+			}
+
+			builder.AppendLine();
+
+			foreach (var movie in _minerModel.Miners.First().Movies)
+			{
+				builder.Append(movie.Cost);
+				builder.Append(",");
+				builder.Append(movie.Name);
+
+				foreach (var miner in _minerModel.Miners)
+				{
+					var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
+
+					builder.Append(",");
+					builder.Append(minerMovie?.Earnings);
+				}
+
+				builder.AppendLine();
+			}
+
+			var byteArray = Encoding.ASCII.GetBytes(builder.ToString());
+			var stream = new MemoryStream(byteArray);
+
+			return File(stream, "text/plain", "MooveePickerData.txt");
 		}
 
 		[HttpGet]
@@ -238,7 +279,6 @@ namespace MoviePicker.WebApp.Controllers
 			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
 		}
 
-
 		[HttpGet]
 		public ActionResult Index3()
 		{
@@ -270,46 +310,6 @@ namespace MoviePicker.WebApp.Controllers
 			ControllerUtility.SetTwitterCard(ViewBag);
 
 			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
-		}
-
-		[HttpGet]
-		public FileStreamResult ExtractToCSV()
-		{
-			StringBuilder builder = new StringBuilder();
-
-			// Column headers are FIRST!
-
-			builder.Append("BUX,Movie");
-
-			foreach (var miner in _minerModel.Miners)
-			{
-				builder.Append(",");
-				builder.Append(miner.Abbreviation);
-			}
-
-			builder.AppendLine();
-
-			foreach (var movie in _minerModel.Miners.First().Movies)
-			{
-				builder.Append(movie.Cost);
-				builder.Append(",");
-				builder.Append(movie.Name);
-
-				foreach (var miner in _minerModel.Miners)
-				{
-					var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
-
-					builder.Append(",");
-					builder.Append(minerMovie?.Earnings);
-				}
-
-				builder.AppendLine();
-			}
-
-			var byteArray = Encoding.ASCII.GetBytes(builder.ToString());
-			var stream = new MemoryStream(byteArray);
-
-			return File(stream, "text/plain", "MooveePickerData.txt");
 		}
 
 		[HttpGet]
@@ -511,7 +511,8 @@ namespace MoviePicker.WebApp.Controllers
 			if (result.Movies.Count() > 0)
 			{
 				var clonedList = CloneList(result.Movies);
-				var shareQueryString = QueryStringFromModel();
+				//var shareQueryString = $"{QueryStringFromModel()}&id={Guid.NewGuid()}";     // Need to add the unique ID for Twitter to regenerate the page/image.
+				var shareQueryString = $"{QueryStringFromModel()}";     // Need to add the unique ID for Twitter to regenerate the page/image.
 
 				_moviePicker.AddMovies(clonedList);
 
@@ -523,7 +524,7 @@ namespace MoviePicker.WebApp.Controllers
 					ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
 					Id = "bonusOnMovieList",
 					Picks = pickList,
-					ShareQueryString = shareQueryString
+					ShareQueryString = $"/Home/ShareBonusOnPicks?{shareQueryString}"
 				};
 
 				if (!onlyBestPerformer)
@@ -543,7 +544,7 @@ namespace MoviePicker.WebApp.Controllers
 						ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
 						Id = "bonusOffMovieList",
 						Picks = pickList,
-						ShareQueryString = shareQueryString
+						ShareQueryString = $"/Home/ShareBonusOffPicks?{shareQueryString}"
 					};
 				}
 			}
@@ -657,7 +658,7 @@ namespace MoviePicker.WebApp.Controllers
 			bonusMovieName = (bonusOn) ? $", counting on {bonusMovieName} as the bonus movie" : $", hoping for {bonusMovieName} as the bonus movie";
 
 			viewModel.TwitterDescription = $"{leadingMovieName} leads {lineupArticle} lineup{bonusMovieName}{spentBuxText}.";
-			viewModel.TwitterImageFileName = viewModel.ImageFileName.Replace("Shared_", "Twitter_");
+			viewModel.TwitterImageFileName = viewModel.ImageFileName?.Replace("Shared_", "Twitter_");
 			viewModel.TwitterTitle = $"{Constants.APPLICATION_NAME}: {subTitle} (Est ${picks.TotalEarnings:N0})";
 
 			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks." : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:";

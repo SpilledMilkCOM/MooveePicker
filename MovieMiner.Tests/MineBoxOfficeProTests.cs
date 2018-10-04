@@ -38,7 +38,6 @@ namespace MovieMiner.Tests
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
-
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineBoxOfficePro_Mine_GenerateBoxOfficeValues()
 		{

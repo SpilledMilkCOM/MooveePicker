@@ -72,8 +72,8 @@ function calculate(endPoint) {
 
 			setText('durationId', formatWithCommas(jsonData.Duration));
 
-			movieListMini(jsonData.MovieList.Picks[0], 'bonusOnMovieList');
-			movieListMini(jsonData.MovieListBonusOff.Picks[0], 'bonusOffMovieList');
+			movieListMini(jsonData.MovieList.Picks[0], 'bonusOnMovieList', jsonData.MovieList.ShareQueryString);
+			movieListMini(jsonData.MovieListBonusOff.Picks[0], 'bonusOffMovieList', jsonData.MovieListBonusOff.ShareQueryString);
 
 			bonusComparison(jsonData.Movies);
 
@@ -105,7 +105,14 @@ function logit(message) {
 	}
 }
 
-function movieListMini(movieList, idPrefix) {
+function movieListMini(movieList, idPrefix, shareQueryString) {
+	var pagePiece = movieList.ComparisonHeader == "Bonus ON" ? "On" : "Off";
+	var shareAnchor = $('#' + idPrefix + 'SharePicksId');
+
+	if (shareAnchor != null) {
+		shareAnchor.attr('href', parseBaseUrl() + shareQueryString);
+	}
+
 	setText(idPrefix + 'TotalEarningsId', "Earnings: $" + formatWithCommas(movieList.TotalEarnings));
 	setText(idPrefix + 'TotalCostId', movieList.TotalCost + " BUX");
 
@@ -122,10 +129,20 @@ function movieListMini(movieList, idPrefix) {
 			backgroundStyle = "border-radius: 3px; box-shadow: 2px 4px 8px 0px green;";
 		}
 
-		//tooltip.attr('title', movie.Name + ' - $' + formatWithCommas(movie.Earnings));
 		tooltip.attr('data-original-title', movie.Name + ' - $' + formatWithCommas(movie.Earnings));
 		image.attr('src', movieList.MovieImages[movieCount]);
 		image.attr('style', backgroundStyle);
+	}
+
+	// Fill in the rest of the slts with blank
+
+	for (var counter = 0; movieCount < 8; movieCount++) {
+		var image = $('#' + idPrefix + 'MoviePosterId0' + movieCount);
+		var tooltip = $('#' + idPrefix + 'TooltipId0' + movieCount);
+
+		tooltip.attr('data-original-title', 'This screen intentionally left blank - $-2,000,000');
+		image.attr('src','/images/MooveePosterBlank.jpg');
+		image.attr('style', 'border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;');
 	}
 }
 

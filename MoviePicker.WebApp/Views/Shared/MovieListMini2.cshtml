@@ -29,7 +29,7 @@
 		<div class="col-xs-2">
 			<a id="@string.Format("{0}SharePicksId", Model.Id)" class="btn btn-info btn-xs" style="margin-top: 7px;"
 			   @* Generate a unique ID so Twitter won't cache the image and share them to other tweets. *@
-			   href="@string.Format("ShareBonus{0}Picks?{1}&id={2}", pagePiece, Model.ShareQueryString, Guid.NewGuid())"
+			   href="@Model.ShareQueryString"
 			   data-toggle="tooltip"
 			   data-placement="bottom"
 			   title="Click to share your '@Model.ComparisonHeader' picks...">
