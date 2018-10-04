@@ -50,7 +50,7 @@
 
 		@* ================================================================================================================================== PICKS COLUMN ==== *@
 
-		<div class="col-md-7">
+		<div class="col-md-6 col-md-offset-1">
 
 			<h2 class="col-sm-8 col-sm-push-4">
 				Welcome to Moovee Picker
@@ -66,6 +66,8 @@
 				You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
 
 				@Html.ActionLink("Old Look", "Index", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
+
+				@Html.ActionLink("Wide Look", "Index3", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
 			</div>
 
 			<div class="hidden-xs col-xs-4 col-sm-pull-8" style="padding-top: 20px;">
@@ -257,7 +259,7 @@
 
 		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
 
-		<div class="col-md-5">
+		<div class="col-md-4">
 
 			<div class="col-md-12">
 				<h4>Weekend ending @weekendEnding (<span id="durationId">@Model.Duration.ToString("N0")</span> ms)</h4>
