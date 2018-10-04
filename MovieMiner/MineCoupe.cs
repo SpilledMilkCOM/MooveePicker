@@ -136,36 +136,44 @@ namespace MovieMiner
 						{
 							foreach (var movieNode in movieNodes)
 							{
-								int index = movieNode.InnerText.IndexOf(DELIMITER);
+								int index = HttpUtility.HtmlDecode(movieNode.InnerHtml).IndexOf(DELIMITER);
 
 								if (index < 0)
 								{
-									index = movieNode.InnerText.IndexOf(DELIMITER2);
+									index = HttpUtility.HtmlDecode(movieNode.InnerHtml).IndexOf(DELIMITER2);
 								}
 
 								if (index > 0)
 								{
-									var nodeText = movieNode.InnerText;
-									var movieName = nodeText.Substring(0, index);
+									var nodeText = movieNode.InnerHtml;
+									var movieName = nodeText.Substring(0, index).Replace("<br>", string.Empty);
 
 									// Might switch this to RegEx...
 
 									//var multiplier = Multiplier(nodeText.Substring(index, nodeText.Length - index));
-									var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace(DELIMITER2, string.Empty).Replace("million", string.Empty).Replace("k", string.Empty);
+									var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace(DELIMITER2, string.Empty).Replace("million", string.Empty);
 
 									var trimIndex = estimatedBoxOffice.IndexOf("(");
 
 									if (trimIndex > 0)
 									{
-										// Trim out the drop percentage.
+										// Trim out the drop percentage (and everything after).
 										estimatedBoxOffice = estimatedBoxOffice.Substring(0, trimIndex - 1);
+									}
+
+									trimIndex = estimatedBoxOffice.IndexOf("<br>");
+
+									if (trimIndex > 0)
+									{
+										// Trim out the HTML break (and everything after).
+										estimatedBoxOffice = estimatedBoxOffice.Substring(0, trimIndex);
 									}
 
 									trimIndex = estimatedBoxOffice.IndexOf("|");
 
 									if (trimIndex > 0)
 									{
-										// Trim out the COUPE label.
+										// Trim out the COUPE label (and everything after).
 										estimatedBoxOffice = estimatedBoxOffice.Substring(0, trimIndex - 1);
 									}
 

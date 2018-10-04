@@ -1,4 +1,6 @@
-﻿var inCallback = false;		// Prevent multiple retrievals of the same data recursion
+﻿// This contains all of the funtions to support the asynchronous calculate callback.
+
+var inCallback = false;		// Prevent multiple retrievals of the same data recursion
 var consoleOn = false;
 
 function bonusComparison(movies) {

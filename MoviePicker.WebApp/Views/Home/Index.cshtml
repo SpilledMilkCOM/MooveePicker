@@ -13,18 +13,18 @@
 
 	function clickClearWeights(idxStart) {
 		if (idxStart == 2) {
-			$("#weightId1").val(1)
-			$("#weightmId1").val(1)
+			$("#weightId1").val(1);
+			$("#weightmId1").val(1);
 		}
 
 		for (idx = idxStart; idx <= 7; idx++) {
-			$("#weightId" + idx).val(0)
-			$("#weightmId" + idx).val(0)
+			$("#weightId" + idx).val(0);
+			$("#weightmId" + idx).val(0);
 		}
 	}
 
 	function clickPasteBoxOffice() {
-		var boValues = $("#pasteAreaId").val()
+		var boValues = $("#pasteAreaId").val();
 		var splitValues = boValues.split("\n");
 
 		for (idx = 0; idx < 15; idx++) {
@@ -32,120 +32,120 @@
 			//console.log(idx + " = " + splitValues[idx]);
 
 			if (idx < splitValues.length) {
-				$("#boId" + (idx + 1)).val(splitValues[idx].trim())
-				$("#bomId" + (idx + 1)).val(splitValues[idx].trim())
+				$("#boId" + (idx + 1)).val(splitValues[idx].trim());
+				$("#bomId" + (idx + 1)).val(splitValues[idx].trim());
 			}
 			else {
-				$("#boId" + (idx + 1)).val(splitValues[idx].trim())
-				$("#bomId" + (idx + 1)).val(splitValues[idx].trim())
+				$("#boId" + (idx + 1)).val(splitValues[idx].trim());
+				$("#bomId" + (idx + 1)).val(splitValues[idx].trim());
 			}
 		}
 
 		// Blank out the field so you know you clicked on something.
 
-		$("#pasteAreaId").val("")
+		$("#pasteAreaId").val("");
 	}
 
 	function clickPicks() {
 
-		var parameters = parseBoxOfficeWeights()
+		var parameters = parseBoxOfficeWeights();
 
-		var url = "/Home/Picks?" + parameters
+		var url = "/Home/Picks?" + parameters;
 
-		var baseUrl = parseBaseUrl()
+		var baseUrl = parseBaseUrl();
 
-		window.location.href = baseUrl + url
+		window.location.href = baseUrl + url;
 	}
 
 	function clickTracking() {
 
-		var parameters = parseBoxOfficeWeights()
+		var parameters = parseBoxOfficeWeights();
 
-		var url = "/Home/Tracking?" + parameters
+		var url = "/Home/Tracking?" + parameters;
 
-		var baseUrl = parseBaseUrl()
+		var baseUrl = parseBaseUrl();
 
-		window.location.href = baseUrl + url
+		window.location.href = baseUrl + url;
 	}
 
 	function clickRecalc(viewName) {
 
 		synchronizeBoxOfficeWeights(viewName);
 
-		var parameters = parseBoxOfficeWeights(viewName)
+		var parameters = parseBoxOfficeWeights(viewName);
 
-		var url = "/Home/Index?" + parameters
+		var url = "/Home/Index?" + parameters;
 
-		var baseUrl = parseBaseUrl()
+		var baseUrl = parseBaseUrl();
 
-		window.location.href = baseUrl + url
+		window.location.href = baseUrl + url;
 	}
 
 	function parseBaseUrl() {
-		var baseUrl = window.location.href
+		var baseUrl = window.location.href;
 
 		if (baseUrl != null) {
-			var slashIdx = baseUrl.indexOf("/", "https://".length)
+			var slashIdx = baseUrl.indexOf("/", "https://".length);
 
 			if (slashIdx > 0) {
-				baseUrl = baseUrl.substring(0, slashIdx)
+				baseUrl = baseUrl.substring(0, slashIdx);
 			}
 		}
 
-		return baseUrl
+		return baseUrl;
 	}
 
 	function parseBoxOfficeWeights(viewName) {
 
-		var boList = ""
-		var weightList = ""
+		var boList = "";
+		var weightList = "";
 
 		// The values should be synchronized so the values can be pulled from one set of fields.
 
 		for (idx = 1; idx <= 15; idx++) {
 			if (idx != 1) {
-				boList += ","
+				boList += ",";
 			}
 
 			// Replace all commas (global g parameter on regular expression)
-			boList += $("#boId" + idx).val().replace(/\,/g, "").replace("$", "")
+			boList += $("#boId" + idx).val().replace(/\,/g, "").replace("$", "");
 		}
 
 		for (idx = 1; idx <= 7; idx++) {
 			if (idx != 1) {
-				weightList += ","
+				weightList += ",";
 			}
 
 			// TODO: Request encode this.
 
-			weightList += $("#weightId" + idx).val().replace(",", "").replace("$", "")
+			weightList += $("#weightId" + idx).val().replace(",", "").replace("$", "");
 		}
 
-		return "bo=" + boList + "&wl=" + weightList
+		return "bo=" + boList + "&wl=" + weightList;
 	}
 
 	function synchronizeBoxOfficeWeights(viewName) {
 
 		// Copies the values from source fields to destination fields.
 
-		var boIdSource = "#boId"
-		var weightIdSource = "#weightId"
-		var boIdDest = "#bomId"
-		var weightIdDest = "#weightmId"
+		var boIdSource = "#boId";
+		var weightIdSource = "#weightId";
+		var boIdDest = "#bomId";
+		var weightIdDest = "#weightmId";
 
 		if (viewName == "card") {
-			boIdSource = "#bomId"
-			weightIdSource = "#weightmId"
-			boIdDest = "#boId"
-			weightIdDest = "#weightId"
+			boIdSource = "#bomId";
+			weightIdSource = "#weightmId";
+			boIdDest = "#boId";
+			weightIdDest = "#weightId";
 		}
 
 		for (idx = 1; idx <= 15; idx++) {
-			$(boIdDest + idx).val($(boIdSource + idx).val())
+			$(boIdDest + idx).val($(boIdSource + idx).val());
 		}
 
 		for (idx = 1; idx <= 7; idx++) {
-			$(weightIdDest + idx).val($(weightIdSource + idx).val())
+			$(weightIdDest + idx).val($(weightIdSource + idx).val());
 		}
 	}
 </script>

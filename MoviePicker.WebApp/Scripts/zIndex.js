@@ -1,13 +1,15 @@
 ﻿var MINER_COUNT = 2;
 var SCREEN_COUNT_MAX = 8;
 
-function boxOfficeLostFocus(oldValue, newValue) {
+function boxOfficeLostFocus(oldValue, newValue, movieIndex) {
 
 	if (oldValue != newValue) {
 		clearWeights();
 
 		clearMoviePicksPosters('bonusOnMovieList');
 		clearMoviePicksPosters('bonusOffMovieList');
+
+		updateSlider(newValue, movieIndex);
 
 		clickPicks2();
 	}
@@ -64,38 +66,16 @@ function clickPasteBoxOffice() {
 
 function clickMorePicks() {
 
-	logit("clickPicks");
+	logit('clickMorePicks');
 
-	var parameters = parseBoxOfficeAndWeights();
-
-	logit(parameters);
-
-	var url = "/Home/MorePicks?" + parameters;
-
-	var baseUrl = parseBaseUrl();
-
-	logit(baseUrl + url);
-
-	window.location.href = baseUrl + url;
+	navigateTo('/Home/MorePicks');
 }
 
 function clickPicks() {
 
 	logit("clickPicks");
 
-	var parameters = parseBoxOfficeAndWeights();
-
-	logit(parameters);
-
-	var url = "/Home/Index2?" + parameters;
-
-	var baseUrl = parseBaseUrl();
-
-	logit(baseUrl + url);
-
-	window.location.href = baseUrl + url;
-
-	logit(window.location.href);
+	navigateTo('/Home/Index2');
 }
 
 function clickPicks2() {
@@ -116,13 +96,9 @@ function clickPicks2() {
 
 function clickTracking() {
 
-	var parameters = parseBoxOfficeAndWeights();
+	logit("clickPicks");
 
-	var url = "/Home/Tracking?" + parameters;
-
-	var baseUrl = parseBaseUrl();
-
-	window.location.href = baseUrl + url;
+	navigateTo('/Home/Tracking');
 }
 
 function navigateTo(relativeUrl) {
@@ -203,6 +179,46 @@ function parseBoxOfficeAndWeights() {
 	logit(boList);
 
 	return "bo=" + boList + "&wl=" + weightList;
+}
+
+function sliderOnChange(slider, controlIndex) {
+	logit(controlIndex + ' - ' + slider.value);
+
+	clearWeights();
+
+	var boxOffice = $('#boId' + controlIndex);
+	var boxOfficePct = $('#boId' + controlIndex + 'Pct');
+
+	if (boxOfficePct != null && boxOffice != null) {
+		var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
+
+		logit(originalValue);
+		logit(slider.value);
+
+		boxOfficePct.text(slider.value + '%');
+		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(slider.value)) / 100.0));
+
+		clickPicks2();
+	}
+}
+
+function updateSlider(newValue, controlIndex) {
+	var boSlider = $('#boSliderId' + controlIndex);
+	var boxOffice = $('#boId' + controlIndex);
+	var boxOfficePct = $('#boId' + controlIndex + 'Pct');
+
+	console.log(boSlider);
+	console.log(controlIndex + ' -- ' + newValue.replace(/\,/g, ""));
+
+	if (boSlider != null && boxOffice != null && boxOfficePct != null) {
+		var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
+
+		console.log(originalValue);
+		console.log((newValue.replace(/\,/g, "") - originalValue) / originalValue * 100);
+
+		boSlider.val((newValue.replace(/\,/g, "") - originalValue) / originalValue * 100);
+		boxOfficePct.text(boSlider.val() + '%');
+	}
 }
 
 function weightLostFocus(oldValue, newValue) {
