@@ -11,6 +11,8 @@ function boxOfficeLostFocus(oldValue, newValue, movieIndex) {
 
 		updateSlider(newValue, movieIndex);
 
+		updateBoxOffice(movieIndex);
+
 		clickPicks2();
 	}
 }
@@ -101,6 +103,7 @@ function clickTracking() {
 	navigateTo('/Home/Tracking');
 }
 
+// Navigate to the relative URL using the parsed BO and Weights as Request parameters.
 function navigateTo(relativeUrl) {
 
 	logit("navigateTo");
@@ -109,7 +112,7 @@ function navigateTo(relativeUrl) {
 
 	logit(parameters);
 
-	var url = relativeUrl +'?' + parameters;
+	var url = relativeUrl + '?' + parameters;
 
 	var baseUrl = parseBaseUrl();
 
@@ -181,6 +184,22 @@ function parseBoxOfficeAndWeights() {
 	return "bo=" + boList + "&wl=" + weightList;
 }
 
+// Convert a percentage between -100 and 100 from (-red- to white to +green+)
+function percentToBackgroundColor(percent) {
+	var greenHue = 115;
+	var redHue = 0;
+	var hue = percent >= 0 ? greenHue : redHue;
+	var minLuminosity = 32;			// 0 - 100%
+	var luminosity = 0;
+	var saturation = 100;			// 0 - 100%
+
+	percent = Math.abs(percent);
+
+	luminosity = (100 - percent) / 100 * (100 - minLuminosity) + minLuminosity;
+
+	return 'hsl(' + hue + ', ' + saturation + '%, ' + luminosity + '%)';
+}
+
 function sliderOnChange(slider, controlIndex) {
 	logit(controlIndex + ' - ' + slider.value);
 
@@ -194,11 +213,21 @@ function sliderOnChange(slider, controlIndex) {
 
 		logit(originalValue);
 		logit(slider.value);
+		logit(percentToBackgroundColor(slider.value));
 
+		boxOfficePct.attr('style', 'background-color: ' + percentToBackgroundColor(slider.value) + '; border-radius: 3px; padding: 3px;');
 		boxOfficePct.text(slider.value + '%');
 		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(slider.value)) / 100.0));
 
 		clickPicks2();
+	}
+}
+
+function updateBoxOffice(controlIndex) {
+	var boxOffice = $('#boId' + controlIndex);
+
+	if (boxOffice != null) {
+		boxOffice.val(formatWithCommas(boxOffice.val().replace(/\,/g, "")));
 	}
 }
 

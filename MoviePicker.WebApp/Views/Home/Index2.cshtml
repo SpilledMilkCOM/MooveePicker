@@ -377,7 +377,7 @@
 
 								toolTip.Append("</table>");
 
-								divBackgroundColorStyle = null;
+								divBackgroundColorStyle = "background-color: white;";
 								percent = 0;
 
 								var myMovie = Model.Miners.ToList()[1].Movies.FirstOrDefault(item => item.Name == movie.Name);
@@ -402,7 +402,7 @@
 										@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
 										@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
 
-										<table style="position: relative; top: -75px; left: @tableIndent;">
+										<table style="position: relative; top: -75px;">
 											<tr>
 												<td>
 													<input name="@name"
@@ -417,18 +417,12 @@
 														   data-val-number="The field Box Office @movieCount must be a number."
 														   data-val="true">
 												</td>
-												@if (percent == 0 || percent == -100m)
-												{
-													<td></td>
-												}
-												else
-												{
-													<td style="padding-left: 3px;">
-														<div id="@string.Format("{0}Pct", boId)" style="@divBackgroundColorStyle; border-radius: 3px; padding: 3px;">
-															@percent.ToString("N0")%
-														</div>
-													</td>
-												}
+
+												<td style="padding-left: 3px;">
+													<div id="@string.Format("{0}Pct", boId)" style="@divBackgroundColorStyle border-radius: 3px; padding: 3px;">
+														@percent.ToString("N0")%
+													</div>
+												</td>
 											</tr>
 											<tr>
 												<input id="@string.Format("boSliderId{0}", @movieCount)" type="range" onchange="sliderOnChange(this, @movieCount)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />

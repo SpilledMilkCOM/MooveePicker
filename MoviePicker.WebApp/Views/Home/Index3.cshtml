@@ -45,12 +45,64 @@
 					@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
 				}
 			</div>
+
+			<table class="table table-responsive" style="border: none;">
+				<tr>
+					@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
+					{
+						var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
+						var weightId = string.Format("weightId{0}", minerCount);
+						var name = string.Format("Weight{0}", minerCount);
+						//var badge = miner.Movies.Any() ? string.Format("<span class=\"badge badge-pill badge-light\">{0}</span>", miner.Movies.Count) : string.Empty;
+
+						// TODO: May want to use a utility to speed up the reflection.
+
+						var valueString = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
+
+						<td>
+							<a class="btn @buttonStyle btn-xs"
+							   href="@miner.UrlSource"
+							   target="_blank"
+							   data-toggle="tooltip"
+							   data-placement="bottom"
+							   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
+								@miner.Abbreviation
+							</a>
+
+							<input name="@name"
+								   class="form-control"
+								   id="@weightId"
+								   onblur="weightLostFocus('@valueString', this.value)"
+								   style="background-color: #dfffdf; width: 50px;"
+								   type="text"
+								   value="@valueString"
+								   data-val-required="The Weight @minerCount field is required."
+								   data-val-number="The field Weight @minerCount must be a number."
+								   data-val="true">
+						</td>
+
+						minerCount++;
+					}
+					<td>
+						<input class="btn btn-success btn-lg"
+							   style="margin-top: 10px;"
+							   onclick="navigateTo('/Home/Index3')"
+							   type="button"
+							   value="Calculate Picks"
+							   data-toggle="tooltip"
+							   data-placement="bottom"
+							   title="Click to recalculate page...">
+					</td>
+				</tr>
+			</table>
 		</div>
 
 		@* ================================================================================================================================== BONUS COMPARISON COLUMN ==== *@
 
 		@* TODO - Put this in a partial view. *@
 		<div class="col-md-6">
+			<h4>Weekend ending @weekendEnding (<span id="durationId">@Model.Duration.ToString("N0")</span> ms)</h4>
+
 			<div style="border: solid; border-radius: 4px; border-width: 1px; padding: 8px;">
 				<h4>Bonus Comparisons</h4>
 
@@ -175,50 +227,10 @@
 		<div class="col-md-12">
 
 			<div class="col-md-6">
-				<h4>Weekend ending @weekendEnding (<span id="durationId">@Model.Duration.ToString("N0")</span> ms)</h4>
+
 			</div>
 
-			<table class="table table-responsive" style="border: none;">
-				<tr>
-					@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
-					{
-						var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
-						var weightId = string.Format("weightId{0}", minerCount);
-						var name = string.Format("Weight{0}", minerCount);
-						//var badge = miner.Movies.Any() ? string.Format("<span class=\"badge badge-pill badge-light\">{0}</span>", miner.Movies.Count) : string.Empty;
-
-						// TODO: May want to use a utility to speed up the reflection.
-
-						var valueString = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
-
-						<td>
-							<a class="btn @buttonStyle btn-xs"
-							   href="@miner.UrlSource"
-							   target="_blank"
-							   data-toggle="tooltip"
-							   data-placement="bottom"
-							   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
-								@miner.Abbreviation
-							</a>
-
-							<input name="@name"
-								   class="form-control"
-								   id="@weightId"
-								   onblur="weightLostFocus('@valueString', this.value)"
-								   style="background-color: #dfffdf; width: 50px;"
-								   type="text"
-								   value="@valueString"
-								   data-val-required="The Weight @minerCount field is required."
-								   data-val-number="The field Weight @minerCount must be a number."
-								   data-val="true">
-						</td>
-
-						minerCount++;
-					}
-				</tr>
-			</table>
-
-			<div width="100%" style="overflow-x: auto; white-space: nowrap; height: 250px; overflow-y: hidden;">
+			<div class="col-xs-12" width="100%" style="overflow-x: auto; white-space: nowrap; height: 250px; overflow-y: hidden;">
 				<table>
 					@{
 						movieCount = 1;
@@ -291,7 +303,7 @@
 
 									toolTip.Append("</table>");
 
-									divBackgroundColorStyle = null;
+									divBackgroundColorStyle = "background-color: white;";
 									percent = 0;
 
 									var myMovie = Model.Miners.ToList()[1].Movies.FirstOrDefault(item => item.Name == movie.Name);
@@ -331,22 +343,12 @@
 															   data-val-number="The field Box Office @movieCount must be a number."
 															   data-val="true">
 													</td>
-													@if (percent == 0 || percent == -100m)
-													{
-														<td style="padding-left: 3px;">
-															<div id="@string.Format("{0}Pct", boId)" style="@divBackgroundColorStyle; border-radius: 3px; padding: 3px;">
-																@percent.ToString("N0")%
-															</div>
-														</td>
-													}
-													else
-													{
-														<td style="padding-left: 3px;">
-															<div id="@string.Format("{0}Pct", boId)" style="@divBackgroundColorStyle; border-radius: 3px; padding: 3px;">
-																@percent.ToString("N0")%
-															</div>
-														</td>
-													}
+
+													<td style="padding-left: 3px;">
+														<div id="@string.Format("{0}Pct", boId)" style="@divBackgroundColorStyle border-radius: 3px; padding: 3px;">
+															@percent.ToString("N0")%
+														</div>
+													</td>
 												</tr>
 												<tr>
 													<input id="@string.Format("boSliderId{0}", @movieCount)" type="range" onchange="sliderOnChange(this, @movieCount)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
