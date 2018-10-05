@@ -336,7 +336,7 @@
     <Content Include="Views\Home\ExpertPicks.cshtml" />
     <Content Include="Views\LowMem\Images.cshtml" />
     <Content Include="Views\Home\Fandango.cshtml" />
-    <Content Include="Views\Home\Index3.cshtml" />
+    <Content Include="Views\Home\IndexWide.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -86,7 +86,7 @@
 					<td>
 						<input class="btn btn-success btn-lg"
 							   style="margin-top: 10px;"
-							   onclick="navigateTo('/Home/Index3')"
+							   onclick="navigateTo('/Home/IndexWide')"
 							   type="button"
 							   value="Calculate Picks"
 							   data-toggle="tooltip"
@@ -317,9 +317,13 @@
 									var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "2px";
 									var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey;";
 
+									// THIS IS DIFFERENT THAN INDEX!!
+
+									var tooltipPlacement = movieCount == 15 ? "left" : "right";
+
 									<td style="padding: 3px;">
 
-										<div data-toggle="tooltip" data-placement="top"
+										<div data-toggle="tooltip" data-placement="@tooltipPlacement"
 											 data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
 											 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
 

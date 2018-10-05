@@ -280,7 +280,7 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult Index3()
+		public ActionResult IndexWide()
 		{
 			// TODO: Collapse this down to a method call.
 
