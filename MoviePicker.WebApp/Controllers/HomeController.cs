@@ -809,10 +809,12 @@ namespace MoviePicker.WebApp.Controllers
 				stringBuilder.Append(movie.EarningsBase.ToString("F0"));
 			}
 
+			// Skip the first AND last miner.
+
 			first = true;
 			stringBuilder.Append("&wl=");
 
-			for (int idx = MY_MINER_IDX; idx < _minerModel.Miners.Count; idx++)
+			for (int idx = MY_MINER_IDX; idx < _minerModel.Miners.Count - 1; idx++)
 			{
 				if (!first)
 				{
