@@ -13,7 +13,7 @@ function boxOfficeLostFocus(oldValue, newValue, movieIndex) {
 
 		updateBoxOffice(movieIndex);
 
-		clickPicks2();
+		clickPicksAsync();
 	}
 }
 
@@ -80,8 +80,8 @@ function clickPicks() {
 	navigateTo('/Home/Index2');
 }
 
-function clickPicks2() {
-	logit("clickPicks2");
+function clickPicksAsync() {
+	logit("clickPicksAsync");
 
 	var parameters = parseBoxOfficeAndWeights();
 
@@ -219,10 +219,11 @@ function sliderOnChange(slider, controlIndex) {
 		boxOfficePct.text(slider.value + '%');
 		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(slider.value)) / 100.0));
 
-		clickPicks2();
+		clickPicksAsync();
 	}
 }
 
+// Reformats the box office field with commas
 function updateBoxOffice(controlIndex) {
 	var boxOffice = $('#boId' + controlIndex);
 
@@ -250,14 +251,31 @@ function updateSlider(newValue, controlIndex) {
 	}
 }
 
-function weightLostFocus(oldValue, newValue) {
+// Calculate ASYNC if the new value is different from the original value.
+function weightLostFocus(newValue, controlIndex) {
 
-	if (oldValue != newValue) {
+	var weightField = $('#weightId' + controlIndex);
+	var originalValue = 0;
+
+	if (weightField != null) {
+		originalValue = weightField.attr('data-original-value');
+	}
+
+	if (originalValue != newValue) {
 		console.log('weightLostFocus');
 
 		clearMoviePicksPosters('bonusOnMovieList');
 		clearMoviePicksPosters('bonusOffMovieList');
 
-		clickPicks2();
+		clickPicksAsync();
+
+		var weightField = $('#weightId' + controlIndex);
+
+		if (weightField != null) {
+			weightField.attr('data-original-value', newValue);
+		}
 	}
+}
+
+function changeAttribute(id, newValue) {
 }

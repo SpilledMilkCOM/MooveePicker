@@ -72,10 +72,11 @@
 							<input name="@name"
 								   class="form-control"
 								   id="@weightId"
-								   onblur="weightLostFocus('@valueString', this.value)"
+								   onblur="weightLostFocus(this.value, @minerCount)"
 								   style="background-color: #dfffdf; width: 50px;"
 								   type="text"
 								   value="@valueString"
+								   data-original-value="@valueString"
 								   data-val-required="The Weight @minerCount field is required."
 								   data-val-number="The field Weight @minerCount must be a number."
 								   data-val="true">

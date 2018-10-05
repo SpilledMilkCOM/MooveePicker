@@ -1,8 +1,8 @@
 ﻿// This contains all of the funtions to support the asynchronous calculate callback.
 
 var inCallback = false;		// Prevent multiple retrievals of the same data recursion
-var consoleOn = false;
 
+// Fill in the already scaffolded Bonus Comparison section with new data.
 function bonusComparison(movies) {
 
 	for (var movieCount = 0, length = movies.length; movieCount < length; movieCount++) {
@@ -41,6 +41,7 @@ function bonusComparison(movies) {
 	}
 }
 
+// ASYNC function to call the Home/Calculate endpoint and refresh the view with the new JSON data.
 function calculate(endPoint) {
 
 	if (inCallback == true) {
@@ -88,23 +89,7 @@ function calculate(endPoint) {
 	});
 }
 
-function formatWithCommas(value) {
-	var valueAsString = value.toString();
-	var index = valueAsString.indexOf('.');
-
-	if (index >= 0) {
-		valueAsString = valueAsString.substring(0, index);		// left
-	}
-
-	return valueAsString.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-function logit(message) {
-	if (consoleOn == true) {
-		console.log(message);
-	}
-}
-
+// Fill in an already scaffolded mini list with new data.
 function movieListMini(movieList, idPrefix, shareQueryString) {
 	var pagePiece = movieList.ComparisonHeader == "Bonus ON" ? "On" : "Off";
 	var shareAnchor = $('#' + idPrefix + 'SharePicksId');
@@ -143,13 +128,5 @@ function movieListMini(movieList, idPrefix, shareQueryString) {
 		tooltip.attr('data-original-title', 'This screen intentionally left blank - $-2,000,000');
 		image.attr('src','/images/MooveePosterBlank.jpg');
 		image.attr('style', 'border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;');
-	}
-}
-
-function setText(id, value) {
-	var ctrl = $('#' + id);
-
-	if (ctrl != null) {
-		ctrl.text(value);
 	}
 }
