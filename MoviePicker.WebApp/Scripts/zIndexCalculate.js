@@ -41,6 +41,53 @@ function bonusComparison(movies) {
 	}
 }
 
+// Fill in the already scaffoled Box Office fields and sliders.
+function boxOffice(movies, bestPerformer) {
+
+	for (var movieCount = 0, length = movies.length; movieCount < length; movieCount++) {
+		var movie = movies[movieCount];
+		var controlIndex = movie.ControlId;
+		var boxOffice = $('#boId' + controlIndex);
+
+		logit('controlIndex = ' + controlIndex);
+
+		if (boxOffice != null) {
+			var boxOfficeImage = $('#imageId' + controlIndex);
+			var boxOfficePct = $('#boId' + controlIndex + 'Pct');
+			var boxOfficeSlider = $('#boSliderId' + controlIndex);
+			var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
+			var percent = (movie.EarningsBase - originalValue) / originalValue * 100;
+
+			logit(originalValue);
+			logit(percent + '%');
+
+			boxOffice.val(formatWithCommas(movie.EarningsBase));
+
+			if (boxOfficePct != null) {
+				boxOfficePct.val(percent + '%');
+			}
+
+			boxOfficePct.attr('style', 'background-color: ' + percentToBackgroundColor(percent) + '; border-radius: 3px; padding: 3px;');
+
+			if (boxOfficeSlider != null) {
+				boxOfficeSlider.val(percent);
+			}
+
+			if (boxOfficeImage != null) {
+				var imageBackgroundStyle = "box-shadow: 2px 4px 8px 0px grey;";
+
+				if (bestPerformer != null && controlIndex == bestPerformer.ControlId) {
+					imageBackgroundStyle = "box-shadow: 2px 4px 8px 0px green;";
+				}
+
+				console.log(imageBackgroundStyle);
+
+				boxOfficeImage.attr('style', imageBackgroundStyle);
+			}
+		}
+	}
+}
+
 // ASYNC function to call the Home/Calculate endpoint and refresh the view with the new JSON data.
 function calculate(endPoint) {
 
@@ -77,6 +124,7 @@ function calculate(endPoint) {
 			movieListMini(jsonData.MovieListBonusOff.Picks[0], 'bonusOffMovieList', jsonData.MovieListBonusOff.ShareQueryString);
 
 			bonusComparison(jsonData.Movies);
+			boxOffice(jsonData.Movies, jsonData.MovieList.Picks[0].BestPerformer);
 
 			inCallback = false;
 		},

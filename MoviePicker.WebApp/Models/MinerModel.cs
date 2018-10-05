@@ -267,6 +267,7 @@ namespace MoviePicker.WebApp.Models
 				found.Id = movie.Id;
 				found.MovieName = movie.MovieName;        // So the names aren't fuzzy anymore.
 				found.Cost = movie.Cost;
+				found.ControlId = movie.ControlId;
 			}
 		}
 
@@ -315,6 +316,7 @@ namespace MoviePicker.WebApp.Models
 
 			var result = new Movie
 			{
+				ControlId = baseMovie.ControlId,
 				Id = baseMovie.Id,
 				ImageUrl = baseMovie.ImageUrl,
 				MovieName = baseMovie.MovieName,

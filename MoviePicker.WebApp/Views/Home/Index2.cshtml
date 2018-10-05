@@ -130,7 +130,8 @@
 							var backgroundColor = movieCount == 0 ? "background-color: lightgreen;" : (movieCount % 2 == 0 ? "background-color: lightgrey;" : string.Empty);
 							var rank = Model.Rank(movie);
 
-							@*<div class="col-sm-1 hidden-xs" style="@backgroundColor text-align: right;">@rank</div>*@
+							// You HAVE to use movieCount as the control id since this table is ORDER based (the movies CAN change order) versus cost based like the box office table.
+
 							<div id="@string.Format("bonusCompMovieName{0}", movieCount)"
 								 class="col-xs-12 col-sm-4"
 								 style="@backgroundColor font-weight: bold;">@movie.Name</div>
@@ -215,6 +216,22 @@
 															 style="@backgroundColor text-align: right;">--</div>
 													}
 												}
+											}
+											else
+											{
+												// Build the scaffolding anyway
+
+												<div id="@string.Format("bonusCompDifference{0}", movieCount)"
+													 class="col-xs-3 col-sm-2"
+													 style="@backgroundColor text-align: right;">--</div>
+
+												<div id="@string.Format("bonusCompDiffPctUp{0}", movieCount)"
+													 class="col-xs-2 col-sm-1"
+													 style="@backgroundColor text-align: right; color: #33cc33">--</div>
+
+												<div id="@string.Format("bonusCompDiffPctDown{0}", movieCount)"
+													 class="col-xs-2 col-sm-1"
+													 style="@backgroundColor text-align: right; color: #cc3333">--</div>
 											}
 
 											movieCount++;
@@ -313,8 +330,9 @@
 							{
 								var movie = Model.Miners.First().Movies[movieCount - 1];
 
-								var boId = string.Format("boId{0}", movieCount);
-								var name = string.Format("BoxOffice{0}", movieCount);
+								var boId = string.Format("boId{0}", movie.ControlId);
+								var imageId = string.Format("imageId{0}", movie.ControlId);
+								var name = string.Format("BoxOffice{0}", movie.ControlId);
 
 								// TODO: May want to use a utility to speed up the reflection.
 
@@ -394,7 +412,7 @@
 										 data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
 										 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
 
-										<img class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
+										<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
 
 										@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
 										@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
@@ -405,13 +423,13 @@
 													<input name="@name"
 														   class="form-control"
 														   id="@boId"
-														   onblur="boxOfficeLostFocus('@valueString', this.value, @movieCount)"
+														   onblur="boxOfficeLostFocus('@valueString', this.value, @movie.ControlId)"
 														   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
 														   type="text"
 														   value="@valueString"
 														   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
-														   data-val-required="The Box Office @movieCount field is required."
-														   data-val-number="The field Box Office @movieCount must be a number."
+														   data-val-required="The Box Office @movie.ControlId field is required."
+														   data-val-number="The field Box Office @movie.ControlId must be a number."
 														   data-val="true">
 												</td>
 
@@ -422,7 +440,7 @@
 												</td>
 											</tr>
 											<tr>
-												<input id="@string.Format("boSliderId{0}", @movieCount)" type="range" onchange="sliderOnChange(this, @movieCount)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+												<input id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
 											</tr>
 										</table>
 									</div>
@@ -440,19 +458,19 @@
 }
 
 <script type="text/javascript">
-																																		//window.onscroll = function () { scrollPicksColumn() };
+			//window.onscroll = function () { scrollPicksColumn() };
 
-																																		//var picksColumn = document.getElementById("picksColumn");
-																																		//var picksColumnOffset = picksColumn.offsetTop;
+			//var picksColumn = document.getElementById("picksColumn");
+			//var picksColumnOffset = picksColumn.offsetTop;
 
-																																		//function scrollPicksColumn() {
-																																		//	console.log(window.pageYOffset);
-																																		//	console.log(picksColumnOffset);
+			//function scrollPicksColumn() {
+			//	console.log(window.pageYOffset);
+			//	console.log(picksColumnOffset);
 
-																																		//	if (window.pageYOffset >= picksColumnOffset) {
-																																		//		picksColumn.classList.add("sticky");
-																																		//	} else {
-																																		//		picksColumn.classList.remove("sticky");
-																																		//	}
-																																		//}
+			//	if (window.pageYOffset >= picksColumnOffset) {
+			//		picksColumn.classList.add("sticky");
+			//	} else {
+			//		picksColumn.classList.remove("sticky");
+			//	}
+			//}
 </script>

@@ -212,6 +212,22 @@
 													}
 												}
 											}
+											else
+											{
+												// Build the scaffolding anyway
+
+												<div id="@string.Format("bonusCompDifference{0}", movieCount)"
+													 class="col-xs-3 col-sm-2"
+													 style="@backgroundColor text-align: right;">--</div>
+
+												<div id="@string.Format("bonusCompDiffPctUp{0}", movieCount)"
+													 class="col-xs-2 col-sm-1"
+													 style="@backgroundColor text-align: right; color: #33cc33">--</div>
+
+												<div id="@string.Format("bonusCompDiffPctDown{0}", movieCount)"
+													 class="col-xs-2 col-sm-1"
+													 style="@backgroundColor text-align: right; color: #cc3333">--</div>
+											}
 
 											movieCount++;
 
@@ -244,6 +260,7 @@
 									var movie = Model.Miners.First().Movies[movieCount - 1];
 
 									var boId = string.Format("boId{0}", movieCount);
+									var imageId = string.Format("imageId{0}", movie.ControlId);
 									var name = string.Format("BoxOffice{0}", movieCount);
 
 									// TODO: May want to use a utility to speed up the reflection.
@@ -328,7 +345,7 @@
 											 data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
 											 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
 
-											<img class="img-rounded" style="width: 140px; @backgroundStyle" src="@movie.ImageUrl" />
+											<img id="@imageId" class="img-rounded" style="width: 140px; @backgroundStyle" src="@movie.ImageUrl" />
 
 											@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
 											@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@

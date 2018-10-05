@@ -6,6 +6,8 @@ namespace MoviePicker.Common.Interfaces
 	{
 		string Abbreviation { get; }
 
+		IMovie BestPerformer { get; }
+
 		bool IsFull { get; }
 
 		IEnumerable<string> MovieImages { get; }

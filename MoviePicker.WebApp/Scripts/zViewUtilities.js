@@ -1,5 +1,13 @@
 ﻿var consoleOn = false;
 
+function changeText(id, value) {
+	var ctrl = $('#' + id);
+
+	if (ctrl != null && ctrl.text() != value) {
+		ctrl.text(value);
+	}
+}
+
 // Formats a number with commas and truncates the decimal.
 function formatWithCommas(value) {
 	var valueAsString = value.toString();

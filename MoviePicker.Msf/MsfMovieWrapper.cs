@@ -30,6 +30,12 @@ namespace MoviePicker.Msf
 			return _movie = _movie.Clone();
 		}
 
+		public int ControlId
+		{
+			get { return _movie.ControlId; }
+			set { _movie.ControlId = value; }
+		}
+
 		public decimal Cost
 		{
 			get { return _movie.Cost; }

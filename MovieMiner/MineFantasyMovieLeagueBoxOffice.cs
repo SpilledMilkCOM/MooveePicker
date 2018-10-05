@@ -82,8 +82,6 @@ namespace MovieMiner
 				}
 			}
 
-			//int columnToMine = 0;
-
 			//tableRows = tableNode?.SelectNodes("tbody//td[contains(@class, 'movie-title')]//span[contains(@class, 'title')]");
 			tableRows = tableNode?.SelectNodes("tbody//tr[contains(@class, 'group-')]");
 
@@ -145,6 +143,12 @@ namespace MovieMiner
 			}
 
 			result = result.OrderByDescending(movie => movie.Cost).ToList();
+
+			// Assign the control ids for the HTML controls, (if movie controls are in an array).
+
+			var controlIndex = 1;
+
+			result.ForEach(movie => movie.ControlId = controlIndex++);
 
 			return result;
 		}

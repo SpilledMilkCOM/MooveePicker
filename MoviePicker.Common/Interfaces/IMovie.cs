@@ -12,9 +12,14 @@ namespace MoviePicker.Common.Interfaces
         bool AdjustEarnings { get; set; }
 
 		/// <summary>
+		/// Used to map the movie to a control in an array of movies.
+		/// </summary>
+		int ControlId { get; set; }
+
+		/// <summary>
 		/// FML Bux
 		/// </summary>
-        decimal Cost { get; set; }
+		decimal Cost { get; set; }
 
 		/// <summary>
 		/// The movie COULD be a multi-day pick (Friday, Saturday, Sunday)

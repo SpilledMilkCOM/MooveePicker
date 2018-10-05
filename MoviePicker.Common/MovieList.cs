@@ -70,6 +70,8 @@ namespace MoviePicker.Common
 			}
 		}
 
+		public IMovie BestPerformer => _movies.FirstOrDefault(movie => movie.IsBestPerformer);
+
 		public bool IsFull => _movies.Count >= MOVIE_MAX;
 
 		/// <summary>

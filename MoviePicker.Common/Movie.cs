@@ -32,6 +32,7 @@ namespace MoviePicker.Common
 			if (!ReferenceEquals(this, toCopy))
 			{
 				AdjustEarnings = toCopy.AdjustEarnings;
+				ControlId = toCopy.ControlId;
 				Day = toCopy.Day;
 				_earnings = toCopy._earnings;
 				_cost = toCopy._cost;
@@ -91,6 +92,8 @@ namespace MoviePicker.Common
 		}
 
 		public bool AdjustEarnings { get; set; }
+
+		public int ControlId { get; set; }
 
 		public decimal Cost
 		{
