@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker", "MoviePicker\MoviePicker.csproj", "{FB01C56F-1F93-4174-9D64-154F23B92691}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviePicker", "MoviePicker\MoviePicker.csproj", "{FB01C56F-1F93-4174-9D64-154F23B92691}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.Tests", "MoviePicker.Tests\MoviePicker.Tests.csproj", "{F53C5B2D-DCE7-4BC2-BA98-55C2CC474BE2}"
 EndProject
@@ -17,11 +17,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviePicker.Common", "MoviePicker.Common\MoviePicker.Common.csproj", "{C413BA12-DCD8-485E-B008-087BA02004CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.Msf", "MoviePicker.Msf\MoviePicker.Msf.csproj", "{420FCF88-E38D-46EE-A4DE-BE87042D5B1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviePicker.Msf", "MoviePicker.Msf\MoviePicker.Msf.csproj", "{420FCF88-E38D-46EE-A4DE-BE87042D5B1B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XUnitTests", "XUnitTests\XUnitTests.csproj", "{C3CC820E-D9E7-4679-980B-FA67EE6AD965}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoviePicker.Simulations", "MoviePicker.Simulations\MoviePicker.Simulations.csproj", "{C337051A-A8D2-4A45-91A5-9D3074A14313}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviePicker.Simulations", "MoviePicker.Simulations\MoviePicker.Simulations.csproj", "{C337051A-A8D2-4A45-91A5-9D3074A14313}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestRunner", "TestRunner\TestRunner.csproj", "{EAF16F79-E857-4DD7-8DEF-6937A8140DFD}"
 EndProject
@@ -34,6 +34,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheMovieDatabase", "TheMovieDatabase\TheMovieDatabase.csproj", "{D2E47B87-EAE4-4DF7-AD32-44990AA96B5D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviePicker.Repository", "MoviePicker.Repository\MoviePicker.Repository.csproj", "{3F448FB2-296B-4BB2-AE05-407A576DC838}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Deploy", "Deploy", "{57DA1EB7-053F-4E88-B002-B301166868F3}"
+	ProjectSection(SolutionItems) = preProject
+		Deploy\deleteRG.ps1 = Deploy\deleteRG.ps1
+		Deploy\deploy.ps1 = Deploy\deploy.ps1
+		Deploy\deployWithParams.secret.ps1 = Deploy\deployWithParams.secret.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
