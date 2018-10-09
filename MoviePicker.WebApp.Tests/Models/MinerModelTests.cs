@@ -47,7 +47,6 @@ namespace MoviePicker.WebApp.Tests.Models
 			}
 		}
 
-
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_BoxOfficeReportNumbers()
 		{
@@ -63,7 +62,6 @@ namespace MoviePicker.WebApp.Tests.Models
 				Logger.WriteLine($"{movie.Id}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
 			}
 		}
-
 
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_CoupesNumbers()
