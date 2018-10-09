@@ -6,6 +6,7 @@ using MoviePicker.WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Unity;
 
@@ -77,6 +78,17 @@ namespace MoviePicker.WebApp.Tests.Models
 			{
 				Logger.WriteLine($"{movie.Id}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
 			}
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_DownloadMoviePosters()
+		{
+			var test = new MinerModel(true);
+			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
+
+			Assert.IsNotNull(test.Miners);
+
+			test.DownloadMoviePosters($"{cwd}\\Images\\");
 		}
 
 		[TestMethod, TestCategory("Integration")]
