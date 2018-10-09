@@ -229,6 +229,10 @@ namespace MoviePicker.WebApp.Models
 						movie.ImageUrl = $"/Images/{Path.GetFileName(localFileName)}";
 					}
 				}
+				else
+				{
+					movie.ImageUrl = "/Images/MooveePosterNotFound.jpg";
+				}
 			}
 
 			result |= !_postersDownloaded;

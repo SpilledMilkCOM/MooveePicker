@@ -95,9 +95,16 @@ namespace MoviePicker.WebApp.Utilities
 
 				if (!File.Exists(localFile))
 				{
-					HttpRequestUtility.DownloadFile(fileUrl, localFile);
+					try
+					{
+						HttpRequestUtility.DownloadFile(fileUrl, localFile);
 
-					filesDownloaded = true;
+						filesDownloaded = true;
+					}
+					catch (Exception ex)
+					{
+						// It's accpetable to ignore the error here, the app can use the direct URL or a "not found" image.
+					}
 				}
 			}
 
