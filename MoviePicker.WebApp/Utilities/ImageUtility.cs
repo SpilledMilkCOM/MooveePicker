@@ -417,6 +417,125 @@ namespace MoviePicker.WebApp.Utilities
 		}
 
 		/// <summary>
+		/// Combine the list of images into a single image
+		/// </summary>
+		/// <param name="webRootPath"></param>
+		/// <param name="fileNames"></param>
+		/// <returns>The result file name.</returns>
+		public string CombineImagesHorizonal(string webRootPath, List<string> fileNames, string bonusFileName = null)
+		{
+			const int COLUMNS = 8;
+			const int BONUS_INSET_PIXELS = 10;
+			const int BONUS_SCALE = 4;
+			const int BORDER_PIXELS = 0;
+
+			var guid = Guid.NewGuid();
+			var outFileName = $"Shared_{guid}.jpg";
+			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
+			string resultFileName = null;
+			int? minWidth = null;
+			int? minHeight = null;
+			int width = 0;
+			int height = 0;
+			int offset = 0;
+
+			if (!fileNames.Any())
+			{
+				return null;
+			}
+
+			// Determine width and height of the 1st row.
+			// They SHOULD all be the same size, but things may change.
+
+			foreach (var fileName in fileNames)
+			{
+				using (var image = Image.FromFile(fileName))
+				{
+					if (!minWidth.HasValue || minWidth.Value > image.Width)
+					{
+						minWidth = image.Width;
+						minHeight = image.Height;
+					}
+				}
+			}
+
+			// Use a constant width for each image.
+
+			width = (minWidth.Value + BORDER_PIXELS * 2) * COLUMNS;
+
+			// Since the aspect ratio should be the same for each image then the height will be the same as well (using a constant width)
+
+			height = (minHeight.Value + BORDER_PIXELS * 2);
+
+			using (var destBitmap = new Bitmap(width, height))
+			{
+				using (var graphics = Graphics.FromImage(destBitmap))
+				{
+					using (var bonusBorderBrush = new SolidBrush(Color.LightGreen))
+					{
+						var column = 0;
+
+						// Fill the background with the "border" color
+						//graphics.Clear(Color.White);
+						graphics.Clear(Color.Black);
+
+						for (int fileIndex = 0; fileIndex < COLUMNS; fileIndex++)
+						{
+							var fileName = $"{imagePath}{Path.DirectorySeparatorChar}MooveePosterBlank.jpg";
+
+							if (fileIndex < fileNames.Count)
+							{
+								// Override the blank file with one that was chosen.
+
+								fileName = fileNames[fileIndex];
+							}
+
+							using (Image image = Image.FromFile(fileName)
+								, plusImage = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}green-plus-hi.png"))
+							{
+								if (column % COLUMNS == 0)
+								{
+									offset = BORDER_PIXELS;
+								}
+
+								var yLoc = column < COLUMNS ? BORDER_PIXELS : minHeight.Value + BORDER_PIXELS * 3;
+
+								if (fileName == bonusFileName)
+								{
+									var rect = new Rectangle(offset - BORDER_PIXELS, yLoc - BORDER_PIXELS, minWidth.Value + 2 * BORDER_PIXELS, minHeight.Value + 2 * BORDER_PIXELS);
+
+									graphics.FillRectangle(bonusBorderBrush, rect);
+								}
+
+								graphics.DrawImage(image, offset, yLoc, minWidth.Value, minHeight.Value);
+
+								if (fileName == bonusFileName)
+								{
+									// The plus image is effectively square so use 1/6 of the width of the poster size.
+
+									graphics.DrawImage(plusImage
+											, offset + minWidth.Value * (BONUS_SCALE - 1) / BONUS_SCALE - BONUS_INSET_PIXELS
+											, yLoc + minHeight.Value - minWidth.Value / BONUS_SCALE - BONUS_INSET_PIXELS
+											, minWidth.Value / BONUS_SCALE
+											, minWidth.Value / BONUS_SCALE);
+								}
+
+								offset += minWidth.Value + BORDER_PIXELS * 2;
+								column++;
+							}
+						}
+					}
+				}
+
+				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{outFileName}";
+
+				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+			}
+
+			return resultFileName;
+		}
+
+		/// <summary>
 		/// Apply a mask to a base image.
 		/// </summary>
 		/// <param name="baseImageName">The base image to which the mask is applied.</param>
