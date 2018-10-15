@@ -220,35 +220,6 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Index()
 		{
-			var stopWatch = new Stopwatch();
-
-			stopWatch.Start();
-
-			_viewModel.ViewGridOpen = !Request.Browser.IsMobileDevice;
-			_viewModel.ViewMobileOpen = Request.Browser.IsMobileDevice;
-
-			ViewBag.IsGoogleAdValid = true;
-
-			ParseBoxOfficeWeightRequest();
-			ParseViewRequest();
-
-			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
-			//_viewModel.IsTracking = true;
-
-			ControllerUtility.SetTwitterCard(ViewBag);
-
-			DownloadMoviePosters();
-
-			stopWatch.Stop();
-
-			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
-
-			return View(_viewModel);
-		}
-
-		[HttpGet]
-		public ActionResult Index2()
-		{
 			// TODO: Collapse this down to a method call.
 
 			ViewBag.IsGoogleAdValid = true;
@@ -277,6 +248,35 @@ namespace MoviePicker.WebApp.Controllers
 			ControllerUtility.SetTwitterCard(ViewBag);
 
 			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
+		}
+
+		[HttpGet]
+		public ActionResult IndexOld()
+		{
+			var stopWatch = new Stopwatch();
+
+			stopWatch.Start();
+
+			_viewModel.ViewGridOpen = !Request.Browser.IsMobileDevice;
+			_viewModel.ViewMobileOpen = Request.Browser.IsMobileDevice;
+
+			ViewBag.IsGoogleAdValid = true;
+
+			ParseBoxOfficeWeightRequest();
+			ParseViewRequest();
+
+			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
+			//_viewModel.IsTracking = true;
+
+			ControllerUtility.SetTwitterCard(ViewBag);
+
+			DownloadMoviePosters();
+
+			stopWatch.Stop();
+
+			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			return View(_viewModel);
 		}
 
 		[HttpGet]
@@ -329,17 +329,18 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Picks()
 		{
-			ViewBag.IsGoogleAdValid = true;
+			//ViewBag.IsGoogleAdValid = true;
 
-			ParseBoxOfficeWeightRequest();
+			//ParseBoxOfficeWeightRequest();
 
-			// Hide the last miner (BO Mojo for previous week).
+			//// Hide the last miner (BO Mojo for previous week).
 
-			_minerModel.Miners.Last().IsHidden = true;
+			//_minerModel.Miners.Last().IsHidden = true;
 
-			ControllerUtility.SetTwitterCard(ViewBag);
+			//ControllerUtility.SetTwitterCard(ViewBag);
 
-			return View(ConstructPicksViewModel());
+			//return View(ConstructPicksViewModel());
+			return RedirectToAction("Index");
 		}
 
 		[HttpGet]

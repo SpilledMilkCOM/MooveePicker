@@ -313,7 +313,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\LowMem\About.cshtml" />
     <Content Include="Views\LowMem\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\IndexOld.cshtml" />
     <Content Include="Views\Home\Picks.cshtml" />
     <Content Include="Views\Shared\MovieList.cshtml" />
     <Content Include="Views\Home\Simulation.cshtml" />
@@ -336,7 +336,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Home\Index2.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\MovieListMini2.cshtml" />
     <Content Include="Views\Home\ExpertPicks.cshtml" />
     <Content Include="Views\LowMem\Images.cshtml" />
