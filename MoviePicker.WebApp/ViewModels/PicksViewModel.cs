@@ -73,7 +73,7 @@ namespace MoviePicker.WebApp.ViewModels
 		{
 			var imageUtil = new ImageUtility();
 
-			return imageUtil.CombineImages(webRootPath, files, bonusFile, cellFilmFiles);
+			return imageUtil.GenerateTwitterImage(webRootPath, files, bonusFile, cellFilmFiles);
 		}
 
 		public int Rank(IMovie movie)

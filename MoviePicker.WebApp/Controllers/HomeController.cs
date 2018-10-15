@@ -599,10 +599,6 @@ namespace MoviePicker.WebApp.Controllers
 			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
 			var picks = bonusOn ? picksViewModel.MovieList?.Picks[index] : picksViewModel.MovieListBonusOff?.Picks[index];
 			var movieImages = picks?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
-
-			// Files should already be there now.
-			//FileUtility.DownloadFiles(movieImages, localFilePrefix);
-
 			var localFiles = FileUtility.LocalFiles(movieImages, $"{localFilePrefix}MoviePoster_");
 			string bonusFile = null;
 
@@ -631,7 +627,6 @@ namespace MoviePicker.WebApp.Controllers
 
 			var viewModel = new SharePicksViewModel()
 			{
-				//ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, bonusFile, null)
 				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, bonusFile, filmCellFiles)
 			};
 
