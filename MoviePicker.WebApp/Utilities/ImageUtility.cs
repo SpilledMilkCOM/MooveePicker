@@ -376,8 +376,8 @@ namespace MoviePicker.WebApp.Utilities
 			oldHeight = (int)(oldHeight * (double)width / oldWidth);
 			offset = 0;
 
-			var yLogo = 2 * oldHeight;
-			var yOffset = height - yLogo;
+			var yLogo = oldHeight;			// Put logo film strip down the middle.
+			var yOffset = height - 2 * oldHeight;
 
 			using (var destBitmap = new Bitmap(width, height))
 			{
@@ -404,7 +404,7 @@ namespace MoviePicker.WebApp.Utilities
 					{
 						// Using the specified widths will scale the image into the smaller Twitter image.
 
-						graphics.DrawImage(image, 0, oldHeight, width, oldHeight);
+						graphics.DrawImage(image, 0, oldHeight + yOffset, width, oldHeight);
 					}
 
 					// Keep track of the posters in the film cells for BOTH left and right sides.

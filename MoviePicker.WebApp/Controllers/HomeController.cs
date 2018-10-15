@@ -345,13 +345,19 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult ShareBonusOffPicks()
 		{
-			return View("SharePicks", ConstructSharePicksViewModel(false));
+			return View("SharePicks", ConstructSharePicksViewModel(false, false));
 		}
 
 		[HttpGet]
 		public ActionResult ShareBonusOnPicks()
 		{
-			return View("SharePicks", ConstructSharePicksViewModel(true));
+			return View("SharePicks", ConstructSharePicksViewModel(true, false));
+		}
+
+		[HttpGet]
+		public ActionResult SharePerfectPick()
+		{
+			return View("SharePicks", ConstructSharePicksViewModel(true, true));
 		}
 
 		public ActionResult Simulation()
@@ -375,14 +381,9 @@ namespace MoviePicker.WebApp.Controllers
 			ParseBoxOfficeWeightRequest();
 
 			var viewModel = ConstructPicksViewModel();
-			var savedMovieList = viewModel.MovieList;
 
-			// Assign perfect pick to movie list so it is shared.
-			viewModel.MovieList = viewModel.MovieListPerfectPick;
+			var sharedViewModel = ConstructSharePicksViewModel(true, true, viewModel);
 
-			var sharedViewModel = ConstructSharePicksViewModel(true, viewModel);
-
-			viewModel.MovieList = savedMovieList;
 			viewModel.MovieList.ComparisonHeader = "Your Custom Picks";
 
 			// Show the values for the FML Estimate data.
@@ -583,7 +584,7 @@ namespace MoviePicker.WebApp.Controllers
 			};
 		}
 
-		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn, PicksViewModel picksViewModel = null, int index = 0)
+		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn, bool isTracking, PicksViewModel picksViewModel = null, int index = 0)
 		{
 			ViewBag.Title = bonusOn ? "Share Bonus ON Picks" : "Share Bonus OFF Picks";
 			var subTitle = bonusOn ? "Bonus ON" : "Bonus OFF";
@@ -625,9 +626,18 @@ namespace MoviePicker.WebApp.Controllers
 
 			var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, localFilePrefix);
 
+			List<string> perfectPickFiles = null;
+
+			if (isTracking && picksViewModel.IsTracking)
+			{
+				var perfectPickImages = picksViewModel?.MovieListPerfectPick?.Picks[0]?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
+
+				perfectPickFiles = FileUtility.LocalFiles(perfectPickImages, $"{localFilePrefix}MoviePoster_");
+			}
+
 			var viewModel = new SharePicksViewModel()
 			{
-				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, bonusFile, filmCellFiles)
+				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, perfectPickFiles, bonusFile, filmCellFiles)
 			};
 
 			// Ordering by Cost is the same sort as the file names.

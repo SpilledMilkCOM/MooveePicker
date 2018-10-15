@@ -38,14 +38,14 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2018, 10, 7);
+				var weekend = new DateTime(2018, 10, 14);
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Venom", Earnings = 60000000, WeekendEnding = weekend },
-								new Movie { MovieName = "A Star Is Born", Earnings = 49000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Smallfoot", Earnings = 14500000, WeekendEnding = weekend },
-								new Movie { MovieName = "Night School", Earnings = 13600000, WeekendEnding = weekend },
-								new Movie { MovieName = "The House With A Clock In Its Walls", Earnings = 6900000, WeekendEnding = weekend },
+								new Movie { MovieName = "Venom", Earnings = 30000000, WeekendEnding = weekend },
+								new Movie { MovieName = "A Star Is Born", Earnings = 27000000, WeekendEnding = weekend },
+								new Movie { MovieName = "First Man", Earnings = 20000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Goosebumps Haunted Halloween", Earnings = 18600000, WeekendEnding = weekend },
+								new Movie { MovieName = "Bad Times at the El Royale", Earnings = 8300000, WeekendEnding = weekend },
 						};
 			}
 		}

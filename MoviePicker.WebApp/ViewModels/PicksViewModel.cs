@@ -69,11 +69,18 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public decimal Weight7 { get; set; }
 
-		public string GenerateSharedImage(string webRootPath, List<string> files, string bonusFile, List<string> cellFilmFiles)
+		public string GenerateSharedImage(string webRootPath, List<string> files, List<string> perfectPickFiles, string bonusFile, List<string> cellFilmFiles)
 		{
 			var imageUtil = new ImageUtility();
 
-			return imageUtil.GenerateTwitterImage(webRootPath, files, bonusFile, cellFilmFiles);
+			if (perfectPickFiles == null)
+			{
+				return imageUtil.GenerateTwitterImage(webRootPath, files, bonusFile, cellFilmFiles);
+			}
+			else
+			{
+				return imageUtil.GenerateTwitterImageComparison(webRootPath, perfectPickFiles, files, bonusFile, cellFilmFiles);
+			}
 		}
 
 		public int Rank(IMovie movie)
