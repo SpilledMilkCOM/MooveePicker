@@ -1,5 +1,6 @@
 ﻿using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Web;
 
@@ -31,6 +32,19 @@ namespace MoviePicker.WebApp.Utilities
 						result.Add(value);
 					}
 				}
+			}
+
+			return result;
+		}
+
+		public Guid GetRequestGuid(HttpRequestBase request, string key)
+		{
+			Guid result = Guid.Empty;
+			var value = request.Params[key];
+
+			if (value != null)
+			{
+				Guid.TryParse(value, out result);
 			}
 
 			return result;
@@ -73,7 +87,7 @@ namespace MoviePicker.WebApp.Utilities
 			return result;
 		}
 
-		public static string GetRequestString(HttpRequestBase request, string key)
+		public string GetRequestString(HttpRequestBase request, string key)
 		{
 			return request.Params[key];
 		}

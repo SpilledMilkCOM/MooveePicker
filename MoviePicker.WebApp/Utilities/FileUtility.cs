@@ -111,16 +111,6 @@ namespace MoviePicker.WebApp.Utilities
 			return filesDownloaded;
 		}
 
-		public static void FileInfo(string localFilePath)
-		{
-			// Need Time and Size.
-
-			if (File.Exists(localFilePath))
-			{
-				var fileInfo = new FileInfo(localFilePath);
-			}
-		}
-
 		/// <summary>
 		/// Return a list of file names given the server path and filter.
 		/// </summary>

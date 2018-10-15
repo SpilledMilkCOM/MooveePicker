@@ -1,4 +1,5 @@
 ﻿using MovieMiner;
+using System;
 using System.Collections.Generic;
 
 namespace MoviePicker.WebApp.Interfaces
@@ -22,6 +23,8 @@ namespace MoviePicker.WebApp.Interfaces
 		decimal BoxOffice15 { get; set; }
 
 		long Duration { get; set; }
+
+		Guid Id { get; set; }
 
 		/// <summary>
 		/// The estimated values are in (typically on a Saturday)

@@ -162,11 +162,6 @@ namespace MoviePicker.WebApp.Utilities
 			int oldWidth = 0;
 			int oldHeight = 0;
 
-			if (!fileNames.Any())
-			{
-				return null;
-			}
-
 			resultFileName = CombineImagesRows(webRootPath, fileNames, bonusFileName);
 
 			using (var image = Image.FromFile(resultFileName))
@@ -331,7 +326,7 @@ namespace MoviePicker.WebApp.Utilities
 		/// <param name="webRootPath"></param>
 		/// <param name="fileNames"></param>
 		/// <returns>The result file name.</returns>
-		public string GenerateTwitterImageComparison(string webRootPath, List<string> fileNamesTop, List<string> fileNamesBottom,  string bonusFileName = null, List<string> filmCellNames = null)
+		public string GenerateTwitterImageComparison(string webRootPath, List<string> fileNamesTop, List<string> fileNamesBottom, string bonusFileName = null, List<string> filmCellNames = null)
 		{
 			const int CELL_WIDTH_PIXELS = 51;
 			const int FIRST_CELL_WIDTH_PIXELS = 34;
@@ -376,7 +371,7 @@ namespace MoviePicker.WebApp.Utilities
 			oldHeight = (int)(oldHeight * (double)width / oldWidth);
 			offset = 0;
 
-			var yLogo = oldHeight;			// Put logo film strip down the middle.
+			var yLogo = oldHeight;          // Put logo film strip down the middle.
 			var yOffset = height - 2 * oldHeight;
 
 			using (var destBitmap = new Bitmap(width, height))
@@ -460,57 +455,6 @@ namespace MoviePicker.WebApp.Utilities
 						// Scale the branding to fit within the offset
 						graphics.DrawImage(image, 0, yLogo, width, yOffset);
 					}
-
-					//// Draw the posters down the right.
-
-					//for (var count = 0; count < 7; count++, totalCount++)
-					//{
-					//	if (filmCellNames != null && filmCellNames.Count == 0)
-					//	{
-					//		// Start over if the list is empty.
-
-					//		filmCellNames = new List<string>(savedFilmCellNames);
-					//	}
-
-					//	var cellFileName = (filmCellNames == null || filmCellNames.Count == 0) ? fileNamesTop[totalCount % fileNamesTop.Count] : RemoveRandomItem(filmCellNames);
-
-					//	using (var image = Image.FromFile(cellFileName))
-					//	{
-					//		var yOffset = FIRST_CELL_HEIGHT_PIXELS - CELL_HEIGHT_PIXELS;
-
-					//		if (count == 1)
-					//		{
-					//			yOffset = FIRST_CELL_HEIGHT_PIXELS;
-					//		}
-					//		else if (count > 1)
-					//		{
-					//			yOffset = (count - 1) * CELL_HEIGHT_PIXELS + FIRST_CELL_HEIGHT_PIXELS;
-					//		}
-
-					//		// Clip the viewport to the film cell height.
-
-					//		var clipRect = new Rectangle(width - offset, yOffset, offset, CELL_HEIGHT_PIXELS);
-
-					//		graphics.SetClip(clipRect);
-
-					//		// Scale the poster to fit within the offset
-					//		// Adjust Y value so the image is centered within the film cell
-
-					//		var scaledHeight = (double)image.Height / image.Width * offset;
-
-					//		graphics.DrawImage(image, width - offset, yOffset - (int)(scaledHeight - CELL_HEIGHT_PIXELS) / 2, offset, (int)((double)image.Height / image.Width * offset));
-					//	}
-					//}
-
-					//graphics.SetClip(entireViewportClip);
-
-					//// Draw branding on the right.
-
-					//using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Moovee Picker Logo Vertical Strip Right.png"))
-					//{
-					//	// Scale the branding to fit within the offset
-					//	graphics.DrawImage(image, width - offset, 0, offset, (int)((double)image.Height / image.Width * offset));
-					//}
 				}
 
 				resultFileNameTop = $"{imagePath}{Path.DirectorySeparatorChar}{twitterFileName}";
@@ -546,17 +490,26 @@ namespace MoviePicker.WebApp.Utilities
 			int height = 0;
 			int offset = 0;
 
-			if (!fileNames.Any())
-			{
-				return null;
-			}
-
 			// Determine width and height of the 1st row.
 			// They SHOULD all be the same size, but things may change.
 
-			foreach (var fileName in fileNames)
+			if (fileNames.Any())
 			{
-				using (var image = Image.FromFile(fileName))
+				foreach (var fileName in fileNames)
+				{
+					using (var image = Image.FromFile(fileName))
+					{
+						if (!minWidth.HasValue || minWidth.Value > image.Width)
+						{
+							minWidth = image.Width;
+							minHeight = image.Height;
+						}
+					}
+				}
+			}
+			else
+			{
+				using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}MooveePosterBlank.jpg"))
 				{
 					if (!minWidth.HasValue || minWidth.Value > image.Width)
 					{
@@ -665,17 +618,26 @@ namespace MoviePicker.WebApp.Utilities
 			int height = 0;
 			int offset = 0;
 
-			if (!fileNames.Any())
-			{
-				return null;
-			}
-
 			// Determine width and height of the 1st row.
 			// They SHOULD all be the same size, but things may change.
 
-			foreach (var fileName in fileNames)
+			if (fileNames.Any())
 			{
-				using (var image = Image.FromFile(fileName))
+				foreach (var fileName in fileNames)
+				{
+					using (var image = Image.FromFile(fileName))
+					{
+						if (!minWidth.HasValue || minWidth.Value > image.Width)
+						{
+							minWidth = image.Width;
+							minHeight = image.Height;
+						}
+					}
+				}
+			}
+			else
+			{
+				using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}MooveePosterBlank.jpg"))
 				{
 					if (!minWidth.HasValue || minWidth.Value > image.Width)
 					{

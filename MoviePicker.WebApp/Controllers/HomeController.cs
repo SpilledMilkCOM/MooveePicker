@@ -62,7 +62,7 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Calculate()
 		{
-			ParseBoxOfficeWeightRequest();
+			ParseViewRequest();
 
 			var result = new CalculateViewModel(ConstructPicksViewModel());
 
@@ -238,7 +238,6 @@ namespace MoviePicker.WebApp.Controllers
 
 			// Adjust the weights (possibly adjust the defaults above).
 
-			ParseBoxOfficeWeightRequest();
 			ParseViewRequest();
 
 			// Hide the last miner (BO Mojo for previous week).
@@ -262,7 +261,6 @@ namespace MoviePicker.WebApp.Controllers
 
 			ViewBag.IsGoogleAdValid = true;
 
-			ParseBoxOfficeWeightRequest();
 			ParseViewRequest();
 
 			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
@@ -300,7 +298,6 @@ namespace MoviePicker.WebApp.Controllers
 
 			// Adjust the weights (possibly adjust the defaults above).
 
-			ParseBoxOfficeWeightRequest();
 			ParseViewRequest();
 
 			// Hide the last miner (BO Mojo for previous week).
@@ -317,7 +314,7 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			ViewBag.IsGoogleAdValid = true;
 
-			ParseBoxOfficeWeightRequest();
+			ParseViewRequest();
 
 			ControllerUtility.SetTwitterCard(ViewBag);
 
@@ -331,7 +328,7 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			ViewBag.IsGoogleAdValid = true;
 
-			ParseBoxOfficeWeightRequest();
+			ParseViewRequest();
 
 			// Hide the last miner (BO Mojo for previous week).
 
@@ -378,7 +375,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			ViewBag.IsGoogleAdValid = true;
 
-			ParseBoxOfficeWeightRequest();
+			ParseViewRequest();
 
 			var viewModel = ConstructPicksViewModel();
 
@@ -589,55 +586,55 @@ namespace MoviePicker.WebApp.Controllers
 			ViewBag.Title = bonusOn ? "Share Bonus ON Picks" : "Share Bonus OFF Picks";
 			var subTitle = bonusOn ? "Bonus ON" : "Bonus OFF";
 
-			ParseBoxOfficeWeightRequest();
+			ParseViewRequest();
 
 			if (picksViewModel == null)
 			{
 				picksViewModel = ConstructPicksViewModel();
 			}
 
-			var webRootPath = Server.MapPath("~");
-			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
+			//var webRootPath = Server.MapPath("~");
+			//var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
 			var picks = bonusOn ? picksViewModel.MovieList?.Picks[index] : picksViewModel.MovieListBonusOff?.Picks[index];
-			var movieImages = picks?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
-			var localFiles = FileUtility.LocalFiles(movieImages, $"{localFilePrefix}MoviePoster_");
-			string bonusFile = null;
+			//var movieImages = picks?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
+			//var localFiles = FileUtility.LocalFiles(movieImages, $"{localFilePrefix}MoviePoster_");
+			//string bonusFile = null;
 
-			if (bonusOn)
-			{
-				var bonusMovie = picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer);
+			//if (bonusOn)
+			//{
+			//	var bonusMovie = picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer);
 
-				if (bonusMovie != null && bonusMovie.ImageUrl != null)
-				{
-					bonusFile = FileUtility.LocalFile(bonusMovie.ImageUrl.Replace("MoviePoster_", string.Empty), $"{localFilePrefix}MoviePoster_");
-				}
-			}
+			//	if (bonusMovie != null && bonusMovie.ImageUrl != null)
+			//	{
+			//		bonusFile = FileUtility.LocalFile(bonusMovie.ImageUrl.Replace("MoviePoster_", string.Empty), $"{localFilePrefix}MoviePoster_");
+			//	}
+			//}
 
-			// Attempt to use the temp posters first since that is more restrictive, otherwise you might get BOTH sets and you'll see duplicates in the randomization.
+			//// Attempt to use the temp posters first since that is more restrictive, otherwise you might get BOTH sets and you'll see duplicates in the randomization.
 
-			var filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.temp.*");
+			//var filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.temp.*");
 
-			if (filmCellFileNames == null || filmCellFileNames.Count == 0)
-			{
-				// Just in case there are no "temp" names.
+			//if (filmCellFileNames == null || filmCellFileNames.Count == 0)
+			//{
+			//	// Just in case there are no "temp" names.
 
-				filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.*");
-			}
+			//	filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.*");
+			//}
 
-			var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, localFilePrefix);
+			//var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, localFilePrefix);
 
-			List<string> perfectPickFiles = null;
+			//List<string> perfectPickFiles = null;
 
-			if (isTracking && picksViewModel.IsTracking)
-			{
-				var perfectPickImages = picksViewModel?.MovieListPerfectPick?.Picks[0]?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
+			//if (isTracking && picksViewModel.IsTracking)
+			//{
+			//	var perfectPickImages = picksViewModel?.MovieListPerfectPick?.Picks[0]?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
 
-				perfectPickFiles = FileUtility.LocalFiles(perfectPickImages, $"{localFilePrefix}MoviePoster_");
-			}
+			//	perfectPickFiles = FileUtility.LocalFiles(perfectPickImages, $"{localFilePrefix}MoviePoster_");
+			//}
 
 			var viewModel = new SharePicksViewModel()
 			{
-				ImageFileName = picksViewModel.GenerateSharedImage(webRootPath, localFiles, perfectPickFiles, bonusFile, filmCellFiles)
+				ImageFileName = GenerateSharedImage(bonusOn, isTracking, picksViewModel)
 			};
 
 			// Ordering by Cost is the same sort as the file names.
@@ -702,6 +699,70 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		/// <summary>
+		/// Generate a shared image for Twitter (if it doesn't already exist)
+		/// </summary>
+		/// <param name="bonusOn"></param>
+		/// <param name="isTracking"></param>
+		/// <param name="picksViewModel"></param>
+		/// <param name="index"></param>
+		/// <returns>The name of the image file.</returns>
+		private string GenerateSharedImage(bool bonusOn, bool isTracking, PicksViewModel picksViewModel, int index = 0)
+		{
+			var webRootPath = Server.MapPath("~");
+			var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
+			var result = $"Twitter_{_viewModel.Id}";
+
+			if (!System.IO.File.Exists($"{localFilePrefix}"))
+			{
+				var picks = bonusOn ? picksViewModel.MovieList?.Picks[index] : picksViewModel.MovieListBonusOff?.Picks[index];
+				var movieImages = picks?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
+				var localFiles = FileUtility.LocalFiles(movieImages, $"{localFilePrefix}MoviePoster_");
+				string bonusFile = null;
+
+				if (bonusOn)
+				{
+					var bonusMovie = picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer);
+
+					if (bonusMovie != null && bonusMovie.ImageUrl != null)
+					{
+						bonusFile = FileUtility.LocalFile(bonusMovie.ImageUrl.Replace("MoviePoster_", string.Empty), $"{localFilePrefix}MoviePoster_");
+					}
+				}
+
+				// Attempt to use the temp posters first since that is more restrictive, otherwise you might get BOTH sets and you'll see duplicates in the randomization.
+
+				var filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.temp.*");
+
+				if (filmCellFileNames == null || filmCellFileNames.Count == 0)
+				{
+					// Just in case there are no "temp" names.
+
+					filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.*");
+				}
+
+				var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, localFilePrefix);
+
+				List<string> perfectPickFiles = null;
+
+				if (isTracking && picksViewModel.IsTracking)
+				{
+					var perfectPickImages = picksViewModel?.MovieListPerfectPick?.Picks[0]?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
+
+					perfectPickFiles = FileUtility.LocalFiles(perfectPickImages, $"{localFilePrefix}MoviePoster_");
+				}
+
+				result = picksViewModel.GenerateSharedImage(webRootPath, localFiles, perfectPickFiles, bonusFile, filmCellFiles);
+
+				if (result != null)
+				{
+					_viewModel.Id = new Guid(result.Replace("Twitter_", string.Empty).Replace(".jpg", string.Empty));
+				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
 		/// Coverts the weight list in the request to a miner.
 		/// </summary>
 		/// <param name="weightList">The weight list from the request</param>
@@ -711,7 +772,7 @@ namespace MoviePicker.WebApp.Controllers
 			IMiner result = null;
 			int index = 0;
 			char[] delimiters = new char[] { ',' };
-			var weightList = ControllerUtility.GetRequestString(Request, "wl");
+			var weightList = _controllerUtility.GetRequestString(Request, "wl");
 
 			if (weightList != null)
 			{
@@ -791,6 +852,9 @@ namespace MoviePicker.WebApp.Controllers
 
 		private void ParseViewRequest()
 		{
+			ParseBoxOfficeWeightRequest();
+
+			_viewModel.Id = _controllerUtility.GetRequestGuid(Request, "id");
 		}
 
 		private string QueryStringFromModel()
