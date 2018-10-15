@@ -223,7 +223,9 @@
 
 												<div id="@string.Format("bonusCompDifference{0}", movieCount)"
 													 class="col-xs-3 col-sm-2"
-													 style="@backgroundColor text-align: right;">--</div>
+													 style="@backgroundColor text-align: right;">
+													@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)
+												</div>
 
 												<div id="@string.Format("bonusCompDiffPctUp{0}", movieCount)"
 													 class="col-xs-2 col-sm-1"
@@ -458,19 +460,19 @@
 }
 
 <script type="text/javascript">
-			//window.onscroll = function () { scrollPicksColumn() };
+				//window.onscroll = function () { scrollPicksColumn() };
 
-			//var picksColumn = document.getElementById("picksColumn");
-			//var picksColumnOffset = picksColumn.offsetTop;
+				//var picksColumn = document.getElementById("picksColumn");
+				//var picksColumnOffset = picksColumn.offsetTop;
 
-			//function scrollPicksColumn() {
-			//	console.log(window.pageYOffset);
-			//	console.log(picksColumnOffset);
+				//function scrollPicksColumn() {
+				//	console.log(window.pageYOffset);
+				//	console.log(picksColumnOffset);
 
-			//	if (window.pageYOffset >= picksColumnOffset) {
-			//		picksColumn.classList.add("sticky");
-			//	} else {
-			//		picksColumn.classList.remove("sticky");
-			//	}
-			//}
+				//	if (window.pageYOffset >= picksColumnOffset) {
+				//		picksColumn.classList.add("sticky");
+				//	} else {
+				//		picksColumn.classList.remove("sticky");
+				//	}
+				//}
 </script>

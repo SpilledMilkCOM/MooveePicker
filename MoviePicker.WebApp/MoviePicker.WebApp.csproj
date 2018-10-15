@@ -232,6 +232,7 @@
     <Content Include="Images\Moovee Picker Logo 32x32.png" />
     <Content Include="Images\Moovee Picker Logo 64x64.png" />
     <Content Include="Images\Moovee Picker Logo Filled 32x32.png" />
+    <Content Include="Images\Moovee Picker Logo Horizontal Strip.png" />
     <Content Include="Images\Moovee Picker Logo Vertical Strip Right.png" />
     <Content Include="Images\Moovee Picker Logo Vertical Strip.png" />
     <Content Include="Images\MooveePickerCow512x512.png" />
