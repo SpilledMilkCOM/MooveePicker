@@ -329,18 +329,17 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Picks()
 		{
-			//ViewBag.IsGoogleAdValid = true;
+			ViewBag.IsGoogleAdValid = true;
 
-			//ParseBoxOfficeWeightRequest();
+			ParseBoxOfficeWeightRequest();
 
-			//// Hide the last miner (BO Mojo for previous week).
+			// Hide the last miner (BO Mojo for previous week).
 
-			//_minerModel.Miners.Last().IsHidden = true;
+			_minerModel.Miners.Last().IsHidden = true;
 
-			//ControllerUtility.SetTwitterCard(ViewBag);
+			ControllerUtility.SetTwitterCard(ViewBag);
 
-			//return View(ConstructPicksViewModel());
-			return RedirectToAction("Index");
+			return View(ConstructPicksViewModel());
 		}
 
 		[HttpGet]
