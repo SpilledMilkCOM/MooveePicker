@@ -86,6 +86,7 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li>@Html.ActionLink("Home", "Index", "Home", ViewUtility.RequestParamsToDynamic(Request), null)</li>
+					<li>@Html.ActionLink("Help", "About", "LowMem", protocol: null, hostName: null, fragment: "help", routeValues: ViewUtility.RequestParamsToDynamic(Request), htmlAttributes: null)</li>
 					<li>@Html.ActionLink("About", "About", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
 					<li>@Html.ActionLink("Contact", "Contact", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
 				</ul>
