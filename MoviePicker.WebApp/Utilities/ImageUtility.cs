@@ -143,26 +143,19 @@ namespace MoviePicker.WebApp.Utilities
 		/// <param name="webRootPath"></param>
 		/// <param name="fileNames"></param>
 		/// <returns>The result file name.</returns>
-		public string CombineImages(string webRootPath, List<string> fileNames, string bonusFileName = null, List<string> filmCellNames = null)
+		public string GenerateTwitterImage(string webRootPath, List<string> fileNames, string bonusFileName = null, List<string> filmCellNames = null)
 		{
-			const int COLUMNS = 4;
-			const int BONUS_INSET_PIXELS = 10;
-			const int BONUS_SCALE = 4;
-			const int BORDER_PIXELS = 0;
 			const int CELL_HEIGHT_PIXELS = 46;
 			const int FIRST_CELL_HEIGHT_PIXELS = 34;
 
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
 			var guid = Guid.NewGuid();
-			var outFileName = $"Shared_{guid}.jpg";
 			var twitterFileName = $"Twitter_{guid}.jpg";
 			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
 			// Just in case only a few cell names are sent in, the original list can be used.
 			var savedFilmCellNames = filmCellNames == null ? null : new List<string>(filmCellNames);
 			string resultFileName = null;
-			int? minWidth = null;
-			int? minHeight = null;
 			int width = 0;
 			int height = 0;
 			int offset = 0;
@@ -174,99 +167,15 @@ namespace MoviePicker.WebApp.Utilities
 				return null;
 			}
 
-			// The default is 8 (or less) picks
+			resultFileName = CombineImagesRows(webRootPath, fileNames, bonusFileName);
 
-			// Determine width and height of the 1st row.
-
-			foreach (var fileName in fileNames)
+			using (var image = Image.FromFile(resultFileName))
 			{
-				using (var image = Image.FromFile(fileName))
-				{
-					if (!minWidth.HasValue || minWidth.Value > image.Width)
-					{
-						minWidth = image.Width;
-						minHeight = image.Height;
-					}
-				}
-			}
-
-			// Use a constant width for each image.
-
-			width = (minWidth.Value + BORDER_PIXELS * 2) * COLUMNS;
-
-			// Since the aspect ratio should be the same for each image then the height will be the same as well (using a constant width)
-
-			height = (minHeight.Value + BORDER_PIXELS * 2) * 2;
-
-			using (var destBitmap = new Bitmap(width, height))
-			{
-				using (var graphics = Graphics.FromImage(destBitmap))
-				{
-					using (var bonusBorderBrush = new SolidBrush(Color.LightGreen))
-					{
-						var column = 0;
-
-						// Fill the background with the "border" color
-						//graphics.Clear(Color.White);
-						graphics.Clear(Color.Black);
-
-						for (int fileIndex = 0; fileIndex < COLUMNS * 2; fileIndex++)
-						{
-							var fileName = $"{imagePath}{Path.DirectorySeparatorChar}MooveePosterBlank.jpg";
-
-							if (fileIndex < fileNames.Count)
-							{
-								// Override the blank file with one that was chosen.
-
-								fileName = fileNames[fileIndex];
-							}
-
-							using (Image image = Image.FromFile(fileName)
-								, plusImage = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}green-plus-hi.png"))
-							{
-								if (column % COLUMNS == 0)
-								{
-									offset = BORDER_PIXELS;
-								}
-
-								var yLoc = column < COLUMNS ? BORDER_PIXELS : minHeight.Value + BORDER_PIXELS * 3;
-
-								if (fileName == bonusFileName)
-								{
-									var rect = new Rectangle(offset - BORDER_PIXELS, yLoc - BORDER_PIXELS, minWidth.Value + 2 * BORDER_PIXELS, minHeight.Value + 2 * BORDER_PIXELS);
-
-									graphics.FillRectangle(bonusBorderBrush, rect);
-								}
-
-								graphics.DrawImage(image, offset, yLoc, minWidth.Value, minHeight.Value);
-
-								if (fileName == bonusFileName)
-								{
-									// The plus image is effectively square so use 1/6 of the width of the poster size.
-
-									graphics.DrawImage(plusImage
-											, offset + minWidth.Value * (BONUS_SCALE - 1) / BONUS_SCALE - BONUS_INSET_PIXELS
-											, yLoc + minHeight.Value - minWidth.Value / BONUS_SCALE - BONUS_INSET_PIXELS
-											, minWidth.Value / BONUS_SCALE
-											, minWidth.Value / BONUS_SCALE);
-								}
-
-								offset += minWidth.Value + BORDER_PIXELS * 2;
-								column++;
-							}
-						}
-					}
-				}
-
-				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{outFileName}";
-
-				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+				oldWidth = image.Width;
+				oldHeight = image.Height;
 			}
 
 			// Create the Twitter image with the 2:1 aspect ratio
-
-			oldWidth = width;
-			oldHeight = height;
 
 			// Twitter render size for large format.
 			width = 600;
@@ -413,7 +322,443 @@ namespace MoviePicker.WebApp.Utilities
 				// TODO: Add a black border/bleed for Twitter while still keeping the 2:1 aspect ratio.
 			}
 
-			return outFileName;
+			return twitterFileName;
+		}
+
+		/// <summary>
+		/// Combine the list of images into a single image
+		/// </summary>
+		/// <param name="webRootPath"></param>
+		/// <param name="fileNames"></param>
+		/// <returns>The result file name.</returns>
+		public string GenerateTwitterImageComparison(string webRootPath, List<string> fileNamesTop, List<string> fileNamesBottom,  string bonusFileName = null, List<string> filmCellNames = null)
+		{
+			const int CELL_WIDTH_PIXELS = 51;
+			const int FIRST_CELL_WIDTH_PIXELS = 34;
+
+			// There is a cool site that puts images together https://www.fotor.com/create/collage/
+
+			var guid = Guid.NewGuid();
+			var twitterFileName = $"Twitter_{guid}.jpg";
+			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
+			// Just in case only a few cell names are sent in, the original list can be used.
+			var savedFilmCellNames = filmCellNames == null ? null : new List<string>(filmCellNames);
+			string resultFileNameTop = null;
+			string resultFileNameBottom = null;
+			int width = 0;
+			int height = 0;
+			int offset = 0;
+			int oldWidth = 0;
+			int oldHeight = 0;
+
+			if (!fileNamesTop.Any() || !fileNamesBottom.Any())
+			{
+				return null;
+			}
+
+			resultFileNameTop = CombineImagesHorizonal(webRootPath, fileNamesTop, bonusFileName);
+			resultFileNameBottom = CombineImagesHorizonal(webRootPath, fileNamesBottom, bonusFileName);
+
+			using (var image = Image.FromFile(resultFileNameTop))
+			{
+				oldWidth = image.Width;
+				oldHeight = image.Height;
+			}
+
+			// Create the Twitter image with the 2:1 aspect ratio
+
+			// Twitter render size for large format.
+			width = 600;
+			//height = 300;
+			height = 314;
+
+			// Scale the image height (down) proportionate to the width.
+			oldHeight = (int)(oldHeight * (double)width / oldWidth);
+			offset = 0;
+
+			var yLogo = 2 * oldHeight;
+			var yOffset = height - yLogo;
+
+			using (var destBitmap = new Bitmap(width, height))
+			{
+				destBitmap.SetResolution(72, 72);
+
+				using (var graphics = Graphics.FromImage(destBitmap))
+				{
+					var entireViewportClip = new Rectangle(0, 0, width, height);
+
+					graphics.Clear(Color.Black);
+
+					// Draw the top image into the padded bitmap.
+
+					using (var image = Image.FromFile(resultFileNameTop))
+					{
+						// Using the specified widths will scale the image into the smaller Twitter image.
+
+						graphics.DrawImage(image, 0, 0, width, oldHeight);
+					}
+
+					// Draw the bottom image into the padded bitmap.
+
+					using (var image = Image.FromFile(resultFileNameBottom))
+					{
+						// Using the specified widths will scale the image into the smaller Twitter image.
+
+						graphics.DrawImage(image, 0, oldHeight, width, oldHeight);
+					}
+
+					// Keep track of the posters in the film cells for BOTH left and right sides.
+
+					int totalCount = 0;
+
+					// Draw the posters left to right.
+
+					for (var count = 0; count < 12; count++, totalCount++)
+					{
+						if (filmCellNames != null && filmCellNames.Count == 0)
+						{
+							// Start over if the list is empty.
+
+							filmCellNames = new List<string>(savedFilmCellNames);
+						}
+
+						var cellFileName = (filmCellNames == null || filmCellNames.Count == 0) ? fileNamesTop[totalCount % fileNamesTop.Count] : RemoveRandomItem(filmCellNames);
+
+						using (var image = Image.FromFile(cellFileName))
+						{
+
+							// Clip the viewport to the film cell height.
+
+							var clipRect = new Rectangle(offset, yLogo, CELL_WIDTH_PIXELS, yOffset);
+
+							graphics.SetClip(clipRect);
+
+							// Scale the poster to fit within the offset
+							// Adjust Y value so the image is centered within the film cell
+
+							var scaledHeight = (double)image.Height / image.Width * offset;
+
+							graphics.DrawImage(image, offset, yLogo, CELL_WIDTH_PIXELS, yOffset);
+						}
+
+						if (count == 0)
+						{
+							offset += FIRST_CELL_WIDTH_PIXELS;
+						}
+						else
+						{
+							offset += CELL_WIDTH_PIXELS;
+						}
+					}
+
+					graphics.SetClip(entireViewportClip);
+
+					// Draw branding on the bottom.
+
+					using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Moovee Picker Logo Horizontal Strip.png"))
+					{
+						// Scale the branding to fit within the offset
+						graphics.DrawImage(image, 0, yLogo, width, yOffset);
+					}
+
+					//// Draw the posters down the right.
+
+					//for (var count = 0; count < 7; count++, totalCount++)
+					//{
+					//	if (filmCellNames != null && filmCellNames.Count == 0)
+					//	{
+					//		// Start over if the list is empty.
+
+					//		filmCellNames = new List<string>(savedFilmCellNames);
+					//	}
+
+					//	var cellFileName = (filmCellNames == null || filmCellNames.Count == 0) ? fileNamesTop[totalCount % fileNamesTop.Count] : RemoveRandomItem(filmCellNames);
+
+					//	using (var image = Image.FromFile(cellFileName))
+					//	{
+					//		var yOffset = FIRST_CELL_HEIGHT_PIXELS - CELL_HEIGHT_PIXELS;
+
+					//		if (count == 1)
+					//		{
+					//			yOffset = FIRST_CELL_HEIGHT_PIXELS;
+					//		}
+					//		else if (count > 1)
+					//		{
+					//			yOffset = (count - 1) * CELL_HEIGHT_PIXELS + FIRST_CELL_HEIGHT_PIXELS;
+					//		}
+
+					//		// Clip the viewport to the film cell height.
+
+					//		var clipRect = new Rectangle(width - offset, yOffset, offset, CELL_HEIGHT_PIXELS);
+
+					//		graphics.SetClip(clipRect);
+
+					//		// Scale the poster to fit within the offset
+					//		// Adjust Y value so the image is centered within the film cell
+
+					//		var scaledHeight = (double)image.Height / image.Width * offset;
+
+					//		graphics.DrawImage(image, width - offset, yOffset - (int)(scaledHeight - CELL_HEIGHT_PIXELS) / 2, offset, (int)((double)image.Height / image.Width * offset));
+					//	}
+					//}
+
+					//graphics.SetClip(entireViewportClip);
+
+					//// Draw branding on the right.
+
+					//using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}Moovee Picker Logo Vertical Strip Right.png"))
+					//{
+					//	// Scale the branding to fit within the offset
+					//	graphics.DrawImage(image, width - offset, 0, offset, (int)((double)image.Height / image.Width * offset));
+					//}
+				}
+
+				resultFileNameTop = $"{imagePath}{Path.DirectorySeparatorChar}{twitterFileName}";
+
+				destBitmap.Save(resultFileNameTop, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+				// TODO: Add a black border/bleed for Twitter while still keeping the 2:1 aspect ratio.
+			}
+
+			return twitterFileName;
+		}
+
+		/// <summary>
+		/// Combine the list of images into a single image
+		/// </summary>
+		/// <param name="webRootPath"></param>
+		/// <param name="fileNames"></param>
+		/// <returns>The result file name.</returns>
+		public string CombineImagesHorizonal(string webRootPath, List<string> fileNames, string bonusFileName = null)
+		{
+			const int COLUMNS = 8;
+			const int BONUS_INSET_PIXELS = 10;
+			const int BONUS_SCALE = 4;
+			const int BORDER_PIXELS = 0;
+
+			var guid = Guid.NewGuid();
+			var outFileName = $"Shared_{guid}.jpg";
+			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
+			string resultFileName = null;
+			int? minWidth = null;
+			int? minHeight = null;
+			int width = 0;
+			int height = 0;
+			int offset = 0;
+
+			if (!fileNames.Any())
+			{
+				return null;
+			}
+
+			// Determine width and height of the 1st row.
+			// They SHOULD all be the same size, but things may change.
+
+			foreach (var fileName in fileNames)
+			{
+				using (var image = Image.FromFile(fileName))
+				{
+					if (!minWidth.HasValue || minWidth.Value > image.Width)
+					{
+						minWidth = image.Width;
+						minHeight = image.Height;
+					}
+				}
+			}
+
+			// Use a constant width for each image.
+
+			width = (minWidth.Value + BORDER_PIXELS * 2) * COLUMNS;
+
+			// Since the aspect ratio should be the same for each image then the height will be the same as well (using a constant width)
+
+			height = (minHeight.Value + BORDER_PIXELS * 2);
+
+			using (var destBitmap = new Bitmap(width, height))
+			{
+				using (var graphics = Graphics.FromImage(destBitmap))
+				{
+					using (var bonusBorderBrush = new SolidBrush(Color.LightGreen))
+					{
+						var column = 0;
+
+						// Fill the background with the "border" color
+						//graphics.Clear(Color.White);
+						graphics.Clear(Color.Black);
+
+						for (int fileIndex = 0; fileIndex < COLUMNS; fileIndex++)
+						{
+							var fileName = $"{imagePath}{Path.DirectorySeparatorChar}MooveePosterBlank.jpg";
+
+							if (fileIndex < fileNames.Count)
+							{
+								// Override the blank file with one that was chosen.
+
+								fileName = fileNames[fileIndex];
+							}
+
+							using (Image image = Image.FromFile(fileName)
+								, plusImage = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}green-plus-hi.png"))
+							{
+								if (column % COLUMNS == 0)
+								{
+									offset = BORDER_PIXELS;
+								}
+
+								var yLoc = column < COLUMNS ? BORDER_PIXELS : minHeight.Value + BORDER_PIXELS * 3;
+
+								if (fileName == bonusFileName)
+								{
+									var rect = new Rectangle(offset - BORDER_PIXELS, yLoc - BORDER_PIXELS, minWidth.Value + 2 * BORDER_PIXELS, minHeight.Value + 2 * BORDER_PIXELS);
+
+									graphics.FillRectangle(bonusBorderBrush, rect);
+								}
+
+								graphics.DrawImage(image, offset, yLoc, minWidth.Value, minHeight.Value);
+
+								if (fileName == bonusFileName)
+								{
+									// The plus image is effectively square so use 1/6 of the width of the poster size.
+
+									graphics.DrawImage(plusImage
+											, offset + minWidth.Value * (BONUS_SCALE - 1) / BONUS_SCALE - BONUS_INSET_PIXELS
+											, yLoc + minHeight.Value - minWidth.Value / BONUS_SCALE - BONUS_INSET_PIXELS
+											, minWidth.Value / BONUS_SCALE
+											, minWidth.Value / BONUS_SCALE);
+								}
+
+								offset += minWidth.Value + BORDER_PIXELS * 2;
+								column++;
+							}
+						}
+					}
+				}
+
+				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{outFileName}";
+
+				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+			}
+
+			return resultFileName;
+		}
+
+		/// <summary>
+		/// Combine the list of images into a single image
+		/// </summary>
+		/// <param name="webRootPath"></param>
+		/// <param name="fileNames"></param>
+		/// <returns>The result file name.</returns>
+		public string CombineImagesRows(string webRootPath, List<string> fileNames, string bonusFileName = null)
+		{
+			const int COLUMNS = 4;
+			const int BONUS_INSET_PIXELS = 10;
+			const int BONUS_SCALE = 4;
+			const int BORDER_PIXELS = 0;
+
+			var guid = Guid.NewGuid();
+			var outFileName = $"Shared_{guid}.jpg";
+			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
+			string resultFileName = null;
+			int? minWidth = null;
+			int? minHeight = null;
+			int width = 0;
+			int height = 0;
+			int offset = 0;
+
+			if (!fileNames.Any())
+			{
+				return null;
+			}
+
+			// Determine width and height of the 1st row.
+			// They SHOULD all be the same size, but things may change.
+
+			foreach (var fileName in fileNames)
+			{
+				using (var image = Image.FromFile(fileName))
+				{
+					if (!minWidth.HasValue || minWidth.Value > image.Width)
+					{
+						minWidth = image.Width;
+						minHeight = image.Height;
+					}
+				}
+			}
+
+			// Use a constant width for each image.
+
+			width = (minWidth.Value + BORDER_PIXELS * 2) * COLUMNS;
+
+			// Since the aspect ratio should be the same for each image then the height will be the same as well (using a constant width)
+
+			height = (minHeight.Value + BORDER_PIXELS * 2) * 2;
+
+			using (var destBitmap = new Bitmap(width, height))
+			{
+				using (var graphics = Graphics.FromImage(destBitmap))
+				{
+					using (var bonusBorderBrush = new SolidBrush(Color.LightGreen))
+					{
+						var column = 0;
+
+						// Fill the background with the "border" color
+						//graphics.Clear(Color.White);
+						graphics.Clear(Color.Black);
+
+						for (int fileIndex = 0; fileIndex < COLUMNS * 2; fileIndex++)
+						{
+							var fileName = $"{imagePath}{Path.DirectorySeparatorChar}MooveePosterBlank.jpg";
+
+							if (fileIndex < fileNames.Count)
+							{
+								// Override the blank file with one that was chosen.
+
+								fileName = fileNames[fileIndex];
+							}
+
+							using (Image image = Image.FromFile(fileName)
+								, plusImage = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}green-plus-hi.png"))
+							{
+								if (column % COLUMNS == 0)
+								{
+									offset = BORDER_PIXELS;
+								}
+
+								var yLoc = column < COLUMNS ? BORDER_PIXELS : minHeight.Value + BORDER_PIXELS * 3;
+
+								if (fileName == bonusFileName)
+								{
+									var rect = new Rectangle(offset - BORDER_PIXELS, yLoc - BORDER_PIXELS, minWidth.Value + 2 * BORDER_PIXELS, minHeight.Value + 2 * BORDER_PIXELS);
+
+									graphics.FillRectangle(bonusBorderBrush, rect);
+								}
+
+								graphics.DrawImage(image, offset, yLoc, minWidth.Value, minHeight.Value);
+
+								if (fileName == bonusFileName)
+								{
+									// The plus image is effectively square so use 1/6 of the width of the poster size.
+
+									graphics.DrawImage(plusImage
+											, offset + minWidth.Value * (BONUS_SCALE - 1) / BONUS_SCALE - BONUS_INSET_PIXELS
+											, yLoc + minHeight.Value - minWidth.Value / BONUS_SCALE - BONUS_INSET_PIXELS
+											, minWidth.Value / BONUS_SCALE
+											, minWidth.Value / BONUS_SCALE);
+								}
+
+								offset += minWidth.Value + BORDER_PIXELS * 2;
+								column++;
+							}
+						}
+					}
+				}
+
+				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{outFileName}";
+
+				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+			}
+
+			return resultFileName;
 		}
 
 		/// <summary>
@@ -472,7 +817,7 @@ namespace MoviePicker.WebApp.Utilities
 			var index = new Random().Next(list.Count);
 			string result = list.ElementAt(index);
 
-			if(result != null)
+			if (result != null)
 			{
 				list.Remove(result);
 			}

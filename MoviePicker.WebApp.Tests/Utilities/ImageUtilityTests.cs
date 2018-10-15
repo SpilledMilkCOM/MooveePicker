@@ -32,7 +32,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void ImageUtility_CombineImages_8xAntman()
+		public void ImageUtility_GenerateTwitterImage_8xAntman()
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 			var test = CreateTestObject();
@@ -43,13 +43,13 @@ namespace MoviePicker.WebApp.Tests.Models
 				files.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
 			}
 
-			var filePath = test.CombineImages(cwd, files);
+			var filePath = test.GenerateTwitterImage(cwd, files);
 
 			Assert.IsNotNull(filePath);
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void ImageUtility_CombineImages_8xAntmanAllBonus()
+		public void ImageUtility_GenerateTwitterImage_8xAntmanAllBonus()
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 			var test = CreateTestObject();
@@ -60,13 +60,13 @@ namespace MoviePicker.WebApp.Tests.Models
 				files.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
 			}
 
-			var filePath = test.CombineImages(cwd, files, $"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+			var filePath = test.GenerateTwitterImage(cwd, files, $"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
 
 			Assert.IsNotNull(filePath);
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void ImageUtility_CombineImages_8xAntmanWithRandom()
+		public void ImageUtility_GenerateTwitterImage_8xAntmanWithRandom()
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 			var test = CreateTestObject();
@@ -80,13 +80,13 @@ namespace MoviePicker.WebApp.Tests.Models
 			var filmCellFileNames = FileUtility.FilterImagesInPath($"{cwd}\\Images", "TestPoster_*.*");
 			var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, $"{cwd}\\Images\\");
 
-			var filePath = test.CombineImages(cwd, files, null, filmCellFiles);
+			var filePath = test.GenerateTwitterImage(cwd, files, null, filmCellFiles);
 
 			Assert.IsNotNull(filePath);
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void ImageUtility_CombineImages_8xAntmanWithRandomTemp()
+		public void ImageUtility_GenerateTwitterImage_8xAntmanWithRandomTemp()
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 			var test = CreateTestObject();
@@ -100,13 +100,13 @@ namespace MoviePicker.WebApp.Tests.Models
 			var filmCellFileNames = FileUtility.FilterImagesInPath($"{cwd}\\Images", "TestPoster_*.temp.*");
 			var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, $"{cwd}\\Images\\");
 
-			var filePath = test.CombineImages(cwd, files, null, filmCellFiles);
+			var filePath = test.GenerateTwitterImage(cwd, files, null, filmCellFiles);
 
 			Assert.IsNotNull(filePath);
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void ImageUtility_CombineImages_8xSearching()
+		public void ImageUtility_GenerateTwitterImage_8xSearching()
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 			var test = CreateTestObject();
@@ -117,13 +117,13 @@ namespace MoviePicker.WebApp.Tests.Models
 				files.Add($"{cwd}\\Images\\TestPoster_searchingposter2.jpg");
 			}
 
-			var filePath = test.CombineImages(cwd, files);
+			var filePath = test.GenerateTwitterImage(cwd, files);
 
 			Assert.IsNotNull(filePath);
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void ImageUtility_CombineImages_4xAntman4xSearching()
+		public void ImageUtility_GenerateTwitterImage_4xAntman4xSearching()
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 			var test = CreateTestObject();
@@ -137,13 +137,13 @@ namespace MoviePicker.WebApp.Tests.Models
 			{
 				files.Add($"{cwd}\\Images\\TestPoster_searchingposter2.jpg");
 			}
-			var filePath = test.CombineImages(cwd, files);
+			var filePath = test.GenerateTwitterImage(cwd, files);
 
 			Assert.IsNotNull(filePath);
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
-		public void ImageUtility_CombineImages_4xAntman4xSearchingAntmanBonus()
+		public void ImageUtility_GenerateTwitterImage_4xAntman4xSearchingAntmanBonus()
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 			var test = CreateTestObject();
@@ -157,7 +157,60 @@ namespace MoviePicker.WebApp.Tests.Models
 			{
 				files.Add($"{cwd}\\Images\\TestPoster_searchingposter2.jpg");
 			}
-			var filePath = test.CombineImages(cwd, files, $"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+			var filePath = test.GenerateTwitterImage(cwd, files, $"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+
+			Assert.IsNotNull(filePath);
+		}
+
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void ImageUtility_GenerateTwitterImageComparison_8xAntman8xSearching()
+		{
+			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
+			var test = CreateTestObject();
+			var filesTop = new List<string>();
+			var filesBottom = new List<string>();
+
+			for (int count = 0; count < 8; count++)
+			{
+				filesTop.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+				filesBottom.Add($"{cwd}\\Images\\TestPoster_searchingposter2.jpg");
+			}
+
+			var filePath = test.GenerateTwitterImageComparison(cwd, filesTop, filesBottom, $"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+
+			Assert.IsNotNull(filePath);
+		}
+
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void ImageUtility_CombineImagesHorizontal_8xAntman()
+		{
+			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
+			var test = CreateTestObject();
+			var files = new List<string>();
+
+			for (int count = 0; count < 8; count++)
+			{
+				files.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+			}
+
+			var filePath = test.CombineImagesHorizonal(cwd, files);
+
+			Assert.IsNotNull(filePath);
+		}
+
+		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void ImageUtility_CombineImagesHorizontal_8xAntmanAllBonus()
+		{
+			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
+			var test = CreateTestObject();
+			var files = new List<string>();
+
+			for (int count = 0; count < 8; count++)
+			{
+				files.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+			}
+
+			var filePath = test.CombineImagesHorizonal(cwd, files, $"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
 
 			Assert.IsNotNull(filePath);
 		}
