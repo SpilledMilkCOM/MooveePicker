@@ -270,7 +270,7 @@
 
 				<div class="col-xs-2" style="margin-top: 5px;">
 					<a class="btn btn-success"
-					   href="@string.Format("ExpertPicks?{0}", Request.QueryString)"
+					   onclick="navigateToExplicit('@string.Format("/Home/ExpertPicks?{0}", Request.QueryString)')"
 					   data-toggle="tooltip"
 					   data-placement="bottom"
 					   title="Click to see the available picks by the experts..."><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>

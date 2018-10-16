@@ -126,6 +126,21 @@ function navigateTo(relativeUrl) {
 	logit(window.location.href);
 }
 
+// Navigate to the relative URL.
+function navigateToExplicit(relativeUrl) {
+
+	logit("navigateTo");
+
+	var baseUrl = parseBaseUrl();
+
+	logit(baseUrl + relativeUrl);
+
+	window.location.href = baseUrl + relativeUrl;
+
+	logit(window.location.href);
+}
+
+
 function parseBaseUrl() {
 	var baseUrl = window.location.href;
 
