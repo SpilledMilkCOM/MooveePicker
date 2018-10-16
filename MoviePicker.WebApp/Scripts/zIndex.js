@@ -26,7 +26,10 @@ function clearMoviePicksPosters(movieListId) {
 			//console.log(image.attr('src'));
 
 			image.attr('src', '/Images/MooveePosterRecalculate.jpg');
-			image.attr('style', 'border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;');
+			//image.attr('style', 'border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;');
+
+			// Change only the box-shadow.  Leave everything else alone!
+			image.css({ 'box-shadow': '2px 4px 8px 0px grey' });
 		}
 	}
 }
@@ -215,7 +218,8 @@ function sliderOnChange(slider, controlIndex) {
 		logit(slider.value);
 		logit(percentToBackgroundColor(slider.value));
 
-		boxOfficePct.attr('style', 'background-color: ' + percentToBackgroundColor(slider.value) + '; border-radius: 3px; padding: 3px;');
+		//boxOfficePct.attr('style', 'background-color: ' + percentToBackgroundColor(slider.value) + '; border-radius: 3px; padding: 3px;');
+		boxOfficePct.css({ 'background-color': percentToBackgroundColor(slider.value) });
 		boxOfficePct.text(slider.value + '%');
 		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(slider.value)) / 100.0));
 

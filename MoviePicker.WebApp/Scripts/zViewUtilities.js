@@ -1,4 +1,12 @@
-﻿var consoleOn = false;
+﻿var consoleOn = true;
+
+function changeStyle(id, style, value) {
+	var ctrl = $('#' + id);
+
+	if (ctrl != null) {
+		ctrl.css({ style: value });
+	}
+}
 
 function changeText(id, value) {
 	var ctrl = $('#' + id);

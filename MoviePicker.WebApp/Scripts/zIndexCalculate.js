@@ -67,22 +67,24 @@ function boxOffice(movies, bestPerformer) {
 				boxOfficePct.val(percent + '%');
 			}
 
-			boxOfficePct.attr('style', 'background-color: ' + percentToBackgroundColor(percent) + '; border-radius: 3px; padding: 3px;');
+			//boxOfficePct.attr('style', 'background-color: ' + percentToBackgroundColor(percent) + '; border-radius: 3px; padding: 3px;');
+			boxOfficePct.css({ 'background-color': percentToBackgroundColor(percent) });
 
 			if (boxOfficeSlider != null) {
 				boxOfficeSlider.val(percent);
 			}
 
 			if (boxOfficeImage != null) {
-				var imageBackgroundStyle = "box-shadow: 2px 4px 8px 0px grey;";
+				var shadowColor = "grey";
 
 				if (bestPerformer != null && controlIndex == bestPerformer.ControlId) {
-					imageBackgroundStyle = "box-shadow: 2px 4px 8px 0px green;";
+					shadowColor = "green";
 				}
 
 				console.log(imageBackgroundStyle);
 
-				boxOfficeImage.attr('style', imageBackgroundStyle);
+				//boxOfficeImage.attr('style', imageBackgroundStyle);
+				boxOfficeImage.css({ 'box-shadow': '2px 4px 8px 0px ' + shadowColor});
 			}
 		}
 	}
@@ -153,21 +155,22 @@ function movieListMini(movieList, idPrefix, shareQueryString) {
 		var movie = movieList.Movies[movieCount];
 		var image = $('#' + idPrefix + 'MoviePosterId0' + movieCount);
 		var tooltip = $('#' + idPrefix + 'TooltipId0' + movieCount);
-		var backgroundStyle = "border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;";
+		var shadowColor = 'grey';
 
 		logit(tooltip);
 		logit(movie.Name + ' - $' + formatWithCommas(movie.Earnings));
 
 		if (movie.IsBestPerformer) {
-			backgroundStyle = "border-radius: 3px; box-shadow: 2px 4px 8px 0px green;";
+			shadowColor = 'green';
 		}
 
 		tooltip.attr('data-original-title', movie.Name + ' - $' + formatWithCommas(movie.Earnings));
 		image.attr('src', movieList.MovieImages[movieCount]);
-		image.attr('style', backgroundStyle);
+		//image.attr('style', backgroundStyle);
+		image.css({ 'box-shadow': '2px 4px 8px 0px ' + shadowColor });
 	}
 
-	// Fill in the rest of the slts with blank
+	// Fill in the rest of the slots with blank
 
 	for (var counter = 0; movieCount < 8; movieCount++) {
 		var image = $('#' + idPrefix + 'MoviePosterId0' + movieCount);
@@ -175,6 +178,7 @@ function movieListMini(movieList, idPrefix, shareQueryString) {
 
 		tooltip.attr('data-original-title', 'This screen intentionally left blank - $-2,000,000');
 		image.attr('src','/images/MooveePosterBlank.jpg');
-		image.attr('style', 'border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;');
+		//image.attr('style', 'border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;');
+		image.css({ 'box-shadow': '2px 4px 8px 0px grey' });
 	}
 }
