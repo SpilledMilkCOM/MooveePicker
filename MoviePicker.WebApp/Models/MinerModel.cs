@@ -231,7 +231,8 @@ namespace MoviePicker.WebApp.Models
 				}
 				else
 				{
-					movie.ImageUrl = "/Images/MooveePosterNotFound.jpg";
+					movie.ImageUrl = movie.ImageUrlSource;
+					//movie.ImageUrl = "/Images/MooveePosterNotFound.jpg";
 				}
 			}
 
