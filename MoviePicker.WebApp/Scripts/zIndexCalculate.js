@@ -81,7 +81,7 @@ function boxOffice(movies, bestPerformer) {
 					shadowColor = "green";
 				}
 
-				console.log(imageBackgroundStyle);
+				console.log(shadowColor);
 
 				//boxOfficeImage.attr('style', imageBackgroundStyle);
 				boxOfficeImage.css({ 'box-shadow': '2px 4px 8px 0px ' + shadowColor});
