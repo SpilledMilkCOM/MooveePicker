@@ -77,7 +77,7 @@ function clickPicks() {
 
 	logit("clickPicks");
 
-	navigateTo('/Home/Index2');
+	navigateTo('/Home/Index');
 }
 
 function clickPicksAsync() {
