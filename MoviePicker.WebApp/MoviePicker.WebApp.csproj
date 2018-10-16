@@ -239,10 +239,6 @@
     <Content Include="Images\MooveePosterBlank.jpg" />
     <Content Include="Images\MooveePosterNotFound.jpg" />
     <Content Include="Images\MooveePosterRecalculate.jpg" />
-    <Content Include="Images\MoviePoster_p13737530_p_v8_aa.jpg" />
-    <Content Include="Images\MoviePoster_p15398283_p_v8_aa.jpg" />
-    <Content Include="Images\MoviePoster_p15423225_p_v13_ab.jpg" />
-    <Content Include="Images\MoviePoster_p15731681_p_v8_aa.jpg" />
     <Content Include="Images\Saturday-mask.png" />
     <Content Include="Images\Spilled Milk Logo 400x420.png" />
     <Content Include="Images\Sunday-mask.png" />
