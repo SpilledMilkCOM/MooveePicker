@@ -44,9 +44,6 @@ namespace MoviePicker.WebApp.Utilities
 			// classes throw exceptions upon error
 			try
 			{
-				ServicePointManager.Expect100Continue = true;
-				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
 				// Create a request for the specified remote file name
 				var request = WebRequest.Create(remoteFilename) as HttpWebRequest;
 
