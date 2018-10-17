@@ -16,7 +16,9 @@ namespace MovieMiner
 
 		string BoxOfficeListCSV { get; }
 
-		IMovie CompoundMovie { get;  }
+		bool CompoundLoaded { get; }
+
+		IMovie CompoundMovie { get; }
 
 		decimal CompoundTotal { get; }
 

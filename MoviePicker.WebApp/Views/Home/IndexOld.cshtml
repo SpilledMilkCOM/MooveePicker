@@ -500,14 +500,12 @@
 													<img height="100" src="@compoundMovieImageUrl" />
 												</td>
 												<td>@compoundMovie.MovieName TOTAL</td>
-												<td> </td>
 
 												@foreach (var miner in Model.Miners.Skip(2))
 												{
 													var compoundTotal = miner.CompoundTotal;
 
 													<td>@string.Format("{0}", compoundTotal > 0 ? compoundTotal.ToString("N0") : string.Empty)</td>
-													<td></td>
 												}
 											</tr>
 										}

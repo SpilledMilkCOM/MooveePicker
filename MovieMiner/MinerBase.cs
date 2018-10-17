@@ -73,6 +73,8 @@ namespace MovieMiner
 
 		public bool CloneCausedReload { get; private set; }
 
+		public bool CompoundLoaded { get; protected set; }
+
 		public IMovie CompoundMovie { get { return Movies.FirstOrDefault(movie => movie.Day.HasValue); } }
 
 		public decimal CompoundTotal { get { return Movies.Where(movie => movie.Day.HasValue).Sum(matchedMovie => matchedMovie.EarningsBase); } }

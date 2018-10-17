@@ -163,6 +163,11 @@ namespace MovieMiner
 												Day = ParseDayOfWeek(name),
 												Earnings = decimal.Parse(estimatedBoxOffice) * multiplier
 											};
+
+											if (movie.Day.HasValue)
+											{
+												CompoundLoaded = true;
+											}
 										}
 										catch(Exception exception)
 										{

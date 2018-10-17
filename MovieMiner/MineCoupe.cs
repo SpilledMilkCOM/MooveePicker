@@ -25,14 +25,12 @@ namespace MovieMiner
 
 			_articleTitle = articleTitle ?? "Weekend Box Office Predictions";
 
-			// Not sure if Coupe will support day-of-week predictions
-
 			_daysOfWeek = new Dictionary<string, DayOfWeek>
 			{
-				{" Friday", DayOfWeek.Friday},
-				{" Saturday", DayOfWeek.Saturday},
-				{" Sunday", DayOfWeek.Sunday},
-				{" Monday", DayOfWeek.Monday}
+				{" FRI", DayOfWeek.Friday},
+				{" SAT", DayOfWeek.Saturday},
+				{" SUN", DayOfWeek.Sunday},
+				{" MON", DayOfWeek.Monday}
 			};
 		}
 
@@ -114,7 +112,7 @@ namespace MovieMiner
 
 					if (node != null)
 					{
-						var movieNodes = node.SelectNodes($"//p[contains(., '{DELIMITER}')]|//p[contains(., '{DELIMITER2}')]");     // Find all of the estimate paragraphs
+						var movieNodes = node.SelectNodes($"//p[contains(., '{DELIMITER}')]|//p[contains(., '{DELIMITER2}')]|//li[contains(., '{DELIMITER}')]");     // Find all of the estimate paragraphs
 
 						// As of 11/2/2017 Todd is separating things with <br /> now.
 
@@ -187,9 +185,14 @@ namespace MovieMiner
 											movie = new Movie
 											{
 												MovieName = MapName(ParseName(name)),
-												//Day = ParseDayOfWeek(name),
+												Day = ParseDayOfWeek(name),
 												Earnings = ParseEarnings(estimatedBoxOffice)
 											};
+
+											if (movie.Day.HasValue)
+											{
+												CompoundLoaded = true;
+											}
 										}
 										catch (Exception exception)
 										{
@@ -198,14 +201,35 @@ namespace MovieMiner
 											movie = null;
 										}
 
-										if (movie != null && !result.Contains(movie))
+										if (movie != null)
 										{
-											if (articleDate.HasValue)
+											if (!result.Contains(movie))
 											{
-												movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
-											}
+												if (articleDate.HasValue)
+												{
+													movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+												}
 
-											result.Add(movie);
+												result.Add(movie);
+											}
+											else if (movie.Day.HasValue)
+											{
+												if (articleDate.HasValue)
+												{
+													movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+												}
+
+												result.Add(movie);
+
+												// Remove the movie that does NOT have a day.
+
+												var toRemove = result.FirstOrDefault(item => item.Equals(movie) && !item.Day.HasValue);
+
+												if (toRemove != null)
+												{
+													result.Remove(toRemove);
+												}
+											}
 										}
 									}
 								}

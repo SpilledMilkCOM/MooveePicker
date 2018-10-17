@@ -22,6 +22,7 @@ namespace MoviePicker.WebApp.Models
 		public const int FML_INDEX = 0;
 		private const int MY_INDEX = FML_INDEX + 1;
 		private const int TODD_INDEX = FML_INDEX + 2;
+		private const int COUPE_INDEX = FML_INDEX + 5;
 
 		private readonly IMoviePicker _moviePickerPrototype = null;
 		private bool _postersDownloaded;
@@ -70,7 +71,8 @@ namespace MoviePicker.WebApp.Models
 				idx++;
 			}
 
-			// If any of the miners reloaded, then the composite movies (in any) need to be refigured.
+			// If any of the miners are reloaded, then the composite movies (in any) need to be reassigned based on Todd's spread.
+			// The miner's that have loaded their own composite movies will not be overwritten.
 
 			if (clone.Miners.Any(miner => miner.CloneCausedReload))
 			{
@@ -84,7 +86,7 @@ namespace MoviePicker.WebApp.Models
 
 					foreach (var miner in clone.Miners.Skip(TODD_INDEX + 1))
 					{
-						if (miner.CloneCausedReload && miner.Movies.Any())
+						if (miner.CloneCausedReload && !miner.CompoundLoaded && miner.Movies.Any())
 						{
 							if (!miner.Movies.Any(movie => movie.Day.HasValue))
 							{
