@@ -134,16 +134,17 @@ namespace MovieMiner
 						{
 							foreach (var movieNode in movieNodes)
 							{
-								int index = HttpUtility.HtmlDecode(movieNode.InnerHtml).IndexOf(DELIMITER);
+								var nodeText = HttpUtility.HtmlDecode(movieNode.InnerHtml);
+
+								int index = nodeText.IndexOf(DELIMITER);
 
 								if (index < 0)
 								{
-									index = HttpUtility.HtmlDecode(movieNode.InnerHtml).IndexOf(DELIMITER2);
+									index = nodeText.IndexOf(DELIMITER2);
 								}
 
 								if (index > 0)
 								{
-									var nodeText = movieNode.InnerHtml;
 									var movieName = nodeText.Substring(0, index).Replace("<br>", string.Empty);
 
 									// Might switch this to RegEx...
