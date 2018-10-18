@@ -509,8 +509,7 @@ namespace MoviePicker.WebApp.Controllers
 			if (result.Movies.Count() > 0)
 			{
 				var clonedList = CloneList(result.Movies);
-				//var shareQueryString = $"{QueryStringFromModel()}&id={Guid.NewGuid()}";     // Need to add the unique ID for Twitter to regenerate the page/image.
-				var shareQueryString = $"{QueryStringFromModel()}";     // Need to add the unique ID for Twitter to regenerate the page/image.
+				var shareQueryString = $"{QueryStringFromModel()}&id={Guid.NewGuid()}";     // Need to add the unique ID for Twitter to regenerate the page/image.
 
 				_moviePicker.AddMovies(clonedList);
 
