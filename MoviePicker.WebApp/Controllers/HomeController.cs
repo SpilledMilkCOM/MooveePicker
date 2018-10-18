@@ -100,7 +100,7 @@ namespace MoviePicker.WebApp.Controllers
 				if (miner.Picks != null && miner.Movies.Count > 0 && !miner.IsHidden && miner != lastMiner)
 				{
 					var expert = new ExpertPickModel { Miner = miner };
-					var shareQueryString = WeightListFromCounter(minerCount);
+					var shareQueryString = $"{WeightListFromCounter(minerCount)}&id={Guid.NewGuid()}";      // Need to add the unique ID for Twitter to regenerate the page/image.
 
 					// Make sure the images are synchronized.
 
