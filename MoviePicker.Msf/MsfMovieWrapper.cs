@@ -131,6 +131,8 @@ namespace MoviePicker.Msf
 			set { _movie.WeekendEnding = value; }
 		}
 
+		public decimal TheaterEfficiency => _movie.TheaterEfficiency;
+
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();

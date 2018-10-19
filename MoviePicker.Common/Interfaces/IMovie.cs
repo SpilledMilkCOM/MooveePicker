@@ -2,14 +2,14 @@ using System;
 
 namespace MoviePicker.Common.Interfaces
 {
-    public interface IMovie
-    {
+	public interface IMovie
+	{
 		string Abbreviation { get; }
 
-        /// <summary>
-        /// Allow simulations to adjust this movie's earnings.
-        /// </summary>
-        bool AdjustEarnings { get; set; }
+		/// <summary>
+		/// Allow simulations to adjust this movie's earnings.
+		/// </summary>
+		bool AdjustEarnings { get; set; }
 
 		/// <summary>
 		/// Used to map the movie to a control in an array of movies.
@@ -32,14 +32,9 @@ namespace MoviePicker.Common.Interfaces
 		decimal Efficiency { get; }
 
 		/// <summary>
-		/// The Date based weekend ending (Sunday)
-		/// </summary>
-        DateTime WeekendEnding { get; set; }
-
-		/// <summary>
 		/// The Box Office earnings
 		/// </summary>
-        decimal Earnings { get; set; }
+		decimal Earnings { get; set; }
 
 		/// <summary>
 		/// The Box Office earnings without any bonuses
@@ -82,16 +77,23 @@ namespace MoviePicker.Common.Interfaces
 
 		int TheaterCount { get; set; }
 
+		decimal TheaterEfficiency { get; }
+
+		/// <summary>
+		/// The Date based weekend ending (Sunday)
+		/// </summary>
+		DateTime WeekendEnding { get; set; }
+
 		/// <summary>
 		/// Create a copy of this movie
 		/// </summary>
 		/// <returns></returns>
-        IMovie Clone();
+		IMovie Clone();
 
 		/// <summary>
 		/// A unique identifier typically based on the data contained within the object.
 		/// </summary>
 		/// <returns></returns>
-        int GetHashCode();
-    }
+		int GetHashCode();
+	}
 }

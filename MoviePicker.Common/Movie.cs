@@ -173,6 +173,8 @@ namespace MoviePicker.Common
 
 		public int TheaterCount { get; set; }
 
+		public decimal TheaterEfficiency => TheaterCount > 0 ? EarningsBase / TheaterCount : 0;
+
 		public DateTime WeekendEnding { get; set; }
 
 		public IMovie Clone()
@@ -217,7 +219,7 @@ namespace MoviePicker.Common
 				{
 					// Fail if there is a lot of noise.
 
-					if(movieName.Length > testMovieName.Length * 2 || testMovieName.Length > movieName.Length * 2)
+					if (movieName.Length > testMovieName.Length * 2 || testMovieName.Length > movieName.Length * 2)
 					{
 						result = false;
 					}
@@ -295,7 +297,7 @@ namespace MoviePicker.Common
 		private void UpdateHashtag()
 		{
 			TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-			
+
 			// The movie name should already have the punctuation removed.
 			// Add "Movie" to the end?
 

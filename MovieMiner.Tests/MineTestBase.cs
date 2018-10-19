@@ -82,7 +82,7 @@ namespace MovieMiner.Tests
 			foreach (var movie in orderedList)
 			{
 				var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
-				var theaterCount = movie.TheaterCount > 0 ? $" IN {movie.TheaterCount,6:N0}" : string.Empty;
+				var theaterCount = movie.TheaterCount > 0 ? $" IN {movie.TheaterCount,6:N0} -- ${movie.TheaterEfficiency,6:N2} per Theater" : string.Empty;
 
 				if (movie.Cost > 0)
 				{
