@@ -20,6 +20,9 @@ namespace MoviePicker.Common
 		public Movie()
 		{
 			AdjustEarnings = true;
+
+			ScreenCount = -1;       // Not set.
+			TheaterCount = -1;
 		}
 
 		/// <summary>
@@ -166,6 +169,10 @@ namespace MoviePicker.Common
 			}
 		}
 
+		public int ScreenCount { get; set; }
+
+		public int TheaterCount { get; set; }
+
 		public DateTime WeekendEnding { get; set; }
 
 		public IMovie Clone()
@@ -282,6 +289,8 @@ namespace MoviePicker.Common
 		{
 			return Id.GetHashCode();
 		}
+
+		//----==== PRIVATE ====--------------------------------------------------------------------
 
 		private void UpdateHashtag()
 		{

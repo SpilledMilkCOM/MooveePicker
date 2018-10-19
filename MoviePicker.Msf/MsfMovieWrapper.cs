@@ -113,6 +113,18 @@ namespace MoviePicker.Msf
 			set { _movie.Name = value; }
 		}
 
+		public int ScreenCount
+		{
+			get { return _movie.ScreenCount; }
+			set { _movie.ScreenCount = value; }
+		}
+
+		public int TheaterCount
+		{
+			get { return _movie.TheaterCount; }
+			set { _movie.TheaterCount = value; }
+		}
+
 		public DateTime WeekendEnding
 		{
 			get { return _movie.WeekendEnding; }

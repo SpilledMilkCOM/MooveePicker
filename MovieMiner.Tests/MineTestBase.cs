@@ -82,14 +82,15 @@ namespace MovieMiner.Tests
 			foreach (var movie in orderedList)
 			{
 				var isBestBonus = movie.IsBestPerformer ? " *$2,000,000*" : string.Empty;
+				var theaterCount = movie.TheaterCount > 0 ? $" IN {movie.TheaterCount,6:N0}" : string.Empty;
 
 				if (movie.Cost > 0)
 				{
-					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} {movie.Cost,3} Bx   ${movie.Earnings,13:N2} - [${movie.Efficiency,10:N2}]{isBestBonus}");
+					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} {movie.Cost,3} Bx   ${movie.Earnings,13:N2} - [${movie.Efficiency,10:N2}]{isBestBonus}{theaterCount}");
 				}
 				else
 				{
-					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} ${movie.Earnings:N2}");
+					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} ${movie.Earnings:N2}{theaterCount}");
 				}
 			}
 		}

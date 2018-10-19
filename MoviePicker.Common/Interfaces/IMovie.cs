@@ -78,6 +78,10 @@ namespace MoviePicker.Common.Interfaces
 		/// </summary>
 		string Name { get; set; }
 
+		int ScreenCount { get; set; }
+
+		int TheaterCount { get; set; }
+
 		/// <summary>
 		/// Create a copy of this movie
 		/// </summary>

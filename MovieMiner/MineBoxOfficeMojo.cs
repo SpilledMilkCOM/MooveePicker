@@ -131,6 +131,15 @@ namespace MovieMiner
 							else if (columnCount == 4)
 							{
 								movie.Earnings = decimal.Parse(column.InnerText?.Replace("$", string.Empty).Replace("-", "0"));
+							}
+							else if (columnCount == 6)
+							{
+								decimal theaterCount = 0;
+
+								if (decimal.TryParse(column.InnerText?.Replace("-", "0"), out theaterCount))
+								{
+									movie.TheaterCount = (int)theaterCount;
+								}
 								break;
 							}
 
