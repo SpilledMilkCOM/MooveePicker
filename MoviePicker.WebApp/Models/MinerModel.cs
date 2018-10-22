@@ -23,6 +23,8 @@ namespace MoviePicker.WebApp.Models
 		private const int MY_INDEX = FML_INDEX + 1;
 		private const int TODD_INDEX = FML_INDEX + 2;
 		private const int COUPE_INDEX = FML_INDEX + 5;
+		private const int MOJO_LAST_INDEX = FML_INDEX + 7;
+		private const int MOJO_THEATER_INDEX = FML_INDEX + 8;
 
 		private readonly IMoviePicker _moviePickerPrototype = null;
 		private bool _postersDownloaded;
@@ -70,6 +72,8 @@ namespace MoviePicker.WebApp.Models
 
 				idx++;
 			}
+
+			AssignTheaterCounts(clone);
 
 			// If any of the miners are reloaded, then the composite movies (in any) need to be reassigned based on Todd's spread.
 			// The miner's that have loaded their own composite movies will not be overwritten.
@@ -119,18 +123,23 @@ namespace MoviePicker.WebApp.Models
 
 					if (masterMiner != null)
 					{
-						// The MinerBase.Clone() method for explanation of cloning this list.
+						// There is still nothing to prevent this from happening twice (or multiple times).
 
-						masterMiner.SetMovies(new List<IMovie>(miner.Movies));
-
-						// Only need to make the picks ONCE after it's loaded.
-						// (no need to make the picks in the controller for every request).
-
-						if (masterMiner != Miners[MY_INDEX])
+						lock (masterMiner)
 						{
-							// Do not make picks for "my picks" because the BO values have not been set yet (from request string)
+							// The MinerBase.Clone() method for explanation of cloning this list.
 
-							MakePicks(masterMiner);
+							masterMiner.SetMovies(new List<IMovie>(miner.Movies));
+
+							// Only need to make the picks ONCE after it's loaded.
+							// (no need to make the picks in the controller for every request).
+
+							if (masterMiner != Miners[MY_INDEX])
+							{
+								// Do not make picks for "my picks" because the BO values have not been set yet (from request string)
+
+								MakePicks(masterMiner);
+							}
 						}
 					}
 				}
@@ -212,7 +221,7 @@ namespace MoviePicker.WebApp.Models
 					{
 						//imageUtil.AdjustSize(localFileName, 300, 450);		// Closer to original size
 						//imageUtil.AdjustAspectRatio(localFileName, 2 / 3m);
-						imageUtil.AdjustSize(localFileName, 200, 300);			// Shrink image a bit.
+						imageUtil.AdjustSize(localFileName, 200, 300);          // Shrink image a bit.
 					}
 
 					if (movie.Day.HasValue)
@@ -263,18 +272,52 @@ namespace MoviePicker.WebApp.Models
 		/// <summary>
 		/// Assign base movie attributes to the movie passed in.
 		/// </summary>
-		/// <param name="movie">The movie to find so the</param>
+		/// <param name="sourceMovie">The movie to find so the</param>
 		/// <param name="movies">A list of base movies to search</param>
-		private void AssignCostIdName(IMovie movie, IEnumerable<IMovie> movies)
+		private void AssignCostIdName(IMovie sourceMovie, IEnumerable<IMovie> movies)
 		{
-			var found = movies?.FirstOrDefault(item => item.Equals(movie));
+			var found = movies?.FirstOrDefault(item => item.Equals(sourceMovie));
 
 			if (found != null)
 			{
-				found.Id = movie.Id;
-				found.MovieName = movie.MovieName;        // So the names aren't fuzzy anymore.
-				found.Cost = movie.Cost;
-				found.ControlId = movie.ControlId;
+				found.Id = sourceMovie.Id;
+				found.MovieName = sourceMovie.MovieName;        // So the names aren't fuzzy anymore.
+				found.Cost = sourceMovie.Cost;
+				found.ControlId = sourceMovie.ControlId;
+				found.TheaterCount = sourceMovie.TheaterCount;
+			}
+		}
+
+		private void AssignTheaterCounts(MinerModel clone)
+		{
+			var theaterCountMiner = clone.Miners[MOJO_THEATER_INDEX];
+			var fmlMiner = clone.Miners[FML_INDEX];
+
+			if (theaterCountMiner.CloneCausedReload || fmlMiner.CloneCausedReload)
+			{
+				foreach (var movie in fmlMiner.Movies)
+				{
+					var found = theaterCountMiner?.Movies?.FirstOrDefault(item => item.Equals(movie));
+
+					if (found != null)
+					{
+						movie.TheaterCount = found.TheaterCount;
+					}
+				}
+
+				var masterMiner = Miners[FML_INDEX];
+
+				if (masterMiner != null)
+				{
+					// There is still nothing to prevent this from happening twice (or multiple times).
+
+					lock (masterMiner)
+					{
+						// The MinerBase.Clone() method for explanation of cloning this list.
+
+						masterMiner.SetMovies(new List<IMovie>(fmlMiner.Movies));
+					}
+				}
 			}
 		}
 
@@ -298,7 +341,8 @@ namespace MoviePicker.WebApp.Models
 				new MineCoupe(),
 				//new MineCulturedVultures(),
 				new MineBoxOfficeProphet(),
-				new MineBoxOfficeReport()
+				new MineBoxOfficeReport(),
+				new MineBoxOfficeMojoTheaterCount()
 			};
 
 			// Grab last weeks results for comparisons.  Always put this list last.
