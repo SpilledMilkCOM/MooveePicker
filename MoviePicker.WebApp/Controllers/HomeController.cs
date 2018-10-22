@@ -717,6 +717,7 @@ namespace MoviePicker.WebApp.Controllers
 				var movieImages = picks?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
 				var localFiles = FileUtility.LocalFiles(movieImages, $"{localFilePrefix}MoviePoster_");
 				string bonusFile = null;
+				string perfectPickBonusFile = null;
 
 				if (bonusOn)
 				{
@@ -745,12 +746,20 @@ namespace MoviePicker.WebApp.Controllers
 
 				if (isTracking && picksViewModel.IsTracking)
 				{
-					var perfectPickImages = picksViewModel?.MovieListPerfectPick?.Picks[0]?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
+					var perfectPick = picksViewModel?.MovieListPerfectPick?.Picks[0];
+					var perfectPickImages = perfectPick?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
 
 					perfectPickFiles = FileUtility.LocalFiles(perfectPickImages, $"{localFilePrefix}MoviePoster_");
+
+					var bonusMovie = perfectPick.Movies.FirstOrDefault(movie => movie.IsBestPerformer);
+
+					if (bonusMovie != null && bonusMovie.ImageUrl != null)
+					{
+						perfectPickBonusFile = FileUtility.LocalFile(bonusMovie.ImageUrl.Replace("MoviePoster_", string.Empty), $"{localFilePrefix}MoviePoster_");
+					}
 				}
 
-				result = picksViewModel.GenerateSharedImage(webRootPath, localFiles, perfectPickFiles, bonusFile, filmCellFiles);
+				result = picksViewModel.GenerateSharedImage(webRootPath, localFiles, perfectPickFiles, bonusFile, perfectPickBonusFile, filmCellFiles);
 
 				if (result != null)
 				{

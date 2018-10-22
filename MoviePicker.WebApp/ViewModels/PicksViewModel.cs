@@ -69,7 +69,7 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public decimal Weight7 { get; set; }
 
-		public string GenerateSharedImage(string webRootPath, List<string> files, List<string> perfectPickFiles, string bonusFile, List<string> cellFilmFiles)
+		public string GenerateSharedImage(string webRootPath, List<string> files, List<string> perfectPickFiles, string bonusFile, string perfectPickBonusFile, List<string> cellFilmFiles)
 		{
 			var imageUtil = new ImageUtility();
 
@@ -79,7 +79,7 @@ namespace MoviePicker.WebApp.ViewModels
 			}
 			else
 			{
-				return imageUtil.GenerateTwitterImageComparison(webRootPath, perfectPickFiles, files, bonusFile, cellFilmFiles);
+				return imageUtil.GenerateTwitterImageComparison(webRootPath, perfectPickFiles, files, bonusFile, perfectPickBonusFile, cellFilmFiles);
 			}
 		}
 

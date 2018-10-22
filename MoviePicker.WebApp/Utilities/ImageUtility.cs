@@ -326,7 +326,7 @@ namespace MoviePicker.WebApp.Utilities
 		/// <param name="webRootPath"></param>
 		/// <param name="fileNames"></param>
 		/// <returns>The result file name.</returns>
-		public string GenerateTwitterImageComparison(string webRootPath, List<string> fileNamesTop, List<string> fileNamesBottom, string bonusFileName = null, List<string> filmCellNames = null)
+		public string GenerateTwitterImageComparison(string webRootPath, List<string> fileNamesTop, List<string> fileNamesBottom, string bonusFileName = null, string perfectPickBonusFileName = null, List<string> filmCellNames = null)
 		{
 			const int CELL_WIDTH_PIXELS = 51;
 			const int FIRST_CELL_WIDTH_PIXELS = 34;
@@ -351,7 +351,7 @@ namespace MoviePicker.WebApp.Utilities
 				return null;
 			}
 
-			resultFileNameTop = CombineImagesHorizonal(webRootPath, fileNamesTop, bonusFileName);
+			resultFileNameTop = CombineImagesHorizonal(webRootPath, fileNamesTop, perfectPickBonusFileName);
 			resultFileNameBottom = CombineImagesHorizonal(webRootPath, fileNamesBottom, bonusFileName);
 
 			using (var image = Image.FromFile(resultFileNameTop))
