@@ -54,6 +54,7 @@ namespace MovieMiner.Tests
 			var tab = "\t";
 
 			Logger.WriteLine($"{tab}{tab}{tab}var weekend = new DateTime({weekendEnding.Year}, {weekendEnding.Month}, {weekendEnding.Day});");
+			Logger.WriteLine($"{tab}{tab}{tab}UrlSource = \"{test.UrlSource}\";");
 			Logger.WriteLine($"{tab}{tab}{tab}return new List<IMovie>");
 			Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{{");
 

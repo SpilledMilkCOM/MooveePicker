@@ -14,6 +14,7 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "https://pro.boxoffice.com/";
 
 		private bool _mineData = false;
+		//private bool _mineData = true;
 
 		public MineBoxOfficePro()
 			: base("Box Office Pro", "BO Pro", DEFAULT_URL)
@@ -38,15 +39,15 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2018, 10, 21);
+				var weekend = new DateTime(2018, 10, 28);
+				UrlSource = "https://pro.boxoffice.com/weekend-forecast-hunter-killer-indivisible-johnny-english-strikes/";
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Halloween 2018", Earnings = 80000000, WeekendEnding = weekend },
-								new Movie { MovieName = "A Star Is Born", Earnings = 19300000, WeekendEnding = weekend },
-								new Movie { MovieName = "Venom", Earnings = 18900000, WeekendEnding = weekend },
-								new Movie { MovieName = "First Man", Earnings = 10300000, WeekendEnding = weekend },
-								new Movie { MovieName = "Goosebumps 2 Haunted Halloween", Earnings = 10000000, WeekendEnding = weekend },
-								new Movie { MovieName = "The Hate U Give", Earnings = 6900000, WeekendEnding = weekend },
+								new Movie { MovieName = "Halloween 2018", Earnings = 33000000, WeekendEnding = weekend },
+								new Movie { MovieName = "A Star Is Born", Earnings = 13800000, WeekendEnding = weekend },
+								new Movie { MovieName = "Venom", Earnings = 11400000, WeekendEnding = weekend },
+								new Movie { MovieName = "Hunter Killer", Earnings = 8800000, WeekendEnding = weekend },
+								new Movie { MovieName = "Goosebumps 2 Haunted Halloween", Earnings = 7000000, WeekendEnding = weekend },
 						};
 			}
 		}
