@@ -7,7 +7,9 @@ namespace MoviePicker.WebApp.Utilities
 {
 	public static class FileUtility
 	{
-		private const int MOVIE_EXPIRATION_DAYS = 7;
+		// Keep the movie posters around for a while, so they will fill out the film strip better.
+		private const int MOVIE_EXPIRATION_DAYS = 90;
+
 		//private const int SHARED_EXPIRATION_MINUTES = 5;
 		private const int SHARED_EXPIRATION_MINUTES = 24 * 60;      // One day - may want to back this off later.
 		private const string MOVIE_POSTER_PREFIX = "MoviePoster_";
