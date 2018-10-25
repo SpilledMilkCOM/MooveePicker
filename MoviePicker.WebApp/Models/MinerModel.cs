@@ -20,11 +20,13 @@ namespace MoviePicker.WebApp.Models
 	{
 		//private const int NERD_INDEX = 1;
 		public const int FML_INDEX = 0;
-		private const int MY_INDEX = FML_INDEX + 1;
-		private const int TODD_INDEX = FML_INDEX + 2;
-		private const int COUPE_INDEX = FML_INDEX + 5;
-		private const int MOJO_LAST_INDEX = FML_INDEX + 7;
-		private const int MOJO_THEATER_INDEX = FML_INDEX + 8;
+		public const int MY_INDEX = FML_INDEX + 1;
+		public const int TODD_INDEX = FML_INDEX + 2;
+		public const int BOPRO_INDEX = FML_INDEX + 3;
+		public const int MOJO_INDEX = FML_INDEX + 4;
+		public const int COUPE_INDEX = FML_INDEX + 5;
+		public const int MOJO_LAST_INDEX = FML_INDEX + 7;
+		public const int MOJO_THEATER_INDEX = FML_INDEX + 8;
 
 		private readonly IMoviePicker _moviePickerPrototype = null;
 		private bool _postersDownloaded;
@@ -165,6 +167,8 @@ namespace MoviePicker.WebApp.Models
 			MineMiners(miners);
 
 			FilterMinerMovies(miners);
+
+			AssignTheaterCounts(this);
 
 			MakePicks(miners);
 
@@ -368,11 +372,12 @@ namespace MoviePicker.WebApp.Models
 			var result = new Movie
 			{
 				ControlId = baseMovie.ControlId,
+				Cost = baseMovie.Cost,
+				Day = baseMovie.Day,
 				Id = baseMovie.Id,
 				ImageUrl = baseMovie.ImageUrl,
 				MovieName = baseMovie.MovieName,
-				Day = baseMovie.Day,
-				Cost = baseMovie.Cost,
+				TheaterCount = baseMovie.TheaterCount,
 				WeekendEnding = baseMovie.WeekendEnding
 			};
 

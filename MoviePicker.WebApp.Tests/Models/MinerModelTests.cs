@@ -36,7 +36,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		}
 
 		[TestMethod, TestCategory("Integration")]
-		public void MinerModel_ConstructWithDAta()
+		public void MinerModel_ConstructWithData()
 		{
 			var test = new MinerModel(true);
 
@@ -169,7 +169,7 @@ namespace MoviePicker.WebApp.Tests.Models
 			var test = new MinerModel(true);
 
 			Assert.IsNotNull(test.Miners);
-			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
+			Assert.IsTrue(test.Miners[MinerModel.MOJO_INDEX].Movies.Count > 0);
 
 			Logger.WriteLine("=========================== MOJO'S NUMBERS ===========================");
 
@@ -247,6 +247,25 @@ namespace MoviePicker.WebApp.Tests.Models
 			foreach (var movie in myPicks)
 			{
 				Logger.WriteLine($"movies.Add(ConstructMovie(id++, \"{movie.Name}\", {movie.EarningsBase / 1000000m}m, {movie.Cost}));");
+			}
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void MinerModel_TheaterEfficiency()
+		{
+			var test = new MinerModel(true);
+
+			Assert.IsNotNull(test.Miners);
+
+			var movies = test.CreateWeightedList();
+
+			Assert.IsTrue(movies.Count > 0);
+
+			Logger.WriteLine("=========================== MOJO'S NUMBERS ===========================");
+
+			foreach (var movie in movies)
+			{
+				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
 			}
 		}
 
