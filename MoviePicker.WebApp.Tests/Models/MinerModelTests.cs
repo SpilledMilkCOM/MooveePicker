@@ -265,7 +265,7 @@ namespace MoviePicker.WebApp.Tests.Models
 
 			Logger.WriteLine("=========================== MOJO'S NUMBERS ===========================");
 
-			foreach (var movie in myPicks)
+			foreach (var movie in myPicks.OrderByDescending(item => item.EarningsBase / item.TheaterCount))
 			{
 				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase:N0}, {movie.Cost} BUX, IN {movie.TheaterCount} ${movie.EarningsBase / movie.TheaterCount:N2} / Theater");
 			}
