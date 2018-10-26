@@ -346,7 +346,7 @@ namespace MoviePicker.WebApp.Models
 				//new MineCulturedVultures(),
 				new MineBoxOfficeProphet(),
 				new MineBoxOfficeReport(),
-				new MineBoxOfficeMojoTheaterCount()
+				new MineBoxOfficeMojoTheaterCount { IsHidden = true }
 			};
 
 			// Grab last weeks results for comparisons.  Always put this list last.
