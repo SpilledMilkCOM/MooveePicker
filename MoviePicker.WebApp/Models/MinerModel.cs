@@ -288,7 +288,7 @@ namespace MoviePicker.WebApp.Models
 				found.MovieName = sourceMovie.MovieName;        // So the names aren't fuzzy anymore.
 				found.Cost = sourceMovie.Cost;
 				found.ControlId = sourceMovie.ControlId;
-				found.TheaterCount = sourceMovie.TheaterCount;
+				//found.TheaterCount = sourceMovie.TheaterCount;
 			}
 		}
 
@@ -578,8 +578,6 @@ namespace MoviePicker.WebApp.Models
 							{
 								if (!movieList.Any(movie => movie.Day.HasValue))
 								{
-
-
 									// The list has no compound movies so they need to be built
 									// Need to readjust the movies.
 									miner.SetMovies(SpreadCompoundMovies(compoundMovies, movieList));
