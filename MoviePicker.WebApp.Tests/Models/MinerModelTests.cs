@@ -257,15 +257,17 @@ namespace MoviePicker.WebApp.Tests.Models
 
 			Assert.IsNotNull(test.Miners);
 
-			var movies = test.CreateWeightedList();
+			SetWeights(test, CreateDefaultWeights());
 
-			Assert.IsTrue(movies.Count > 0);
+			var myPicks = test.CreateWeightedList();
+
+			Assert.IsTrue(myPicks.Count > 0);
 
 			Logger.WriteLine("=========================== MOJO'S NUMBERS ===========================");
 
-			foreach (var movie in movies)
+			foreach (var movie in myPicks)
 			{
-				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
+				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase:N0}, {movie.Cost} BUX, IN {movie.TheaterCount} ${movie.EarningsBase / movie.TheaterCount:N2} / Theater");
 			}
 		}
 

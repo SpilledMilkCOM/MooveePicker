@@ -25,6 +25,7 @@ namespace MovieMiner
 				  , $"BO Mojo {weekendEnding?.ToShortDateString()}", DEFAULT_URL)
 		{
 			TwitterID = "BoxOfficeMojo";
+			ContainsEstimates = false;
 			_weekendEnding = weekendEnding?.Date;
 		}
 
@@ -58,7 +59,7 @@ namespace MovieMiner
 			}
 			else
 			{
-				_weekendEnding = MovieDateUtil.GameSunday(null, ContainsEstimates).AddDays(-1);
+				_weekendEnding = MovieDateUtil.GameSunday(null, ContainsEstimates);
 
 				result = MineDate();
 			}
