@@ -21,9 +21,7 @@ namespace MoviePicker.WebApp.Controllers
 	public class HomeController : Controller
 	{
 		private const int DATA_MINER_COUNT = 6;
-		private const int FML_INDEX = 0;
 		private const int MORE_PICKS_COUNT = 6;
-		private const int MY_MINER_IDX = FML_INDEX + 1;
 
 		private IControllerUtility _controllerUtility;
 		private IMinerModel _minerModel;
@@ -91,7 +89,7 @@ namespace MoviePicker.WebApp.Controllers
 			stopWatch.Start();
 
 			var result = new ExpertPicksViewModel();
-			var baseMovies = _minerModel.Miners[FML_INDEX].Movies;
+			var baseMovies = _minerModel.Miners[MinerModel.FML_INDEX].Movies;
 			var lastMiner = _minerModel.Miners.Last();
 			var minerCount = 0;
 
@@ -197,7 +195,7 @@ namespace MoviePicker.WebApp.Controllers
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
 
-			IFandangoViewModel viewModel = new FandangoViewModel(_minerModel.Miners[FML_INDEX], _moviePicker);
+			IFandangoViewModel viewModel = new FandangoViewModel(_minerModel.Miners[MinerModel.FML_INDEX], _moviePicker);
 
 			viewModel.PastHours = _controllerUtility.GetRequestInt(Request, "past") ?? 24;
 
@@ -205,7 +203,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			viewModel.Load();
 
-			if (viewModel.IsTracking && _minerModel.Miners[FML_INDEX].Movies.Count > 0)
+			if (viewModel.IsTracking && _minerModel.Miners[MinerModel.FML_INDEX].Movies.Count > 0)
 			{
 				viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
 			}
@@ -224,17 +222,17 @@ namespace MoviePicker.WebApp.Controllers
 
 			ViewBag.IsGoogleAdValid = true;
 
-			// Set the weights to 1 across the board. (treat all sources equal)
+			// Set the weights to 1 across the board. (treat all 'expert' sources equal)
 
-			foreach (var miner in _minerModel.Miners)
+			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.MOJO_THEATER_INDEX; minerIndex++)
 			{
-				miner.Weight = 1;
+				_minerModel.Miners[minerIndex].Weight = 1;
 			}
 
 			// Do NOT include MY numbers when pre-populating the box office values;
 
-			_minerModel.Miners[MY_MINER_IDX].Weight = 0;
-			((ICache)_minerModel.Miners[MY_MINER_IDX]).Load();
+			_minerModel.Miners[MinerModel.MY_INDEX].Weight = 0;
+			((ICache)_minerModel.Miners[MinerModel.MY_INDEX]).Load();
 
 			// Adjust the weights (possibly adjust the defaults above).
 
@@ -263,7 +261,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			ParseViewRequest();
 
-			_viewModel.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
+			_viewModel.IsTracking = _minerModel.Miners[MinerModel.FML_INDEX].ContainsEstimates;
 			//_viewModel.IsTracking = true;
 
 			ControllerUtility.SetTwitterCard(ViewBag);
@@ -286,15 +284,15 @@ namespace MoviePicker.WebApp.Controllers
 
 			// Set the weights to 1 across the board. (treat all sources equal)
 
-			foreach (var miner in _minerModel.Miners)
+			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.MOJO_LAST_INDEX; minerIndex++)
 			{
-				miner.Weight = 1;
+				_minerModel.Miners[minerIndex].Weight = 1;
 			}
 
 			// Do NOT include MY numbers when pre-populating the box office values;
 
-			_minerModel.Miners[MY_MINER_IDX].Weight = 0;
-			((ICache)_minerModel.Miners[MY_MINER_IDX]).Load();
+			_minerModel.Miners[MinerModel.MY_INDEX].Weight = 0;
+			((ICache)_minerModel.Miners[MinerModel.MY_INDEX]).Load();
 
 			// Adjust the weights (possibly adjust the defaults above).
 
@@ -496,12 +494,13 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			var result = new PicksViewModel();
 			var stopWatch = new Stopwatch();
+			var fmlMiner = _minerModel.Miners[MinerModel.FML_INDEX];
 
 			stopWatch.Start();
 
 			DownloadMoviePosters();
 
-			result.IsTracking = _minerModel.Miners[FML_INDEX].ContainsEstimates;
+			result.IsTracking = fmlMiner.ContainsEstimates;
 
 			result.Miners = _minerModel.Miners;
 			result.Movies = _minerModel.CreateWeightedList();
@@ -518,7 +517,7 @@ namespace MoviePicker.WebApp.Controllers
 				result.MovieList = new MovieListModel()
 				{
 					ComparisonHeader = "Bonus ON",
-					ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
+					ComparisonMovies = result.IsTracking ? fmlMiner.Movies : null,
 					Id = "bonusOnMovieList",
 					Picks = pickList,
 					ShareQueryString = $"/Home/ShareBonusOnPicks?{shareQueryString}"
@@ -538,7 +537,7 @@ namespace MoviePicker.WebApp.Controllers
 					result.MovieListBonusOff = new MovieListModel()
 					{
 						ComparisonHeader = "Bonus OFF",
-						ComparisonMovies = result.IsTracking ? _minerModel.Miners[FML_INDEX].Movies : null,
+						ComparisonMovies = result.IsTracking ? fmlMiner.Movies : null,
 						Id = "bonusOffMovieList",
 						Picks = pickList,
 						ShareQueryString = $"/Home/ShareBonusOffPicks?{shareQueryString}"
@@ -546,7 +545,7 @@ namespace MoviePicker.WebApp.Controllers
 				}
 			}
 
-			if (result.IsTracking && _minerModel.Miners[FML_INDEX].Movies.Count > 0)
+			if (result.IsTracking && fmlMiner.Movies.Count > 0)
 			{
 				result.MovieListPerfectPick = PerfectPick(result.Movies);
 			}
@@ -570,7 +569,7 @@ namespace MoviePicker.WebApp.Controllers
 			// Don't need to use clones, because the BONUS is always used for best possible values.
 
 			_moviePicker.EnableBestPerformer = true;
-			_moviePicker.AddMovies(_minerModel.Miners[FML_INDEX].Movies);
+			_moviePicker.AddMovies(_minerModel.Miners[MinerModel.FML_INDEX].Movies);
 
 			return new MovieListModel()
 			{
@@ -692,7 +691,7 @@ namespace MoviePicker.WebApp.Controllers
 
 				lock (_minerModelCache)
 				{
-					_minerModelCache.Miners[FML_INDEX].SetMovies(new List<IMovie>(_minerModel.Miners[FML_INDEX].Movies));
+					_minerModelCache.Miners[MinerModel.FML_INDEX].SetMovies(new List<IMovie>(_minerModel.Miners[MinerModel.FML_INDEX].Movies));
 				}
 			}
 		}
@@ -824,7 +823,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			hasParams = decimalList.Any();
 
-			foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
+			foreach (var movie in _minerModel.Miners[MinerModel.MY_INDEX].Movies)
 			{
 				if (idx < decimalList.Count)
 				{
@@ -852,7 +851,7 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				// Refresh my picks based on the weights.
 
-				((ICache)_minerModel.Miners[MY_MINER_IDX]).Load();
+				((ICache)_minerModel.Miners[MinerModel.MY_INDEX]).Load();
 			}
 
 			UpdateViewModel();
@@ -872,7 +871,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			stringBuilder.Append("bo=");
 
-			foreach (var movie in _minerModel.Miners[MY_MINER_IDX].Movies)
+			foreach (var movie in _minerModel.Miners[MinerModel.MY_INDEX].Movies)
 			{
 				if (!first)
 				{
@@ -891,7 +890,7 @@ namespace MoviePicker.WebApp.Controllers
 			first = true;
 			stringBuilder.Append("&wl=");
 
-			for (int idx = MY_MINER_IDX; idx < _minerModel.Miners.Count - 1; idx++)
+			for (int idx = MinerModel.MY_INDEX; idx < _minerModel.Miners.Count - 1; idx++)
 			{
 				if (!first)
 				{
@@ -973,7 +972,7 @@ namespace MoviePicker.WebApp.Controllers
 			viewModel.Weight6 = _minerModel.Miners[index++].Weight;
 			viewModel.Weight7 = _minerModel.Miners[index++].Weight;
 
-			var myBoxOffice = _minerModel.Miners[MY_MINER_IDX].Movies;
+			var myBoxOffice = _minerModel.Miners[MinerModel.MY_INDEX].Movies;
 
 			index = 0;
 
@@ -1013,7 +1012,7 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.Weight6 = _minerModel.Miners[index++].Weight;
 			_viewModel.Weight7 = _minerModel.Miners[index++].Weight;
 
-			var myBoxOffice = _minerModel.Miners[MY_MINER_IDX].Movies;
+			var myBoxOffice = _minerModel.Miners[MinerModel.MY_INDEX].Movies;
 
 			index = 0;
 
