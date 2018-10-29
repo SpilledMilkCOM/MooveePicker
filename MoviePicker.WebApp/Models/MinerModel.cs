@@ -368,6 +368,7 @@ namespace MoviePicker.WebApp.Models
 		private IMovie CreateWeightedMovie(IMovie baseMovie)
 		{
 			decimal totalWeight = 0;
+			decimal earnings = 0;
 
 			// Initialize the result movie with base data (excluding the earnings)
 
@@ -393,9 +394,9 @@ namespace MoviePicker.WebApp.Models
 				{
 					// Apply weights to all the miners, but only to "My" data if there are earnings. (don't factor in a zero)
 
-					if (index != MY_INDEX || foundMovie.Earnings > 0)
+					if (index != MY_INDEX || foundMovie.EarningsBase > 0)
 					{
-						result.Earnings += foundMovie.Earnings * Miners[index].Weight;
+						earnings += foundMovie.EarningsBase * Miners[index].Weight;
 						totalWeight += Miners[index].Weight;
 					}
 				}
@@ -405,8 +406,12 @@ namespace MoviePicker.WebApp.Models
 
 			if (totalWeight > 0)
 			{
-				result.Earnings /= totalWeight;     // Weighted average.
+				// NOTE: Since Earnings may change based on OTHER movie's earnings, the EarningsBase needs to be used ABOVE and BELOW.
+
+				earnings /= totalWeight;     // Weighted average.
 			}
+
+			result.Earnings = earnings;
 
 			return result;
 		}
