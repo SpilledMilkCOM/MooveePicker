@@ -126,6 +126,7 @@ function calculate(endPoint) {
 			movieListMini(jsonData.MovieListBonusOff.Picks[0], 'bonusOffMovieList', jsonData.MovieListBonusOff.ShareQueryString);
 
 			bonusComparison(jsonData.Movies);
+			theaterCount(jsonData.Movies);
 			boxOffice(jsonData.Movies, jsonData.MovieList.Picks[0].BestPerformer);
 
 			inCallback = false;
@@ -180,5 +181,51 @@ function movieListMini(movieList, idPrefix, shareQueryString) {
 		image.attr('src','/images/MooveePosterBlank.jpg');
 		//image.attr('style', 'border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;');
 		image.css({ 'box-shadow': '2px 4px 8px 0px grey' });
+	}
+}
+
+function theaterCount(movies) {
+
+	for (var movieCount = 0, length = movies.length; movieCount < length; movieCount++) {
+		var movie = movies[movieCount];
+		var controlIndex = movie.ControlId;
+		var boxOffice = $('#boId' + controlIndex);
+
+		setText('theaterCountName' + movieCount, movie.Name);
+		setText('theaterCount' + movieCount, formatWithCommas(movie.TheaterCount));
+		setText('theaterCountEarnings' + movieCount, formatWithCommas(movie.Earnings));
+		setText('theaterCountEarnings' + movieCount, formatWithCommas(movie.TheaterEfficiency));
+
+		if (boxOffice != null) {
+			var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
+			var originalCount = boxOffice.attr('data-original-theater-count').replace(/,/g, '');
+			var theaterCountDifference = $('#theaterCountDifference' + movieCount);
+
+			if (originalCount == 0) {
+				setText('theaterCountLast' + movieCount, '--');
+				setText('theaterCountLastEfficiency' + movieCount, '--');
+				setText('theaterCountDifference' + movieCount, '--');
+
+				theaterCountDifference.css({ 'color': 'black'});
+			}
+			else {
+				var color = 'black';
+				var lastEfficiency = originalValue / originalCount;
+				var difference = movie.TheaterCount - originalCount;
+
+				setText('theaterCountLast' + movieCount, formatWithCommas(originalCount));
+				setText('theaterCountLastEfficiency' + movieCount, formatWithCommas(lastEfficiency));
+				setText('theaterCountDifference' + movieCount, formatWithCommas(difference));
+
+				if (difference > 0) {
+					color = '#33cc33';		// green
+				}
+				else if (difference < 0) {
+					color = '#cc3333';		// red
+				}
+
+				theaterCountDifference.css({ 'color': color });
+			}
+		}
 	}
 }

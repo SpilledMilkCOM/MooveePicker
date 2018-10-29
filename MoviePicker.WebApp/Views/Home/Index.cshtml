@@ -334,6 +334,16 @@
 
 							if (lastWeek != null)
 							{
+								var textColor = "color: black;";
+
+								if (movie.TheaterCount - lastWeek.TheaterCount > 0)
+								{
+									textColor = "color: #33cc33;";
+								}
+								else if (movie.TheaterCount - lastWeek.TheaterCount < 0)
+								{
+									textColor = "color: #cc3333;";
+								}
 
 								<div class="col-xs-3 hidden-sm hidden-md hidden-lg"
 									 style="@backgroundColor font-weight: bold;">Last Count:</div>
@@ -355,7 +365,7 @@
 									 style="@backgroundColor font-weight: bold;">Difference:</div>
 								<div id="@string.Format("theaterCountDifference{0}", movieCount)"
 									 class="col-xs-3 col-sm-1"
-									 style="@backgroundColor text-align: right;">
+									 style="@backgroundColor @textColor text-align: right;">
 									@string.Format("{0:N0}", movie.TheaterCount - lastWeek.TheaterCount)
 								</div>
 							}
@@ -569,6 +579,7 @@
 														   type="text"
 														   value="@valueString"
 														   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
+														   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
 														   data-val-required="The Box Office @movie.ControlId field is required."
 														   data-val-number="The field Box Office @movie.ControlId must be a number."
 														   data-val="true">
@@ -599,19 +610,19 @@
 }
 
 <script type="text/javascript">
-																										//window.onscroll = function () { scrollPicksColumn() };
+																												//window.onscroll = function () { scrollPicksColumn() };
 
-																										//var picksColumn = document.getElementById("picksColumn");
-																										//var picksColumnOffset = picksColumn.offsetTop;
+																												//var picksColumn = document.getElementById("picksColumn");
+																												//var picksColumnOffset = picksColumn.offsetTop;
 
-																										//function scrollPicksColumn() {
-																										//	console.log(window.pageYOffset);
-																										//	console.log(picksColumnOffset);
+																												//function scrollPicksColumn() {
+																												//	console.log(window.pageYOffset);
+																												//	console.log(picksColumnOffset);
 
-																										//	if (window.pageYOffset >= picksColumnOffset) {
-																										//		picksColumn.classList.add("sticky");
-																										//	} else {
-																										//		picksColumn.classList.remove("sticky");
-																										//	}
-																										//}
+																												//	if (window.pageYOffset >= picksColumnOffset) {
+																												//		picksColumn.classList.add("sticky");
+																												//	} else {
+																												//		picksColumn.classList.remove("sticky");
+																												//	}
+																												//}
 </script>
