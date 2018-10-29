@@ -3,6 +3,7 @@
 @using MovieMiner;
 @using MoviePicker.Common.Interfaces;
 @using MoviePicker.WebApp.Utilities;
+@using MoviePicker.WebApp.Models;
 @using System.Text;
 
 @{
@@ -275,19 +276,28 @@
 				<h4>
 					Theater Counts
 					<div class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
-						 title="Placeholder to explain table below.">
+						 title="The table below contains theater counts and efficiencies ($$ / theater) as well as last week (where applicable).">
 						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 					</div>
 				</h4>
 
 				@*<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Rank</div>*@
 				<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
-				<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: right;">Count</div>
+				<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: right;">
+					<a class="btn btn-info btn-xs"
+					   href="@Model.Miners.ToList()[MinerModel.MOJO_THEATER_INDEX].UrlSource">Count</a>
+				</div>
 				<div class="col-sm-2 hidden-xs" style="font-weight: bold; text-align: right;">Earnings</div>
-				<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: right;">Eff</div>
-				<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: right;">Last Count</div>
-				<div class="col-sm-2 hidden-xs" style="font-weight: bold; text-align: right;">Last Eff</div>
+				<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: right;">$ / Thtr</div>
+				<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: right;">
+					<a class="btn btn-info btn-xs"
+					   href="@Model.Miners.ToList()[MinerModel.MOJO_LAST_INDEX].UrlSource">Last Count</a>
+				</div>
+				<div class="col-sm-2 hidden-xs" style="font-weight: bold; text-align: right;">$ / Thtr</div>
 				<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: right;">Diff</div>
+
+				<div class="clearfix"></div>
+
 				@{
 					if (Model.Movies.Count() > 0)
 					{
@@ -309,7 +319,9 @@
 							</div>
 
 							<div class="col-xs-3 hidden-sm hidden-md hidden-lg"
-								 style="@backgroundColor font-weight: bold;">Count:</div>
+								 style="@backgroundColor font-weight: bold;">
+								Count:
+							</div>
 							<div id="@string.Format("theaterCount{0}", movieCount)"
 								 class="col-xs-3 col-sm-1"
 								 style="@backgroundColor text-align: right;">
@@ -346,7 +358,9 @@
 								}
 
 								<div class="col-xs-3 hidden-sm hidden-md hidden-lg"
-									 style="@backgroundColor font-weight: bold;">Last Count:</div>
+									 style="@backgroundColor font-weight: bold;">
+									Last Count:
+								</div>
 								<div id="@string.Format("theaterCountLast{0}", movieCount)"
 									 class="col-xs-3 col-sm-1"
 									 style="@backgroundColor text-align: right;">
@@ -402,7 +416,7 @@
 			</div>
 		</div>
 
-		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
+		@* ================================================================================================================================== IMPORT COLUMN ==== *@
 
 		<div class="col-md-4">
 
@@ -428,6 +442,8 @@
 
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
+
+			@* ================================================================================================================================== MINER WEIGHT COLUMN ==== *@
 
 			<table class="table table-responsive" style="border: none;">
 				<tr>
@@ -469,6 +485,8 @@
 					}
 				</tr>
 			</table>
+
+			@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
 
 			<table>
 				@{
@@ -546,7 +564,7 @@
 								divBackgroundColorStyle = "background-color: white;";
 								percent = 0;
 
-								var myMovie = Model.Miners.ToList()[1].Movies.FirstOrDefault(item => item.Name == movie.Name);
+								var myMovie = Model.Miners.ToList()[MinerModel.MY_INDEX].Movies.FirstOrDefault(item => item.Name == movie.Name);
 
 								if (lastWeek != null && myMovie != null && lastWeek.EarningsBase > 0)
 								{
@@ -610,19 +628,19 @@
 }
 
 <script type="text/javascript">
-																												//window.onscroll = function () { scrollPicksColumn() };
+																																				//window.onscroll = function () { scrollPicksColumn() };
 
-																												//var picksColumn = document.getElementById("picksColumn");
-																												//var picksColumnOffset = picksColumn.offsetTop;
+																																				//var picksColumn = document.getElementById("picksColumn");
+																																				//var picksColumnOffset = picksColumn.offsetTop;
 
-																												//function scrollPicksColumn() {
-																												//	console.log(window.pageYOffset);
-																												//	console.log(picksColumnOffset);
+																																				//function scrollPicksColumn() {
+																																				//	console.log(window.pageYOffset);
+																																				//	console.log(picksColumnOffset);
 
-																												//	if (window.pageYOffset >= picksColumnOffset) {
-																												//		picksColumn.classList.add("sticky");
-																												//	} else {
-																												//		picksColumn.classList.remove("sticky");
-																												//	}
-																												//}
+																																				//	if (window.pageYOffset >= picksColumnOffset) {
+																																				//		picksColumn.classList.add("sticky");
+																																				//	} else {
+																																				//		picksColumn.classList.remove("sticky");
+																																				//	}
+																																				//}
 </script>
