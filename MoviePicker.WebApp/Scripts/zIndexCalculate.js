@@ -194,7 +194,7 @@ function theaterCount(movies) {
 		setText('theaterCountName' + movieCount, movie.Name);
 		setText('theaterCount' + movieCount, formatWithCommas(movie.TheaterCount));
 		setText('theaterCountEarnings' + movieCount, formatWithCommas(movie.Earnings));
-		setText('theaterCountEarnings' + movieCount, formatWithCommas(movie.TheaterEfficiency));
+		setText('theaterCountEfficiency' + movieCount, formatWithCommas(movie.TheaterEfficiency));
 
 		if (boxOffice != null) {
 			var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');

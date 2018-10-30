@@ -21,8 +21,8 @@ namespace MovieMiner
 		/// </summary>
 		/// <param name="weekendEnding">If this is null then the forecast will be mined.</param>
 		public MineBoxOfficeMojoTheaterCount(DateTime? weekendEnding = null)
-			: base($"Box Office Mojo {weekendEnding?.ToShortDateString()}"
-				  , $"BO Mojo {weekendEnding?.ToShortDateString()}", DEFAULT_URL)
+			: base($"Box Office Mojo Theater Count {weekendEnding?.ToShortDateString()}"
+				  , $"BO Mojo TC {weekendEnding?.ToShortDateString()}", DEFAULT_URL)
 		{
 			TwitterID = "BoxOfficeMojo";
 			ContainsEstimates = false;

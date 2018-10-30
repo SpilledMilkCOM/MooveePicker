@@ -12,6 +12,9 @@ namespace MovieMiner
 {
 	public class MineFantasyMovieLeagueBoxOffice : MinerBase
 	{
+		// TODO: Add a miner for BO Mojo  https://www.boxofficemojo.com/weekend/chart/
+		// Estimates: https://www.boxofficemojo.com/weekend/chart/?view=studioest&yr=2018&wknd=43&p=.htm
+
 		private const string DEFAULT_URL = "https://fantasymovieleague.com";
 
 		private readonly string _columnTitle;
