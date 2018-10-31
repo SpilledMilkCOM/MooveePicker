@@ -186,8 +186,15 @@ function movieListMini(movieList, idPrefix, shareQueryString) {
 
 function theaterCount(movies) {
 
+	// Make a SHALLOW clone of the movies array so sort() does not mess with the original array.
+	// (cloning the array that contains references)
+
+	var sortedClone = movies.slice(0);
+
+	sortedClone.sort((first, second) => second.TheaterEfficiency - first.TheaterEfficiency);
+
 	for (var movieCount = 0, length = movies.length; movieCount < length; movieCount++) {
-		var movie = movies[movieCount];
+		var movie = sortedClone[movieCount];
 		var controlIndex = movie.ControlId;
 		var boxOffice = $('#boId' + controlIndex);
 

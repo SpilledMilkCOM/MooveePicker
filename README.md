@@ -53,6 +53,8 @@ The current defaults that I use are on the [About](http://mooveepicker.azurewebs
 
 ##### Things I learned in this project
 * More Javascript and JQuery shortcuts
+  * `.sort()` on arrays (ascending/descending)
+  * `.slice(0)` to make a shallow clone of array objects.
 * I didn't know that hsl() was a thing in CSS (pretty cool)
 * More about Bootstrap
   * Columns within columns.
