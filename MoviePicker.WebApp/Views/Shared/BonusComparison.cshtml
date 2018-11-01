@@ -1,0 +1,157 @@
+﻿@model MoviePicker.WebApp.ViewModels.PicksViewModel
+
+<div style="border: solid; border-radius: 4px; border-width: 1px; padding: 8px;">
+	<h4>
+		Bonus Comparisons
+		<div class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
+			 title="The table below compares ALL of the movies to the MOST efficient one.
+								The Bonus Earnings column is the value that the movie WOULD need to have the top efficiency or at least MATCH top efficiency.
+								The Difference column is the dollar amount of gain, and the % Difference is just that; Difference divided the actual earnings (percentage gain).
+								The MOST efficient movie shows how much it would have to drop to match second place.">
+			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+		</div>
+	</h4>
+
+	@*<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Rank</div>*@
+	<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
+	<div class="col-sm-1 hidden-xs" style="font-weight: bold;">BUX</div>
+	<div class="col-sm-2 hidden-xs" style="font-weight: bold; text-align: right;">Earnings</div>
+	<div class="col-sm-1 hidden-xs" style="font-weight: bold; text-align: center;">Efficiency</div>
+	<div class="col-sm-4 hidden-xs" style="font-weight: bold; text-align: center;">Difference</div>
+
+	@{
+		if (Model.Movies.Count() > 0)
+		{
+			var mostEfficient = Model.Movies.OrderByDescending(item => item.Efficiency).FirstOrDefault();
+
+			var bonusMovieCount = 0;
+
+			foreach (var movie in Model.Movies.OrderByDescending(item => item.Efficiency))
+			{
+				var backgroundColor = bonusMovieCount == 0 ? "background-color: lightgreen;" : (bonusMovieCount % 2 == 0 ? "background-color: lightgrey;" : string.Empty);
+				var rank = Model.Rank(movie);
+
+				// You HAVE to use movieCount as the control id since this table is ORDER based (the movies CAN change order) versus cost based like the box office table.
+
+				<div id="@string.Format("bonusCompMovieName{0}", bonusMovieCount)"
+					 class="col-xs-12 col-sm-4"
+					 style="@backgroundColor font-weight: bold;">
+					@movie.Name
+				</div>
+
+				<div class="col-xs-3 hidden-sm hidden-md hidden-lg"
+					 style="@backgroundColor font-weight: bold;">BUX:</div>
+
+				<div id="@string.Format("bonusCompMovieCost{0}", bonusMovieCount)"
+					 class="col-xs-3 col-sm-1"
+					 style="@backgroundColor text-align: right;">
+					@movie.Cost
+				</div>
+
+				<div class="col-xs-3 hidden-sm hidden-md hidden-lg"
+					 style="@backgroundColor font-weight: bold;">Earnings:</div>
+
+				<div id="@string.Format("bonusCompMovieEarnings{0}", bonusMovieCount)"
+					 class="col-xs-3 col-sm-2"
+					 style="@backgroundColor text-align: right;">
+					@string.Format("{0:N0}", movie.Earnings)
+				</div>
+
+				<div class="col-xs-3 hidden-sm hidden-md hidden-lg"
+					 style="@backgroundColor font-weight: bold;">Efficiency:</div>
+				<div id="@string.Format("bonusCompMovieEfficiency{0}", bonusMovieCount)"
+					 class="col-xs-3 col-sm-1"
+					 style="@backgroundColor text-align: right;">
+					@string.Format("{0:N2}", movie.Efficiency / 1000m)
+				</div>
+
+				<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="@backgroundColor">--</div>
+
+				<div class="col-xs-3 hidden-sm hidden-md hidden-lg" style="@backgroundColor font-weight: bold;">Difference:</div>
+
+				if (movie.EarningsBase > 0)
+				{
+					var nextRankedMovie = Model.Movies.FirstOrDefault(item => Model.Rank(item) == rank + 1);
+
+					// Compute difference columns.
+
+					if (rank == 1)
+					{
+						if (nextRankedMovie != null)
+						{
+							//How much does the top rank have to LOSE before it's no longer the TOP
+
+							<div id="@string.Format("bonusCompDifference{0}", bonusMovieCount)"
+								 class="col-xs-3 col-sm-2"
+								 style="@backgroundColor text-align: right;">
+								@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)
+							</div>
+							<div id="@string.Format("bonusCompDiffPctUp{0}", bonusMovieCount)"
+								 class="col-xs-2 col-sm-1"
+								 style="@backgroundColor text-align: right;">--</div>
+							<div id="@string.Format("bonusCompDiffPctDown{0}", bonusMovieCount)"
+								 class="col-xs-2 col-sm-1"
+								 style="@backgroundColor text-align: right; color: #cc3333;">
+								@string.Format("{0:N1}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)
+							</div>
+						}
+					}
+					else
+					{
+						//How much does current rank to GAIN to be the TOP
+
+						<div id="@string.Format("bonusCompDifference{0}", bonusMovieCount)"
+							 class="col-xs-3 col-sm-2"
+							 style="@backgroundColor text-align: right;">
+							@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)
+						</div>
+						<div id="@string.Format("bonusCompDiffPctUp{0}", bonusMovieCount)"
+							 class="col-xs-2 col-sm-1"
+							 style="@backgroundColor text-align: right; color: #33cc33">
+							@string.Format("{0:N1}%", (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)
+						</div>
+
+						//How much does the current rank have to LOSE before it's no longer that rank
+
+						if (nextRankedMovie != null)
+						{
+							<div id="@string.Format("bonusCompDiffPctDown{0}", bonusMovieCount)"
+								 class="col-xs-2 col-sm-1"
+								 style="@backgroundColor text-align: right; color: #cc3333">
+								@string.Format("{0:N1}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)
+							</div>
+						}
+						else
+						{
+							<div id="@string.Format("bonusCompDiffPctDown{0}", bonusMovieCount)"
+								 class="col-xs-2 col-sm-1"
+								 style="@backgroundColor text-align: right;">--</div>
+						}
+					}
+				}
+				else
+				{
+					// Build the scaffolding anyway
+
+					<div id="@string.Format("bonusCompDifference{0}", bonusMovieCount)"
+						 class="col-xs-3 col-sm-2"
+						 style="@backgroundColor text-align: right;">
+						@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)
+					</div>
+
+					<div id="@string.Format("bonusCompDiffPctUp{0}", bonusMovieCount)"
+						 class="col-xs-2 col-sm-1"
+						 style="@backgroundColor text-align: right; color: #33cc33">--</div>
+
+					<div id="@string.Format("bonusCompDiffPctDown{0}", bonusMovieCount)"
+						 class="col-xs-2 col-sm-1"
+						 style="@backgroundColor text-align: right; color: #cc3333">--</div>
+				}
+
+				bonusMovieCount++;
+
+				<div class="clearfix"></div>
+			}
+		}
+	}
+</div>

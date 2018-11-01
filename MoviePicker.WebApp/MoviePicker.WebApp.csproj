@@ -339,6 +339,7 @@
     <Content Include="Views\LowMem\Images.cshtml" />
     <Content Include="Views\Home\Fandango.cshtml" />
     <Content Include="Views\Home\IndexWide.cshtml" />
+    <Content Include="Views\Shared\BonusComparison.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
