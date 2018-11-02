@@ -4,6 +4,8 @@ var SCREEN_COUNT_MAX = 8;
 function boxOfficeLostFocus(oldValue, newValue, movieIndex) {
 
 	if (oldValue != newValue) {
+		global().lastMovieControlIndex = movieIndex;
+
 		clearWeights();
 
 		clearMoviePicksPosters('bonusOnMovieList');
@@ -140,7 +142,6 @@ function navigateToExplicit(relativeUrl) {
 	logit(window.location.href);
 }
 
-
 function parseBaseUrl() {
 	var baseUrl = window.location.href;
 
@@ -221,6 +222,8 @@ function percentToBackgroundColor(percent) {
 function sliderOnChange(slider, controlIndex) {
 	logit(controlIndex + ' - ' + slider.value);
 
+	global().lastMovieControlIndex = controlIndex;
+
 	clearWeights();
 
 	var boxOffice = $('#boId' + controlIndex);
@@ -252,18 +255,20 @@ function updateBoxOffice(controlIndex) {
 }
 
 function updateSlider(newValue, controlIndex) {
+	logit('updateSlider');
+
 	var boSlider = $('#boSliderId' + controlIndex);
 	var boxOffice = $('#boId' + controlIndex);
 	var boxOfficePct = $('#boId' + controlIndex + 'Pct');
 
-	console.log(boSlider);
-	console.log(controlIndex + ' -- ' + newValue.replace(/\,/g, ""));
+	logit(boSlider);
+	logit(controlIndex + ' -- ' + newValue.replace(/\,/g, ""));
 
 	if (boSlider != null && boxOffice != null && boxOfficePct != null) {
 		var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
 
-		console.log(originalValue);
-		console.log((newValue.replace(/\,/g, "") - originalValue) / originalValue * 100);
+		logit(originalValue);
+		logit((newValue.replace(/\,/g, "") - originalValue) / originalValue * 100);
 
 		boSlider.val((newValue.replace(/\,/g, "") - originalValue) / originalValue * 100);
 		boxOfficePct.text(boSlider.val() + '%');

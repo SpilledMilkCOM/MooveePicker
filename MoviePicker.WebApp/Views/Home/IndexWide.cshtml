@@ -12,6 +12,7 @@
 	int minerCount = 2;     // This scope is pretty far, sorry  :(
 }
 
+<script src="~/Scripts/zGlobal.js" type="text/javascript"></script>
 <script src="~/Scripts/zIndex.js" type="text/javascript"></script>
 <script src="~/Scripts/zIndexCalculate.js" type="text/javascript"></script>
 
@@ -361,6 +362,7 @@
 															   type="text"
 															   value="@valueString"
 															   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
+															   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
 															   data-val-required="The Box Office @movieCount field is required."
 															   data-val-number="The field Box Office @movieCount must be a number."
 															   data-val="true">

@@ -10,6 +10,12 @@ function bonusComparison(movies) {
 		var movie = movies[movieCount];
 		var nextMovie = null;
 
+		// If the last box office edited matches the movie, then HIGHLIGHT it!
+		// Otherwise, the top row is light green.
+		// Otherwise, even rows are grey and odd rows are white (no color set).
+
+		var backgroundColor = movie.ControlId == global().lastMovieControlIndex ? 'lemonchiffon' : (movieCount == 0 ? 'lightgreen' : (movieCount % 2 == 0 ? 'lightgrey' : 'white'));
+
 		if (movieCount + 1 < length) {
 			nextMovie = movies[movieCount + 1];
 		}
@@ -32,12 +38,32 @@ function bonusComparison(movies) {
 			//How much does current rank to GAIN to be the TOP
 			setText('bonusCompDifference' + movieCount, formatWithCommas(mostEfficient.Efficiency * movie.Cost - movie.EarningsBase));
 
-			setText('bonusCompDiffPctUp' + movieCount, ((mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100).toFixed(1) + '%');
+			if (movie.EarningsBase > 0) {
+				setText('bonusCompDiffPctUp' + movieCount, ((mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100).toFixed(1) + '%');
+			}
+			else {
+				setText('bonusCompDiffPctUp' + movieCount, '--');
+			}
 
-			if (nextMovie != null) {
+			if (nextMovie != null && movie.EarningsBase > 0) {
 				setText('bonusCompDiffPctDown' + movieCount, ((nextMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100).toFixed(1) + '%');
 			}
+			else {
+				setText('bonusCompDiffPctDown' + movieCount, '--');
+			}
 		}
+
+		// NOTE: Not very efficient, because you have to retrieve the control using $('#' + id) above and below twice.
+
+		console.log(backgroundColor);
+
+		changeStyle('bonusCompMovieName' + movieCount, 'background-color', backgroundColor);
+		changeStyle('bonusCompMovieCost' + movieCount, 'background-color', backgroundColor);
+		changeStyle('bonusCompMovieEarnings' + movieCount, 'background-color', backgroundColor);
+		changeStyle('bonusCompMovieEfficiency' + movieCount, 'background-color', backgroundColor);
+		changeStyle('bonusCompDifference' + movieCount, 'background-color', backgroundColor);
+		changeStyle('bonusCompDiffPctUp' + movieCount, 'background-color', backgroundColor);
+		changeStyle('bonusCompDiffPctDown' + movieCount, 'background-color', backgroundColor);
 	}
 }
 
@@ -67,7 +93,6 @@ function boxOffice(movies, bestPerformer) {
 				boxOfficePct.val(percent + '%');
 			}
 
-			//boxOfficePct.attr('style', 'background-color: ' + percentToBackgroundColor(percent) + '; border-radius: 3px; padding: 3px;');
 			boxOfficePct.css({ 'background-color': percentToBackgroundColor(percent) });
 
 			if (boxOfficeSlider != null) {
@@ -81,9 +106,6 @@ function boxOffice(movies, bestPerformer) {
 					shadowColor = "green";
 				}
 
-				console.log(shadowColor);
-
-				//boxOfficeImage.attr('style', imageBackgroundStyle);
 				boxOfficeImage.css({ 'box-shadow': '2px 4px 8px 0px ' + shadowColor});
 			}
 		}

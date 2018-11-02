@@ -4,7 +4,11 @@ function changeStyle(id, style, value) {
 	var ctrl = $('#' + id);
 
 	if (ctrl != null) {
-		ctrl.css({ style: value });
+		// You can do multiple styles with the method below.
+		//ctrl.css({ style: value });
+
+		// This sets one style attribute to a value.
+		ctrl.css(style, value);
 	}
 }
 
