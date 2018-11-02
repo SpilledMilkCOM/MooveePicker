@@ -55,8 +55,6 @@ function bonusComparison(movies) {
 
 		// NOTE: Not very efficient, because you have to retrieve the control using $('#' + id) above and below twice.
 
-		console.log(backgroundColor);
-
 		changeStyle('bonusCompMovieName' + movieCount, 'background-color', backgroundColor);
 		changeStyle('bonusCompMovieCost' + movieCount, 'background-color', backgroundColor);
 		changeStyle('bonusCompMovieEarnings' + movieCount, 'background-color', backgroundColor);
@@ -220,6 +218,12 @@ function theaterCount(movies) {
 		var controlIndex = movie.ControlId;
 		var boxOffice = $('#boId' + controlIndex);
 
+		// If the last box office edited matches the movie, then HIGHLIGHT it!
+		// Otherwise, the top row is light green.
+		// Otherwise, even rows are grey and odd rows are white (no color set).
+
+		var backgroundColor = movie.ControlId == global().lastMovieControlIndex ? 'lemonchiffon' : (movieCount % 2 == 0 ? 'lightgrey' : 'white');
+
 		setText('theaterCountName' + movieCount, movie.Name);
 		setText('theaterCount' + movieCount, formatWithCommas(movie.TheaterCount));
 		setText('theaterCountEarnings' + movieCount, formatWithCommas(movie.Earnings));
@@ -256,5 +260,15 @@ function theaterCount(movies) {
 				theaterCountDifference.css({ 'color': color });
 			}
 		}
+
+		// NOTE: Not very efficient, because you have to retrieve the control using $('#' + id) above and below twice.
+
+		changeStyle('theaterCountName' + movieCount, 'background-color', backgroundColor);
+		changeStyle('theaterCount' + movieCount, 'background-color', backgroundColor);
+		changeStyle('theaterCountEarnings' + movieCount, 'background-color', backgroundColor);
+		changeStyle('theaterCountEfficiency' + movieCount, 'background-color', backgroundColor);
+		changeStyle('theaterCountLast' + movieCount, 'background-color', backgroundColor);
+		changeStyle('theaterCountLastEfficiency' + movieCount, 'background-color', backgroundColor);
+		changeStyle('theaterCountDifference' + movieCount, 'background-color', backgroundColor);
 	}
 }
