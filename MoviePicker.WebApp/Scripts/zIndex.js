@@ -101,23 +101,29 @@ function clickPicksAsync() {
 	calculate(url);
 }
 
-function clickTracking() {
+function clickTracking(uniqueId) {
 
-	logit("clickPicks");
+	logit('clickTracking');
 
-	navigateTo('/Home/Tracking');
+	// The unique ID is needed so Twitter won't cache the page/image
+
+	navigateTo('/Home/Tracking', 'id=' + uniqueId);
 }
 
 // Navigate to the relative URL using the parsed BO and Weights as Request parameters.
-function navigateTo(relativeUrl) {
+function navigateTo(relativeUrl, moreParameters) {
 
-	logit("navigateTo");
+	logit('navigateTo');
 
 	var parameters = parseBoxOfficeAndWeights();
 
 	logit(parameters);
 
 	var url = relativeUrl + '?' + parameters;
+
+	if (moreParameters != null) {
+		url += '&' + moreParameters;
+	}
 
 	var baseUrl = parseBaseUrl();
 
@@ -128,10 +134,10 @@ function navigateTo(relativeUrl) {
 	logit(window.location.href);
 }
 
-// Navigate to the relative URL.
+// Navigate to the relative URL. (DON'T add BO and Weights to the request)
 function navigateToExplicit(relativeUrl) {
 
-	logit("navigateTo");
+	logit('navigateToExplicit');
 
 	var baseUrl = parseBaseUrl();
 
