@@ -278,15 +278,16 @@ namespace MoviePicker.WebApp.Models
 		/// <summary>
 		/// Assign base movie attributes to the movie passed in.
 		/// </summary>
-		/// <param name="sourceMovie">The movie to find so the</param>
+		/// <param name="sourceMovie">The movie containing the base FML data.</param>
 		/// <param name="movies">A list of base movies to search</param>
 		private void AssignCostIdName(IMovie sourceMovie, IEnumerable<IMovie> movies)
 		{
+			// Need to do the "fuzzy" compare because the MovieName and Id have not been assigned yet.
 			var found = movies?.FirstOrDefault(item => item.Equals(sourceMovie));
 
 			if (found != null)
 			{
-				found.Id = sourceMovie.Id;
+				found.Id = sourceMovie.Id;						// Will be able to do quicker Finds.
 				found.MovieName = sourceMovie.MovieName;        // So the names aren't fuzzy anymore.
 				found.Cost = sourceMovie.Cost;
 				found.ControlId = sourceMovie.ControlId;
@@ -388,7 +389,8 @@ namespace MoviePicker.WebApp.Models
 
 			for (int index = MY_INDEX; index < Miners.Count; index++)
 			{
-				var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => item.Equals(baseMovie) && item.WeekendEnding == result.WeekendEnding);
+				// Compare the Id first so this comparison can short circuit and be quicker.
+				var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => ((item.Id != 0 && item.Id == baseMovie.Id) || item.Equals(baseMovie)) && item.WeekendEnding == result.WeekendEnding);
 
 				if (foundMovie != null)
 				{

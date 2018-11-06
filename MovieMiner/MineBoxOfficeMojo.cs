@@ -286,6 +286,7 @@ namespace MovieMiner
 										}
 										else
 										{
+											// Need to use "fuzzy" logic here because the names may have dates as suffixes and those should match.
 											var found = result.Find(item => item.Equals(movie));
 
 											if (found != null && found.EarningsBase < movie.EarningsBase)

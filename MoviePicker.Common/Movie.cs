@@ -190,97 +190,105 @@ namespace MoviePicker.Common
 		public override bool Equals(object obj)
 		{
 			bool result = false;
-			var test = obj as IMovie;
+			var compareTo = obj as IMovie;
 
-			if (test != null)
+			if (compareTo != null)
 			{
-				// Make all the tests case insensitive.
-
-				var movieName = MovieName.ToLower();
-				var testMovieName = test.MovieName.ToLower();
-
-				result = movieName.Equals(testMovieName);
-
-				if (!result)
+				if (Id != 0 && Id == compareTo.Id)
 				{
-					// Not an exact match so try starts with (limited contains)
-
-					result = movieName.StartsWith(testMovieName) || testMovieName.StartsWith(movieName);
+					result = true;
 				}
-
-				if (!result)
+				else
 				{
-					// Not an exact match so try ends with (limited contains)
+					// Make all the tests case insensitive.
 
-					result = movieName.EndsWith(testMovieName) || testMovieName.EndsWith(movieName);
-				}
+					var movieName = MovieName.ToLower();
+					var testMovieName = compareTo.MovieName.ToLower();
 
-				if (result)
-				{
-					// Fail if there is a lot of noise.
+					result = movieName.Equals(testMovieName);
 
-					if (movieName.Length > testMovieName.Length * 2 || testMovieName.Length > movieName.Length * 2)
+
+					if (!result)
 					{
-						result = false;
-					}
-				}
+						// Not an exact match so try starts with (limited contains)
 
-				if (!result)
-				{
-					// Compare the first X characters
-
-					int length = 10;
-
-					if (movieName.Length < length)
-					{
-						length = movieName.Length;
+						result = movieName.StartsWith(testMovieName) || testMovieName.StartsWith(movieName);
 					}
 
-					if (testMovieName.Length < length)
+					if (!result)
 					{
-						length = testMovieName.Length;
+						// Not an exact match so try ends with (limited contains)
+
+						result = movieName.EndsWith(testMovieName) || testMovieName.EndsWith(movieName);
 					}
 
-					result = movieName.Substring(0, length) == testMovieName.Substring(0, length);
-				}
+					if (result)
+					{
+						// Fail if there is a lot of noise.
 
-				if (!result)
-				{
-					// Try to compare the names without the word "the"
+						if (movieName.Length > testMovieName.Length * 2 || testMovieName.Length > movieName.Length * 2)
+						{
+							result = false;
+						}
+					}
 
-					result = movieName.Replace("the ", string.Empty).Replace(" the", string.Empty).Equals(testMovieName.Replace("the ", string.Empty).Replace(" the", string.Empty));
-				}
+					if (!result)
+					{
+						// Compare the first X characters
 
-				//if (!result)
-				//{
-				//	char[] delimiters = " ".ToCharArray();
+						int length = 10;
 
-				//	// Compare words.
-				//	var movieWords = MovieName.Split(delimiters);
-				//	var testWords = testMovieName.Split(delimiters);
-				//	int matches = 0;
+						if (movieName.Length < length)
+						{
+							length = movieName.Length;
+						}
 
-				//	for (int index = 0; index < movieWords.Length; index++)
-				//	{
-				//		for (int i = 0; i < testWords.Length; i++)
-				//		{
-				//			if(movieWords[index] != null && movieWords[index] == testWords[i])
-				//			{
-				//				// Only needs to match once.
-				//				matches++;
-				//				break;
-				//			}
-				//		}
-				//	}
+						if (testMovieName.Length < length)
+						{
+							length = testMovieName.Length;
+						}
 
-				//	result = movieWords.Length > 0 && matches / movieWords.Length >= 0.666666;
-				//}
+						result = movieName.Substring(0, length) == testMovieName.Substring(0, length);
+					}
 
-				if (result && Day.HasValue && test.Day.HasValue)
-				{
-					// If both days have values then they HAVE TO MATCH.
+					if (!result)
+					{
+						// Try to compare the names without the word "the"
 
-					result = Day.Value == test.Day.Value;
+						result = movieName.Replace("the ", string.Empty).Replace(" the", string.Empty).Equals(testMovieName.Replace("the ", string.Empty).Replace(" the", string.Empty));
+					}
+
+					//if (!result)
+					//{
+					//	char[] delimiters = " ".ToCharArray();
+
+					//	// Compare words.
+					//	var movieWords = MovieName.Split(delimiters);
+					//	var testWords = testMovieName.Split(delimiters);
+					//	int matches = 0;
+
+					//	for (int index = 0; index < movieWords.Length; index++)
+					//	{
+					//		for (int i = 0; i < testWords.Length; i++)
+					//		{
+					//			if(movieWords[index] != null && movieWords[index] == testWords[i])
+					//			{
+					//				// Only needs to match once.
+					//				matches++;
+					//				break;
+					//			}
+					//		}
+					//	}
+
+					//	result = movieWords.Length > 0 && matches / movieWords.Length >= 0.666666;
+					//}
+
+					if (result && Day.HasValue && compareTo.Day.HasValue)
+					{
+						// If both days have values then they HAVE TO MATCH.
+
+						result = Day.Value == compareTo.Day.Value;
+					}
 				}
 			}
 
