@@ -110,6 +110,7 @@
     <Compile Include="MineBoxOfficeMojoTheaterCountTests.cs" />
     <Compile Include="MineBoxOfficeMojoTests.cs" />
     <Compile Include="MineBoxOfficeProphetTests.cs" />
+    <Compile Include="MineVisualRecreationTests.cs" />
     <Compile Include="MineFandangoTicketSalesByDayTests.cs" />
     <Compile Include="MineFandangoTicketSalesTests.cs" />
     <Compile Include="MineBoxOfficeReportTests.cs" />
