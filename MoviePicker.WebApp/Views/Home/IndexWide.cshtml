@@ -375,7 +375,9 @@
 													</td>
 												</tr>
 												<tr>
-													<input id="@string.Format("boSliderId{0}", @movieCount)" type="range" onchange="sliderOnChange(this, @movieCount)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+													<td colspan="2">
+														<input id="@string.Format("boSliderId{0}", @movieCount)" type="range" onchange="sliderOnChange(this, @movieCount)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+													</td>
 												</tr>
 											</table>
 										</div>

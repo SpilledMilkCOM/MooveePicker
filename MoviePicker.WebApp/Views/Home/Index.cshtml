@@ -508,7 +508,7 @@
 
 								var value = (decimal)Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model);
 								var valueString = string.Format("{0:N0}", value);
-								var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
+								var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => (item.Id != 0 && item.Id == movie.Id) || item.Name == movie.Name);
 								var inputBackgroundColor = lastWeek == null ? "lightgreen" : "cyan";
 								string divBackgroundColorStyle = null;
 								decimal percent = 0;
@@ -611,8 +611,19 @@
 												</td>
 											</tr>
 											<tr>
-												<td>
-													<input id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+												<td colspan="2">
+													@if (lastWeek != null && value > lastWeek.EarningsBase * 2)
+													{
+														// Adjust the slider to MORE than 100% since the value is already greater than 100% and the slider won't work.
+
+														var sliderMax = (Math.Round(value / lastWeek.EarningsBase, 0) + 1) * 100;
+
+														<input id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="@sliderMax" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+													}
+													else
+													{
+														<input id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+													}
 												</td>
 											</tr>
 										</table>

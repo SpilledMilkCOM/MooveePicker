@@ -222,6 +222,10 @@ function percentToBackgroundColor(percent) {
 
 	luminosity = (100 - percent) / 100 * (100 - minLuminosity) + minLuminosity;
 
+	if (luminosity < minLuminosity) {
+		luminosity = minLuminosity;
+	}
+
 	return 'hsl(' + hue + ', ' + saturation + '%, ' + luminosity + '%)';
 }
 
