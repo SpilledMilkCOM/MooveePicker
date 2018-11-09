@@ -237,7 +237,7 @@ namespace MoviePicker.Common
 						{
 							// Try  to remove some of the noise.
 
-							var thisYear = $" ({DateTime.Now.Year})";
+							var thisYear = $" {DateTime.Now.Year}";
 
 							movieName = movieName.Replace(thisYear, string.Empty);
 							testMovieName = testMovieName.Replace(thisYear, string.Empty);

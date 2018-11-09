@@ -14,7 +14,7 @@ namespace MoviePicker.Tests
 		public void Movie_Equals_ContainsMatch_Matches()
 		{
 			var movie1 = new Movie { Name = "The Grinch" };
-			var movie2 = new Movie { Name = "Dr Seuss The Grinch (2018)" };
+			var movie2 = new Movie { Name = "Dr Seuss The Grinch 2018" };
 
 			Assert.IsTrue(movie1.Equals(movie2), "The movie names do NOT equal");
 		}
