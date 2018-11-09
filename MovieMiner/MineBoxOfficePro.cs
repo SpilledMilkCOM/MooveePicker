@@ -39,15 +39,15 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2018, 11, 4);
-				UrlSource = "https://pro.boxoffice.com/weekend-forecast-bohemian-rhapsody-nutcracker-four-realms-nobodys-fool/";
+				var weekend = new DateTime(2018, 11, 11);
+				UrlSource = "https://pro.boxoffice.com/weekend-forecast-seuss-grinch-girl-spiders-web-overlord/";
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 40700000, WeekendEnding = weekend },
-								new Movie { MovieName = "The Nutcracker  the Four Realms", Earnings = 19500000, WeekendEnding = weekend },
-								new Movie { MovieName = "Halloween 2018", Earnings = 15800000, WeekendEnding = weekend },
-								new Movie { MovieName = "Nobodys Fool", Earnings = 14500000, WeekendEnding = weekend },
-								new Movie { MovieName = "A Star Is Born", Earnings = 9500000, WeekendEnding = weekend },
+								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 69000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 26200000, WeekendEnding = weekend },
+								new Movie { MovieName = "The Nutcracker  the Four Realms", Earnings = 10000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Overlord", Earnings = 8400000, WeekendEnding = weekend },
+								new Movie { MovieName = "The Girl In the Spiders Web", Earnings = 8300000, WeekendEnding = weekend },
 						};
 			}
 		}
