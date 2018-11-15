@@ -256,6 +256,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="connectionStrings.config" />
     <Content Include="connectionStrings.secret.config" />
+    <Content Include="Data\Film Vault ID to Noovie.secret.csv" />
     <None Include="Properties\PublishProfiles\MooveePicker - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\MooveePicker - Web Deploy.pubxml" />
     <Content Include="Scripts\bootstrap.js" />
