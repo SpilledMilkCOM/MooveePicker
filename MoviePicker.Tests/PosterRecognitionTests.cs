@@ -1,13 +1,15 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Cognitive;
+using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using Unity;
+using Unity.Injection;
 
 namespace MoviePicker.Tests
 {
 	[TestClass]
 	[ExcludeFromCodeCoverage]
+	[DeploymentItem("app.secret.config")]
 	public class PosterRecognitionTests
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
@@ -16,11 +18,13 @@ namespace MoviePicker.Tests
 		[ClassInitialize]
 		public static void InitializeBeforeAllTests(TestContext context)
 		{
+			var apiKey = ConfigurationManager.AppSettings["APIKey"];
+
 			_unity = new UnityContainer();
 
 			_unity.RegisterType<ICognitiveConfiguration, CognitiveConfiguration>();
 			_unity.RegisterType<IPosterRecognition, PosterRecognition>();
-			_unity.RegisterType<IRestClient, RestClient>();
+			_unity.RegisterType<IRestClient, RestClient>(new InjectionProperty("APIKey", apiKey) );
 		}
 
 		[TestMethod, TestCategory("Integration")]

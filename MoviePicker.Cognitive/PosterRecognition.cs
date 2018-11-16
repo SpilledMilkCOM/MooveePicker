@@ -14,7 +14,6 @@
 
 			_restClient.BaseAddress = "https://southcentralus.api.cognitive.microsoft.com";
 			_restClient.EndPointMethod = "/vision/v1.0/analyze";
-			_restClient.APIKey = "";
 		}
 
 		public string AnalyzePoster(string posterUrl)

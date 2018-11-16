@@ -142,6 +142,7 @@
   <ItemGroup>
     <Content Include="app.config" />
     <Content Include="app.secret.config" />
+    <Content Include="app.demo.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>
