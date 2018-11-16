@@ -182,6 +182,26 @@ namespace MoviePicker.WebApp.Tests.Models
 		}
 
 		[TestMethod, TestCategory(TEST_CATEGORY)]
+		public void ImageUtility_GenerateTwitterImageFML_4xAntman4xSearchingAntmanBonus()
+		{
+			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
+			var test = CreateTestObject();
+			var files = new List<string>();
+
+			for (int count = 0; count < 4; count++)
+			{
+				files.Add($"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+			}
+			for (int count = 0; count < 4; count++)
+			{
+				files.Add($"{cwd}\\Images\\TestPoster_p13742448_p_v8_aa.jpg");
+			}
+			var filePath = test.GenerateTwitterImageFML(cwd, files, $"{cwd}\\Images\\TestPoster_antman_and_the_wasp_ver2.jpg");
+
+			Assert.IsNotNull(filePath);
+		}
+
+		[TestMethod, TestCategory(TEST_CATEGORY)]
 		public void ImageUtility_CombineImagesHorizontal_8xAntman()
 		{
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";

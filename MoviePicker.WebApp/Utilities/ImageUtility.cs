@@ -473,6 +473,89 @@ namespace MoviePicker.WebApp.Utilities
 		/// <param name="webRootPath"></param>
 		/// <param name="fileNames"></param>
 		/// <returns>The result file name.</returns>
+		public string GenerateTwitterImageFML(string webRootPath, List<string> fileNames, string bonusFileName = null, List<string> filmCellNames = null)
+		{
+			const int CELL_HEIGHT_PIXELS = 46;
+			const int FIRST_CELL_HEIGHT_PIXELS = 34;
+
+			// There is a cool site that puts images together https://www.fotor.com/create/collage/
+
+			var guid = Guid.NewGuid();
+			var twitterFileName = $"Twitter_{guid}.jpg";
+			var imagePath = $"{webRootPath}{Path.DirectorySeparatorChar}{DEFAULT_IMAGE_DIR}";
+			// Just in case only a few cell names are sent in, the original list can be used.
+			var savedFilmCellNames = filmCellNames == null ? null : new List<string>(filmCellNames);
+			string resultFileName = null;
+			int width = 0;
+			int height = 0;
+			int offset = 0;
+			int oldWidth = 0;
+			int oldHeight = 0;
+
+			resultFileName = CombineImagesRows(webRootPath, fileNames, bonusFileName);
+
+			using (var image = Image.FromFile(resultFileName))
+			{
+				oldWidth = image.Width;
+				oldHeight = image.Height;
+			}
+
+			// Create the Twitter image with the 2:1 aspect ratio
+
+			// Twitter render size for large format.
+			width = 600;
+			//height = 300;
+			height = 314;
+
+			// Scale the image width (down) proportionate to the height.
+			oldWidth = (int)(oldWidth * (double)height / oldHeight);
+			offset = width - oldWidth;
+
+			int logoWidth = offset / 2;
+			int logoInset = (offset + logoWidth) / 2;
+
+			using (var destBitmap = new Bitmap(width, height))
+			{
+				destBitmap.SetResolution(72, 72);
+
+				using (var graphics = Graphics.FromImage(destBitmap))
+				{
+					graphics.Clear(Color.Black);
+
+					// Draw the previous image into the horizontally padded bitmap.
+
+					using (var image = Image.FromFile(resultFileName))
+					{
+						// Using the specified widths will scale the image into the smaller Twitter image.
+
+						graphics.DrawImage(image, offset, 0, oldWidth, height);
+					}
+
+					// Draw branding on the left.
+
+					using (var image = Image.FromFile($"{imagePath}{Path.DirectorySeparatorChar}FMLbranding.png"))
+					{
+						// Scale the branding to fit within the offset
+						graphics.DrawImage(image, 0, 0, offset, (int)((double)image.Height / image.Width * offset));
+					}
+				}
+
+				resultFileName = $"{imagePath}{Path.DirectorySeparatorChar}{twitterFileName}";
+
+				destBitmap.Save(resultFileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+				// TODO: Add a black border/bleed for Twitter while still keeping the 2:1 aspect ratio.
+			}
+
+			return twitterFileName;
+		}
+
+		/// <summary>
+		/// Combine the list of images into a single image
+		/// </summary>
+		/// <param name="webRootPath"></param>
+		/// <param name="fileNames"></param>
+		/// <returns>The result file name.</returns>
 		public string CombineImagesHorizonal(string webRootPath, List<string> fileNames, string bonusFileName = null)
 		{
 			const int COLUMNS = 8;
