@@ -248,7 +248,7 @@
 
 			</div>
 
-			<div class="col-xs-12" width="100%" style="overflow-x: auto; white-space: nowrap; height: 250px; overflow-y: hidden;">
+			<div class="col-xs-12" width="100%" style="overflow-x: auto; white-space: nowrap; height: 235px; overflow-y: hidden;">
 				<table>
 					@{
 						movieCount = 1;
@@ -351,35 +351,38 @@
 											@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
 											@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
 
-											<table style="position: relative; top: -75px;">
-												<tr>
-													<td>
-														<input name="@name"
-															   class="form-control"
-															   id="@boId"
-															   onblur="boxOfficeLostFocus('@valueString', this.value, @movieCount)"
-															   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
-															   type="text"
-															   value="@valueString"
-															   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
-															   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
-															   data-val-required="The Box Office @movieCount field is required."
-															   data-val-number="The field Box Office @movieCount must be a number."
-															   data-val="true">
-													</td>
+											<div style="position: relative; width: 0; height: 0">
+												<table style="position: absolute; left: 2px; top: -60px;">
 
-													<td style="padding-left: 3px;">
-														<div id="@string.Format("{0}Pct", boId)" style="@divBackgroundColorStyle border-radius: 3px; padding: 3px;">
-															@percent.ToString("N0")%
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td colspan="2">
-														<input id="@string.Format("boSliderId{0}", @movieCount)" type="range" onchange="sliderOnChange(this, @movieCount)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
-													</td>
-												</tr>
-											</table>
+													<tr>
+														<td>
+															<input name="@name"
+																   class="form-control"
+																   id="@boId"
+																   onblur="boxOfficeLostFocus('@valueString', this.value, @movieCount)"
+																   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
+																   type="text"
+																   value="@valueString"
+																   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
+																   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
+																   data-val-required="The Box Office @movieCount field is required."
+																   data-val-number="The field Box Office @movieCount must be a number."
+																   data-val="true">
+														</td>
+
+														<td style="padding-left: 3px;">
+															<div id="@string.Format("{0}Pct", boId)" style="@divBackgroundColorStyle border-radius: 3px; padding: 3px;">
+																@percent.ToString("N0")%
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<td colspan="2">
+															<input id="@string.Format("boSliderId{0}", @movieCount)" type="range" onchange="sliderOnChange(this, @movieCount)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+														</td>
+													</tr>
+												</table>
+											</div>
 										</div>
 									</td>
 
