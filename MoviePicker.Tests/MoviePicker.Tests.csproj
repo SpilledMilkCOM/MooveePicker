@@ -98,6 +98,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="PosterRecognitionTests.cs" />
     <Compile Include="TitleMatchTests.cs" />
     <Compile Include="MovieTests.cs" />
     <Compile Include="Old\MoviePickerTest_20170820.cs" />
@@ -117,6 +118,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MoviePicker.Cognitive\MoviePicker.Cognitive.csproj">
+      <Project>{fbbdf75c-bce8-4e19-9248-e398a0af8d05}</Project>
+      <Name>MoviePicker.Cognitive</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MoviePicker.Common\MoviePicker.Common.csproj">
       <Project>{C413BA12-DCD8-485E-B008-087BA02004CB}</Project>
       <Name>MoviePicker.Common</Name>
@@ -135,6 +140,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app.config" />
+    <Content Include="app.secret.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

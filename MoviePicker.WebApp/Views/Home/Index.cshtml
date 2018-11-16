@@ -56,52 +56,57 @@
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
 
-			<div id="picksColumn">
-				@if (Model.MovieListPerfectPick != null)
-				{
-					@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
-				}
+			<div class="col-lg-10">
+				<div id="picksColumn">
+					@if (Model.MovieListPerfectPick != null)
+					{
+						@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
+					}
 
-				@if (Model.MovieList != null)
-				{
-					@Html.Partial("MovieListMini2", Model.MovieList)
-				}
+					@if (Model.MovieList != null)
+					{
+						@Html.Partial("MovieListMini2", Model.MovieList)
+					}
 
-				@if (Model.MovieListBonusOff != null)
+					@if (Model.MovieListBonusOff != null)
+					{
+						@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
+					}
+				</div>
+			</div>
+
+			<div class="col-lg-2">
+				<input class="btn btn-success"
+					   style="margin-top: 10px;"
+					   onclick="clickPicks()"
+					   type="button"
+					   value="Calculate Picks"
+					   data-toggle="tooltip"
+					   data-placement="bottom"
+					   title="Click to recalculate page and set the URL to the current values...">
+
+				<a class="btn btn-info"
+				   style="margin-top: 10px;"
+				   onclick="clickMorePicks()"
+				   data-toggle="tooltip"
+				   data-placement="bottom"
+				   title="View the top picks for both bonus ON and OFF (this is a bit slow... please be patient.)">
+					More Picks...
+				</a>
+
+				@if (Model.IsTracking)
 				{
-					@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
+					<input class="btn btn-info"
+						   style="margin-top: 10px;"
+						   onclick="clickTracking(@string.Format("'{0}'", Guid.NewGuid()))"
+						   type="button"
+						   value="Perfect Pick Comparison"
+						   data-toggle="tooltip"
+						   data-placement="bottom"
+						   title="Click to track all the miners against the estimates..." />
 				}
 			</div>
 
-			<input class="btn btn-success btn-lg"
-				   style="margin-top: 10px;"
-				   onclick="clickPicks()"
-				   type="button"
-				   value="Calculate Picks"
-				   data-toggle="tooltip"
-				   data-placement="bottom"
-				   title="Click to recalculate page and set the URL to the current values...">
-
-			<a class="btn btn-info btn-lg"
-			   style="margin-top: 10px;"
-			   onclick="clickMorePicks()"
-			   data-toggle="tooltip"
-			   data-placement="bottom"
-			   title="View the top picks for both bonus ON and OFF (this is a bit slow... please be patient.)">
-				More Picks...
-			</a>
-
-			@if (Model.IsTracking)
-			{
-				<input class="btn btn-info btn-lg"
-					   style="margin-top: 10px;"
-					   onclick="clickTracking(@string.Format("'{0}'", Guid.NewGuid()))"
-					   type="button"
-					   value="Perfect Pick Comparison"
-					   data-toggle="tooltip"
-					   data-placement="bottom"
-					   title="Click to track all the miners against the estimates..." />
-			}
 
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
@@ -651,21 +656,3 @@
 
 	</div> @* end class="row" *@
 }
-
-<script type="text/javascript">
-//window.onscroll = function () { scrollPicksColumn() };
-
-//var picksColumn = document.getElementById("picksColumn");
-//var picksColumnOffset = picksColumn.offsetTop;
-
-//function scrollPicksColumn() {
-//	console.log(window.pageYOffset);
-//	console.log(picksColumnOffset);
-
-//	if (window.pageYOffset >= picksColumnOffset) {
-//		picksColumn.classList.add("sticky");
-//	} else {
-//		picksColumn.classList.remove("sticky");
-//	}
-//}
-</script>

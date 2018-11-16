@@ -475,8 +475,8 @@ namespace MoviePicker.WebApp.Utilities
 		/// <returns>The result file name.</returns>
 		public string GenerateTwitterImageFML(string webRootPath, List<string> fileNames, string bonusFileName = null, List<string> filmCellNames = null)
 		{
-			const int CELL_HEIGHT_PIXELS = 46;
-			const int FIRST_CELL_HEIGHT_PIXELS = 34;
+			//const int CELL_HEIGHT_PIXELS = 46;
+			//const int FIRST_CELL_HEIGHT_PIXELS = 34;
 
 			// There is a cool site that puts images together https://www.fotor.com/create/collage/
 
