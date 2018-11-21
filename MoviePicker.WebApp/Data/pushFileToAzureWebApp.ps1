@@ -7,7 +7,7 @@ $file="MyDataFile.txt"
 # NOTE: Split the publishUrl for the FTP profile into the first 2 variables
 
 $ftpUrl="your-prod-svr-007.ftp.azurewebsites.windows.net"
-$destintaionDir="site/wwwroot/data"
+$destinationDir="site/wwwroot/data"
 $userName="AzureApp\`$AzureApp"						# Note that the dollar sign is escaped because that is part of the user name from the publish file.
 $password="abcdefghijklmnopqrstuvwxyz0123456789"
 
@@ -25,7 +25,7 @@ Write-Host
 $commandFile="pushFileToAzureWebApp.ftpcmd.txt"
 
 Write-Output "user $userName $password"	> 	$commandFile		# Logon
-Write-Output "cd $destintaionDir" 		>> 	$commandFile		# Change to destination directory
+Write-Output "cd $destinationDir" 		>> 	$commandFile		# Change to destination directory
 Write-Output "put ""$file""" 			>> 	$commandFile		# Push the local file
 Write-Output "quit" 					>> 	$commandFile		# Exit
 
