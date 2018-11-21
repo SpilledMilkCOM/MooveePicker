@@ -52,6 +52,10 @@ namespace MovieMiner
 								new Movie { MovieName = "Green Book", Earnings = 4 * MBAR, WeekendEnding = weekend },
 								new Movie { MovieName = "A Star Is Born", Earnings = 3.1m * MBAR, WeekendEnding = weekend },
 								new Movie { MovieName = "The Nutcracker  the Four Realms", Earnings = 3 * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Overlord", Earnings = 1.9m * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Boy Erased", Earnings = 1.1m * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "The Front Runner", Earnings = 0.9m * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Nobodys Fool", Earnings = 0.75m * MBAR, WeekendEnding = weekend },
 						};
 			}
 		}
