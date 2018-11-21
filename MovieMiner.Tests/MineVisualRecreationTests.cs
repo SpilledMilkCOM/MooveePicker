@@ -26,8 +26,6 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineVisualRecreation_Mine_GenerateBoxOfficeValues()
 		{
-			// http://pro.boxoffice.com/
-
 			var test = new MineFantasyMovieLeagueBoxOffice();
 
 			var actual = test.Mine();
@@ -37,15 +35,16 @@ namespace MovieMiner.Tests
 
 			var weekendEnding = actual[0].WeekendEnding;
 			var tab = "\t";
+			var urlSource = "https://twitter.com/VisRecVids/status/1065292217969979392";
 
 			Logger.WriteLine($"{tab}{tab}{tab}var weekend = new DateTime({weekendEnding.Year}, {weekendEnding.Month}, {weekendEnding.Day});");
-			Logger.WriteLine($"{tab}{tab}{tab}UrlSource = \"{test.UrlSource}\";");
+			Logger.WriteLine($"{tab}{tab}{tab}UrlSource = \"{urlSource}\";");
 			Logger.WriteLine($"{tab}{tab}{tab}return new List<IMovie>");
 			Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{{");
 
 			foreach (var movie in actual.OrderByDescending(item => item.Cost))
 			{
-				Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}new Movie {{ MovieName = \"{movie.MovieName}\", Earnings = 0, WeekendEnding = weekend }},");
+				Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}new Movie {{ MovieName = \"{movie.MovieName}\", Earnings = 0 * MBAR, WeekendEnding = weekend }},");
 			}
 			Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}}};");
 		}

@@ -217,6 +217,20 @@
 													@string.Format("{0:N1}%", (nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)
 												</div>
 											}
+											else
+											{
+												// Still have to build the scaffolding.
+
+												<div id="@string.Format("bonusCompDifference{0}", movieCount)"
+													 class="col-xs-3 col-sm-2"
+													 style="@backgroundColor text-align: right;">--</div>
+												<div id="@string.Format("bonusCompDiffPctUp{0}", movieCount)"
+													 class="col-xs-2 col-sm-1"
+													 style="@backgroundColor text-align: right; color: #33cc33">--</div>
+												<div id="@string.Format("bonusCompDiffPctDown{0}", movieCount)"
+													 class="col-xs-2 col-sm-1"
+													 style="@backgroundColor text-align: right; color: #cc3333">--</div>
+											}
 										}
 										else
 										{
