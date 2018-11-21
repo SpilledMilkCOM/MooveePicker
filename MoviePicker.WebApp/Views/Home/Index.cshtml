@@ -544,7 +544,7 @@
 										toolTip.Append(miner.Abbreviation);
 										toolTip.Append("</td><td style=\"padding: 5px;\">");
 
-										if (!string.IsNullOrEmpty(miner.Error))
+										if (!string.IsNullOrEmpty(miner.Error) && !string.IsNullOrEmpty(miner.ErrorDetail))
 										{
 											toolTip.Append(miner.Error);
 										}

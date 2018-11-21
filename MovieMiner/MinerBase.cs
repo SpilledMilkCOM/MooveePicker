@@ -34,6 +34,7 @@ namespace MovieMiner
 			CacheConfiguration = new CacheConfiguration();              // Just take the default for now.
 			ContainsEstimates = true;									// Override this if actuals.
 			Expiration = DateTime.Now.Subtract(new TimeSpan(1));        // This will trigger the first load.
+			GameDays = 3;
 			IsHidden = false;
 			OkToMine = true;
 			Name = name;
@@ -137,6 +138,11 @@ namespace MovieMiner
 		}
 
 		public DateTime? Expiration { get; private set; }
+
+		/// <summary>
+		/// The number of game days. DEFAULT 3
+		/// </summary>
+		public int GameDays { get; set; }
 
 		public bool IsHidden { get; set; }
 
@@ -316,9 +322,9 @@ namespace MovieMiner
 
 			if (result != null)
 			{
-				// BO Prophet does NOT know how to spell.
+				// BO Mojo put a number in.
 
-				result = result.Replace("Juamnji", "Jumanji");
+				result = result.Replace("Creed 2", "Creed II");
 			}
 
 			return result;
