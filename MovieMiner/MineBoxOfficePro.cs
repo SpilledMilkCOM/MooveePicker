@@ -39,15 +39,20 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2018, 11, 18);
-				UrlSource = "https://pro.boxoffice.com/weekend-forecast-fantastic-beasts-crimes-grindelwald-instant-family-widows/";
+				var weekend = new DateTime(2018, 11, 25);
+				UrlSource = "https://pro.boxoffice.com/weekend-forecast-ralph-breaks-internet-creed-ii-robin-hood/";
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Fantastic Beasts The Crimes of Grindelwald", Earnings = 65000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 36000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Instant Family", Earnings = 18000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 17500000, WeekendEnding = weekend },
-								new Movie { MovieName = "Widows", Earnings = 14500000, WeekendEnding = weekend },
+								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 48800000, WeekendEnding = weekend },
+								new Movie { MovieName = "Creed II", Earnings = 33500000, WeekendEnding = weekend },
+								new Movie { MovieName = "Fantastic Beasts The Crimes of Grindelwald", Earnings = 31500000, WeekendEnding = weekend },
+								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 30000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Instant Family", Earnings = 13000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 12900000, WeekendEnding = weekend },
+								new Movie { MovieName = "Widows", Earnings = 8900000, WeekendEnding = weekend },
+								new Movie { MovieName = "Robin Hood", Earnings = 8000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Green Book", Earnings = 4500000, WeekendEnding = weekend },
+								new Movie { MovieName = "A Star Is Born", Earnings = 3500000, WeekendEnding = weekend },
 						};
 			}
 		}
