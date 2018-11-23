@@ -284,8 +284,10 @@ namespace MovieMiner
 										{
 											result.Add(movie);
 										}
-										else
+										else if (GameDays > 3)
 										{
+											// It's OK to override the BO value if the game days is MORE than the default.
+
 											// Need to use "fuzzy" logic here because the names may have dates as suffixes and those should match.
 											var found = result.Find(item => item.Equals(movie));
 
