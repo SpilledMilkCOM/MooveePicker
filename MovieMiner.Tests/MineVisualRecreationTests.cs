@@ -35,7 +35,7 @@ namespace MovieMiner.Tests
 
 			var weekendEnding = actual[0].WeekendEnding;
 			var tab = "\t";
-			var urlSource = "https://twitter.com/VisRecVids/status/1065292217969979392";
+			var urlSource = "https://twitter.com/VisRecVids/status/1065291372851314689";
 
 			Logger.WriteLine($"{tab}{tab}{tab}var weekend = new DateTime({weekendEnding.Year}, {weekendEnding.Month}, {weekendEnding.Day});");
 			Logger.WriteLine($"{tab}{tab}{tab}UrlSource = \"{urlSource}\";");
