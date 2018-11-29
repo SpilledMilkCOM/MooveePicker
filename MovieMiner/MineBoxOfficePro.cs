@@ -39,15 +39,20 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2018, 11, 18);
-				UrlSource = "https://pro.boxoffice.com/weekend-forecast-fantastic-beasts-crimes-grindelwald-instant-family-widows/";
+				var weekend = new DateTime(2018, 12, 2);
+				UrlSource = "https://pro.boxoffice.com/weekend-forecast-ralph-creed-ii-holdovers-look-hold-off-possession-hannah-grace/";
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Fantastic Beasts The Crimes of Grindelwald", Earnings = 65000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 36000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Instant Family", Earnings = 18000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 17500000, WeekendEnding = weekend },
-								new Movie { MovieName = "Widows", Earnings = 14500000, WeekendEnding = weekend },
+								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 28000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 17200000, WeekendEnding = weekend },
+								new Movie { MovieName = "Creed II", Earnings = 17100000, WeekendEnding = weekend },
+								new Movie { MovieName = "Fantastic Beasts The Crimes of Grindelwald", Earnings = 12000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 8200000, WeekendEnding = weekend },
+								new Movie { MovieName = "Instant Family", Earnings = 6800000, WeekendEnding = weekend },
+								new Movie { MovieName = "Widows", Earnings = 4500000, WeekendEnding = weekend },
+								new Movie { MovieName = "Robin Hood", Earnings = 4300000, WeekendEnding = weekend },
+								new Movie { MovieName = "Green Book", Earnings = 4000000, WeekendEnding = weekend },
+								new Movie { MovieName = "The Possession of Hannah Grace", Earnings = 3200000, WeekendEnding = weekend },
 						};
 			}
 		}
