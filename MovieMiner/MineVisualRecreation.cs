@@ -9,7 +9,7 @@ namespace MovieMiner
 	public class MineVisualRecreation : MinerBase
 	{
 		private const string DEFAULT_URL = "https://www.youtube.com/channel/UCy3oMGqYJiPWQ030mYbaZig";
-		private const decimal MBAR = 1000000;
+		private const decimal MBAR = 1000000;		// The Roman numeral M with a bar over it is a million.
 
 		private bool _mineData = false;
 		//private bool _mineData = true;
