@@ -39,20 +39,20 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2018, 12, 2);
-				UrlSource = "https://pro.boxoffice.com/weekend-forecast-ralph-creed-ii-holdovers-look-hold-off-possession-hannah-grace/";
+				var weekend = new DateTime(2018, 12, 9);
+				UrlSource = "https://pro.boxoffice.com/weekend-forecast-ralph-grinch-creed-ii-lead-quiet-december-weekend/";
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 28000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 17200000, WeekendEnding = weekend },
-								new Movie { MovieName = "Creed II", Earnings = 17100000, WeekendEnding = weekend },
-								new Movie { MovieName = "Fantastic Beasts The Crimes of Grindelwald", Earnings = 12000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 8200000, WeekendEnding = weekend },
-								new Movie { MovieName = "Instant Family", Earnings = 6800000, WeekendEnding = weekend },
-								new Movie { MovieName = "Widows", Earnings = 4500000, WeekendEnding = weekend },
-								new Movie { MovieName = "Robin Hood", Earnings = 4300000, WeekendEnding = weekend },
-								new Movie { MovieName = "Green Book", Earnings = 4000000, WeekendEnding = weekend },
-								new Movie { MovieName = "The Possession of Hannah Grace", Earnings = 3200000, WeekendEnding = weekend },
+								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 16800000, WeekendEnding = weekend },
+								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 14000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Creed II", Earnings = 11000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Fantastic Beasts The Crimes of Grindelwald", Earnings = 6800000, WeekendEnding = weekend },
+								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 6200000, WeekendEnding = weekend },
+								new Movie { MovieName = "Instant Family", Earnings = 5500000, WeekendEnding = weekend },
+								new Movie { MovieName = "Green Book", Earnings = 3300000, WeekendEnding = weekend },
+								new Movie { MovieName = "The Possession of Hannah Grace", Earnings = 3000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Widows", Earnings = 3000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Robin Hood", Earnings = 2900000, WeekendEnding = weekend },
 						};
 			}
 		}
