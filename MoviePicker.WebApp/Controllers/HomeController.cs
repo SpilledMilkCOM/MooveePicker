@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Web;
 using System.Web.Mvc;
 
 using TopMoviePicker = MooveePicker.MoviePicker;
@@ -389,8 +390,6 @@ namespace MoviePicker.WebApp.Controllers
 
 			_minerModel.Miners.Last().IsHidden = true;
 
-			//ControllerUtility.SetTwitterCard(ViewBag);
-
 			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image", null
 								, "Tracking my picks against the perfect pick to see where I went right or horribly wrong."
 								, $"{Constants.WEBSITE_URL}/images/{sharedViewModel.TwitterImageFileName}"
@@ -591,44 +590,7 @@ namespace MoviePicker.WebApp.Controllers
 				picksViewModel = ConstructPicksViewModel();
 			}
 
-			//var webRootPath = Server.MapPath("~");
-			//var localFilePrefix = $"{webRootPath}images{Path.DirectorySeparatorChar}";
 			var picks = bonusOn ? picksViewModel.MovieList?.Picks[index] : picksViewModel.MovieListBonusOff?.Picks[index];
-			//var movieImages = picks?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
-			//var localFiles = FileUtility.LocalFiles(movieImages, $"{localFilePrefix}MoviePoster_");
-			//string bonusFile = null;
-
-			//if (bonusOn)
-			//{
-			//	var bonusMovie = picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer);
-
-			//	if (bonusMovie != null && bonusMovie.ImageUrl != null)
-			//	{
-			//		bonusFile = FileUtility.LocalFile(bonusMovie.ImageUrl.Replace("MoviePoster_", string.Empty), $"{localFilePrefix}MoviePoster_");
-			//	}
-			//}
-
-			//// Attempt to use the temp posters first since that is more restrictive, otherwise you might get BOTH sets and you'll see duplicates in the randomization.
-
-			//var filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.temp.*");
-
-			//if (filmCellFileNames == null || filmCellFileNames.Count == 0)
-			//{
-			//	// Just in case there are no "temp" names.
-
-			//	filmCellFileNames = FileUtility.FilterImagesInPath(localFilePrefix, "MoviePoster_*.*");
-			//}
-
-			//var filmCellFiles = FileUtility.LocalFiles(filmCellFileNames, localFilePrefix);
-
-			//List<string> perfectPickFiles = null;
-
-			//if (isTracking && picksViewModel.IsTracking)
-			//{
-			//	var perfectPickImages = picksViewModel?.MovieListPerfectPick?.Picks[0]?.MovieImages?.Select(movie => Path.GetFileName(movie.Replace("MoviePoster_", string.Empty)));
-
-			//	perfectPickFiles = FileUtility.LocalFiles(perfectPickImages, $"{localFilePrefix}MoviePoster_");
-			//}
 
 			var viewModel = new SharePicksViewModel()
 			{
@@ -663,9 +625,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks." : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:";
 
-			defaultTwitterText += picks.ToString();
-			defaultTwitterText += minerPick == null ? " only cost me " : " cost ";
-			defaultTwitterText += $"{spentBux.ToString("N0")} BUX #ShowYourScreens @SpilledMilkCOM RT if you like this pick #PerfectPick";
+			defaultTwitterText += "%0a" + picks.ToString();
+			defaultTwitterText += $"%0a[cost {spentBux.ToString("N0")} BUX]%0a%0a#ShowYourScreens @SpilledMilkCOM RT if you like this pick #PerfectPick";
 
 			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image"
 											, viewModel.TwitterTitle
