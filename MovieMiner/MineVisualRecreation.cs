@@ -22,7 +22,7 @@ namespace MovieMiner
 
 		public override IMiner Clone()
 		{
-			var result = new MineBoxOfficePro();
+			var result = new MineVisualRecreation();
 
 			Clone(result);
 
