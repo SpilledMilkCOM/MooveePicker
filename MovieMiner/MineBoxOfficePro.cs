@@ -39,20 +39,15 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2018, 12, 9);
-				UrlSource = "https://pro.boxoffice.com/weekend-forecast-ralph-grinch-creed-ii-lead-quiet-december-weekend/";
+				var weekend = new DateTime(2018, 12, 16);
+				UrlSource = "https://pro.boxoffice.com/weekend-forecast-spider-man-spider-verse-mule-mortal-engines/";
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 16800000, WeekendEnding = weekend },
-								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 14000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Creed II", Earnings = 11000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Fantastic Beasts The Crimes of Grindelwald", Earnings = 6800000, WeekendEnding = weekend },
-								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 6200000, WeekendEnding = weekend },
-								new Movie { MovieName = "Instant Family", Earnings = 5500000, WeekendEnding = weekend },
-								new Movie { MovieName = "Green Book", Earnings = 3300000, WeekendEnding = weekend },
-								new Movie { MovieName = "The Possession of Hannah Grace", Earnings = 3000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Widows", Earnings = 3000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Robin Hood", Earnings = 2900000, WeekendEnding = weekend },
+								new Movie { MovieName = "SpiderMan Into the SpiderVerse", Earnings = 36000000, WeekendEnding = weekend },
+								new Movie { MovieName = "The Mule", Earnings = 17000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 10900000, WeekendEnding = weekend },
+								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 10000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Mortal Engines", Earnings = 9600000, WeekendEnding = weekend },
 						};
 			}
 		}
