@@ -390,11 +390,13 @@ namespace MoviePicker.WebApp.Controllers
 
 			_minerModel.Miners.Last().IsHidden = true;
 
+			// TODO: Adjust text based on the miner's weight.
+
 			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image", null
 								, "Tracking my picks against the perfect pick to see where I went right or horribly wrong."
 								, $"{Constants.WEBSITE_URL}/images/{sharedViewModel.TwitterImageFileName}"
 								, "Collage of the perfect pick lineup."
-								, "Check out my picks against the perfect pick.");
+								, "Check out my picks against the perfect pick. #ShowYourScreens");
 
 			ControllerUtility.SetOpenGraph(ViewBag, Request);
 
