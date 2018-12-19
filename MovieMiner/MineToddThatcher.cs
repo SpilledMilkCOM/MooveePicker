@@ -59,7 +59,7 @@ namespace MovieMiner
 
 			if (node == null)
 			{
-				node = doc.DocumentNode.SelectSingleNode($"//body//a[contains(@title, 'Box Office Estimates')]");
+				node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@title, 'Box Office Estimates')]|//body//a[contains(@title, 'Box Office Predictions')]");
 			}
 
 			if (node != null)
