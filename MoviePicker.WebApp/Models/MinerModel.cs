@@ -43,6 +43,14 @@ namespace MoviePicker.WebApp.Models
 
 		public List<IMiner> Miners { get; private set; }
 
+		public DateTime? WeekendEnding
+		{
+			get
+			{
+				return Miners.First().ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Miners.First().ContainsEstimates) : Miners.First().Movies?.FirstOrDefault()?.WeekendEnding;
+			}
+		}
+
 		public IMinerModel Clone()
 		{
 			var clone = new MinerModel(false) { Miners = new List<IMiner>() };

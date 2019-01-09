@@ -2,6 +2,7 @@
 using MoviePicker.Common.Interfaces;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -51,6 +52,8 @@ namespace MoviePicker.WebApp.ViewModels
 		public string SharedPicksImageUrl { get; set; }
 
 		public string SharedPicksUrl { get; set; }
+
+		public DateTime? WeekendEnding { get; set; }
 
 		/// <summary>
 		/// Post the Weight back to the controller.

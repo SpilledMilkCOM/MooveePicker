@@ -92,13 +92,14 @@ namespace MoviePicker.WebApp.Controllers
 			var baseMovies = _minerModel.Miners[MinerModel.FML_INDEX].Movies;
 			var lastMiner = _minerModel.Miners.Last();
 			var minerCount = 0;
+			var weekendEnding = _minerModel.WeekendEnding;
 
 			foreach (var miner in _minerModel.Miners.Skip(2))
 			{
 				if (miner.Picks != null && miner.Movies.Count > 0 && !miner.IsHidden && miner != lastMiner)
 				{
 					var expert = new ExpertPickModel { Miner = miner };
-					var shareQueryString = $"{WeightListFromCounter(minerCount)}&id={Guid.NewGuid()}";      // Need to add the unique ID for Twitter to regenerate the page/image.
+					var shareQueryString = $"{WeightListFromCounter(minerCount)}&id={Guid.NewGuid()}&we={weekendEnding}";      // Need to add the unique ID for Twitter to regenerate the page/image.
 
 					// Make sure the images are synchronized.
 
