@@ -13,8 +13,8 @@ namespace MovieMiner
 	{
 		private const string DEFAULT_URL = "https://pro.boxoffice.com/";
 
-		private bool _mineData = false;
-		//private bool _mineData = true;
+		//private bool _mineData = false;
+		private bool _mineData = true;
 
 		public MineBoxOfficePro()
 			: base("Box Office Pro", "BO Pro", DEFAULT_URL)
@@ -39,20 +39,20 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2018, 12, 2);
-				UrlSource = "https://pro.boxoffice.com/weekend-forecast-ralph-creed-ii-holdovers-look-hold-off-possession-hannah-grace/";
+				var weekend = new DateTime(2018, 12, 30);
+				UrlSource = "https://pro.boxoffice.com/weekend-forecast-aquaman-mary-poppins-returns-look-repeat-holmes-watson-vice-debut/";
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 28000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 17200000, WeekendEnding = weekend },
-								new Movie { MovieName = "Creed II", Earnings = 17100000, WeekendEnding = weekend },
-								new Movie { MovieName = "Fantastic Beasts The Crimes of Grindelwald", Earnings = 12000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 8200000, WeekendEnding = weekend },
-								new Movie { MovieName = "Instant Family", Earnings = 6800000, WeekendEnding = weekend },
-								new Movie { MovieName = "Widows", Earnings = 4500000, WeekendEnding = weekend },
-								new Movie { MovieName = "Robin Hood", Earnings = 4300000, WeekendEnding = weekend },
-								new Movie { MovieName = "Green Book", Earnings = 4000000, WeekendEnding = weekend },
-								new Movie { MovieName = "The Possession of Hannah Grace", Earnings = 3200000, WeekendEnding = weekend },
+								new Movie { MovieName = "Aquaman", Earnings = 48700000, WeekendEnding = weekend },
+								new Movie { MovieName = "Mary Poppins Returns", Earnings = 26200000, WeekendEnding = weekend },
+								new Movie { MovieName = "SpiderMan Into the SpiderVerse", Earnings = 19000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Bumblebee", Earnings = 17900000, WeekendEnding = weekend },
+								new Movie { MovieName = "Holmes  Watson", Earnings = 11000000, WeekendEnding = weekend },
+								new Movie { MovieName = "The Mule", Earnings = 10600000, WeekendEnding = weekend },
+								new Movie { MovieName = "Vice", Earnings = 9000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Second Act", Earnings = 8100000, WeekendEnding = weekend },
+								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 5100000, WeekendEnding = weekend },
+								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 4000000, WeekendEnding = weekend },
 						};
 			}
 		}

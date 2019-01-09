@@ -180,7 +180,8 @@ namespace MoviePicker.Common
 				// Now that Twitter is up to 280 characters you'll get more visibility if you #hashtag the movie name (or maybe use its @idname)
 				var abbreviation = movie.Hashtag; //movie.Abbreviation;
 
-				result.Append($" {abbreviation}{multiplier}");
+				// Prefix with a linefeed ASC(10) = 0x0A
+				result.Append($"%0a{abbreviation}{multiplier}");
 			}
 
 			return result.ToString();
