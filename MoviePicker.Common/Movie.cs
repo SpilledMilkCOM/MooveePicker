@@ -202,8 +202,8 @@ namespace MoviePicker.Common
 				{
 					// Make all the tests case insensitive.
 
-					var movieName = MovieName.ToLower();
-					var testMovieName = compareTo.MovieName.ToLower();
+					var movieName = MovieName.ToLower().Replace(" ", string.Empty);
+					var testMovieName = compareTo.MovieName.ToLower().Replace(" ", string.Empty);
 
 					result = movieName.Equals(testMovieName);
 
@@ -274,6 +274,13 @@ namespace MoviePicker.Common
 
 						result = movieName.Replace("the ", string.Empty).Replace(" the", string.Empty).Equals(testMovieName.Replace("the ", string.Empty).Replace(" the", string.Empty));
 					}
+
+					//if (!result)
+					//{
+					//	// Try to compare the names without and SPACES.
+
+					//	result = movieName.Replace(" ", string.Empty).Equals(testMovieName.Replace(" ", string.Empty));
+					//}
 
 					//if (!result)
 					//{
