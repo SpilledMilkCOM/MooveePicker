@@ -42,6 +42,12 @@ namespace MovieMiner
 			return (diff.Days / DAYS_IN_WEEK) % WEEKS_IN_SEASON + 1;
 		}
 
+		/// <summary>
+		/// The date of the Sunday's (end of game)
+		/// </summary>
+		/// <param name="dateTime"></param>
+		/// <param name="isEstimate"></param>
+		/// <returns></returns>
 		public static DateTime GameSunday(DateTime? dateTime = null, bool isEstimate = false)
 		{
 			DateTime result = dateTime ?? Now;

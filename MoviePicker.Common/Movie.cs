@@ -277,13 +277,6 @@ namespace MoviePicker.Common
 
 					//if (!result)
 					//{
-					//	// Try to compare the names without and SPACES.
-
-					//	result = movieName.Replace(" ", string.Empty).Equals(testMovieName.Replace(" ", string.Empty));
-					//}
-
-					//if (!result)
-					//{
 					//	char[] delimiters = " ".ToCharArray();
 
 					//	// Compare words.

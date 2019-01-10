@@ -44,7 +44,7 @@ namespace MovieMiner.Tests
 
 			foreach (var movie in actual)
 			{
-				var fmlMovie = fml.FirstOrDefault(item => item.Equals(movie));
+				var fmlMovie = fml.FirstOrDefault(item => item.Equals(movie) || item.MovieName.EndsWith(movie.MovieName));
 
 				if (fmlMovie == null)
 				{
@@ -70,6 +70,53 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineVisualRecreation_Mine_GenerateBoxOfficeValues()
 		{
+			var test = new MineVisualRecreation();
+			var fmlBO = new MineFantasyMovieLeagueBoxOffice();
+
+			var actual = test.Mine();
+			var fml = fmlBO.Mine();
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			var toRemove = new List<IMovie>();
+
+			foreach (var movie in actual)
+			{
+				var fmlMovie = fml.FirstOrDefault(item => item.Equals(movie) || item.MovieName.EndsWith(movie.MovieName));
+
+				if (fmlMovie == null)
+				{
+					// Remove FML movies that are not found (uses Equals() - fuzzy logic)
+
+					toRemove.Add(movie);
+				}
+				else
+				{
+					movie.MovieName = fmlMovie.MovieName;
+				}
+			}
+
+			toRemove.ForEach(item => actual.Remove(item));
+
+			var weekendEnding = MovieDateUtil.GameSunday();
+			var tab = "\t";
+
+			Logger.WriteLine($"{tab}{tab}{tab}var weekend = new DateTime({weekendEnding.Year}, {weekendEnding.Month}, {weekendEnding.Day});");
+			Logger.WriteLine($"{tab}{tab}{tab}UrlSource = \"{test.UrlSource}\";");
+			Logger.WriteLine($"{tab}{tab}{tab}return new List<IMovie>");
+			Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{{");
+
+			foreach (var movie in actual.OrderByDescending(item => item.Cost))
+			{
+				Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}new Movie {{ MovieName = \"{movie.MovieName}\", Earnings = {movie.Earnings}, WeekendEnding = weekend }},");
+			}
+			Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}}};");
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineVisualRecreation_Mine_GenerateEmptyBoxOfficeValues()
+		{
 			var test = new MineFantasyMovieLeagueBoxOffice();
 
 			var actual = test.Mine();
@@ -92,5 +139,6 @@ namespace MovieMiner.Tests
 			}
 			Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}}};");
 		}
+
 	}
 }
