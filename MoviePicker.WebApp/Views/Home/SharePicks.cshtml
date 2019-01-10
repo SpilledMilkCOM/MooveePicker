@@ -42,11 +42,6 @@
 		<div style="font-weight: bold; font-size: medium">Preview Tweet:</div>
 
 		<div>
-			@*
-				@ViewBag.TwitterTweetText
-				@ViewBag.TwitterTweetText.Replace("%0a", "<br />")
-				@DisplayTweet(ViewBag.TwitterTweetText).ToHtmlString()
-			*@
 			@Html.Raw(ViewBag.TwitterTweetText.Replace("%0a", "<br />"))
 		</div>
 
