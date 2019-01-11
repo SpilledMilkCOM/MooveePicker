@@ -36,6 +36,13 @@ namespace MovieMiner
 
 			if (lines != null)
 			{
+				DateTime lastUpdated = DateTime.Now;
+
+				if (DateTime.TryParse(lines[0].Replace("Updated by @akvalley:", string.Empty).Replace("Central", string.Empty), out lastUpdated))
+				{
+					LastUpdated = lastUpdated;
+				}
+
 				foreach (var line in lines.Skip(3))
 				{
 					var tokens = line?.Split(tokenDelimiters);

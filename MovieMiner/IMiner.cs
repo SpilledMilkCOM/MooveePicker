@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using MoviePicker.Common.Interfaces;
@@ -27,6 +28,8 @@ namespace MovieMiner
 		bool CloneCausedReload { get; }
 
 		bool IsHidden { get; set; }
+
+		DateTime? LastUpdated { get; set; }
 
 		List<IMovie> Movies { get; }
 

@@ -146,7 +146,15 @@ namespace MovieMiner
 
 		public bool IsHidden { get; set; }
 
+		/// <summary>
+		/// Actual time of the reload/refresh of the data.
+		/// </summary>
 		public DateTime? LastLoaded { get; private set; }
+
+		/// <summary>
+		/// The date when the data source was updated (part of the meta-data)
+		/// </summary>
+		public DateTime? LastUpdated { get; set; }
 
 		/// <summary>
 		/// The list of movies is a critical path so there are locks around the get/set

@@ -217,6 +217,33 @@ namespace MoviePicker.WebApp.Controllers
 			return View(viewModel);
 		}
 
+
+		[HttpGet]
+		public ActionResult FandangoDays()
+		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+
+			IFandangoViewModel viewModel = new FandangoDaysViewModel(_minerModel.Miners[MinerModel.FML_INDEX], _moviePicker);
+
+			viewModel.PastHours = _controllerUtility.GetRequestInt(Request, "past") ?? 24;
+
+			DownloadMoviePosters();
+
+			viewModel.Load();
+
+			if (viewModel.IsTracking && _minerModel.Miners[MinerModel.FML_INDEX].Movies.Count > 0)
+			{
+				viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
+			}
+
+			stopWatch.Stop();
+
+			viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			return View(viewModel);
+		}
+
 		[HttpGet]
 		public ActionResult Index()
 		{
