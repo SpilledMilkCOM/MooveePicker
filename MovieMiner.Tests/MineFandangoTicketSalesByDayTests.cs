@@ -39,7 +39,11 @@ namespace MovieMiner.Tests
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 
-			WriteMovies(actual);
+			var gameEnd = MovieDateUtil.GameSunday();
+
+			WriteMovies(actual.Where(movie => movie.WeekendEnding == gameEnd.AddDays(-2)));
+			WriteMovies(actual.Where(movie => movie.WeekendEnding == gameEnd.AddDays(-1)));
+			WriteMovies(actual.Where(movie => movie.WeekendEnding == gameEnd));
 		}
 
 		private IMiner ConstructTest()

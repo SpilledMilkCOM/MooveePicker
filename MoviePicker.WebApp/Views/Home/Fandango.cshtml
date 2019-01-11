@@ -50,18 +50,6 @@
 	}
 </script>
 
-<h2>@ViewBag.Title</h2>
-
-<div class="row">
-	<h5>
-		Weekend Ending @weekendEnding (@Model.Duration.ToString("N0") ms)
-		<div class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
-			 title="This page represents the aggregation of Fandango data for the past X hours from the file updated by A.K. Valley.">
-			<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
-		</div>
-	</h5>
-</div>
-
 @{
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
 	var movieList = Model.Movies.ToList();
@@ -70,7 +58,17 @@
 
 		@* ================================================================================================================================== PICKS COLUMN ==== *@
 
-		<div class="col-md-7">
+		<div class="col-md-6 col-md-offset-1">
+			<h2>@ViewBag.Title</h2>
+
+			<h5>
+				Weekend Ending @weekendEnding (@Model.Duration.ToString("N0") ms)
+				<div class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
+					 title="This page represents the aggregation of Fandango data for the past X hours from the file updated by A.K. Valley.">
+					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+				</div>
+			</h5>
+
 			<div id="picksColumn">
 				@if (Model.MovieListPerfectPick != null)
 				{
@@ -94,7 +92,15 @@
 			@* TODO - Put this in a partial view. *@
 
 			<div style="border: solid; border-radius: 4px; border-width: 1px; padding: 8px;">
-				<h4>Bonus Comparisons</h4>
+				<h4>
+					Bonus Comparisons
+					<div class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
+						 title="The table below compares ALL of the movies to the MOST efficient one.
+								The Difference column is the dollar amount of gain, and the % Difference is just that; Difference divided the actual earnings (percentage gain).
+								The MOST efficient movie shows how much it would have to drop to match second place.">
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+					</div>
+				</h4>
 
 				@*<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Rank</div>*@
 				<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
@@ -170,22 +176,14 @@
 						}
 					}
 				}
-
-				<div class="row-divider"> </div>
-
-				<div class="col-sm-10 col-sm-offset-1">
-					The table above compares ALL of the movies to the MOST efficient one.
-					The Bonus Earnings column is the value that the movie WOULD need to have the top efficiency or at least MATCH top efficiency.
-					The Difference column is the dollar amount of gain, and the % Difference is just that; Difference divided the actual earnings (percentage gain).
-					The MOST efficient movie shows how much it would have to drop to match second place.
-				</div>
-
 			</div>
 		</div>
 
 		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
 
-		<div class="col-md-5">
+		<div class="col-md-4">
+
+			<h2> </h2>
 
 			<a href="@Model.Miner.Url" target="_blank"><strong>File Last Updated: </strong></a>@Model.LastUpdated
 
@@ -210,7 +208,7 @@
 					while (movieCount <= movieList.Count)
 					{
 						<tr>
-							@for (int col = 0; col < 3 && movieCount <= movieList.Count; col++)
+							@for (int col = 0; col < 4 && movieCount <= movieList.Count; col++)
 							{
 								var movie = movieList[movieCount - 1];
 
@@ -227,7 +225,6 @@
 								divBackgroundColorStyle = null;
 								percent = 0;
 
-								var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "2px";
 								var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey";
 
 								<td style="padding: 3px;">
@@ -240,7 +237,7 @@
 										@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
 										@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
 
-										<table style="position: relative; top: -50px; left: @tableIndent; float: left;">
+										<table style="position: relative; top: -50px; left: 2px; float: left;">
 											<tr>
 												<td>
 													<input name="@name"
@@ -253,14 +250,6 @@
 														   data-val-number="The field Box Office @movieCount must be a number."
 														   data-val="true">
 												</td>
-												@if (percent == 0 || percent == -100m)
-												{
-													<td></td>
-												}
-												else
-												{
-													<td style="padding-left: 3px;"><div style="@divBackgroundColorStyle; border-radius: 3px; padding: 3px;">@percent.ToString("N0")%</div></td>
-												}
 											</tr>
 										</table>
 									</div>

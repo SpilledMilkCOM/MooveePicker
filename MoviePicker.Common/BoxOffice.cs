@@ -7,7 +7,7 @@ namespace MoviePicker.Common
 	{
 		public decimal Earnings { get; set; }
 
-		int Rank { get; set; }
+		public int Rank { get; set; }
 
 		public int TheaterCount { get; set; }
 
