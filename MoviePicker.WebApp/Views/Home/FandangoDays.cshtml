@@ -6,7 +6,7 @@
 @using System.Text;
 
 @{
-	ViewBag.Title = "Fandango Days";
+	ViewBag.Title = "Fandango Weekend";
 
 	var weekendEnding = Model.Miner.ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Model.Miner.ContainsEstimates).ToShortDateString() : Model.Miner.Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString();
 }
@@ -59,14 +59,18 @@
 		@* ================================================================================================================================== PICKS COLUMN ==== *@
 
 		<div class="col-md-6 col-md-offset-1">
-			<h2>@ViewBag.Title</h2>
-
-			<h5>
-				Weekend Ending @weekendEnding (@Model.Duration.ToString("N0") ms)
+			<h2>
+				@ViewBag.Title
 				<div class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
 					 title="This page represents the aggregation of Fandango data for each day Friday, Saturday, and Sunday from the file hosted by A.K. Valley.">
 					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 				</div>
+
+				@Html.ActionLink("Hourly", "Fandango", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
+			</h2>
+
+			<h5>
+				Weekend Ending @weekendEnding (@Model.Duration.ToString("N0") ms)
 			</h5>
 
 			<div id="picksColumn">
@@ -185,7 +189,7 @@
 
 			<h2> </h2>
 
-			<a href="@Model.Miner.Url" target="_blank"><strong>File Last Updated: </strong></a>@Model.LastUpdated
+			<a href="@Model.Miner.Url" target="_blank"><strong>File Last Updated: </strong></a>@Model.LastUpdated (Central)
 
 			<table>
 				@{

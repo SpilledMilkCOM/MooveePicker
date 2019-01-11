@@ -53,7 +53,7 @@ namespace MovieMiner
 						{
 							WeekendEnding = Convert.ToDateTime(tokens[1]),
 							Earnings = Convert.ToDecimal(tokens[0]) * AVERAGE_COST_PER_TICKET,
-							Name = tokens[3]
+							Name = RemovePunctuation(tokens[3])
 						};
 						result.Add(movie);
 					}

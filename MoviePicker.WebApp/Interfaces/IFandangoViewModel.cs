@@ -7,8 +7,6 @@ namespace MoviePicker.WebApp.Interfaces
 	{
 		long Duration { get; set; }
 
-		bool IsDaily { get; set; }
-
 		bool IsTracking { get; }
 
 		int PastHours { get; set; }

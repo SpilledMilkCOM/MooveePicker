@@ -32,8 +32,6 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public long Duration { get; set; }
 
-		public bool IsDaily { get; set; }
-
 		/// <summary>
 		/// The estimated values are in (typically on a Saturday)
 		/// </summary>

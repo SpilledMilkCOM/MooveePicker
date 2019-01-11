@@ -6,7 +6,7 @@
 @using System.Text;
 
 @{
-	ViewBag.Title = "Fandango";
+	ViewBag.Title = "Fandango Hourly";
 
 	var weekendEnding = Model.Miner.ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Model.Miner.ContainsEstimates).ToShortDateString() : Model.Miner.Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString();
 }
@@ -64,9 +64,11 @@
 			<h5>
 				Weekend Ending @weekendEnding (@Model.Duration.ToString("N0") ms)
 				<div class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
-					 title="This page represents the aggregation of Fandango data for the past X hours from the file updated by A.K. Valley.">
+					 title="This page represents the aggregation of Fandango data for the past 24 hours from the file updated by A.K. Valley. The past hours are modifiable using the filter field.">
 					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 				</div>
+
+				@Html.ActionLink("Weekend", "FandangoDays", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
 			</h5>
 
 			<div id="picksColumn">
@@ -185,7 +187,7 @@
 
 			<h2> </h2>
 
-			<a href="@Model.Miner.Url" target="_blank"><strong>File Last Updated: </strong></a>@Model.LastUpdated
+			<a href="@Model.Miner.Url" target="_blank"><strong>File Last Updated: </strong></a>@Model.LastUpdated (Central)
 
 			<div>Filtered to: @Model.FilteredTo</div>
 
