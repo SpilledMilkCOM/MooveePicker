@@ -94,12 +94,14 @@ namespace MovieMiner
 				var nameNode = tableRow?.SelectSingleNode("td[contains(@class, 'movie-title')]//span[contains(@class, 'title')]");
 				var imageNode = tableRow?.SelectSingleNode("td//div[contains(@class, 'proxy-img')]");
 				var name = RemovePunctuation(HttpUtility.HtmlDecode(nameNode?.InnerText));
+				var dayOfWeek = ParseDayOfWeek(name);
+				var movieName = ParseName(name, dayOfWeek);
 
 				var movie = new Movie
 				{
 					Id = id,
-					Day = ParseDayOfWeek(name),
-					Name = ParseName(name)
+					Day = dayOfWeek,
+					Name = movieName
 				};
 
 				// Grab the first one for now.
@@ -133,7 +135,6 @@ namespace MovieMiner
 				{
 					// This weekend ending date is used to populate the "custom" box office weekend ending date.
 					movie.WeekendEnding = ContainsEstimates ? weekendEnding.Value : MovieDateUtil.GameSunday(null, ContainsEstimates);
-					//movie.WeekendEnding = MovieDateUtil.GameSunday(null, isEstimate);
 				}
 
 				result.Add(movie);
@@ -186,10 +187,25 @@ namespace MovieMiner
 				{
 					if (name.StartsWith(pair.Key))
 					{
-						// Remove the key
-
 						result = pair.Value;
 						break;
+					}
+				}
+
+				if (result == null)
+				{
+					var tokens = name.Split();
+
+					if (tokens.Length > 1)
+					{
+						foreach (var pair in _daysOfWeek)
+						{
+							if (name.StartsWith(pair.Key.Replace(" ", string.Empty)))
+							{
+								result = pair.Value;
+								break;
+							}
+						}
 					}
 				}
 			}
@@ -197,21 +213,18 @@ namespace MovieMiner
 			return result;
 		}
 
-		private string ParseName(string name)
+		private string ParseName(string name, DayOfWeek? dayOfWeek)
 		{
 			var result = name;
 
-			if (result != null)
+			if (result != null && dayOfWeek != null)
 			{
-				foreach (var key in _daysOfWeek.Keys)
-				{
-					if (result.StartsWith(key))
-					{
-						// Remove the key
+				var idx = name.IndexOf(' ');
 
-						result = result.Substring(key.Length, result.Length - key.Length);
-						break;
-					}
+				if (idx > 0)
+				{
+					idx++;
+					result = result.Substring(idx, name.Length - idx);
 				}
 			}
 
