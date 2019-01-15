@@ -154,6 +154,13 @@ namespace MovieMiner
 
 			result.ForEach(movie => movie.ControlId = controlIndex++);
 
+			//var gameEndDate = GetGameEndDate(web);
+
+			//if (gameEndDate != null)
+			//{
+			//	result.ForEach(item => item.WeekendEnding = gameEndDate.Value);
+			//}
+
 			return result;
 		}
 
@@ -175,6 +182,66 @@ namespace MovieMiner
 			}
 
 			return result;
+		}
+
+		private DateTime? GetGameEndDate(HtmlWeb web)
+		{
+			DateTime? endDate = null;
+
+			UrlSource = $"{Url}/researchvault?section=pick-rate";
+
+			var doc = web.Load(UrlSource);
+
+			// Get the data in the table.
+
+			var tableNode = doc.DocumentNode.SelectSingleNode("//body//table[@class='tableType-group hasGroups']");
+			var tableRows = tableNode?.SelectNodes("thead//th[contains(@class, 'group')]");
+
+			// Figure out which column to mine from the column title.
+
+			if (tableRows != null && tableRows.Count > 0)
+			{
+				var dateText = tableRows[0].InnerText;
+
+				if (dateText != null)
+				{
+					// Examples of dateText:
+					//		Jan 1 - 3
+					//		Jan 30 - Feb 1
+					//		Dec 30 - Jan 1		(could span a year)
+
+					char[] delimiter = { '-' };
+					var dateChunks = dateText.Split(delimiter);
+
+					if (dateChunks.Length > 1)
+					{
+						var startDate = Convert.ToDateTime(dateChunks[0]);
+						DateTime parsedDate = startDate;
+
+						endDate = startDate;
+
+						if (DateTime.TryParse(dateChunks[1], out parsedDate))
+						{
+							if (startDate.Month == 12)
+							{
+								new DateTime(startDate.Year + 1, parsedDate.Month, parsedDate.Day);
+							}
+							else
+							{
+								endDate = parsedDate;
+							}
+						}
+						else
+						{
+							// The second piece was just a number.
+
+							endDate = new DateTime(startDate.Year, startDate.Month, Convert.ToInt32(dateChunks[1]));
+						}
+					}
+				}
+			}
+
+			return endDate;
 		}
 
 		private DayOfWeek? ParseDayOfWeek(string name)

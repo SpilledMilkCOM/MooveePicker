@@ -221,6 +221,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Friday-mask.png" />
+    <Content Include="Images\Friday-Saturday-mask.png" />
     <Content Include="Images\GitHub-Mark-32px.png" />
     <Content Include="Images\green-plus-hi.png" />
     <Content Include="Images\Monday-mask.png" />
@@ -259,6 +260,7 @@
     <Content Include="Data\pushFileToAzureWebApp.ps1" />
     <None Include="Properties\PublishProfiles\MooveePicker - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\MooveePicker - Web Deploy.pubxml" />
+    <Content Include="Images\Sunday-Monday-mask.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />

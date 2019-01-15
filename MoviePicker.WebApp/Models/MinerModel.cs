@@ -222,6 +222,7 @@ namespace MoviePicker.WebApp.Models
 			var imageUtil = new ImageUtility();
 			var miner = Miners[FML_INDEX];
 			var result = FileUtility.DownloadFiles(miner.Movies.Select(movie => movie.ImageUrlSource), localFilePrefix);
+			var multiDayCount = miner.Movies.Where(item => item.Day.HasValue).Count();
 
 			foreach (var movie in miner.Movies)
 			{
@@ -240,11 +241,12 @@ namespace MoviePicker.WebApp.Models
 
 					if (movie.Day.HasValue)
 					{
-						var maskedFileName = $"{Path.GetFileNameWithoutExtension(localFileName)}-{movie.Day.Value}.jpg";
+						var multiDay = (multiDayCount == 2) ? (movie.Day.Value == DayOfWeek.Friday ? "-Saturday" : "-Monday") : string.Empty;
+						var maskedFileName = $"{Path.GetFileNameWithoutExtension(localFileName)}-{movie.Day.Value}{multiDay}.jpg";
 
 						if (!File.Exists(Path.Combine(Path.GetDirectoryName(localFileName), maskedFileName)))
 						{
-							imageUtil.MaskImage(localFileName, $"{movie.Day.Value}-mask.png", maskedFileName);
+							imageUtil.MaskImage(localFileName, $"{movie.Day.Value}{multiDay}-mask.png", maskedFileName);
 						}
 
 						movie.ImageUrl = $"/Images/{maskedFileName}";
@@ -295,7 +297,7 @@ namespace MoviePicker.WebApp.Models
 
 			if (found != null)
 			{
-				found.Id = sourceMovie.Id;						// Will be able to do quicker Finds.
+				found.Id = sourceMovie.Id;                      // Will be able to do quicker Finds.
 				found.MovieName = sourceMovie.MovieName;        // So the names aren't fuzzy anymore.
 				found.Cost = sourceMovie.Cost;
 				found.ControlId = sourceMovie.ControlId;
