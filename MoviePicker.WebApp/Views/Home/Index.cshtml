@@ -620,64 +620,70 @@
 										 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
 
 										<div style="position: relative; width: 0; height: 0">
-											<span class="badge badge-pill badge-light"
-												  style="position: absolute; left: 5px; top: 5px;"
-												  data-toggle="tooltip"
-												  data-placement="right">@movie.TheaterCount</span>
-											</div>
+											@if (movie.TheaterCount > 0)
+											{
+												<span class="badge badge-pill badge-light"
+													  style="position: absolute; left: 5px; top: 5px;"
+													  data-toggle="tooltip"
+													  data-placement="right">
+													@movie.TheaterCount
+												</span>
+											}
 
-											<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
-
-											@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
-											@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
-
-											<div style="position: relative; width: 0; height: 0">
-												<table style="position: absolute; left: 5px; top: -60px;">
-													<tr>
-														<td>
-															<input name="@name"
-																   class="form-control"
-																   id="@boId"
-																   onblur="boxOfficeLostFocus('@valueString', this.value, @movie.ControlId)"
-																   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
-																   type="text"
-																   value="@valueString"
-																   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
-																   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
-																   data-val-required="The Box Office @movie.ControlId field is required."
-																   data-val-number="The field Box Office @movie.ControlId must be a number."
-																   data-val="true">
-														</td>
-
-														<td style="padding-left: 3px;">
-															<span id="@string.Format("{0}Pct", boId)" class="badge badge-pill badge-dark" style="@boPercentBackgroundColorStyle color: black;">
-																@percent.ToString("N0")%
-															</span>
-														</td>
-													</tr>
-													<tr>
-														<td colspan="2">
-															@if (lastWeek != null && value > lastWeek.EarningsBase * 2)
-															{
-																// Adjust the slider to MORE than 100% since the value is already greater than 100% and the slider won't work.
-
-																var sliderMax = (Math.Round(value / lastWeek.EarningsBase, 0) + 1) * 100;
-
-																<input id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="@sliderMax" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
-															}
-															else
-															{
-																<input id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
-															}
-														</td>
-													</tr>
-												</table>
-											</div>
 										</div>
-									</td>
 
-									movieCount++;
-								}
+										<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
+
+										@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
+										@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
+
+										<div style="position: relative; width: 0; height: 0">
+											<table style="position: absolute; left: 5px; top: -60px;">
+												<tr>
+													<td>
+														<input name="@name"
+															   class="form-control"
+															   id="@boId"
+															   onblur="boxOfficeLostFocus('@valueString', this.value, @movie.ControlId)"
+															   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
+															   type="text"
+															   value="@valueString"
+															   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
+															   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
+															   data-val-required="The Box Office @movie.ControlId field is required."
+															   data-val-number="The field Box Office @movie.ControlId must be a number."
+															   data-val="true">
+													</td>
+
+													<td style="padding-left: 3px;">
+														<span id="@string.Format("{0}Pct", boId)" class="badge badge-pill badge-dark" style="@boPercentBackgroundColorStyle color: black;">
+															@percent.ToString("N0")%
+														</span>
+													</td>
+												</tr>
+												<tr>
+													<td colspan="2">
+														@if (lastWeek != null && value > lastWeek.EarningsBase * 2)
+														{
+															// Adjust the slider to MORE than 100% since the value is already greater than 100% and the slider won't work.
+
+															var sliderMax = (Math.Round(value / lastWeek.EarningsBase, 0) + 1) * 100;
+
+															<input id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="@sliderMax" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+														}
+														else
+														{
+															<input id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+														}
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</td>
+
+								movieCount++;
+							}
 						</tr>
 					}
 				}
