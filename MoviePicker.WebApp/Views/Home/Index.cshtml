@@ -622,20 +622,43 @@
 										<div style="position: relative; width: 0; height: 0">
 											@if (movie.TheaterCount > 0)
 											{
-												<span class="badge badge-pill badge-light"
-													  style="position: absolute; left: 5px; top: 5px;"
-													  data-toggle="tooltip"
-													  data-placement="right">
-													@movie.TheaterCount
-												</span>
+												if (lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0))
+												{
+													if (movie.TheaterCount - lastWeek.TheaterCount > 0)
+													{
+														<span class="badge badge-pill badge-light"
+															  style="color: green; position: absolute; left: 5px; top: 5px;"
+															  data-toggle="tooltip"
+															  data-placement="right">
+															@movie.TheaterCount
+															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+														</span>
+													}
+													else if (movie.TheaterCount - lastWeek.TheaterCount < 0)
+													{
+														<span class="badge badge-pill badge-light"
+															  style="color: red; position: absolute; left: 5px; top: 5px;"
+															  data-toggle="tooltip"
+															  data-placement="right">
+															@movie.TheaterCount
+															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+														</span>
+													}
+												}
+												else
+												{
+													<span class="badge badge-pill badge-light"
+														  style="position: absolute; left: 5px; top: 5px;"
+														  data-toggle="tooltip"
+														  data-placement="right">
+														@movie.TheaterCount
+													</span>
+												}
 											}
 
 										</div>
 
 										<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
-
-										@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
-										@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
 
 										<div style="position: relative; width: 0; height: 0">
 											<table style="position: absolute; left: 5px; top: -60px;">
