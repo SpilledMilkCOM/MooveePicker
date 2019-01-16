@@ -36,5 +36,27 @@ namespace MovieMiner.Tests
 			Logger.WriteLine($"\n==== {test.Name} ====\n");
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineFantasyMovieLeagueBoxOffice_SetBonusBar()
+		{
+			const int BAR = 10;
+
+			var test = new MineFantasyMovieLeagueBoxOffice();
+
+			var actual = test.Mine();
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			actual.ForEach(movie => movie.Earnings = movie.Cost * BAR * 1000);
+
+			Logger.WriteLine("\n==== Bonus Bar ====\n");
+			foreach (var movie in actual.OrderByDescending(item => item.Cost))
+			{
+				Logger.WriteLine($"{movie.Earnings:N0}");
+			}
+		}
+
 	}
 }

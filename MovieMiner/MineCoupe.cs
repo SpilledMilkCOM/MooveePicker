@@ -243,25 +243,6 @@ namespace MovieMiner
 			return result;
 		}
 
-		private decimal Multiplier(string boxOffice)
-		{
-			decimal result = 1;
-
-			if (boxOffice != null)
-			{
-				if (boxOffice.Contains("million"))
-				{
-					result = 1000000;
-				}
-				else if (boxOffice.Contains("k"))
-				{
-					result = 1000;
-				}
-			}
-
-			return result;
-		}
-
 		//----==== PRIVATE ====--------------------------------------------------------------------
 
 		private void AddMovie(string nodeText, DateTime? articleDate, List<IMovie> result)
