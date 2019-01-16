@@ -661,6 +661,8 @@ namespace MoviePicker.WebApp.Models
 
 			if (rootMovie != null)
 			{
+				var theaterCount = rootMovie.TheaterCount;
+
 				movies.Remove(rootMovie);
 
 				foreach (var movieDay in compoundMovies)
@@ -670,6 +672,7 @@ namespace MoviePicker.WebApp.Models
 						Name = movieDay.MovieName,
 						Day = movieDay.Day,
 						Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
+						TheaterCount = theaterCount,
 						WeekendEnding = movieDay.WeekendEnding
 					});
 				}
