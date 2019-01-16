@@ -217,7 +217,6 @@ namespace MoviePicker.WebApp.Controllers
 			return View(viewModel);
 		}
 
-
 		[HttpGet]
 		public ActionResult FandangoDays()
 		{
@@ -225,8 +224,6 @@ namespace MoviePicker.WebApp.Controllers
 			stopWatch.Start();
 
 			IFandangoViewModel viewModel = new FandangoDaysViewModel(_minerModel.Miners[MinerModel.FML_INDEX], _moviePicker);
-
-			viewModel.PastHours = _controllerUtility.GetRequestInt(Request, "past") ?? 24;
 
 			DownloadMoviePosters();
 

@@ -8,7 +8,7 @@ namespace MovieMiner.Tests
 {
 	[TestClass]
 	[ExcludeFromCodeCoverage]
-	public class MineFantasyMovieLeagueBoxOfficeTests : MineTestBase
+	public class MineBonusBarTests : MineTestBase
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
@@ -24,32 +24,28 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
-		public void MineFantasyMovieLeagueBoxOffice_Mine()
+		public void MineBonusBar_Mine()
 		{
-			var test = new MineFantasyMovieLeagueBoxOffice();
+			var test = new MineBonusBar();
 
 			var actual = test.Mine();
 
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 
-			Logger.WriteLine($"\n==== {test.Name} ====\n");
+			Logger.WriteLine("\n==== Bonus Bar ====\n");
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
-		public void MineFantasyMovieLeagueBoxOffice_SetBonusBar()
+		public void MineBonusBar_ImportValues()
 		{
-			const int BAR = 10;
-
-			var test = new MineFantasyMovieLeagueBoxOffice();
+			var test = new MineBonusBar();
 
 			var actual = test.Mine();
 
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Any(), "The list was empty.");
-
-			actual.ForEach(movie => movie.Earnings = movie.Cost * BAR * 1000);
 
 			Logger.WriteLine("\n==== Bonus Bar ====\n");
 			foreach (var movie in actual.OrderByDescending(item => item.Cost))
@@ -57,6 +53,5 @@ namespace MovieMiner.Tests
 				Logger.WriteLine($"{movie.Earnings:N0}");
 			}
 		}
-
 	}
 }

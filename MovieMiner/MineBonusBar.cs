@@ -10,20 +10,19 @@ using System.Linq;
 
 namespace MovieMiner
 {
-	public class MineCoupe : MinerBase
+	public class MineBonusBar : MinerBase
 	{
 		private const string DEFAULT_URL = "https://fantasymovieleague.com";
-		private const string DELIMITER = "- $";
-		private const string DELIMITER2 = "-$";
+		private const string DELIMITER = "|";
 		private readonly string _articleTitle;
 		private readonly Dictionary<string, DayOfWeek> _daysOfWeek;
 
-		public MineCoupe(string articleTitle = null)
-			: base("Coupe's Movie Picks", "Coupe", DEFAULT_URL)
+		public MineBonusBar(string articleTitle = null)
+			: base("Guyett's Bonus Bar", "Bar", DEFAULT_URL)
 		{
-			TwitterID = "coupedevilles";
+			TwitterID = "";
 
-			_articleTitle = articleTitle ?? "Weekend Box Office Predictions";
+			_articleTitle = articleTitle ?? "Bonus Bar and Contenders";
 
 			_daysOfWeek = new Dictionary<string, DayOfWeek>
 			{
@@ -36,7 +35,7 @@ namespace MovieMiner
 
 		public override IMiner Clone()
 		{
-			var result = new MineCoupe();
+			var result = new MineBonusBar();
 
 			Clone(result);
 
@@ -48,7 +47,7 @@ namespace MovieMiner
 			var result = new List<IMovie>();
 			var web = new HtmlWeb();
 
-			var doc = web.Load($"{Url}/chatter/searchmessages?boardId=fml-main-chatter&query=coupe");
+			var doc = web.Load($"{Url}/chatter/searchmessages?boardId=fml-main-chatter&query=bonus%20bar");
 
 			// Lookup XPATH to get the right node that matches.
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
@@ -112,124 +111,84 @@ namespace MovieMiner
 
 					if (node != null)
 					{
-						var movieNodes = node.SelectNodes($"//p[contains(., '{DELIMITER}')]|//p[contains(., '{DELIMITER2}')]|//li[contains(., '{DELIMITER}')]");     // Find all of the estimate paragraphs
+						var movieNodes = node.SelectNodes($"//p/strong");     // Find all of the estimate paragraphs (are in BOLD)
 
-						// As of 11/2/2017 Todd is separating things with <br /> now.
-
-						if (movieNodes.Count == 1)
+						foreach (var movieNode in movieNodes)
 						{
-							var innerHtml = HttpUtility.HtmlDecode(movieNodes.First().InnerHtml);
-							var delimiters = new string[] { "\n", "<br>\n", "<br><br>" };
-							var tokens = innerHtml.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+							var nodeText = HttpUtility.HtmlDecode(movieNode.InnerHtml);
 
-							foreach (var token in tokens)
+							var index = nodeText.IndexOf(DELIMITER);
+							var index2 = nodeText.IndexOf(DELIMITER, index + 1);
+
+							if (index > 0 && index2 > 0)
 							{
-								if (token.StartsWith("\""))// && token.EndsWith("million"))
-								{
-									AddMovie(token.Replace("<br>", string.Empty), articleDate, result);
-								}
-							}
-						}
-						else
-						{
-							foreach (var movieNode in movieNodes)
-							{
-								var nodeText = HttpUtility.HtmlDecode(movieNode.InnerHtml);
+								var movieName = nodeText.Substring(0, index);
 
-								int index = nodeText.IndexOf(DELIMITER);
+								// Might switch this to RegEx...
 
-								if (index < 0)
+								var estimatedBoxOffice = nodeText.Substring(index + 1, index2 - (index + 1))?.Replace("$", string.Empty);
+
+								var trimIndex = estimatedBoxOffice.IndexOf("(");
+
+								if (trimIndex > 0)
 								{
-									index = nodeText.IndexOf(DELIMITER2);
+									// Trim out the drop percentage (and everything after).
+									estimatedBoxOffice = estimatedBoxOffice.Substring(0, trimIndex - 1);
 								}
 
-								if (index > 0)
+								if (!string.IsNullOrEmpty(movieName))
 								{
-									var movieName = nodeText.Substring(0, index).Replace("<br>", string.Empty);
+									var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
+									Movie movie = null;
 
-									// Might switch this to RegEx...
-
-									//var multiplier = Multiplier(nodeText.Substring(index, nodeText.Length - index));
-									var estimatedBoxOffice = nodeText.Substring(index, nodeText.Length - index)?.Replace(DELIMITER, string.Empty).Replace(DELIMITER2, string.Empty).Replace("million", string.Empty);
-
-									var trimIndex = estimatedBoxOffice.IndexOf("(");
-
-									if (trimIndex > 0)
+									try
 									{
-										// Trim out the drop percentage (and everything after).
-										estimatedBoxOffice = estimatedBoxOffice.Substring(0, trimIndex - 1);
-									}
-
-									trimIndex = estimatedBoxOffice.IndexOf("<br>");
-
-									if (trimIndex > 0)
-									{
-										// Trim out the HTML break (and everything after).
-										estimatedBoxOffice = estimatedBoxOffice.Substring(0, trimIndex);
-									}
-
-									trimIndex = estimatedBoxOffice.IndexOf("|");
-
-									if (trimIndex > 0)
-									{
-										// Trim out the COUPE label (and everything after).
-										estimatedBoxOffice = estimatedBoxOffice.Substring(0, trimIndex - 1);
-									}
-
-									if (!string.IsNullOrEmpty(movieName))
-									{
-										var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
-										Movie movie = null;
-
-										try
+										movie = new Movie
 										{
-											movie = new Movie
-											{
-												MovieName = MapName(ParseName(name)),
-												Day = ParseDayOfWeek(name),
-												Earnings = ParseEarnings(estimatedBoxOffice)
-											};
+											MovieName = MapName(ParseName(name)),
+											Day = ParseDayOfWeek(name),
+											Earnings = ParseEarnings(estimatedBoxOffice)
+										};
 
-											if (movie.Day.HasValue)
-											{
-												CompoundLoaded = true;
-											}
+										if (movie.Day.HasValue)
+										{
+											CompoundLoaded = true;
 										}
-										catch (Exception exception)
-										{
-											Error = "Some bad data";
-											ErrorDetail = $"The movie did not parse correctly \"{name}\" - {exception.Message}";
-											movie = null;
-										}
+									}
+									catch (Exception exception)
+									{
+										Error = "Some bad data";
+										ErrorDetail = $"The movie did not parse correctly \"{name}\" - {exception.Message}";
+										movie = null;
+									}
 
-										if (movie != null)
+									if (movie != null)
+									{
+										if (!result.Contains(movie))
 										{
-											if (!result.Contains(movie))
+											if (articleDate.HasValue)
 											{
-												if (articleDate.HasValue)
-												{
-													movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
-												}
-
-												result.Add(movie);
+												movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
 											}
-											else if (movie.Day.HasValue)
+
+											result.Add(movie);
+										}
+										else if (movie.Day.HasValue)
+										{
+											if (articleDate.HasValue)
 											{
-												if (articleDate.HasValue)
-												{
-													movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
-												}
+												movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+											}
 
-												result.Add(movie);
+											result.Add(movie);
 
-												// Remove the movie that does NOT have a day.
+											// Remove the movie that does NOT have a day.
 
-												var toRemove = result.FirstOrDefault(item => item.Equals(movie) && !item.Day.HasValue);
+											var toRemove = result.FirstOrDefault(item => item.Equals(movie) && !item.Day.HasValue);
 
-												if (toRemove != null)
-												{
-													result.Remove(toRemove);
-												}
+											if (toRemove != null)
+											{
+												result.Remove(toRemove);
 											}
 										}
 									}
@@ -241,6 +200,11 @@ namespace MovieMiner
 			}
 
 			return result;
+		}
+
+		public void SetBar(decimal barEfficiency)
+		{
+			Movies.ForEach(movie => movie.Earnings = movie.Cost * barEfficiency * 1000);
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------

@@ -143,12 +143,15 @@ namespace MoviePicker.WebApp.ViewModels
 		private List<IMovie> FilterMovies()
 		{
 			var now = DateTime.Now;
-			var filteredTo = MovieDateUtil.GameSunday().AddDays(-2);
+			var endDate = MovieDateUtil.GameSunday();
+			var startDate = endDate.AddDays(-2);
+
+			endDate = endDate.AddDays(1);			// Include Monday.
 
 			// Filter the list (Friday <- Sunday)
 			// Group the movies by name.
 
-			var result = Miner.Movies.Where(movie => movie.WeekendEnding > filteredTo)
+			var result = Miner.Movies.Where(movie => startDate <= movie.WeekendEnding && movie.WeekendEnding <= endDate)
 							.GroupBy(movie => movie.Name)
 							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
 							.Cast<IMovie>()
