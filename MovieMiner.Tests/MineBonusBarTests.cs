@@ -8,7 +8,7 @@ namespace MovieMiner.Tests
 {
 	[TestClass]
 	[ExcludeFromCodeCoverage]
-	public class MineCoupeTests : MineTestBase
+	public class MineBonusBarTests : MineTestBase
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
@@ -24,17 +24,34 @@ namespace MovieMiner.Tests
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
-		public void MineCoupe_Mine()
+		public void MineBonusBar_Mine()
 		{
-			var test = new MineCoupe();
+			var test = new MineBonusBar();
 
 			var actual = test.Mine();
 
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 
-			Logger.WriteLine("\n==== Coupe ====\n");
+			Logger.WriteLine("\n==== Bonus Bar ====\n");
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineBonusBar_ImportValues()
+		{
+			var test = new MineBonusBar();
+
+			var actual = test.Mine();
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			Logger.WriteLine("\n==== Bonus Bar ====\n");
+			foreach (var movie in actual.OrderByDescending(item => item.Cost))
+			{
+				Logger.WriteLine($"{movie.Earnings:N0}");
+			}
 		}
 	}
 }
