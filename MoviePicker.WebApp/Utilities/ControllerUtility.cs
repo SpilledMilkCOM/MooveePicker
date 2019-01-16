@@ -13,6 +13,19 @@ namespace MoviePicker.WebApp.Utilities
 			return url != null && (url.StartsWith("http://") || url.StartsWith("https://"));
 		}
 
+		public decimal? GetRequestDecimal(HttpRequestBase request, string key)
+		{
+			decimal? result = null;
+			decimal parsed = 0;
+
+			if (decimal.TryParse(request.Params[key], out parsed))
+			{
+				result = parsed;
+			}
+
+			return result;
+		}
+
 		public List<decimal> GetRequestDecimalList(HttpRequestBase request, string key)
 		{
 			char[] listDelimiter = { ',' };

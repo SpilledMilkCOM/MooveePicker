@@ -157,10 +157,12 @@ namespace MovieMiner
 
 										try
 										{
+											var dayOfWeek = ParseDayOfWeek(name);
+
 											movie = new Movie
 											{
-												MovieName = MapName(ParseName(name)),
-												Day = ParseDayOfWeek(name),
+												MovieName = MapName(ParseName(name, dayOfWeek)),
+												Day = dayOfWeek,
 												Earnings = decimal.Parse(estimatedBoxOffice) * multiplier
 											};
 
@@ -169,7 +171,7 @@ namespace MovieMiner
 												CompoundLoaded = true;
 											}
 										}
-										catch(Exception exception)
+										catch (Exception exception)
 										{
 											Error = "Some bad data";
 											ErrorDetail = $"The movie did not parse correctly \"{name}\" - {exception.Message}";
@@ -240,9 +242,10 @@ namespace MovieMiner
 			if (!string.IsNullOrEmpty(movieName))
 			{
 				var name = RemovePunctuation(HttpUtility.HtmlDecode(movieName));
+				var dayOfWeek = ParseDayOfWeek(name);
 				var movie = new Movie
 				{
-					MovieName = MapName(ParseName(name)),
+					MovieName = MapName(ParseName(name, dayOfWeek)),
 					Day = ParseDayOfWeek(name),
 					Earnings = decimal.Parse(estimatedBoxOffice) * (valueInMillions ? 1000000 : 1)
 				};
@@ -270,26 +273,41 @@ namespace MovieMiner
 						break;
 					}
 				}
+
+				if (result == null)
+				{
+					var tokens = name.Split();
+
+					if (tokens.Length > 1)
+					{
+						foreach (var pair in _daysOfWeek)
+						{
+							if (tokens[tokens.Length - 1].StartsWith(pair.Key.Replace(" ", string.Empty)))
+							{
+								result = pair.Value;
+								break;
+							}
+						}
+					}
+				}
 			}
 
 			return result;
 		}
 
-		private string ParseName(string name)
+		private string ParseName(string name, DayOfWeek? dayOfWeek)
 		{
 			var result = name;
 
-			if (result != null)
+			if (result != null && dayOfWeek.HasValue)
 			{
-				foreach (var key in _daysOfWeek.Keys)
-				{
-					if (result.EndsWith(key))
-					{
-						// Remove the key
+				// Remove the day of week token.
 
-						result = result.Substring(0, result.Length - key.Length);
-						break;
-					}
+				var index = name.LastIndexOf(' ');
+
+				if (index > 0)
+				{
+					result = result.Substring(0, index);
 				}
 			}
 

@@ -234,8 +234,6 @@ namespace MoviePicker.WebApp.Models
 
 					if (result)
 					{
-						//imageUtil.AdjustSize(localFileName, 300, 450);		// Closer to original size
-						//imageUtil.AdjustAspectRatio(localFileName, 2 / 3m);
 						imageUtil.AdjustSize(localFileName, 200, 300);          // Shrink image a bit.
 					}
 
@@ -259,7 +257,6 @@ namespace MoviePicker.WebApp.Models
 				else
 				{
 					movie.ImageUrl = movie.ImageUrlSource;
-					//movie.ImageUrl = "/Images/MooveePosterNotFound.jpg";
 				}
 			}
 

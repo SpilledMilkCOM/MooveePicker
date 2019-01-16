@@ -519,6 +519,9 @@ namespace MoviePicker.WebApp.Controllers
 			result.Miners = _minerModel.Miners;
 			result.Movies = _minerModel.CreateWeightedList();
 
+			ParseBonusBarRequest(result.Movies);
+			ParseBonusBarRequest(_minerModel.Miners[MinerModel.MY_INDEX].Movies);
+
 			if (result.Movies.Count() > 0)
 			{
 				var clonedList = CloneList(result.Movies);
@@ -784,6 +787,19 @@ namespace MoviePicker.WebApp.Controllers
 			}
 
 			return result;
+		}
+
+		private void ParseBonusBarRequest(IEnumerable<IMovie> movies)
+		{
+			var bonusBar = _controllerUtility.GetRequestDecimal(Request, "bb");
+
+			if (bonusBar.HasValue)
+			{
+				foreach (var movie in movies)
+				{
+					movie.Earnings = movie.Cost * bonusBar.Value * 1000;
+				}
+			}
 		}
 
 		private void ParseBoxOfficeWeightRequest()
