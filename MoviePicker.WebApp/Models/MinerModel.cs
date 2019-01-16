@@ -562,6 +562,13 @@ namespace MoviePicker.WebApp.Models
 
 					compoundMovies = CompoundMovies(minerTodd.Movies);
 
+					// Assign the id, name, and cost to each movie.
+
+					foreach (var movie in baseList)
+					{
+						AssignCostIdName(movie, minerTodd.Movies);
+					}
+
 					toSkip++;       // Now skip Todd's too.
 				}
 			}

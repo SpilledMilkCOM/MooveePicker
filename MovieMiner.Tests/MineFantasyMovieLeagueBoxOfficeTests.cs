@@ -57,6 +57,5 @@ namespace MovieMiner.Tests
 				Logger.WriteLine($"{movie.Earnings:N0}");
 			}
 		}
-
 	}
 }
