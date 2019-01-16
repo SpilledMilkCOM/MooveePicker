@@ -28,8 +28,6 @@ namespace MoviePicker.WebApp.Controllers
 
 		public ActionResult About()
 		{
-			ViewBag.IsGoogleAdValid = true;
-
 			return View();
 		}
 
@@ -38,8 +36,6 @@ namespace MoviePicker.WebApp.Controllers
 			var webRootPath = Server.MapPath("~");
 			var localFilePrefix = $"{webRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_";
 
-			ViewBag.IsGoogleAdValid = false;
-
 			FileUtility.CleanupFiles(localFilePrefix);
 
 			return RedirectToAction("Info");
@@ -47,8 +43,6 @@ namespace MoviePicker.WebApp.Controllers
 
 		public ActionResult Contact()
 		{
-			ViewBag.IsGoogleAdValid = false;
-
 			return View();
 		}
 
@@ -88,8 +82,6 @@ namespace MoviePicker.WebApp.Controllers
 
 		public ActionResult Info()
 		{
-			ViewBag.IsGoogleAdValid = false;
-
 			_infoViewModel.ServerInfo.ProcessBytes = System.Diagnostics.Process.GetCurrentProcess()?.WorkingSet64 ?? 0;
 
 			_infoViewModel.ServerInfo.Now = DateTime.Now;

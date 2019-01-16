@@ -249,8 +249,6 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			// TODO: Collapse this down to a method call.
 
-			ViewBag.IsGoogleAdValid = true;
-
 			// Set the weights to 1 across the board. (treat all 'expert' sources equal)
 
 			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.MOJO_THEATER_INDEX; minerIndex++)
@@ -286,8 +284,6 @@ namespace MoviePicker.WebApp.Controllers
 			_viewModel.ViewGridOpen = !Request.Browser.IsMobileDevice;
 			_viewModel.ViewMobileOpen = Request.Browser.IsMobileDevice;
 
-			ViewBag.IsGoogleAdValid = true;
-
 			ParseViewRequest();
 
 			_viewModel.IsTracking = _minerModel.Miners[MinerModel.FML_INDEX].ContainsEstimates;
@@ -308,8 +304,6 @@ namespace MoviePicker.WebApp.Controllers
 		public ActionResult IndexWide()
 		{
 			// TODO: Collapse this down to a method call.
-
-			ViewBag.IsGoogleAdValid = true;
 
 			// Set the weights to 1 across the board. (treat all sources equal)
 
@@ -339,8 +333,6 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult MorePicks()
 		{
-			ViewBag.IsGoogleAdValid = true;
-
 			ParseViewRequest();
 
 			ControllerUtility.SetTwitterCard(ViewBag);
@@ -353,8 +345,6 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Picks()
 		{
-			ViewBag.IsGoogleAdValid = true;
-
 			ParseViewRequest();
 
 			// Hide the last miner (BO Mojo for previous week).
@@ -399,8 +389,6 @@ namespace MoviePicker.WebApp.Controllers
 			var stopWatch = new Stopwatch();
 
 			stopWatch.Start();
-
-			ViewBag.IsGoogleAdValid = true;
 
 			ParseViewRequest();
 

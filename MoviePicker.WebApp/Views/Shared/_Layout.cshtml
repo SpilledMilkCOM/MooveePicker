@@ -41,28 +41,6 @@
 
 	<link rel="icon" type="image/png" href="http://mooveepicker.azurewebsites.net/images/favicon.png">
 
-	@* Only spit out the Google Ad script on SELECT pages. *@
-
-	@*
-			This probably won't happen.  Damn Google AdSense and their "criteria"
-
-		@if (ViewBag.IsGoogleAdValid)
-		{
-			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				<script>
-					(adsbygoogle = window.adsbygoogle || []).push({
-						google_ad_client: "ca-pub-8791392312556224",
-						enable_page_level_ads: true
-					});
-				</script>
-		}*@
-
-	@* This is for Adsterra.com
-
-		FIRST ad that popped up was one of those "Microsoft" virus alert ads...  NO THANKS!!
-
-		<script type='text/javascript' src='//pl14472708.pvclouds.com/ab/4d/5a/ab4d5acb84685ea1f0c45847e795d78b.js'></script>
-	*@
 </head>
 
 <body>
