@@ -135,7 +135,20 @@ namespace MovieMiner
 									else if (columnCount == 2)
 									{
 										//movie.Earnings = decimal.Parse(column.InnerText?.Replace("$", string.Empty));
-										movie.Earnings = decimal.Parse(RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText)));
+
+										var rawText = RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText));
+
+										if (rawText.Contains("4day"))
+										{
+											var tokens = rawText.Split();
+
+											if (tokens.Length > 2)
+											{
+												rawText = tokens[tokens.Length - 2];
+											}
+										}
+
+										movie.Earnings = decimal.Parse(rawText);
 									}
 
 									columnCount++;
