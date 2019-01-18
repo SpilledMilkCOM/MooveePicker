@@ -24,7 +24,6 @@ namespace MovieMiner.Tests
 			_unity.RegisterType<ILogger, DebugLogger>();
 		}
 
-
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineVisualRecreation_Mine()
 		{
@@ -109,7 +108,9 @@ namespace MovieMiner.Tests
 
 			foreach (var movie in actual.OrderByDescending(item => item.Cost))
 			{
-				Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}new Movie {{ MovieName = \"{movie.MovieName}\", Earnings = {movie.Earnings}, WeekendEnding = weekend }},");
+				var dayOfWeek = movie.Day.HasValue ? $", Day = DayOfWeek.{movie.Day.ToString()}" : string.Empty;
+
+				Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}new Movie {{ MovieName = \"{movie.MovieName}\", Earnings = {movie.Earnings}m, WeekendEnding = weekend{dayOfWeek} }},");
 			}
 			Logger.WriteLine($"{tab}{tab}{tab}{tab}{tab}{tab}}};");
 		}
