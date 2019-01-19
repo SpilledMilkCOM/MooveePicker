@@ -38,12 +38,16 @@
 			Sorry about that, but until this is backed by a database then these page image references WILL be out of date after a week.
 		</div>
 
-		<a class="btn btn-info btn-md" style="margin-top: 7px;"
+		@*<a class="btn btn-info btn-md" style="margin-top: 7px;"
 		   href="@string.Format("Index/{0}",ViewUtility.RequestParamsToDynamic(Request))">
 			<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
 			&nbsp;&nbsp; Show Me The Numbers &nbsp;&nbsp;
 			<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
-		</a>
+		</a>*@
+
+		<div style="height: 30px;"> </div>
+
+		@Html.ActionLink("Show Me The Numbers", "Index", "Home", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-md" })
 	</div>
 
 	<div class="col-xs-10 col-sm-7 col-md-5">
