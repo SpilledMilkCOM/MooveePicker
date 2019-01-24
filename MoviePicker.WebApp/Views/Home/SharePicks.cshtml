@@ -1,5 +1,7 @@
 ﻿@model MoviePicker.WebApp.ViewModels.SharePicksViewModel
 
+@using MoviePicker.WebApp.Utilities;
+
 @helper DisplayTweet(string tweetText)
 {
 	@tweetText.Replace("%0a", "<p></p>")
@@ -35,6 +37,17 @@
 			There is NO “as of” dating which means that once this reference is over a week old, then it will use the CURRENT BUX data and the picks will be using the OLD box office data contained within the tweet as well as reference different movies and different cost values.
 			Sorry about that, but until this is backed by a database then these page image references WILL be out of date after a week.
 		</div>
+
+		@*<a class="btn btn-info btn-md" style="margin-top: 7px;"
+		   href="@string.Format("Index/{0}",ViewUtility.RequestParamsToDynamic(Request))">
+			<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+			&nbsp;&nbsp; Show Me The Numbers &nbsp;&nbsp;
+			<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+		</a>*@
+
+		<div style="height: 30px;"> </div>
+
+		@Html.ActionLink("Show Me The Numbers", "Index", "Home", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-md" })
 	</div>
 
 	<div class="col-xs-10 col-sm-7 col-md-5">

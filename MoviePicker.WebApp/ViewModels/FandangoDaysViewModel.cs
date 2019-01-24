@@ -106,14 +106,26 @@ namespace MoviePicker.WebApp.ViewModels
 		{
 			if (list != null)
 			{
+				// Remove the year if the movie ends with the year.
+
+				var year = DateTime.Now.Year.ToString();
+
+				foreach (var movie in list)
+				{
+					if (movie.MovieName.EndsWith(year))
+					{
+						movie.MovieName = movie.MovieName.Substring(0, movie.MovieName.Length - 5);
+					}
+				}
+
 				var copy = new List<IMovie>(list);
 				var toRemove = new List<IMovie>();
 
 				foreach (var movie in list)
 				{
-					// Find a simlarly named movie
+					// Find a simlarly named movie (or possibly the same name - don't match on the same ID).
 
-					var likeMovie = copy.FirstOrDefault(item => item.Equals(movie) && item.MovieName != movie.MovieName);
+					var likeMovie = copy.FirstOrDefault(item => item.Equals(movie) && item.Id != movie.Id);
 
 					if (likeMovie != null && !toRemove.Contains(likeMovie))
 					{
@@ -146,7 +158,7 @@ namespace MoviePicker.WebApp.ViewModels
 			var endDate = MovieDateUtil.GameSunday();
 			var startDate = endDate.AddDays(-2);
 
-			endDate = endDate.AddDays(1);			// Include Monday.
+			endDate = endDate.AddDays(1);           // Include Monday.
 
 			// Filter the list (Friday <- Sunday)
 			// Group the movies by name.
