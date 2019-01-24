@@ -39,25 +39,25 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2019, 1, 13);
-				UrlSource = "https://twitter.com/VisRecVids/status/1083349593272799232";
+				var weekend = new DateTime(2019, 1, 27);
+				UrlSource = "https://twitter.com/VisRecVids/status/1088448060458295298";
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Aquaman", Earnings = 17 * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "A Dogs Way Home", Earnings = 13.7m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "The Upside", Earnings = 14.2m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "Escape Room", Earnings = 8.2m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "On the Basis of Sex", Earnings = 7 * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "Mary Poppins Returns", Earnings = 8.7m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "SpiderMan Into the SpiderVerse", Earnings = 9.5m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "Bumblebee", Earnings = 7.2m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "The Mule", Earnings = 5.7m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "Vice", Earnings = 4.3m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "Replicas", Earnings = 3.6m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 3.5m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "If Beale Street Could Talk", Earnings = 2.8m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "Second Act", Earnings = 2.3m * MBAR, WeekendEnding = weekend },
-								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 0 * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Glass", Earnings = 18100000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "The Kid Who Would Be King", Earnings = 11000000, WeekendEnding = weekend },
+								new Movie { MovieName = "The Upside", Earnings = 10200000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "Dragon Ball Super Broly", Earnings = 4100000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "Aquaman", Earnings = 6000000, WeekendEnding = weekend },
+								new Movie { MovieName = "SpiderMan Into the SpiderVerse", Earnings = 6300000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "Serenity", Earnings = 5800000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "A Dogs Way Home", Earnings = 5000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Green Book", Earnings = 4400000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 3300000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "Escape Room", Earnings = 3000000, WeekendEnding = weekend },
+								new Movie { MovieName = "The Favourite", Earnings = 1500000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "Mary Poppins Returns", Earnings = 2800000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "Bumblebee", Earnings = 2600000.0, WeekendEnding = weekend },
+								new Movie { MovieName = "On the Basis of Sex", Earnings = 2000000, WeekendEnding = weekend },
 						};
 			}
 		}
@@ -67,7 +67,7 @@ namespace MovieMiner
 			var result = new List<IMovie>();
 			var web = new HtmlWeb();
 
-			UrlSource = $"{Url}/status/1083349593272799232";
+			UrlSource = $"{Url}/status/1088448060458295298";
 
 			var doc = web.Load(UrlSource);
 
