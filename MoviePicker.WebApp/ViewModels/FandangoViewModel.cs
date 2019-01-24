@@ -108,35 +108,67 @@ namespace MoviePicker.WebApp.ViewModels
 		{
 			if (list != null)
 			{
+				// Remove the year if the movie ends with the year.
+
+				var year = DateTime.Now.Year.ToString();
+
+				foreach (var movie in list)
+				{
+					if (movie.MovieName.EndsWith(year))
+					{
+						movie.MovieName = movie.MovieName.Substring(0, movie.MovieName.Length - 5);
+					}
+				}
+
+				// Remove The IMAX Experience blah, blah, blah.
+
+				foreach (var movie in list)
+				{
+					var index = movie.MovieName.IndexOf(" The IMAX ");
+
+					if (index > 0)
+					{
+						movie.MovieName = movie.MovieName.Substring(0, index);
+					}
+				}
+
 				var copy = new List<IMovie>(list);
 				var toRemove = new List<IMovie>();
 
 				foreach (var movie in list)
 				{
-					// Find a simlarly named movie
+					// Make sure the movie is not already being removed.
 
-					var likeMovie = copy.FirstOrDefault(item => item.Equals(movie) && item.MovieName != movie.MovieName);
-
-					if (likeMovie != null && !toRemove.Contains(likeMovie))
+					if (toRemove.FirstOrDefault(item => item.Id == movie.Id) == null)
 					{
-						// Add the totals.
+						// Find simlarly named movie
 
-						movie.Earnings += likeMovie.Earnings;
+						var likeMovies = copy.Where(item => item.Equals(movie) && item.Id != movie.Id).ToList();
 
-						// Remove the movie so it can't be found again.
+						foreach (var likeMovie in likeMovies)
+						{
+							if (toRemove.FirstOrDefault(item => item.Id == likeMovie.Id) == null)
+							{
+								// Add the totals.
 
-						RemoveSameName(copy, likeMovie);
-						toRemove.Add(likeMovie);
+								movie.Earnings += likeMovie.Earnings;
+
+								// Remove the movie so it can't be found again.
+
+								RemoveSameId(copy, likeMovie);
+								toRemove.Add(likeMovie);
+							}
+						}
 					}
 				}
 
 				foreach (var movie in toRemove)
 				{
-					var found = list.FirstOrDefault(item => item.MovieName == movie.MovieName);
+					var found = list.FirstOrDefault(item => item.Id == movie.Id);
 
 					if (found != null)
 					{
-						RemoveSameName(list, found);
+						RemoveSameId(list, found);
 					}
 				}
 			}
@@ -159,6 +191,10 @@ namespace MoviePicker.WebApp.ViewModels
 			var gameMovies = _fmlMiner?.Movies;
 
 			result = result.Where(movie => gameMovies == null || gameMovies.Contains(movie)).ToList();
+
+			var id = 1;
+
+			result.ForEach(item => item.Id = id++);			// Choose some arbitrary IDs.
 
 			CompressMovies(result);
 
@@ -201,13 +237,13 @@ namespace MoviePicker.WebApp.ViewModels
 		/// </summary>
 		/// <param name="list"></param>
 		/// <param name="toRemove"></param>
-		private void RemoveSameName(List<IMovie> list, IMovie toRemove)
+		private void RemoveSameId(List<IMovie> list, IMovie toRemove)
 		{
 			var indexToRemove = 0;
 
 			foreach (var movie in list)
 			{
-				if (movie.MovieName == toRemove.MovieName)
+				if (movie.Id == toRemove.Id)
 				{
 					break;
 				}

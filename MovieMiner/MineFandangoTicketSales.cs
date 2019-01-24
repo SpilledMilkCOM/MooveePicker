@@ -37,6 +37,8 @@ namespace MovieMiner
 
 			if (lines != null)
 			{
+				var id = 1;
+
 				foreach (var line in lines.Skip(3))
 				{
 					var tokens = line?.Split(tokenDelimiters);
@@ -45,6 +47,7 @@ namespace MovieMiner
 					{
 						var movie = new Movie
 						{
+							Id = id,
 							WeekendEnding = Convert.ToDateTime(tokens[0]),
 							Earnings = Convert.ToDecimal(tokens[1]) * AVERAGE_COST_PER_TICKET,
 							Name = RemovePunctuation(tokens[2])
