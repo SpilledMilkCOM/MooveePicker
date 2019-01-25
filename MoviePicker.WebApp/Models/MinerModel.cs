@@ -30,7 +30,7 @@ namespace MoviePicker.WebApp.Models
 		public const int MOJO_THEATER_INDEX = FML_INDEX + 8;
 		public const int MOJO_LAST_INDEX = FML_INDEX + 9;
 
-		private readonly IMoviePicker _moviePickerPrototype = null;
+		//private readonly IMoviePicker _moviePickerPrototype = null;
 		private bool _postersDownloaded;
 
 		public MinerModel(bool createWithData)
