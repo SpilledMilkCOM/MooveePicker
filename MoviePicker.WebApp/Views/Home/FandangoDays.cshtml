@@ -3,6 +3,7 @@
 @using MovieMiner;
 @using MoviePicker.Common.Interfaces;
 @using MoviePicker.WebApp.Utilities;
+@using System.Linq;
 @using System.Text;
 
 @{
@@ -72,6 +73,7 @@
 @{
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
 	var movieList = Model.Movies.ToList();
+	var totalBoxOffice = movieList.Sum(movie => movie.Earnings);
 
 	<div class="row">
 
@@ -240,6 +242,15 @@
 
 									<div data-toggle="tooltip" data-placement="top"
 										 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
+
+										<div style="position: relative; width: 0; height: 0">
+											<span class="badge badge-pill badge-light"
+												  style="position: absolute; left: 30px; top: 5px;"
+												  data-toggle="tooltip"
+												  data-placement="right">
+												@((movie.Earnings / totalBoxOffice * 100).ToString("N1")) %
+											</span>
+										</div>
 
 										<img class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
 
