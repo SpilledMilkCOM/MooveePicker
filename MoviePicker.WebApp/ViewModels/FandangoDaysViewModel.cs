@@ -156,9 +156,9 @@ namespace MoviePicker.WebApp.ViewModels
 		{
 			var now = DateTime.Now;
 			var endDate = MovieDateUtil.GameSunday();
-			var startDate = endDate.AddDays(-2);
+			var startDate = endDate.AddDays(-2);		// Starts Friday
 
-			endDate = endDate.AddDays(1);           // Include Monday.
+			//endDate = endDate.AddDays(1);           // Include Monday.
 
 			// Filter the list (Friday <- Sunday)
 			// Group the movies by name.
