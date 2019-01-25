@@ -22,12 +22,16 @@
 
 			<h4>HELP - Where to start?</h4>
 
+			<img class="img-responsive" src="~/Images/help.jpg" />
+
+			<br/>
+
 			<ol>
 				<li>
-					I typically start with the weights (under the baby blue import field) where I can enter my values.  These weights are "trust" values. "How much do I trust certain sources?"
+					I typically start with the weights where I can enter my values.  These weights are "trust" values. "How much do I trust certain sources?"
 					These weights are all relative.  If you trust Box Office Report 6 times more than Box Office Prophet then put a 6 for BO Report's weight and a 1 for BO Prophet's weight.
 					If you don't trust Box Office Mojo at all, then enter a 0 for that weight and BO Mojo's data will be ignored.
-					When you land on the page all of these weights are set to by default.  You can also click on the Moovee Picker banner in the upper left of the page.
+					When you land on the page all of these weights are set to 1 by default.  You can also click on the Moovee Picker banner in the upper left of the page.
 				</li>
 				<li>
 					The source of the weights are clickable.
@@ -35,7 +39,7 @@
 				</li>
 				<li>
 					Enter a weight below the expert's name and press TAB or leave the field.
-					Changing this weight will trigger a recalculate of the page and the box office.
+					Changing this weight will trigger a recalculate of the page and the box office value.
 					<i>At the moment the URL will not change so you will not be able to share your page until you click the green button "Calculate Picks".</i>
 					This creates a weighted average of ALL the columns and fills in the numbers on the movie posters.  Those are YOUR numbers.
 				</li>
@@ -66,8 +70,7 @@
 
 			If you keep your numbers in a spreadsheet you can link directly to the index page and feed it your numbers.  There are 15 "bo" and 7 "wl" parameters separated by commas (standard request stuff).
 			You can get a sense of this request if you click the "Apply Weights" button.  Maybe you keep your numbers in a spreadsheet, then you can use the HYPERLINK() and CONCATENATE() functions
-			to build the URL for this site so it can help with your picks.  That's what Liem does.  He copies the aggregated data from the index page and then does his own thing with the data.
-			NOW he can link back to this site for his picks.
+			to build the URL for this site so it can help with your picks.
 
 			<p> </p>
 
