@@ -6,11 +6,14 @@ using MoviePicker.WebApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace MoviePicker.WebApp.ViewModels
 {
 	public class FandangoDaysViewModel : IFandangoViewModel
 	{
+		private const int AVERAGE_TICKET_PRICE = 10;
+
 		private readonly IMiner _fmlMiner = null;
 		private readonly IMoviePicker _moviePicker = null;
 
@@ -46,6 +49,29 @@ namespace MoviePicker.WebApp.ViewModels
 		public IMovieListModel MovieListPerfectPick { get; set; }
 
 		public IEnumerable<IMovie> Movies => _movies;
+
+		public string PieGraphData
+		{
+			get
+			{
+				var builder = new StringBuilder();
+				var isFirst = true;
+
+				foreach (var movie in Movies.OrderByDescending(item => item.Earnings))
+				{
+					if (!isFirst)
+					{
+						builder.Append(", ");
+					}
+
+					builder.Append($"['{movie.Name}', {movie.Earnings / AVERAGE_TICKET_PRICE}]");
+
+					isFirst = false;
+				}
+
+				return builder.ToString();
+			}
+		}
 
 		public int PastHours { get; set; }
 

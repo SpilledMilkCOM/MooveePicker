@@ -12,6 +12,25 @@
 }
 
 <script type="text/javascript">
+
+	google.charts.load("current", { packages: ["corechart"] });
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		var data = google.visualization.arrayToDataTable([['Movie', 'Ticket Sales'], @Html.Raw(Model.PieGraphData)]);
+
+		var options = {
+			title: 'Total Weekend Fandango Ticket Sales',
+			is3D: true,
+			sliceVisibilityThreshold: 0.04
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('hourlyPieChart3d'));
+		chart.draw(data, options);
+	}
+</script>
+
+<script type="text/javascript">
 	function clickFilter() {
 		var pastHours = $("#pastHoursId").val();
 		var url = "/Home/Fandango";
@@ -266,3 +285,5 @@
 		</div>
 	</div>
 }
+
+<div id="hourlyPieChart3d" style="width: 900px; height: 700px;"></div>
