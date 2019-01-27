@@ -1,4 +1,4 @@
-# Moovee Picker
+# MooVee Picker
 ### A simulation that picks movies.
 
 Given a set of movies with *Earnings* and *Cost* (as well as other rules),

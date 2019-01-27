@@ -1,112 +1,111 @@
 ﻿@{
+	/**/
+
 	ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title</h2>
 
 <div class="row">
-	<article class="col-sm-7">
-		<div class="col-sm-12">
-			This website is used to mine box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
-			The site will also use a bin-packing algorithm (<a href="https://msdn.microsoft.com/en-us/library/microsoft.solverfoundation.services(v=vs.93).aspx">Microsoft.SolverFoundation.Services</a>)
-			to efficiently create your movie lineup based on the rules of the Fantasy Movie League.
-			Since I have <strong>NO</strong> idea how to pick movies I figured I would rely on the "experts" and aggregate their data so I can make my own guess on the weekend box office predictions.
-			I'll update this site and these comments when I can.  If the site is <strong>DOWN</strong>, I'll know soon enough (so you don't have to call me).  ;)
-			I built this site for my friends and I at NCM when we found out about FML (YEAH, gotta love that abbreviation).  We didn't know that NCM was going to buy Fantasy Movie League.
-			As developers we are <strong>LAZY</strong>, but we'll <strong>BUILD</strong> things in our spare time so we have MORE of it!
-		</div>
 
-		<div class="col-sm-12">
-			<h3  id="help">Summary / Home Page</h3>
+	<div class="col-md-offset-1">
+		<h2>@ViewBag.Title</h2>
+	</div>
 
+	<div class="clearfix"></div>
+
+	<div class="col-md-2 col-md-offset-1 hidden-xs hidden-sm" style="padding-top: 20px;">
+		<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png"/>
+	</div>
+
+	<div class="col-md-6 col-md-offset-1">
+		This website is used to mine box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
+		The site will also use a bin-packing algorithm (<a href="https://msdn.microsoft.com/en-us/library/microsoft.solverfoundation.services(v=vs.93).aspx">Microsoft.SolverFoundation.Services</a>)
+		to efficiently create your movie lineup based on the rules of the Fantasy Movie League.
+		Since I have <strong>NO</strong> idea how to pick movies I figured I would rely on the "experts" and aggregate their data so I can make my own guess on the weekend box office predictions.
+		I'll update this site and these comments when I can.  If the site is <strong>DOWN</strong>, I'll know soon enough (so you don't have to call me).  ;)
+		I built this site for my friends and I at NCM when we found out about FML (YEAH, gotta love that abbreviation).  We didn't know that NCM was going to buy Fantasy Movie League.
+		As developers we are <strong>LAZY</strong>, but we'll <strong>BUILD</strong> things in our spare time so we have MORE of it!
+		<br /><br />
+		<p id="help">
 			I wish I had the time to make this site pretty like Pete's site, but I keep thinking up functionality and implementing it.
+		</p>
+	</div>
 
-			<h4>HELP - Where to start?</h4>
+	<div class="clearfix"></div>
+	<div class="row-divider"> </div>
 
-			<img class="img-responsive" src="~/Images/help.jpg" />
+	<div class="col-md-5 col-md-offset-6">
+		<h3>HELP - Where to start?</h3>
+	</div>
 
-			<br/>
+	<div class="clearfix"></div>
+	<div class="row-divider"> </div>
 
-			<ol>
-				<li>
-					I typically start with the weights where I can enter my values.  These weights are "trust" values. "How much do I trust certain sources?"
-					These weights are all relative.  If you trust Box Office Report 6 times more than Box Office Prophet then put a 6 for BO Report's weight and a 1 for BO Prophet's weight.
-					If you don't trust Box Office Mojo at all, then enter a 0 for that weight and BO Mojo's data will be ignored.
-					When you land on the page all of these weights are set to 1 by default.  You can also click on the Moovee Picker banner in the upper left of the page.
-				</li>
-				<li>
-					The source of the weights are clickable.
-					If the source is green, then the code has found values for it otherwise the source is blue and the values have not been found or the source is old and not during the game week.
-				</li>
-				<li>
-					Enter a weight below the expert's name and press TAB or leave the field.
-					Changing this weight will trigger a recalculate of the page and the box office value.
-					<i>At the moment the URL will not change so you will not be able to share your page until you click the green button "Calculate Picks".</i>
-					This creates a weighted average of ALL the columns and fills in the numbers on the movie posters.  Those are YOUR numbers.
-				</li>
-				<li>
-					If you choose to edit the numbers, the weights above will all go to 0 because you have now created custom values.
-				</li>
-				<li>
-					You can copy the URL for future reference if you want to edit your numbers later, but you don't have to.
-					<i>At the moment the URL will not change so you will not be able to share your page until you click the green button "Calculate Picks".</i>
-				</li>
-				<li>
-					SHARE your picks on Twitter using the handy share buttons (with bonus or without).
-					You will see a preview of your tweet and you will be able to edit it before you post.
-				</li>
-			</ol>
+	<div class="col-md-5 col-md-offset-1">
+		<img class="img-responsive" src="~/Images/help.jpg" />
+	</div>
 
-			<ul>
-				<li>
-					The weights that I currently use as a baseline and then maybe adjust from there.
+	<div class="col-md-5">
+		<div class="row-divider"> </div>
 
-					<a href="~/Home/Index?wl=0,3,3,4,3,1,6">My Default Weights</a>
-				</li>
-			</ul>
-		</div>
+		<ol>
+			<li style="padding-bottom: 10px">
+				I typically start with the weights where I can enter my values.  These weights are "trust" values. "How much do I trust certain sources?"
+				These weights are all relative.  If you trust Box Office Report 6 times more than Box Office Prophet then put a 6 for BO Report's weight and a 1 for BO Prophet's weight.
+				If you don't trust Box Office Mojo at all, then enter a 0 for that weight and BO Mojo's data will be ignored.
+				When you land on the page all of these weights are set to 1 by default.  You can also click on the Moovee Picker banner in the upper left of the page.
+			</li>
+			<li style="padding-bottom: 10px">
+				The source of the weights are clickable.
+				If the source is green, then the code has found values for it otherwise the source is blue and the values have not been found or the source is old and not during the game week.
+			</li>
+			<li style="padding-bottom: 10px">
+				Enter a weight below the expert's name and press TAB or leave the field.
+				Changing this weight will trigger a recalculate of the page and the box office value.
+				<i>At the moment the URL will not change so you will not be able to share your page until you click the green button "Calculate Picks".</i>
+				This creates a weighted average of ALL the columns and fills in the numbers on the movie posters.  Those are YOUR numbers.
+			</li>
+			<li style="padding-bottom: 10px">
+				If you choose to edit the numbers, the weights above will all go to 0 because you have now created custom values.
+			</li>
+			<li style="padding-bottom: 10px">
+				You can copy the URL for future reference if you want to edit your numbers later, but you don't have to.
+				<i>At the moment the URL will not change so you will not be able to share your page until you click the green button "Calculate Picks".</i>
+			</li>
+			<li style="padding-bottom: 10px">
+				SHARE your picks on Twitter using the handy share buttons (with bonus or without).
+				You will see a preview of your tweet and you will be able to edit it before you post.
+			</li>
+		</ol>
 
-		<div class="col-sm-12">
-			<h4>API / Request Parameters</h4>
+		<ul>
+			<li>
+				The weights that I currently use as a baseline and then maybe adjust from there.
 
-			If you keep your numbers in a spreadsheet you can link directly to the index page and feed it your numbers.  There are 15 "bo" and 7 "wl" parameters separated by commas (standard request stuff).
-			You can get a sense of this request if you click the "Apply Weights" button.  Maybe you keep your numbers in a spreadsheet, then you can use the HYPERLINK() and CONCATENATE() functions
-			to build the URL for this site so it can help with your picks.
+				<a href="~/Home/Index?wl=0,3,3,4,3,1,6"><strong>My Default Weights</strong></a>
+			</li>
+		</ul>
+	</div>
 
-			<p> </p>
+	<div class="clearfix"></div>
+	<div class="row-divider"> </div>
 
-			Here's a full blown blog post about how to use the Excel functions and "link" to this site.
-			<br />
-			<a href="https://spilledmilkcom.wordpress.com/2018/03/01/excelhyperlink-or-how-to-integrate-your-spreadsheet-with-moovee-picker/">Word Press BLOG Post</a>
+	<div class="col-md-5 col-md-offset-1">
+		<h4>API / Request Parameters</h4>
 
-			<p> </p>
-		</div>
+		If you keep your numbers in a spreadsheet you can link directly to the index page and feed it your numbers.  There are 15 "bo" and 7 "wl" parameters separated by commas (standard request stuff).
+		You can get a sense of this request if you click the "Apply Weights" button.  Maybe you keep your numbers in a spreadsheet, then you can use the HYPERLINK() and CONCATENATE() functions
+		to build the URL for this site so it can help with your picks.
 
-		<div class="col-xs-3 col-md-2" style="padding-top: 10px;">
-			<a class="btn btn-default btn-lg" href="https://github.com/SpilledMilkCOM/MooveePicker" target="_blank">
-				<img src="~/Images/GitHub-Mark-32px.png">
-			</a>
-		</div>
+		<p> </p>
 
-		<div class="col-xs-8 col-md-10" style="padding-top: 10px;">
-			This site's code lives on GitHub.  So &lt;meta/&gt;  You can look at the history of how all of the code came together.  It started out with a few tests and spreadsheets and <strong>GREW</strong> from there.
-		</div>
+		Here's a full blown blog post about how to use the Excel functions and "link" to this site.
+		<br />
+		<a href="https://spilledmilkcom.wordpress.com/2018/03/01/excelhyperlink-or-how-to-integrate-your-spreadsheet-with-moovee-picker/">Word Press BLOG Post</a>
 
-		<div class="col-sm-12">
-			<h3>Thanks!</h3>
+		<p> </p>
+	</div>
 
-			<p>
-				Thank you to <a href="https://twitter.com/nerdguru">Pete Johnson</a> who is (was?) the Fantasy Movie League "Nerd Guru".
-				I <strong>LOVED</strong> his site, because once I have my dollar amounts I can PLAY with the numbers with his cool sliders...  What else do Math Majors do?
-				Still unsure if his "solver" code was client side or server side.  If it was client side then that code was impressively fast.
-			</p>
-			<p>
-				Another thank you to the support of the Fantasy Movie League family
-			</p>
-		</div>
-
-	</article>
-
-	<aside class="col-sm-5">
+	<div class="col-md-5">
 		<h4>Backlog (TODO list)</h4>
 
 		<ul>
@@ -117,5 +116,34 @@
 			<li>Add asynchronous feedback when mining the data.  It's fast enough that it's not really NEEDED.</li>
 			<li>If you're looking for what's BEEN DONE then look at the GitHub history (link above).  You've probably noticed a few of these items have been REMOVED!  Yay progress!</li>
 		</ul>
-	</aside>
+	</div>
+
+	<div class="col-md-5 col-md-offset-1">
+		<div class="col-xs-3 col-md-2" style="padding-top: 10px;">
+			<a class="btn btn-default btn-lg" href="https://github.com/SpilledMilkCOM/MooveePicker" target="_blank">
+				<img src="~/Images/GitHub-Mark-32px.png">
+			</a>
+		</div>
+
+		<div class="col-xs-8 col-md-10" style="padding-top: 10px;">
+			This site's code lives on GitHub.  So &lt;meta/&gt;  You can look at the history of how all of the code came together.  It started out with a few tests and spreadsheets and <strong>GREW</strong> from there.
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+	<div class="row-divider"> </div>
+
+	<div class="col-md-5 col-md-offset-1">
+		<h3>Thanks!</h3>
+
+		<p>
+			Thank you to <a href="https://twitter.com/nerdguru">Pete Johnson</a> who is (was?) the Fantasy Movie League "Nerd Guru".
+			I <strong>LOVED</strong> his site, because once I have my dollar amounts I can PLAY with the numbers with his cool sliders...  What else do Math Majors do?
+			Still unsure if his "solver" code was client side or server side.  If it was client side then that code was impressively fast.
+		</p>
+		<p>
+			Another thank you to the support of the Fantasy Movie League family
+		</p>
+	</div>
+
 </div>

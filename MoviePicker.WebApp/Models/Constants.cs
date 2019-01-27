@@ -2,7 +2,7 @@
 {
 	public class Constants
 	{
-		public const string APPLICATION_NAME = "Moovee Picker";
+		public const string APPLICATION_NAME = "MooVee Picker";
 		public const string APPLICATION_NAME_ABBR = "MooV";
 		public const string COMPANY_NAME = "Spilled Milk";
 
