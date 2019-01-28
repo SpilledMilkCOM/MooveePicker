@@ -80,6 +80,12 @@ namespace MovieMiner
 			return result;
 		}
 
+		public List<IMovie> MineWeekend(DateTime? date = null)
+		{
+			_weekendEnding = date;
+			return MineDate();
+		}
+
 		private List<IMovie> MineDate()
 		{
 			var result = new List<IMovie>();

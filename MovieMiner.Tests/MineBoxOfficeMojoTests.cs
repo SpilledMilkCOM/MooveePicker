@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Common.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Unity;
@@ -80,6 +81,66 @@ namespace MovieMiner.Tests
 
 			Logger.WriteLine($"Weekend Ending: {weekendEnding}");
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineBoxOfficeMojo_MineWeekend_ThisWeek()
+		{
+			var weekendEnding = MovieDateUtil.LastSunday(DateTime.Now);
+			var test = new MineBoxOfficeMojo(weekendEnding);
+
+			var actual = test.MineWeekend(weekendEnding);
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			Logger.WriteLine($"Weekend Ending: {weekendEnding}");
+			WriteMovies(actual.OrderByDescending(item => item.Earnings));
+		}
+
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineBoxOfficeMojo_MineWeekend_ThisWeek_Filtered()
+		{
+			var weekendEnding = MovieDateUtil.LastSunday(DateTime.Now);
+			var test = new MineBoxOfficeMojo(weekendEnding);
+
+			var actual = test.MineWeekend(weekendEnding);
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			actual = FilterMovies(actual);
+
+			Logger.WriteLine($"Weekend Ending: {weekendEnding}");
+			WriteMovies(actual.OrderByDescending(item => item.Earnings));
+
+			foreach (var item in actual.OrderByDescending(item => item.Cost))
+			{
+				//Logger.WriteLine($"{item.Name} {item.Cost}  {item.EarningsBase}");
+				Logger.WriteLine($"{item.EarningsBase}");
+			}
+		}
+
+		//----==== PRIVATE ====--------------------------------------------------------------------------
+
+		private List<IMovie> FilterMovies(List<IMovie> toFilter)
+		{
+			var fmlMiner = new MineFantasyMovieLeagueBoxOffice();
+			var fmlMovies = fmlMiner.Mine();
+			var result = new List<IMovie>();
+
+			foreach (var movie in toFilter)
+			{
+				var fmlMovie = fmlMovies.FirstOrDefault(item => item.Equals(movie));
+
+				if (fmlMovie != null)
+				{
+					movie.Cost = fmlMovie.Cost;
+					result.Add(movie);
+				}
+			}
+
+			return result;
 		}
 	}
 }
