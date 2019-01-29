@@ -641,10 +641,10 @@ namespace MoviePicker.WebApp.Controllers
 			viewModel.TwitterImageFileName = viewModel.ImageFileName?.Replace("Shared_", "Twitter_");
 			viewModel.TwitterTitle = $"{Constants.APPLICATION_NAME}: {subTitle} (Est ${picks.TotalEarnings:N0})";
 
-			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks." : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:";
+			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks:" : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:";
 
 			defaultTwitterText += "%0a" + picks.ToString();
-			defaultTwitterText += $"%0a[cost {spentBux.ToString("N0")} BUX]%0a%0a#ShowYourScreens @SpilledMilkCOM RT if you like this pick #PerfectPick";
+			defaultTwitterText += $"%0a[cost {spentBux.ToString("N0")} BUX]%0a%0a#ShowYourScreens @SpilledMilkCOM RT if you like this #PerfectPick";
 
 			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image"
 											, viewModel.TwitterTitle
