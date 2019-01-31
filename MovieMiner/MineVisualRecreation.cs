@@ -66,6 +66,7 @@ namespace MovieMiner
 								new Movie { MovieName = "Mary Poppins Returns", Earnings = 1960000.00m, WeekendEnding = weekend },
 								new Movie { MovieName = "Bohemian Rhapsody", Earnings = 1600000.0m, WeekendEnding = weekend },
 								new Movie { MovieName = "Bumblebee", Earnings = 1500000.0m, WeekendEnding = weekend },
+								new Movie { MovieName = "Vice", Earnings = 1000000.0m, WeekendEnding = weekend }
 						};
 			}
 		}
