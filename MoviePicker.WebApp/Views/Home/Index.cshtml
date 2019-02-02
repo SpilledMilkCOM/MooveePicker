@@ -620,7 +620,7 @@
 										 data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
 										 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
 
-										<div style="position: relative; width: 0; height: 0">
+										<div style="position: relative; width: 0; height: 0;">
 											@if (movie.TheaterCount > 0)
 											{
 												if (lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0))
@@ -664,7 +664,7 @@
 										<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle min-height: 220px; min-width: 150px;" src="@movie.ImageUrl" />
 
 										<div style="position: relative; width: 0; height: 0">
-											<table style="position: absolute; left: -5px; top: -210px; width: 10px; height: 200px;">
+											<table style="position: absolute; left: -5px; top: -220px; width: 10px; height: 220px; opacity: 0.7;">
 												<tr>
 													<td>
 														@if (lastWeek != null && value > lastWeek.EarningsBase * 2)
@@ -701,6 +701,19 @@
 											<span id="@string.Format("{0}Pct", boId)" class="badge badge-pill badge-dark"
 												  style="position: absolute; left: 100px; top: -50px; @boPercentBackgroundColorStyle color: black;">
 												@percent.ToString("N0")%
+											</span>
+
+											<span id="@string.Format("{0}UpPct", boId)"
+												  class="glyphicon glyphicon-triangle-top"
+												  aria-hidden="true"
+												  style="position: absolute; left: 130px; top: -30px; color: white; cursor: pointer;"
+												  onclick="clickChangePercent(this, @movie.ControlId, 1)">
+											</span>
+											<span id="@string.Format("{0}DownPct", boId)"
+												  class="glyphicon glyphicon-triangle-bottom"
+												  aria-hidden="true"
+												  style="position: absolute; left: 130px; top: -17px; color: white; cursor: pointer;"
+												  onclick="clickChangePercent(this, @movie.ControlId, -1)">
 											</span>
 										</div>
 

@@ -43,12 +43,15 @@ Microsoft Solver Foundation:
 https://msdn.microsoft.com/en-us/library/ff524497(v=vs.93).aspx
 
 Actual published website:
-http://mooveepicker.azurewebsites.net/
+http://mooveepicker.com/
+
+Tricks for styling sliders (input type range controls)
+https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
 
 Using The Movie Database for movie posters where needed.
 http://www.themoviedb.org/
 
-The current defaults that I use are on the [About](http://mooveepicker.azurewebsites.net/home/about) page.
+The current defaults that I use are on the [About](http://mooveepicker.com/home/about) page.
 
 
 ##### Things I learned in this project

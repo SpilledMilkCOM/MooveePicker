@@ -46,6 +46,44 @@ function clearWeights() {
 	}
 }
 
+function clickChangePercent(button, controlIndex, change) {
+	logit(controlIndex + ' - changing percent ' + change);
+
+	global().lastMovieControlIndex = controlIndex;
+
+	clearWeights();
+
+	var boxOffice = $('#boId' + controlIndex);
+	var boxOfficePct = $('#boId' + controlIndex + 'Pct');
+
+	if (boxOfficePct != null && boxOffice != null) {
+		logit(boxOfficePct.text());
+
+		var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
+		var newPctValue = parseInt(boxOfficePct.text().replace(/%/g, '')) + change;
+
+		if (newPctValue < -100) {
+			newPctValue = -100;
+		}
+
+		logit(originalValue);
+		logit(percentToBackgroundColor(newPctValue));
+
+		boxOfficePct.css({ 'background-color': percentToBackgroundColor(newPctValue) });
+		boxOfficePct.text(newPctValue + '%');
+		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(newPctValue)) / 100.0));
+
+		clickPicksAsync();
+	}
+}
+
+function clickMorePicks() {
+
+	logit('clickMorePicks');
+
+	navigateTo('/Home/MorePicks');
+}
+
 function clickPasteBoxOffice() {
 	var boValues = $("#pasteAreaId").val();
 	var splitValues = boValues.split("\n");
@@ -69,13 +107,6 @@ function clickPasteBoxOffice() {
 	logit(parameters);
 
 	clickPicks();
-}
-
-function clickMorePicks() {
-
-	logit('clickMorePicks');
-
-	navigateTo('/Home/MorePicks');
 }
 
 function clickPicks() {
@@ -246,7 +277,6 @@ function sliderOnChange(slider, controlIndex) {
 		logit(slider.value);
 		logit(percentToBackgroundColor(slider.value));
 
-		//boxOfficePct.attr('style', 'background-color: ' + percentToBackgroundColor(slider.value) + '; border-radius: 3px; padding: 3px;');
 		boxOfficePct.css({ 'background-color': percentToBackgroundColor(slider.value) });
 		boxOfficePct.text(slider.value + '%');
 		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(slider.value)) / 100.0));
