@@ -1,44 +1,41 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+	padding-top: 50px;
+	padding-bottom: 20px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
 .dl-horizontal dt {
-    white-space: normal;
+	white-space: normal;
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
-    max-width: 280px;
+	max-width: 280px;
 }
 
 /* Put stuff in this class style for later use. */
 
 .movie-holding-pen {
 	margin: 5px 5px 5px 5px;
-
 	padding: 5px;
 }
 
 .movie-card {
 	background-color: lightyellow;
-
 	border-style: solid;
 	border-width: thin;
 	border-color: grey;
 	border-radius: 3px;
-
 	padding: 3px;
 }
 
@@ -54,13 +51,10 @@ textarea {
 
 .movie-card-title {
 	background-color: khaki;
-
 	border-style: solid;
 	border-width: thin;
-
 	font-size: medium;
 	font-weight: bold;
-
 	padding-left: 5px;
 	padding-left: 5px;
 }
@@ -89,4 +83,13 @@ textarea {
 	text-align: left;
 	background-color: #000;
 	border-radius: 4px;
+}
+
+.vertical-slider {
+	direction: rtl; /* Reverse - Max is at the top. */
+	writing-mode: vertical-lr; /* IE */
+	-webkit-appearance: slider-vertical; /* WebKit */
+	width: 10px;
+	height: 200px;
+	padding: 0 5px;
 }
