@@ -63,6 +63,8 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			ParseViewRequest();
 
+			//Thread.Sleep(1000);			// Impose a load for testing.
+
 			var result = new CalculateViewModel(ConstructPicksViewModel());
 
 			//return Json(result.MovieList.Picks[0], JsonRequestBehavior.AllowGet);

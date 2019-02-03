@@ -36,6 +36,11 @@ function clearMoviePicksPosters(movieListId) {
 	}
 }
 
+function clearMoviePicksPostersAll() {
+	clearMoviePicksPosters('bonusOnMovieList');
+	clearMoviePicksPosters('bonusOffMovieList');
+}
+
 function clearWeights() {
 	logit("clearWeights");
 
@@ -179,6 +184,7 @@ function navigateToExplicit(relativeUrl) {
 	logit(window.location.href);
 }
 
+// Return the base url (root domain) from the window's location HREF
 function parseBaseUrl() {
 	var baseUrl = window.location.href;
 
@@ -193,6 +199,7 @@ function parseBaseUrl() {
 	return baseUrl;
 }
 
+// Aggregate the Box Office and Weight fields into Request arguments.
 function parseBoxOfficeAndWeights() {
 
 	var boList = "";
@@ -260,6 +267,7 @@ function percentToBackgroundColor(percent) {
 	return 'hsl(' + hue + ', ' + saturation + '%, ' + luminosity + '%)';
 }
 
+// Callback for range/slider control
 function sliderOnChange(slider, controlIndex) {
 	logit(controlIndex + ' - ' + slider.value);
 
@@ -294,6 +302,7 @@ function updateBoxOffice(controlIndex) {
 	}
 }
 
+// Update the slider when other values change.
 function updateSlider(newValue, controlIndex) {
 	logit('updateSlider');
 
@@ -328,8 +337,7 @@ function weightLostFocus(newValue, controlIndex) {
 	if (originalValue != newValue) {
 		console.log('weightLostFocus');
 
-		clearMoviePicksPosters('bonusOnMovieList');
-		clearMoviePicksPosters('bonusOffMovieList');
+		clearMoviePicksPostersAll();
 
 		clickPicksAsync();
 

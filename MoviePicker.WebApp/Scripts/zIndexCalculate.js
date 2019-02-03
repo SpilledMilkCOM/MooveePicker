@@ -120,6 +120,10 @@ function calculate(endPoint) {
 
 	inCallback = true;
 
+	// Just in case there is a load on the server, show that it is working after a half a second.
+
+	var timeoutContext = window.setTimeout(clearMoviePicksPostersAll, 300);
+
 	logit("calculate('" + endPoint + "')");
 
 	$.ajax({
@@ -127,6 +131,9 @@ function calculate(endPoint) {
 		url: endPoint,
 		dataType: 'json',
 		success: function (jsonData) {
+
+			// Clear the timeout, just in case it hasn't fired.
+			window.clearTimeout(timeoutContext);
 
 			if (jsonData == null) {
 				inCallback = false;
