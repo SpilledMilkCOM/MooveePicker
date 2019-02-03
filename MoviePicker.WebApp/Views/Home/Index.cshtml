@@ -616,9 +616,7 @@
 
 								<td style="padding: 3px;">
 
-									<div data-toggle="tooltip" data-placement="top"
-										 data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
-										 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
+									<div>
 
 										<div style="position: relative; width: 0; height: 0;">
 											@if (movie.TheaterCount > 0)
@@ -628,9 +626,7 @@
 													if (movie.TheaterCount - lastWeek.TheaterCount > 0)
 													{
 														<span class="badge badge-pill badge-light"
-															  style="position: absolute; left: 20px; top: 5px;"
-															  data-toggle="tooltip"
-															  data-placement="right">
+															  style="position: absolute; left: 20px; top: 5px;">
 															@movie.TheaterCount
 															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
 															@(movie.TheaterCount - lastWeek.TheaterCount)
@@ -639,9 +635,7 @@
 													else if (movie.TheaterCount - lastWeek.TheaterCount < 0)
 													{
 														<span class="badge badge-pill badge-light"
-															  style="position: absolute; left: 20px; top: 5px;"
-															  data-toggle="tooltip"
-															  data-placement="right">
+															  style="position: absolute; left: 20px; top: 5px;">
 															@movie.TheaterCount
 															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
 															@(lastWeek.TheaterCount - movie.TheaterCount)
@@ -651,20 +645,27 @@
 												else
 												{
 													<span class="badge badge-pill badge-light"
-														  style="position: absolute; left: 50px; top: 5px;"
-														  data-toggle="tooltip"
-														  data-placement="right">
+														  style="position: absolute; left: 50px; top: 5px;">
 														@movie.TheaterCount
 													</span>
 												}
 											}
+
+											<span class="glyphicon glyphicon-info-sign"
+												  aria-hidden="true"
+												  data-toggle="tooltip"
+												  data-placement="top"
+												  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
+												  title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"
+												  style="position: absolute; left: 130px; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
+											</span>
 
 										</div>
 
 										<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle min-height: 220px; min-width: 150px;" src="@movie.ImageUrl" />
 
 										<div style="position: relative; width: 0; height: 0">
-											<table style="position: absolute; left: -5px; top: -220px; width: 10px; height: 220px; opacity: 0.7;">
+											<table style="position: absolute; left: -5px; top: -225px; width: 10px; height: 210px; opacity: 0.7;">
 												<tr>
 													<td>
 														@if (lastWeek != null && value > lastWeek.EarningsBase * 2)

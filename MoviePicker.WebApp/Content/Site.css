@@ -90,7 +90,7 @@ textarea {
 	writing-mode: vertical-lr; /* IE */
 	-webkit-appearance: slider-vertical; /* WebKit */
 	width: 10px;
-	height: 220px;
+	height: 210px;
 	padding: 0 5px;
 }
 
