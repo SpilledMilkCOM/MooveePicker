@@ -74,7 +74,7 @@
 
 		var parameters = parseBoxOfficeWeights(viewName);
 
-		var url = "/Home/Index?" + parameters;
+		var url = "/Home/IndexOld?" + parameters;
 
 		var baseUrl = parseBaseUrl();
 
@@ -300,12 +300,16 @@
 										}
 
 										<div style="font-weight: bold;">@movie.Cost BUX</div>
-										<span class="badge badge-pill badge-light"
-											  data-toggle="tooltip"
-											  data-placement="top"
-											  title="This badge is theater count.">
-											@movie.TheaterCount
-										</span>
+
+										@if (movie.TheaterCount > 0)
+										{
+											<span class="badge badge-pill badge-light"
+												  data-toggle="tooltip"
+												  data-placement="top"
+												  title="This badge is theater count.">
+												@movie.TheaterCount
+											</span>
+										}
 									</div>
 
 									<div class="clearfix col-xs-12 col-sm-6 col-md-7">
@@ -570,18 +574,25 @@
 													var value = (decimal)Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model);
 													var valueString = string.Format("{0:N0}", value);
 													decimal customPercent = 0;
+													var boPercentBackgroundColorStyle = "background-color: white;";
 
 													if (lastWeek != null && movie != null && lastWeek.EarningsBase > 0 && value != 0)
 													{
 														customPercent = (value - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+														boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(customPercent);
 													}
 
-													<div>
-														@string.Format("{0}", customPercent != 0 ? " " + customPercent.ToString("N0") + "% " : string.Empty)
-													</div>
-												}
+													if (customPercent != 0)
+													{
+														<span class="badge badge-pill badge-dark"
+															  data-toggle="tooltip"
+															  data-placement="top"
+															  title="Gain or loss from previous week."
+															  style="@boPercentBackgroundColorStyle color: black;">
+															@customPercent.ToString("N0")%
+														</span>
+													}
 
-												@{
 													var id = string.Format("boId{0}", movieCount);
 													var name = string.Format("BoxOffice{0}", movieCount);
 
@@ -600,13 +611,43 @@
 												<span style="font-weight: bold;">
 													@movie.Cost BUX &nbsp;&nbsp;
 
-													<span class="badge badge-pill badge-light"
-														  data-toggle="tooltip"
-														  data-placement="top"
-														  style="@theaterCountColorStyle @theaterCountTextStyle"
-														  title="This badge is theater count.">
-														@movie.TheaterCount
-													</span>
+													@if (movie.TheaterCount > 0)
+													{
+														if (lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0))
+														{
+															if (movie.TheaterCount - lastWeek.TheaterCount > 0)
+															{
+																<span class="badge badge-pill badge-light"
+																	  data-toggle="tooltip"
+																	  data-placement="top"
+																	  title="Theater Count">
+																	@movie.TheaterCount
+																	<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
+																	@(movie.TheaterCount - lastWeek.TheaterCount)
+																</span>
+															}
+															else if (movie.TheaterCount - lastWeek.TheaterCount < 0)
+															{
+																<span class="badge badge-pill badge-light"
+																	  data-toggle="tooltip"
+																	  data-placement="top"
+																	  title="Theater Count">
+																	@movie.TheaterCount
+																	<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
+																	@(lastWeek.TheaterCount - movie.TheaterCount)
+																</span>
+															}
+														}
+														else
+														{
+															<span class="badge badge-pill badge-light"
+																  data-toggle="tooltip"
+																  data-placement="top"
+																  title="Theater Count">
+																@movie.TheaterCount
+															</span>
+														}
+													}
 												</span>
 											</td>
 
@@ -636,13 +677,18 @@
 																	percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
 																}
 
-																//var bootstrapClass = percent <= -20 ? (percent <= -40 ? "table-danger" : "table-warning")
-																//									: (percent > 0 ? "table-success" : "table-info");
-																var divColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+																if (percent != 0)
+																{
+																	var divColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 
-																<div style="@divColorStyle">
-																	@string.Format("{0}", percent != 0 ? " " + percent.ToString("N0") + "% " : string.Empty)
-																</div>
+																	<span class="badge badge-pill badge-dark"
+																		  data-toggle="tooltip"
+																		  data-placement="top"
+																		  title="Gain or loss from previous week."
+																		  style="@divColorStyle color: black;">
+																		@percent.ToString("N0")%
+																	</span>
+																}
 															}
 														}
 													</td>

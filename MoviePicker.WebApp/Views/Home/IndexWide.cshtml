@@ -407,7 +407,7 @@
 
 			</div>
 
-			<div class="col-xs-12" width="100%" style="overflow-x: auto; white-space: nowrap; height: 235px; overflow-y: hidden;">
+			<div class="col-xs-12" width="100%" style="overflow-x: auto; white-space: nowrap; height: 250px; overflow-y: hidden;">
 				<table>
 					@{
 						movieCount = 1;
@@ -429,7 +429,7 @@
 									var valueString = string.Format("{0:N0}", value);
 									var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
 									var inputBackgroundColor = lastWeek == null ? "lightgreen" : "cyan";
-									string divBackgroundColorStyle = null;
+									string boPercentBackgroundColorStyle = null;
 									decimal percent = 0;
 									var hasRows = false;
 
@@ -461,9 +461,9 @@
 											if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
 											{
 												percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-												divBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+												boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 
-												toolTip.Append($"</td><td style=\"padding: 4px; color: black; {divBackgroundColorStyle}\">{percent.ToString("N0")}%</td></tr>");
+												toolTip.Append($"</td><td style=\"padding: 4px; color: black; {boPercentBackgroundColorStyle}\">{percent.ToString("N0")}%</td></tr>");
 											}
 											else
 											{
@@ -481,7 +481,7 @@
 
 									toolTip.Append("</table>");
 
-									divBackgroundColorStyle = "background-color: white;";
+									boPercentBackgroundColorStyle = "background-color: white;";
 									percent = 0;
 
 									var myMovie = Model.Miners.ToList()[1].Movies.FirstOrDefault(item => item.Name == movie.Name);
@@ -489,7 +489,7 @@
 									if (lastWeek != null && myMovie != null && lastWeek.EarningsBase > 0)
 									{
 										percent = (myMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-										divBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+										boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 									}
 
 									var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "2px";
@@ -501,47 +501,117 @@
 
 									<td style="padding: 3px;">
 
-										<div data-toggle="tooltip" data-placement="@tooltipPlacement"
-											 data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
-											 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
+										<div>
 
-											<img id="@imageId" class="img-rounded" style="width: 140px; @backgroundStyle" src="@movie.ImageUrl" />
+											<div style="position: relative; width: 0; height: 0;">
+												@if (movie.TheaterCount > 0)
+												{
+													if (lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0))
+													{
+														if (movie.TheaterCount - lastWeek.TheaterCount > 0)
+														{
+															<span class="badge badge-pill badge-light"
+																  data-toggle="tooltip"
+																  data-placement="bottom"
+																  title="Theater Count"
+																  style="position: absolute; left: 20px; top: 5px;">
+																@movie.TheaterCount
+																<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
+																@(movie.TheaterCount - lastWeek.TheaterCount)
+															</span>
+														}
+														else if (movie.TheaterCount - lastWeek.TheaterCount < 0)
+														{
+															<span class="badge badge-pill badge-light"
+																  data-toggle="tooltip"
+																  data-placement="bottom"
+																  title="Theater Count"
+																  style="position: absolute; left: 20px; top: 5px;">
+																@movie.TheaterCount
+																<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
+																@(lastWeek.TheaterCount - movie.TheaterCount)
+															</span>
+														}
+													}
+													else
+													{
+														<span class="badge badge-pill badge-light"
+															  data-toggle="tooltip"
+															  data-placement="bottom"
+															  title="Theater Count"
+															  style="position: absolute; left: 50px; top: 5px;">
+															@movie.TheaterCount
+														</span>
+													}
+												}
 
-											@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
-											@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
+												<span class="glyphicon glyphicon-info-sign"
+													  aria-hidden="true"
+													  data-toggle="tooltip"
+													  data-placement="@tooltipPlacement"
+													  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
+													  title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"
+													  style="position: absolute; left: 130px; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
+												</span>
+
+											</div>
+
+											<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle min-height: 220px; min-width: 150px;" src="@movie.ImageUrl" />
 
 											<div style="position: relative; width: 0; height: 0">
-												<table style="position: absolute; left: 2px; top: -60px;">
-
+												<table style="position: absolute; left: -5px; top: -225px; width: 10px; height: 210px; opacity: 0.7;">
 													<tr>
 														<td>
-															<input name="@name"
-																   class="form-control"
-																   id="@boId"
-																   onblur="boxOfficeLostFocus('@valueString', this.value, @movieCount)"
-																   style="background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
-																   type="text"
-																   value="@valueString"
-																   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
-																   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
-																   data-val-required="The Box Office @movieCount field is required."
-																   data-val-number="The field Box Office @movieCount must be a number."
-																   data-val="true">
-														</td>
+															@if (lastWeek != null && value > lastWeek.EarningsBase * 2)
+															{
+																// Adjust the slider to MORE than 100% since the value is already greater than 100% and the slider won't work.
 
-														<td style="padding-left: 3px;">
-															<div id="@string.Format("{0}Pct", boId)" style="@divBackgroundColorStyle border-radius: 3px; padding: 3px;">
-																@percent.ToString("N0")%
-															</div>
-														</td>
-													</tr>
-													<tr>
-														<td colspan="2">
-															<input id="@string.Format("boSliderId{0}", @movieCount)" type="range" onchange="sliderOnChange(this, @movieCount)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+																var sliderMax = (Math.Round(value / lastWeek.EarningsBase, 0) + 1) * 100;
+
+																<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="@sliderMax" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+															}
+															else
+															{
+																<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+															}
 														</td>
 													</tr>
 												</table>
 											</div>
+
+											<div style="position: relative; width: 0; height: 0">
+												<input name="@name"
+													   class="form-control"
+													   id="@boId"
+													   onblur="boxOfficeLostFocus('@valueString', this.value, @movie.ControlId)"
+													   style="position: absolute; left: 20px; top: -40px; background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
+													   type="text"
+													   value="@valueString"
+													   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
+													   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
+													   data-val-required="The Box Office @movie.ControlId field is required."
+													   data-val-number="The field Box Office @movie.ControlId must be a number."
+													   data-val="true">
+
+												<span id="@string.Format("{0}Pct", boId)" class="badge badge-pill badge-dark"
+													  style="position: absolute; left: 100px; top: -50px; @boPercentBackgroundColorStyle color: black;">
+													@percent.ToString("N0")%
+												</span>
+
+												<span id="@string.Format("{0}UpPct", boId)"
+													  class="glyphicon glyphicon-triangle-top"
+													  aria-hidden="true"
+													  style="position: absolute; left: 130px; top: -30px; color: white; cursor: pointer;"
+													  onclick="clickChangePercent(this, @movie.ControlId, 1)">
+												</span>
+												<span id="@string.Format("{0}DownPct", boId)"
+													  class="glyphicon glyphicon-triangle-bottom"
+													  aria-hidden="true"
+													  style="position: absolute; left: 130px; top: -17px; color: white; cursor: pointer;"
+													  onclick="clickChangePercent(this, @movie.ControlId, -1)">
+												</span>
+											</div>
+
 										</div>
 									</td>
 

@@ -626,6 +626,9 @@
 													if (movie.TheaterCount - lastWeek.TheaterCount > 0)
 													{
 														<span class="badge badge-pill badge-light"
+															  data-toggle="tooltip"
+															  data-placement="top"
+															  title="Theater Count"
 															  style="position: absolute; left: 20px; top: 5px;">
 															@movie.TheaterCount
 															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
@@ -635,6 +638,9 @@
 													else if (movie.TheaterCount - lastWeek.TheaterCount < 0)
 													{
 														<span class="badge badge-pill badge-light"
+															  data-toggle="tooltip"
+															  data-placement="top"
+															  title="Theater Count"
 															  style="position: absolute; left: 20px; top: 5px;">
 															@movie.TheaterCount
 															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
@@ -645,6 +651,9 @@
 												else
 												{
 													<span class="badge badge-pill badge-light"
+														  data-toggle="tooltip"
+														  data-placement="top"
+														  title="Theater Count"
 														  style="position: absolute; left: 50px; top: 5px;">
 														@movie.TheaterCount
 													</span>
