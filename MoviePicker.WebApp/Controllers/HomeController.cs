@@ -24,6 +24,7 @@ namespace MoviePicker.WebApp.Controllers
 		private const int DATA_MINER_COUNT = 6;
 		private const int MORE_PICKS_COUNT = 6;
 		private const string NEW_LINE_HTML = "%0a";
+		private const string PERCENT_HTML = "%25";
 
 		private IControllerUtility _controllerUtility;
 		private IMinerModel _minerModel;
@@ -221,7 +222,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			foreach (var movie in movieList.Take(3))
 			{
-				tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}%";
+				tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}{PERCENT_HTML}";
 			}
 
 			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
@@ -261,7 +262,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			foreach (var movie in movieList.Take(3))
 			{
-				tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}%";
+				tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}{PERCENT_HTML}";
 			}
 
 			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
