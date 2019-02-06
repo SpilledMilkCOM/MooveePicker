@@ -23,6 +23,7 @@ namespace MoviePicker.WebApp.Controllers
 	{
 		private const int DATA_MINER_COUNT = 6;
 		private const int MORE_PICKS_COUNT = 6;
+		private const string NEW_LINE_HTML = "%0a";
 
 		private IControllerUtility _controllerUtility;
 		private IMinerModel _minerModel;
@@ -212,6 +213,22 @@ namespace MoviePicker.WebApp.Controllers
 				viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
 			}
 
+			var movieList = viewModel.Movies.OrderByDescending(movie => movie.EarningsBase).ToList();
+			var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
+
+			var nl = NEW_LINE_HTML;
+			var tweetText = $"The top @Fandango tickets sales for the past {viewModel.PastHours} hours:{nl}";
+
+			foreach (var movie in movieList.Take(3))
+			{
+				tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}%";
+			}
+
+			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
+
+			ControllerUtility.SetTwitterCard(ViewBag, null, "Fandango Hourly Sales", "A breakdown of the hourly ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
+
+
 			stopWatch.Stop();
 
 			viewModel.Duration = stopWatch.ElapsedMilliseconds;
@@ -235,6 +252,21 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
 			}
+
+			var movieList = viewModel.Movies.OrderByDescending(movie => movie.EarningsBase).ToList();
+			var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
+
+			var nl = NEW_LINE_HTML;
+			var tweetText = $"The top @Fandango tickets sales for the weekend ending {_minerModel.WeekendEnding.Value.ToShortDateString()}:{nl}";
+
+			foreach (var movie in movieList.Take(3))
+			{
+				tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}%";
+			}
+
+			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
+
+			ControllerUtility.SetTwitterCard(ViewBag, null, "Fandango Weekend Sales", "A breakdown of the weekend ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
 
 			stopWatch.Stop();
 

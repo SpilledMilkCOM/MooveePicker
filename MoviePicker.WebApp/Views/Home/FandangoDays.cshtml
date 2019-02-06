@@ -73,7 +73,7 @@
 @{
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
 	var movieList = Model.Movies.ToList();
-	var totalBoxOffice = movieList.Sum(movie => movie.Earnings);
+	var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
 
 	<div class="row">
 
@@ -255,7 +255,7 @@
 												  style="position: absolute; left: 30px; top: 5px;"
 												  data-toggle="tooltip"
 												  data-placement="right">
-												@((movie.Earnings / totalBoxOffice * 100).ToString("N1")) %
+												@((movie.EarningsBase / totalBoxOffice * 100).ToString("N1")) %
 											</span>
 										</div>
 
