@@ -339,7 +339,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			// Set the weights to 1 across the board. (treat all sources equal)
 
-			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.MOJO_LAST_INDEX; minerIndex++)
+			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.MOJO_THEATER_INDEX; minerIndex++)
 			{
 				_minerModel.Miners[minerIndex].Weight = 1;
 			}
