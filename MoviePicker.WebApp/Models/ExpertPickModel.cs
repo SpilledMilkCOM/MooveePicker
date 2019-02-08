@@ -1,6 +1,5 @@
 ﻿using MovieMiner;
 using MoviePicker.WebApp.Interfaces;
-using System.Collections.Generic;
 
 namespace MoviePicker.WebApp.Models
 {

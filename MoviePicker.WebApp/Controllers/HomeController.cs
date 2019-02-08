@@ -94,12 +94,20 @@ namespace MoviePicker.WebApp.Controllers
 			stopWatch.Start();
 
 			var result = new ExpertPicksViewModel();
-			var baseMovies = _minerModel.Miners[MinerModel.FML_INDEX].Movies;
-			var lastMiner = _minerModel.Miners.Last();
+			var fmlMiner = _minerModel.Miners[MinerModel.FML_INDEX];
+			var baseMovies = fmlMiner.Movies;
+			var lastMiner = _minerModel.Miners[MinerModel.MOJO_LAST_INDEX];
 			var minerCount = 0;
 			var weekendEnding = _minerModel.WeekendEnding;
 
-			foreach (var miner in _minerModel.Miners.Skip(2))
+			if (fmlMiner.ContainsEstimates && fmlMiner.Movies.Count > 0)
+			{
+				result.MovieListPerfectPick = PerfectPick(null);
+			}
+
+			// Create each ExpertPickModel and attach their bonus ON and OFF MovieListModels
+
+			foreach (var miner in _minerModel.Miners.Skip(MinerModel.MY_INDEX + 1))
 			{
 				if (miner.Picks != null && miner.Movies.Count > 0 && !miner.IsHidden && miner != lastMiner)
 				{
@@ -131,6 +139,7 @@ namespace MoviePicker.WebApp.Controllers
 					expert.MovieList = new MovieListModel()
 					{
 						ComparisonHeader = "Bonus ON",
+						ComparisonMovies = fmlMiner.Movies,
 						Picks = new List<IMovieList> { miner.Picks },
 						ShareQueryString = $"/Home/ShareBonusOnPicks?{shareQueryString}"
 					};
@@ -138,6 +147,7 @@ namespace MoviePicker.WebApp.Controllers
 					expert.MovieListBonusOff = new MovieListModel()
 					{
 						ComparisonHeader = "Bonus OFF",
+						ComparisonMovies = fmlMiner.Movies,
 						Picks = new List<IMovieList> { miner.PicksBonusOff },
 						ShareQueryString = $"/Home/ShareBonusOffPicks?{shareQueryString}"
 					};
@@ -319,7 +329,6 @@ namespace MoviePicker.WebApp.Controllers
 			ParseViewRequest();
 
 			_viewModel.IsTracking = _minerModel.Miners[MinerModel.FML_INDEX].ContainsEstimates;
-			//_viewModel.IsTracking = true;
 
 			ControllerUtility.SetTwitterCard(ViewBag);
 

@@ -14,5 +14,7 @@ namespace MoviePicker.WebApp.ViewModels
 		public long Duration { get; set; }
 
 		public List<ExpertPickModel> ExpertPicks { get; private set; }
+
+		public IMovieListModel MovieListPerfectPick { get; set; }
 	}
 }
