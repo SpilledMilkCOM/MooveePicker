@@ -83,6 +83,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MoviePickerSimpleTests.cs" />
     <Compile Include="PosterRecognitionTests.cs" />
     <Compile Include="TitleMatchTests.cs" />
     <Compile Include="MovieTests.cs" />
