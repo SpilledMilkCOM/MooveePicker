@@ -163,6 +163,43 @@ namespace MoviePicker.WebApp.Controllers
 				minerCount++;
 			}
 
+			// Set default tweet
+
+			var nl = NEW_LINE_HTML;
+			var weighingIn = result.ExpertPicks.Count == 6 ? "All" : $"So far, {result.ExpertPicks.Count}";
+			var plural = result.ExpertPicks.Count != 1 ? "s" : string.Empty;
+			var tweetText = $"{weighingIn} expert{plural} weighing in the box office predictions this weekend";
+
+			if (result.MovieListPerfectPick != null)
+			{
+				var topExpert = result.ExpertPicks.OrderByDescending(expert => expert.TotalPicksFromComparison).FirstOrDefault();
+
+				if (topExpert != null)
+				{
+					tweetText = $"So far, {topExpert.Miner.Name} @{topExpert.Miner.TwitterID} leads with a total box office of ${topExpert.TotalPicksFromComparison.ToString("N0")} and ";
+
+					if (topExpert.TotalPicksFromComparison < result.MovieListPerfectPick.Picks[0].TotalEarnings)
+					{
+						tweetText += $"is trailing the perfect pick by ${result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison:N0} ({(result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})";
+					}
+					else
+					{
+						tweetText += "has nailed that perfect pick!";
+					}
+
+					tweetText += $"{nl}";
+
+					foreach (var expert in result.ExpertPicks.OrderByDescending(item => item.TotalPicksFromComparison).Skip(1).Take(2))
+					{
+						tweetText += $"{nl}@{expert.Miner.TwitterID} ${expert.TotalPicksFromComparison:N0} [$-{result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison:N0} (-{(result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})]";
+					}
+				}
+			}
+
+			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
+
+			ControllerUtility.SetTwitterCard(ViewBag, null, "Expert League", "See what the experts pick AND their ranking when the estimates are in.", null, null, tweetText);
+
 			stopWatch.Stop();
 
 			result.Duration = stopWatch.ElapsedMilliseconds;
