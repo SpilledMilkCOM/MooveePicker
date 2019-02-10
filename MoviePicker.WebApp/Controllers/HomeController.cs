@@ -152,6 +152,11 @@ namespace MoviePicker.WebApp.Controllers
 						ShareQueryString = $"/Home/ShareBonusOffPicks?{shareQueryString}"
 					};
 
+					if (result.MovieListPerfectPick != null)
+					{
+						expert.TotalPicksFromComparison = expert.MovieList.TotalPicksFromComparison;
+					}
+
 					result.ExpertPicks.Add(expert);
 				}
 

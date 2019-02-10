@@ -202,6 +202,15 @@ function parseBaseUrl() {
 // Aggregate the Box Office and Weight fields into Request arguments.
 function parseBoxOfficeAndWeights() {
 
+	logit("parseBoxOfficeAndWeights");
+
+	logit($("#boId1").length);
+
+	if ($("#boId1").length === 0) {
+		// Nothing to parse on this page.
+		return "";
+	}
+
 	var boList = "";
 	var weightList = "";
 	var weightTotal = 0;

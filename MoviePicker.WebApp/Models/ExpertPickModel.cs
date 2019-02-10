@@ -10,5 +10,7 @@ namespace MoviePicker.WebApp.Models
 		public IMovieListModel MovieList { get; set; }
 
 		public IMovieListModel MovieListBonusOff { get; set; }
+
+		public decimal TotalPicksFromComparison { get; set; }
 	}
 }
