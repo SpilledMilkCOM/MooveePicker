@@ -196,9 +196,9 @@ namespace MoviePicker.WebApp.Controllers
 				}
 			}
 
-			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
+			tweetText += $"{nl}{nl}#ShowYourScreens #BoxOffice @SpilledMilkCOM";
 
-			ControllerUtility.SetTwitterCard(ViewBag, null, "Expert League", "See what the experts pick AND their ranking when the estimates are in.", null, null, tweetText);
+			ControllerUtility.SetTwitterCard(ViewBag, null, $"{Constants.APPLICATION_NAME} - Expert League", "See what the experts pick AND their ranking when the estimates are in.", null, null, tweetText);
 
 			stopWatch.Stop();
 
@@ -279,7 +279,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
 
-			ControllerUtility.SetTwitterCard(ViewBag, null, "Fandango Hourly Sales", "A breakdown of the hourly ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
+			ControllerUtility.SetTwitterCard(ViewBag, null, $"{Constants.APPLICATION_NAME} - Fandango Hourly Sales", "A breakdown of the hourly ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
 
 
 			stopWatch.Stop();
@@ -319,7 +319,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
 
-			ControllerUtility.SetTwitterCard(ViewBag, null, "Fandango Weekend Sales", "A breakdown of the weekend ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
+			ControllerUtility.SetTwitterCard(ViewBag, null, $"{Constants.APPLICATION_NAME} - Fandango Weekend Sales", "A breakdown of the weekend ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
 
 			stopWatch.Stop();
 
