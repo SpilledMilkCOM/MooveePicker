@@ -77,6 +77,8 @@ namespace MoviePicker.WebApp.Controllers
 				viewModel.Images = viewModel.Images.OrderByDescending(item => item.CreationDateUTC).ToList();
 			}
 
+			viewModel.NextCleanup = (int)FileUtility.NextCleanupDuration;
+
 			return View(viewModel);
 		}
 
@@ -95,6 +97,9 @@ namespace MoviePicker.WebApp.Controllers
 
 			_infoViewModel.ClientInfo.Device = Request.Browser.IsMobileDevice ? "Mobile" : "Desktop";
 			_infoViewModel.ClientInfo.Name = Request.Browser.Type;
+
+
+			_infoViewModel.ServerInfo.NextCleanup = (int)FileUtility.NextCleanupDuration;
 
 			return View(_infoViewModel);
 		}

@@ -8,6 +8,8 @@ namespace MoviePicker.WebApp.Models
 	{
 		public IEnumerable<string> MoviePosterFiles { get; set; }
 
+		public int NextCleanup { get; set; }
+
 		public DateTime Now { get; set; }
 
 		public DateTime NowMst { get; set; }

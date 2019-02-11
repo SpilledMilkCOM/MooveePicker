@@ -9,6 +9,8 @@ namespace MoviePicker.WebApp.Interfaces
 
 		long ProcessBytes { get; set; }
 
+		int NextCleanup { get; set; }
+
 		/// <summary>
 		/// Local server "Now"
 		/// </summary>

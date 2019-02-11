@@ -11,7 +11,8 @@ namespace MoviePicker.WebApp.Utilities
 		private const int MOVIE_EXPIRATION_DAYS = 90;
 
 		//private const int SHARED_EXPIRATION_MINUTES = 5;
-		private const int SHARED_EXPIRATION_MINUTES = 24 * 60;      // One day - may want to back this off later.
+		private const int SHARED_EXPIRATION_MINUTES = 60;			// One hour.
+		private const int TWITTER_EXPIRATION_MINUTES = 24 * 60;		// One day - may want to back this off later.
 		private const string MOVIE_POSTER_PREFIX = "MoviePoster_";
 
 		private static bool _isCleaningUp = false;
@@ -22,7 +23,9 @@ namespace MoviePicker.WebApp.Utilities
 			NextCleanUp = DateTime.Now;
 		}
 
-		static private DateTime NextCleanUp { get; set; }
+		private static DateTime NextCleanUp { get; set; }
+
+		public static double NextCleanupDuration => DateTime.Now.Subtract(NextCleanUp).TotalMinutes;
 
 		/// <summary>
 		/// Every so often clean up the files.
@@ -63,7 +66,7 @@ namespace MoviePicker.WebApp.Utilities
 
 				foreach (var file in Directory.GetFiles(directory, "Twitter_*"))
 				{
-					if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES * -1))
+					if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(TWITTER_EXPIRATION_MINUTES * -1))
 					{
 						File.Delete(file);
 					}

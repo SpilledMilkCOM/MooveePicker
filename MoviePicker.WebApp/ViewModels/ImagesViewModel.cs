@@ -13,6 +13,11 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public List<FileModel> Images { get; set; }
 
+		/// <summary>
+		/// The next time cleanup will happen (in minutes)
+		/// </summary>
+		public int NextCleanup { get; set; }
+
 		public long TotalSize => Images.Sum(image => image.SizeInBytes);
 	}
 }
