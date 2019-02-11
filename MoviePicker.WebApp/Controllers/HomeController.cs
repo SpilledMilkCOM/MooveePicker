@@ -658,28 +658,18 @@ namespace MoviePicker.WebApp.Controllers
 			var leadMovie = result.MovieList?.Picks?.First().Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
 
 			// Needs to be put in the ViewBag since this value is on the footer.
-			ViewBag.TwitterTweetUrl = $"https://twitter.com/intent/tweet?text={leadMovie} leads my lineup @fml_movies {result.SharedPicksUrl.Replace("?", "%3F")}";
+			ViewBag.TwitterTweetText = $"{leadMovie} leads my lineup @fml_movies {result.SharedPicksUrl.Replace("?", "%3F")}";
+
+			var viewModel = new SharePicksViewModel()
+			{
+				ImageFileName = _viewModel.ImageType == null ? null : GenerateSharedImage(_viewModel.ImageType == "on", result.IsTracking, result)
+			};
 
 			stopWatch.Stop();
 
 			result.Duration = stopWatch.ElapsedMilliseconds;
 
 			return result;
-		}
-
-		private IMovieListModel PerfectPick(IEnumerable<IMovie> movies)
-		{
-			// Don't need to use clones, because the BONUS is always used for best possible values.
-
-			_moviePicker.EnableBestPerformer = true;
-			_moviePicker.AddMovies(_minerModel.Miners[MinerModel.FML_INDEX].Movies);
-
-			return new MovieListModel()
-			{
-				ComparisonHeader = "Perfect Pick (estimated)",
-				ComparisonMovies = movies,
-				Picks = new List<IMovieList> { _moviePicker.ChooseBest() }
-			};
 		}
 
 		private SharePicksViewModel ConstructSharePicksViewModel(bool bonusOn, bool isTracking, PicksViewModel picksViewModel = null, int index = 0)
@@ -701,45 +691,7 @@ namespace MoviePicker.WebApp.Controllers
 				ImageFileName = GenerateSharedImage(bonusOn, isTracking, picksViewModel)
 			};
 
-			// Ordering by Cost is the same sort as the file names.
-			var leadingMovieName = picks.Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
-			var bonusMovieName = bonusOn ? picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer)?.Name : null;
-			var spentBux = picks.Movies.Sum(movie => movie.Cost);
-			var spentBuxText = spentBux == 1000 ? " and spent all my BUX" : $" and spent {spentBux} BUX";
-			var minerPick = MinerWeightToMiner();
-			var lineupArticle = minerPick == null ? "my" : "the";
-
-			if (bonusMovieName == null)
-			{
-				bonusMovieName = picks.Movies.GroupBy(movie => movie.Name)
-											.OrderByDescending(group => group.Count())
-											.FirstOrDefault()?.Key;
-			}
-
-			if (bonusMovieName == leadingMovieName)
-			{
-				bonusMovieName = "it";
-			}
-
-			bonusMovieName = (bonusOn) ? $", counting on {bonusMovieName} as the bonus movie" : $", hoping for {bonusMovieName} as the bonus movie";
-
-			viewModel.TwitterDescription = $"{leadingMovieName} leads {lineupArticle} lineup{bonusMovieName}{spentBuxText}.";
-			viewModel.TwitterImageFileName = viewModel.ImageFileName?.Replace("Shared_", "Twitter_");
-			viewModel.TwitterTitle = $"{Constants.APPLICATION_NAME}: {subTitle} (Est ${picks.TotalEarnings:N0})";
-
-			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks:" : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:";
-
-			defaultTwitterText += "%0a" + picks.ToString();
-			defaultTwitterText += $"%0a[cost {spentBux.ToString("N0")} BUX]%0a%0a#ShowYourScreens @SpilledMilkCOM RT if you like this #PerfectPick";
-
-			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image"
-											, viewModel.TwitterTitle
-											, viewModel.TwitterDescription
-											, $"{Constants.WEBSITE_URL}/images/{viewModel.TwitterImageFileName}"
-											, "Collage of my movie lineups."
-											, defaultTwitterText);
-
-			ControllerUtility.SetOpenGraph(ViewBag, Request);
+			SetupSharedTweet(bonusOn, viewModel, picks);
 
 			DownloadMoviePosters();
 
@@ -875,6 +827,10 @@ namespace MoviePicker.WebApp.Controllers
 			return result;
 		}
 
+		/// <summary>
+		/// Update the movie list based on the Bonus Bar (Earnings = Cost * BB * 1000)
+		/// </summary>
+		/// <param name="movies"></param>
 		private void ParseBonusBarRequest(IEnumerable<IMovie> movies)
 		{
 			var bonusBar = _controllerUtility.GetRequestDecimal(Request, "bb");
@@ -888,6 +844,9 @@ namespace MoviePicker.WebApp.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Parse the Box Office and Miner weights from the Request parameters into the miners and view model.
+		/// </summary>
 		private void ParseBoxOfficeWeightRequest()
 		{
 			char[] listDelimiter = { ',' };
@@ -935,11 +894,35 @@ namespace MoviePicker.WebApp.Controllers
 			UpdateViewModel();
 		}
 
+		/// <summary>
+		/// Parse ALL of the view Request parameters into the view model.
+		/// </summary>
 		private void ParseViewRequest()
 		{
 			ParseBoxOfficeWeightRequest();
 
+			_viewModel.ImageType = _controllerUtility.GetRequestString(Request, "it");
 			_viewModel.Id = _controllerUtility.GetRequestGuid(Request, "id");
+		}
+
+		/// <summary>
+		/// Return the perfect pick from a list of the current box office estimates.
+		/// </summary>
+		/// <param name="movies"></param>
+		/// <returns></returns>
+		private IMovieListModel PerfectPick(IEnumerable<IMovie> movies)
+		{
+			// Don't need to use clones, because the BONUS is always used for best possible values.
+
+			_moviePicker.EnableBestPerformer = true;
+			_moviePicker.AddMovies(_minerModel.Miners[MinerModel.FML_INDEX].Movies);
+
+			return new MovieListModel()
+			{
+				ComparisonHeader = "Perfect Pick (estimated)",
+				ComparisonMovies = movies,
+				Picks = new List<IMovieList> { _moviePicker.ChooseBest() }
+			};
 		}
 
 		private string QueryStringFromModel()
@@ -1019,11 +1002,66 @@ namespace MoviePicker.WebApp.Controllers
 			picksViewModel.Duration += stopwatch.ElapsedMilliseconds;
 		}
 
+		/// <summary>
+		/// Initialize the view model and ViewBag for the default tweet and twitter summary card (OG) information.
+		/// </summary>
+		/// <param name="bonusOn"></param>
+		/// <param name="viewModel"></param>
+		/// <param name="picks"></param>
+		private void SetupSharedTweet(bool bonusOn, SharePicksViewModel viewModel, IMovieList picks)
+		{
+			// Ordering by Cost is the same sort as the file names.
+			var leadingMovieName = picks.Movies.OrderByDescending(movie => movie.Cost).FirstOrDefault()?.Name;
+			var bonusMovieName = bonusOn ? picks.Movies.FirstOrDefault(movie => movie.IsBestPerformer)?.Name : null;
+			var spentBux = picks.Movies.Sum(movie => movie.Cost);
+			var spentBuxText = spentBux == 1000 ? " and spent all my BUX" : $" and spent {spentBux} BUX";
+			var minerPick = MinerWeightToMiner();
+			var lineupArticle = minerPick == null ? "my" : "the";
+			var subTitle = bonusOn ? "Bonus ON" : "Bonus OFF";
+
+			if (bonusMovieName == null)
+			{
+				bonusMovieName = picks.Movies.GroupBy(movie => movie.Name)
+											.OrderByDescending(group => group.Count())
+											.FirstOrDefault()?.Key;
+			}
+
+			if (bonusMovieName == leadingMovieName)
+			{
+				bonusMovieName = "it";
+			}
+
+			bonusMovieName = (bonusOn) ? $", counting on {bonusMovieName} as the bonus movie" : $", hoping for {bonusMovieName} as the bonus movie";
+
+			viewModel.TwitterDescription = $"{leadingMovieName} leads {lineupArticle} lineup{bonusMovieName}{spentBuxText}.";
+			viewModel.TwitterImageFileName = viewModel.ImageFileName?.Replace("Shared_", "Twitter_");
+			viewModel.TwitterTitle = $"{Constants.APPLICATION_NAME}: {subTitle} (Est ${picks.TotalEarnings:N0})";
+
+			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks:" : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:";
+
+			defaultTwitterText += NEW_LINE_HTML + picks.ToString();
+			defaultTwitterText += $"{NEW_LINE_HTML}[cost {spentBux.ToString("N0")} BUX]{NEW_LINE_HTML}{NEW_LINE_HTML}#ShowYourScreens @SpilledMilkCOM RT if you like this #PerfectPick";
+
+			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image"
+											, viewModel.TwitterTitle
+											, viewModel.TwitterDescription
+											, viewModel.TwitterImageFileName == null ? null : $"{Constants.WEBSITE_URL}/images/{viewModel.TwitterImageFileName}"
+											, "Collage of my movie lineups."
+											, defaultTwitterText);
+
+			ControllerUtility.SetOpenGraph(ViewBag, Request);
+		}
+
 		private string SharedPicksFromModels()
 		{
 			return $"{TrimParameters(Request.Url.ToString())}?{QueryStringFromModel()}";
 		}
 
+		/// <summary>
+		/// Effectively a CAR() of the request paramters (just the URL WITHOUT the parameters).
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
 		private string TrimParameters(string request)
 		{
 			var paramsIdx = request.IndexOf("?");

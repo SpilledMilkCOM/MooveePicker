@@ -35,6 +35,9 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public Guid Id { get; set; }
 
+		public string ImageType { get; set; }
+
+
 		/// <summary>
 		/// The estimated values are in (typically on a Saturday)
 		/// </summary>

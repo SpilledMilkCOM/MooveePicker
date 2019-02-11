@@ -27,6 +27,12 @@ namespace MoviePicker.WebApp.Interfaces
 		Guid Id { get; set; }
 
 		/// <summary>
+		/// The generated image type for the Twitter (Open Graph) summary card.
+		/// Image Type (it)
+		/// </summary>
+		string ImageType { get; set; }
+
+		/// <summary>
 		/// The estimated values are in (typically on a Saturday)
 		/// </summary>
 		bool IsTracking { get; set; }
