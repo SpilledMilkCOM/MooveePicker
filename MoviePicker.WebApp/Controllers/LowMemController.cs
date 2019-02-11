@@ -26,26 +26,30 @@ namespace MoviePicker.WebApp.Controllers
 			ControllerUtility.SetTwitterCard(ViewBag);
 		}
 
+		[HttpGet]
 		public ActionResult About()
 		{
 			return View();
 		}
 
+		[HttpGet]
 		public ActionResult ClearFiles()
 		{
 			var webRootPath = Server.MapPath("~");
 			var localFilePrefix = $"{webRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}MoviePoster_";
 
-			FileUtility.CleanupFiles(localFilePrefix);
+			FileUtility.CleanupFiles(localFilePrefix, true);
 
 			return RedirectToAction("Info");
 		}
 
+		[HttpGet]
 		public ActionResult Contact()
 		{
 			return View();
 		}
 
+		[HttpGet]
 		public ActionResult Images()
 		{
 			var viewModel = new ImagesViewModel();
@@ -82,6 +86,7 @@ namespace MoviePicker.WebApp.Controllers
 			return View(viewModel);
 		}
 
+		[HttpGet]
 		public ActionResult Info()
 		{
 			_infoViewModel.ServerInfo.ProcessBytes = System.Diagnostics.Process.GetCurrentProcess()?.WorkingSet64 ?? 0;
@@ -104,6 +109,7 @@ namespace MoviePicker.WebApp.Controllers
 			return View(_infoViewModel);
 		}
 
+		[HttpGet]
 		public ActionResult Miner(string name)
 		{
 			var found = _infoViewModel.MinerModel.Miners.FirstOrDefault(miner => miner.Name == name);
@@ -111,6 +117,7 @@ namespace MoviePicker.WebApp.Controllers
 			return View(found);
 		}
 
+		[HttpGet]
 		public ActionResult ExpireMiner(string minerName)
 		{
 			var foundMiner = _infoViewModel.MinerModel.Miners.FirstOrDefault(miner => miner.Name == minerName) as ICache;
@@ -120,6 +127,7 @@ namespace MoviePicker.WebApp.Controllers
 			return RedirectToAction("Miner", new { name = minerName });
 		}
 
+		[HttpGet]
 		public ActionResult ExpireMiners()
 		{
 			_infoViewModel.MinerModel.Expire();

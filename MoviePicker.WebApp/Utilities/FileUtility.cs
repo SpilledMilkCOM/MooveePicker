@@ -20,18 +20,23 @@ namespace MoviePicker.WebApp.Utilities
 
 		static FileUtility()
 		{
-			NextCleanUp = DateTime.Now;
+			NextCleanup = DateTime.Now;
 		}
 
-		private static DateTime NextCleanUp { get; set; }
+		private static DateTime NextCleanup { get; set; }
 
-		public static double NextCleanupDuration => DateTime.Now.Subtract(NextCleanUp).TotalMinutes;
+		public static double NextCleanupDuration => NextCleanup.Subtract(DateTime.Now).TotalMinutes;
 
 		/// <summary>
 		/// Every so often clean up the files.
 		/// </summary>
-		public static void CleanupFiles(string directoryPath)
+		public static void CleanupFiles(string directoryPath, bool forceNow = false)
 		{
+			if (forceNow)
+			{
+				NextCleanup = DateTime.Now;
+			}
+
 			if (ShouldCleanup() && directoryPath != null)
 			{
 				var directory = $"{Path.GetDirectoryName(directoryPath)}{Path.DirectorySeparatorChar}";
@@ -72,7 +77,7 @@ namespace MoviePicker.WebApp.Utilities
 					}
 				}
 
-				NextCleanUp = DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES);
+				NextCleanup = DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES);
 			}
 		}
 
@@ -200,7 +205,7 @@ namespace MoviePicker.WebApp.Utilities
 		{
 			bool result = false;
 
-			if (DateTime.Now > NextCleanUp && !_isCleaningUp)
+			if (DateTime.Now >= NextCleanup && !_isCleaningUp)
 			{
 				lock (_isCleaningUpLock)
 				{

@@ -11,94 +11,43 @@
 
 <h3>Server:</h3>
 
-<h4>Now: @Model.ServerInfo.Now</h4>
-<h4>Now (UTC): @Model.ServerInfo.NowUtc</h4>
-<h4>Process Bytes Used: @Model.ServerInfo.ProcessBytes.ToString("N0") (@ViewUtility.BytesToAbbreviation(Model.ServerInfo.ProcessBytes))</h4>
-
-<div class="row-divider"> </div>
-
 <div class="row">
-	<div id="moviePosterFilesAccordionRoot" class="col-md-4">
-		<div>
-			<a data-toggle="collapse" data-parent="#moviePosterFilesAccordionRoot" href="#moviePosterFilesAccordionPanel" class="btn btn-info btn-md">
-				Movie Poster Files (@Model.ServerInfo.MoviePosterFiles.Count()) &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-			</a>
-
-			<div id="moviePosterFilesAccordionPanel" class="panel-collapse collapse" )">
-				<!--  style="margin-left: -30px;" -->
-				<div class="panel-body">
-
-					@*BEGIN Accordion body*@
-
-					@foreach (var item in Model.ServerInfo.MoviePosterFiles)
-					{
-						<ul>@item</ul>
-					}
-
-					@*END of Accordion panel *@
-
-				</div>
-			</div>
-		</div>
+	<div class="col-md-4">
+		<h4>Now: @Model.ServerInfo.Now</h4>
 	</div>
-
-	<div id="sharedFilesAccordionRoot" class="col-md-4">
-		<div>
-			<a data-toggle="collapse" data-parent="#sharedFilesAccordionRoot" href="#sharedFilesAccordionPanel" class="btn btn-info btn-md">
-				Shared Files (@Model.ServerInfo.SharedFiles.Count()) &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-			</a>
-
-			<div id="sharedFilesAccordionPanel" class="panel-collapse collapse" )">
-				<!--  style="margin-left: -30px;" -->
-				<div class="panel-body">
-
-					@*BEGIN Accordion body*@
-
-					@foreach (var item in Model.ServerInfo.SharedFiles)
-					{
-						<ul>@item</ul>
-					}
-
-					@*END of Accordion panel *@
-
-				</div>
-			</div>
-		</div>
+	<div class="col-md-4">
+		<h4>Now (UTC): @Model.ServerInfo.NowUtc</h4>
 	</div>
-
-	<div id="twitterFilesAccordionRoot" class="col-md-4">
-		<div>
-			<a data-toggle="collapse" data-parent="#twitterFilesAccordionRoot" href="#twitterFilesAccordionPanel" class="btn btn-info btn-md">
-				Shared Files (@Model.ServerInfo.TwitterFiles.Count()) &nbsp;&nbsp;&nbsp;<span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-			</a>
-
-			<div id="twitterFilesAccordionPanel" class="panel-collapse collapse" )">
-				<!--  style="margin-left: -30px;" -->
-				<div class="panel-body">
-
-					@*BEGIN Accordion body*@
-
-					@foreach (var item in Model.ServerInfo.TwitterFiles)
-					{
-						<ul>@item</ul>
-					}
-
-					@*END of Accordion panel *@
-
-				</div>
-			</div>
-		</div>
+	<div class="col-md-4">
+		<h4>Process Bytes Used: @Model.ServerInfo.ProcessBytes.ToString("N0") (@ViewUtility.BytesToAbbreviation(Model.ServerInfo.ProcessBytes))</h4>
 	</div>
 </div>
 
-<div class="row-divider"> </div>
+<div class="row">
+	<div class="col-md-4">
+		<h4>Movie Poster Files: @Model.ServerInfo.MoviePosterFiles.Count()</h4>
+	</div>
 
-@Html.ActionLink("Clear Files", "ClearFiles", null, htmlAttributes: new { @class = "btn btn-info" })
+	<div class="col-md-4">
+		<h4>Shared Files: @Model.ServerInfo.SharedFiles.Count()</h4>
+	</div>
 
-<div class="row-divider"> </div>
+	<div id="twitterFilesAccordionRoot" class="col-md-4">
+		<h4>Shared Files: @Model.ServerInfo.TwitterFiles.Count()</h4>
+	</div>
+</div>
 
-@Html.ActionLink("Images", "Images", null, htmlAttributes: new { @class = "btn btn-info" })
-<h5>Next cleanup: @Model.ServerInfo.NextCleanup</h5>
+<div class="row">
+	<div class="col-sm-2">
+		@Html.ActionLink("Clear Files", "ClearFiles", null, htmlAttributes: new { @class = "btn btn-info" })
+	</div>
+	<div class="col-sm-2">
+		@Html.ActionLink("Images", "Images", null, htmlAttributes: new { @class = "btn btn-info" })
+	</div>
+	<div class="col-sm-4">
+		<h4>Next cleanup: @Model.ServerInfo.NextCleanup min.</h4>
+	</div>
+</div>
 
 <h3>Client:</h3>
 
