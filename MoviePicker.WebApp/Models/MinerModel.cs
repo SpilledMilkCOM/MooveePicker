@@ -398,7 +398,7 @@ namespace MoviePicker.WebApp.Models
 			for (int index = MY_INDEX; index < Miners.Count; index++)
 			{
 				// Compare the Id first so this comparison can short circuit and be quicker.
-				var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => ((item.Id != 0 && item.Id == baseMovie.Id) || item.Equals(baseMovie)) && item.WeekendEnding == result.WeekendEnding);
+				var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => ((item.Id != 0 && item.Id == baseMovie.Id) || item.Equals(baseMovie)) && WeekendEndingMatch(result.WeekendEnding, item.WeekendEnding);
 
 				if (foundMovie != null)
 				{
@@ -426,19 +426,32 @@ namespace MoviePicker.WebApp.Models
 			return result;
 		}
 
+		private bool WeekendEndingMatch(DateTime? baseWeekendEnding, DateTime? minerWeekendEnding)
+		{
+			return (minerWeekendEnding == baseWeekendEnding
+				|| (minerWeekendEnding.HasValue && baseWeekendEnding.HasValue && minerWeekendEnding.Value.AddDays(1) == baseWeekendEnding));
+		}
+
 		/// <summary>
 		/// Filter out the data that does not match the base date.
 		/// </summary>
 		/// <param name="minerData"></param>
 		private void FilterMinerMovies(List<IMiner> minerData)
 		{
-			DateTime? weekendEnding = minerData[FML_INDEX].ContainsEstimates ? minerData[FML_INDEX].Movies?.FirstOrDefault()?.WeekendEnding : MovieDateUtil.GameSunday(isEstimate: minerData[FML_INDEX].ContainsEstimates);
+			DateTime? weekendEnding = minerData[FML_INDEX].Movies?.FirstOrDefault()?.WeekendEnding;
 
 			for (int index = FML_INDEX + 1; index < minerData.Count - 1; index++)
 			{
 				var hasData = minerData[index].Movies?.Count > 0;
+				var minerWeekendEnding = minerData[index].Movies?.FirstOrDefault()?.WeekendEnding;
 
-				if (minerData[index].Movies?.FirstOrDefault()?.WeekendEnding != weekendEnding)
+				if (WeekendEndingMatch(weekendEnding, minerWeekendEnding))
+				{
+					// Remove movies that did not get mapped.  Most likely duplicates or bad data.
+
+					FilterOutMovieIdZero(minerData[index]);
+				}
+				else
 				{
 					if (hasData && (string.IsNullOrEmpty(minerData[index].Error) || minerData[index].Error?.IndexOf("Error") < 0))
 					{
@@ -448,12 +461,6 @@ namespace MoviePicker.WebApp.Models
 					}
 
 					minerData[index].Clear();
-				}
-				else
-				{
-					// Remove movies that did not get mapped.  Most likely duplicates or bad data.
-
-					FilterOutMovieIdZero(minerData[index]);
 				}
 			}
 

@@ -34,6 +34,7 @@ namespace MovieMiner.Tests
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 
 			Logger.WriteLine($"\n==== {test.Name} ====\n");
+			Logger.WriteLine($"Contains Estimates: {test.ContainsEstimates}");
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 

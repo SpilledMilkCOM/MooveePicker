@@ -7,6 +7,7 @@ using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Common;
+using MovieMiner.Util;
 
 namespace MovieMiner
 {
@@ -85,7 +86,6 @@ namespace MovieMiner
 				}
 			}
 
-			//tableRows = tableNode?.SelectNodes("tbody//td[contains(@class, 'movie-title')]//span[contains(@class, 'title')]");
 			tableRows = tableNode?.SelectNodes("tbody//tr[contains(@class, 'group-')]");
 
 			foreach (var tableRow in tableRows)
@@ -154,12 +154,12 @@ namespace MovieMiner
 
 			result.ForEach(movie => movie.ControlId = controlIndex++);
 
-			//var gameEndDate = GetGameEndDate(web);
+			var gameDateRange = GetGameDateRange(web);
 
-			//if (gameEndDate != null)
-			//{
-			//	result.ForEach(item => item.WeekendEnding = gameEndDate.Value);
-			//}
+			if (gameDateRange.End.HasValue)
+			{
+				result.ForEach(item => item.WeekendEnding = gameDateRange.End.Value);
+			}
 
 			return result;
 		}
@@ -184,9 +184,9 @@ namespace MovieMiner
 			return result;
 		}
 
-		private DateTime? GetGameEndDate(HtmlWeb web)
+		private DateRange GetGameDateRange(HtmlWeb web)
 		{
-			DateTime? endDate = null;
+			DateRange result = new DateRange();
 
 			UrlSource = $"{Url}/researchvault?section=pick-rate";
 
@@ -215,33 +215,33 @@ namespace MovieMiner
 
 					if (dateChunks.Length > 1)
 					{
-						var startDate = Convert.ToDateTime(dateChunks[0]);
-						DateTime parsedDate = startDate;
+						result.Start = Convert.ToDateTime(dateChunks[0]);
+						DateTime parsedDate = result.Start.Value;
 
-						endDate = startDate;
+						result.End = parsedDate;
 
 						if (DateTime.TryParse(dateChunks[1], out parsedDate))
 						{
-							if (startDate.Month == 12)
+							if (result.Start.Value.Month == 12)
 							{
-								new DateTime(startDate.Year + 1, parsedDate.Month, parsedDate.Day);
+								new DateTime(result.Start.Value.Year + 1, parsedDate.Month, parsedDate.Day);
 							}
 							else
 							{
-								endDate = parsedDate;
+								result.End = parsedDate;
 							}
 						}
 						else
 						{
 							// The second piece was just a number.
 
-							endDate = new DateTime(startDate.Year, startDate.Month, Convert.ToInt32(dateChunks[1]));
+							result.End = new DateTime(result.Start.Value.Year, result.Start.Value.Month, Convert.ToInt32(dateChunks[1]));
 						}
 					}
 				}
 			}
 
-			return endDate;
+			return result;
 		}
 
 		private DayOfWeek? ParseDayOfWeek(string name)
