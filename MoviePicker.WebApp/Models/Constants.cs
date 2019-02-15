@@ -9,7 +9,7 @@
 		public const string TWITTER_ID = "@SpilledMilkCOM";
 		public const string TWITTER_CREATOR_ID = "@SpilledMilkCOM";
 
-		public const string WEBSITE_URL = "http://MooveePicker.AzureWebsites.net";
+		public const string WEBSITE_URL = "http://MooveePicker.com";
 
 		public static string GoogleAdCode
 		{
