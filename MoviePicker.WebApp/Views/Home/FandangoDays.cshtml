@@ -9,7 +9,7 @@
 @{
 	ViewBag.Title = "Fandango Weekend";
 
-	var weekendEnding = Model.Miner.ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Model.Miner.ContainsEstimates).ToShortDateString() : Model.Miner.Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString();
+	var weekendEnding = Model.Miner.Movies?.FirstOrDefault()?.WeekendEnding.ToString("ddd dd/MM/yyyy");
 }
 
 <script type="text/javascript">
@@ -91,7 +91,7 @@
 			</h2>
 
 			<h5>
-				Weekend Ending @weekendEnding (@Model.Duration.ToString("N0") ms)
+				Weekend Ending: @weekendEnding (@Model.Duration.ToString("N0") ms)
 			</h5>
 
 			<div id="picksColumn">

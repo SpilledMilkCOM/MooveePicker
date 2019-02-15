@@ -50,6 +50,8 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public IEnumerable<IMovie> Movies => _movies;
 
+		public IEnumerable<IMovie> MoviesByDay => _movies;
+
 		public string PieGraphData
 		{
 			get
@@ -181,12 +183,12 @@ namespace MoviePicker.WebApp.ViewModels
 		private List<IMovie> FilterMovies()
 		{
 			var now = DateTime.Now;
-			var endDate = MovieDateUtil.GameSunday();
-			var startDate = endDate.AddDays(-2);		// Starts Friday
+			var endDate = _fmlMiner.Movies.FirstOrDefault()?.WeekendEnding;		// Could be a Monday.
+			var startDate = MovieDateUtil.GameSunday().AddDays(-2);				// Starts Friday
 
 			//endDate = endDate.AddDays(1);           // Include Monday.
 
-			// Filter the list (Friday <- Sunday)
+			// Filter the list (Friday <- Sunday or Monday)
 			// Group the movies by name.
 
 			var result = Miner.Movies.Where(movie => startDate <= movie.WeekendEnding && movie.WeekendEnding <= endDate)
