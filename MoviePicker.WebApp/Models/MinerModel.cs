@@ -47,7 +47,7 @@ namespace MoviePicker.WebApp.Models
 		{
 			get
 			{
-				return Miners.First().ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Miners.First().ContainsEstimates) : Miners.First().Movies?.FirstOrDefault()?.WeekendEnding;
+				return Miners.First().Movies?.FirstOrDefault()?.WeekendEnding;
 			}
 		}
 
@@ -398,7 +398,7 @@ namespace MoviePicker.WebApp.Models
 			for (int index = MY_INDEX; index < Miners.Count; index++)
 			{
 				// Compare the Id first so this comparison can short circuit and be quicker.
-				var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => ((item.Id != 0 && item.Id == baseMovie.Id) || item.Equals(baseMovie)) && WeekendEndingMatch(result.WeekendEnding, item.WeekendEnding);
+				var foundMovie = Miners[index]?.Movies?.FirstOrDefault(item => ((item.Id != 0 && item.Id == baseMovie.Id) || item.Equals(baseMovie)) && WeekendEndingMatch(result.WeekendEnding, item.WeekendEnding));
 
 				if (foundMovie != null)
 				{
