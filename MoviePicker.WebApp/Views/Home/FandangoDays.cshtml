@@ -9,7 +9,8 @@
 @{
 	ViewBag.Title = "Fandango Weekend";
 
-	var weekendEnding = Model.Miner.Movies?.FirstOrDefault()?.WeekendEnding.ToString("ddd dd/MM/yyyy");
+	var movieList = Model.Movies?.ToList();
+	var weekendEnding = movieList?.FirstOrDefault()?.WeekendEnding.ToString("ddd MM/dd/yyyy");
 }
 
 <script type="text/javascript">
@@ -72,7 +73,6 @@
 
 @{
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
-	var movieList = Model.Movies.ToList();
 	var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
 
 	<div class="row">

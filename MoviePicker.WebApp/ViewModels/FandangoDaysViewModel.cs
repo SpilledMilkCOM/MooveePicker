@@ -182,7 +182,6 @@ namespace MoviePicker.WebApp.ViewModels
 
 		private List<IMovie> FilterMovies()
 		{
-			var now = DateTime.Now;
 			var endDate = _fmlMiner.Movies.FirstOrDefault()?.WeekendEnding;		// Could be a Monday.
 			var startDate = MovieDateUtil.GameSunday().AddDays(-2);				// Starts Friday
 
@@ -214,7 +213,7 @@ namespace MoviePicker.WebApp.ViewModels
 				{
 					movie.Cost = found.Cost;
 					movie.ImageUrl = found.ImageUrl;
-					movie.WeekendEnding = now;
+					movie.WeekendEnding = endDate ?? DateTime.Now;
 				}
 			}
 
