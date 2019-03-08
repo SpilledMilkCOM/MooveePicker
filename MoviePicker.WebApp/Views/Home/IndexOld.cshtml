@@ -233,10 +233,11 @@
 
 <div class="row-divider"> </div>
 
-@* Showing the data from ALL of the sources/miners ====================================================================================== CARD VIEW ==== *@
-
 <div class="row">
 	<div class="col-md-offset-1 col-md-10">
+
+		@* Showing the data from ALL of the sources/miners ====================================================================================== CARD VIEW ==== *@
+
 		<div id="cardViewAccordionRoot">
 			<div>
 				<a data-toggle="collapse" data-parent="#cardViewAccordionRoot" href="#cardViewAccordionPanel" class="btn btn-info btn-lg">
@@ -266,8 +267,8 @@
 
 								<div class="clearfix col-lg-6">
 									<!-- The image will always be on the left
-									 height="150"
-									-->
+								 height="150"
+								-->
 
 									<div class="col-xs-4 col-md-2">
 										<img class="img-responsive" style="border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;" src="@movie.ImageUrl" />
@@ -728,7 +729,7 @@
 
 									<tr>
 										@*
-											<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "Click to extract as CSV text file..." })</td>
+										<td>@Html.ActionLink("Extract", "ExtractToCSV", null, htmlAttributes: new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "Click to extract as CSV text file..." })</td>
 										*@
 
 										<td>
@@ -745,9 +746,9 @@
 											var value = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
 
 											@*if (minerCount > 2)
-												{
-													<td></td>
-												}*@
+											{
+												<td></td>
+											}*@
 
 											<td>
 												@*The majority of this input was taken from Html.TextBoxFor*@

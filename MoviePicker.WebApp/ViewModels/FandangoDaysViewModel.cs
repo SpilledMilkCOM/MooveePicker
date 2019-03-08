@@ -182,17 +182,30 @@ namespace MoviePicker.WebApp.ViewModels
 
 		private List<IMovie> FilterMovies()
 		{
-			var endDate = _fmlMiner.Movies.FirstOrDefault()?.WeekendEnding;		// Could be a Monday.
-			var startDate = MovieDateUtil.GameSunday().AddDays(-2);				// Starts Friday
+			var fmlMovie = _fmlMiner.Movies.FirstOrDefault();
+			var endDate = fmlMovie?.WeekendEnding;						// Could be a Monday.
+			var startDate = MovieDateUtil.GameSunday().AddDays(-2);     // Starts Friday
+			var compoundMovie = _fmlMiner.CompoundMovie;
 
-			//endDate = endDate.AddDays(1);           // Include Monday.
+			if (compoundMovie != null)
+			{
+				// A compound movie exists (typically FRI, SAT, SUN)
+
+				foreach (var movie in Miner.Movies)
+				{
+					if (movie.Equals(compoundMovie))
+					{
+						movie.Day = movie.WeekendEnding.DayOfWeek;
+					}
+				}
+			}
 
 			// Filter the list (Friday <- Sunday or Monday)
 			// Group the movies by name.
 
 			var result = Miner.Movies.Where(movie => startDate <= movie.WeekendEnding && movie.WeekendEnding <= endDate)
-							.GroupBy(movie => movie.Name)
-							.Select(group => new Movie { Name = group.Key, Earnings = group.Sum(item => item.Earnings) })
+							.GroupBy(movie => movie.Name)		// Will split out the day too for compound movie.
+							.Select(group => new Movie { MovieName = group.FirstOrDefault()?.MovieName, Day = group.FirstOrDefault()?.Day, Earnings = group.Sum(item => item.Earnings) })
 							.Cast<IMovie>()
 							.OrderByDescending(movie => movie.Earnings)
 							.ToList();
@@ -203,7 +216,7 @@ namespace MoviePicker.WebApp.ViewModels
 
 			CompressMovies(result);
 
-			// Assign the cost so the view has this.
+			// Assign the cost, image, and date so the view has this.
 
 			foreach (var movie in result)
 			{
