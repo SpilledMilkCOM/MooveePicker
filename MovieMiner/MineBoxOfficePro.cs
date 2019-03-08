@@ -89,11 +89,11 @@ namespace MovieMiner
 
 					// Get the date of the article
 
-					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post-meta']/span[@class='date']");
+					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='entry-meta']/span[@class='entry-meta__post-date']");
 
 					if (node != null)
 					{
-						string articleText = node.InnerText.Replace("Published ", string.Empty);
+						string articleText = node.InnerText.Replace("&nbsp;•&nbsp;", string.Empty);
 						DateTime parsedDateTime;
 
 						if (DateTime.TryParse(articleText, out parsedDateTime))
@@ -104,7 +104,8 @@ namespace MovieMiner
 
 					// Get the data in the table.
 
-					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post-container']/table");
+					//node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post-container']/table");
+					node = doc.DocumentNode.SelectSingleNode("//body//table[@class='wp-block-table aligncenter']");
 
 					// TODO: Parse the header for column titles for mapping.
 
