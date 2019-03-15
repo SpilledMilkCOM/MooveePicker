@@ -118,7 +118,6 @@ namespace MoviePicker.WebApp.Controllers
 
 					foreach (var movie in miner.Picks.Movies)
 					{
-						//var fmlMovie = fmlMovies.FirstOrDefault(item => item.MovieName == movie.MovieName);
 						var fmlMovie = fmlMovies.FirstOrDefault(item => item.Equals(movie));
 
 						if (fmlMovie != null)
@@ -129,11 +128,11 @@ namespace MoviePicker.WebApp.Controllers
 
 					foreach (var movie in miner.PicksBonusOff.Movies)
 					{
-						var baseMovie = fmlMovies.FirstOrDefault(item => item.MovieName == movie.MovieName);
+						var fmlMovie = fmlMovies.FirstOrDefault(item => item.Equals(movie));
 
-						if (baseMovie != null)
+						if (fmlMovie != null)
 						{
-							movie.ImageUrl = baseMovie.ImageUrl;
+							movie.ImageUrl = fmlMovie.ImageUrl;
 						}
 					}
 
