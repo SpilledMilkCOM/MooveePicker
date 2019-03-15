@@ -95,7 +95,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			var result = new ExpertPicksViewModel();
 			var fmlMiner = _minerModel.Miners[MinerModel.FML_INDEX];
-			var baseMovies = fmlMiner.Movies;
+			var fmlMovies = fmlMiner.Movies;
 			var lastMiner = _minerModel.Miners[MinerModel.MOJO_LAST_INDEX];
 			var minerCount = 0;
 			var weekendEnding = _minerModel.WeekendEnding;
@@ -118,17 +118,18 @@ namespace MoviePicker.WebApp.Controllers
 
 					foreach (var movie in miner.Picks.Movies)
 					{
-						var baseMovie = baseMovies.FirstOrDefault(item => item.MovieName == movie.MovieName);
+						//var fmlMovie = fmlMovies.FirstOrDefault(item => item.MovieName == movie.MovieName);
+						var fmlMovie = fmlMovies.FirstOrDefault(item => item.Equals(movie));
 
-						if (baseMovie != null)
+						if (fmlMovie != null)
 						{
-							movie.ImageUrl = baseMovie.ImageUrl;
+							movie.ImageUrl = fmlMovie.ImageUrl;
 						}
 					}
 
 					foreach (var movie in miner.PicksBonusOff.Movies)
 					{
-						var baseMovie = baseMovies.FirstOrDefault(item => item.MovieName == movie.MovieName);
+						var baseMovie = fmlMovies.FirstOrDefault(item => item.MovieName == movie.MovieName);
 
 						if (baseMovie != null)
 						{
