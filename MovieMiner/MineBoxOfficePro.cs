@@ -12,9 +12,10 @@ namespace MovieMiner
 	public class MineBoxOfficePro : MinerBase
 	{
 		private const string DEFAULT_URL = "https://pro.boxoffice.com/";
+		private const decimal MBAR = 1000000;       // The Roman numeral M with a bar over it is a million.
 
-		//private bool _mineData = false;
-		private bool _mineData = true;
+		private bool _mineData = false;
+		//private bool _mineData = true;
 
 		public MineBoxOfficePro()
 			: base("Box Office Pro", "BO Pro", DEFAULT_URL)
@@ -39,20 +40,20 @@ namespace MovieMiner
 			}
 			else
 			{
-				var weekend = new DateTime(2018, 12, 30);
-				UrlSource = "https://pro.boxoffice.com/weekend-forecast-aquaman-mary-poppins-returns-look-repeat-holmes-watson-vice-debut/";
+				var weekend = new DateTime(2019, 3, 24);
+				UrlSource = "https://www.boxofficepro.com/weekend-forecast-jordan-peeles-us-poised-for-breakout-debut";
 				return new List<IMovie>
 						{
-								new Movie { MovieName = "Aquaman", Earnings = 48700000, WeekendEnding = weekend },
-								new Movie { MovieName = "Mary Poppins Returns", Earnings = 26200000, WeekendEnding = weekend },
-								new Movie { MovieName = "SpiderMan Into the SpiderVerse", Earnings = 19000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Bumblebee", Earnings = 17900000, WeekendEnding = weekend },
-								new Movie { MovieName = "Holmes  Watson", Earnings = 11000000, WeekendEnding = weekend },
-								new Movie { MovieName = "The Mule", Earnings = 10600000, WeekendEnding = weekend },
-								new Movie { MovieName = "Vice", Earnings = 9000000, WeekendEnding = weekend },
-								new Movie { MovieName = "Second Act", Earnings = 8100000, WeekendEnding = weekend },
-								new Movie { MovieName = "Dr Seuss The Grinch", Earnings = 5100000, WeekendEnding = weekend },
-								new Movie { MovieName = "Ralph Breaks the Internet", Earnings = 4000000, WeekendEnding = weekend },
+								new Movie { MovieName = "Us", Earnings = 54 * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Captain Marvel", Earnings = 35 * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Wonder Park", Earnings = 9.8m * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Five Feet Apart", Earnings = 7.4m * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "How to Train Your Dragon The Hidden World", Earnings = 6.7m * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Tyler Perrys A Madea Family Funeral", Earnings = 3.5m * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "No Manches Frida 2", Earnings = 2 * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Captive State", Earnings = 1.4m * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "The LEGO Movie 2 The Second Part", Earnings = 1.6m * MBAR, WeekendEnding = weekend },
+								new Movie { MovieName = "Alita Battle Angel", Earnings = 1.1m * MBAR, WeekendEnding = weekend },
 						};
 			}
 		}
