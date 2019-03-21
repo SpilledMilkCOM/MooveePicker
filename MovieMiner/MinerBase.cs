@@ -37,7 +37,7 @@ namespace MovieMiner
 			GameDays = 3;
 			IsHidden = false;
 			OkToMine = true;
-			Name = name;
+			Name = name?.Trim();
 			Url = url;
 			UrlSource = url;
 		}
