@@ -14,8 +14,8 @@ namespace MovieMiner
 		private const string DEFAULT_URL = "https://pro.boxoffice.com/";
 		private const decimal MBAR = 1000000;       // The Roman numeral M with a bar over it is a million.
 
-		private bool _mineData = false;
-		//private bool _mineData = true;
+		//private bool _mineData = false;
+		private bool _mineData = true;
 
 		public MineBoxOfficePro()
 			: base("Box Office Pro", "BO Pro", DEFAULT_URL)
