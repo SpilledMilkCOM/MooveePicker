@@ -245,7 +245,6 @@
     <Content Include="Images\Moovee Picker Logo 128x128.png" />
     <Content Include="Images\Moovee Picker Logo 32x32.png" />
     <Content Include="Images\Moovee Picker Logo 64x64.png" />
-    <Content Include="Images\Moovee Picker Logo Filled 32x32.png" />
     <Content Include="Images\Moovee Picker Logo Horizontal Strip.png" />
     <Content Include="Images\Moovee Picker Logo Vertical Strip Right.png" />
     <Content Include="Images\Moovee Picker Logo Vertical Strip.png" />
@@ -273,6 +272,7 @@
     <None Include="Properties\PublishProfiles\MooveePicker - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\MooveePicker - Web Deploy.pubxml" />
     <Content Include="Images\Sunday-Monday-mask.png" />
+    <Content Include="apple-touch-icon-120x120-precomposed.png" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
