@@ -1,7 +1,9 @@
 ﻿using MoviePicker.Common.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace MoviePicker.Common
@@ -16,6 +18,7 @@ namespace MoviePicker.Common
 		private decimal _earnings;
 		private bool _isBestPerformer;
 		private string _movieName;
+		private IList<IBoxOffice> _boxOfficeHistory;
 
 		public Movie()
 		{
@@ -132,6 +135,8 @@ namespace MoviePicker.Common
 
 		public int Id { get; set; }
 
+		public string Identifier { get; set; }
+
 		public string ImageUrl { get; set; }
 
 		public string ImageUrlSource { get; set; }
@@ -176,6 +181,8 @@ namespace MoviePicker.Common
 		public decimal TheaterEfficiency => TheaterCount > 0 ? EarningsBase / TheaterCount : 0;
 
 		public DateTime WeekendEnding { get; set; }
+
+		public IEnumerable<IBoxOffice> BoxOfficeHistory => throw new NotImplementedException();
 
 		public IMovie Clone()
 		{
@@ -315,6 +322,16 @@ namespace MoviePicker.Common
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();
+		}
+
+		public void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history)
+		{
+			_boxOfficeHistory = new List<IBoxOffice>();
+
+			foreach (var item in history)
+			{
+				_boxOfficeHistory.Add(item.Clone());
+			}
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------

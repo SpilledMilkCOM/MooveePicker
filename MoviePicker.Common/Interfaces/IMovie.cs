@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace MoviePicker.Common.Interfaces
 {
@@ -10,6 +11,8 @@ namespace MoviePicker.Common.Interfaces
 		/// Allow simulations to adjust this movie's earnings.
 		/// </summary>
 		bool AdjustEarnings { get; set; }
+
+		IEnumerable<IBoxOffice> BoxOfficeHistory { get; }
 
 		/// <summary>
 		/// Used to map the movie to a control in an array of movies.
@@ -47,6 +50,11 @@ namespace MoviePicker.Common.Interfaces
 		/// An arbitrary Id for the movie
 		/// </summary>
 		int Id { get; set; }
+
+		/// <summary>
+		/// An arbitrary STRING Id for the movie (typically for BO Mojo)
+		/// </summary>
+		string Identifier { get; set; }
 
 		/// <summary>
 		/// Local image Url (unless there isn't one then it's the same as the source)
@@ -95,5 +103,7 @@ namespace MoviePicker.Common.Interfaces
 		/// </summary>
 		/// <returns></returns>
 		int GetHashCode();
+
+		void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history);
 	}
 }

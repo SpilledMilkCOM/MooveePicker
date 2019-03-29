@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using MoviePicker.Common.Interfaces;
 
@@ -19,16 +20,9 @@ namespace MoviePicker.Msf
 
 		public string Abbreviation => _movie.Abbreviation;
 
-		public bool AdjustEarnings
-		{
-			get { return _movie.AdjustEarnings; }
-			set { _movie.AdjustEarnings = value; }
-		}
+		public bool AdjustEarnings { get => _movie.AdjustEarnings; set => _movie.AdjustEarnings = value; }
 
-		public IMovie Clone()
-		{
-			return _movie = _movie.Clone();
-		}
+		public IEnumerable<IBoxOffice> BoxOfficeHistory => _movie.BoxOfficeHistory;
 
 		public int ControlId
 		{
@@ -75,25 +69,15 @@ namespace MoviePicker.Msf
 
 		public string Hashtag => _movie.Hashtag;
 
-		public int Id
-		{
-			get { return _movie.Id; }
-			set { _movie.Id = value; }
-		}
+		public int Id { get => _movie.Id; set => _movie.Id = value; }
 
-		public bool IsBestPerformer
-		{
-			get { return _movie.IsBestPerformer; }
-			set { _movie.IsBestPerformer = value; }
-		}
+		public string Identifier { get => _movie.Identifier; set => _movie.Identifier = value; }
+
+		public bool IsBestPerformer { get => _movie.IsBestPerformer; set => _movie.IsBestPerformer = value; }
 
 		public string IsBestPerformerDebugTag => IsBestPerformer ? "BEST" : string.Empty;
 
-		public string ImageUrl
-		{
-			get { return _movie.ImageUrl; }
-			set { _movie.ImageUrl = value; }
-		}
+		public string ImageUrl { get => _movie.ImageUrl; set => _movie.ImageUrl = value; }
 
 		public string ImageUrlSource
 		{
@@ -133,9 +117,19 @@ namespace MoviePicker.Msf
 
 		public decimal TheaterEfficiency => _movie.TheaterEfficiency;
 
+		public IMovie Clone()
+		{
+			return _movie = _movie.Clone();
+		}
+
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();
+		}
+
+		public void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history)
+		{
+			_movie.SetBoxOfficeHistory(history);
 		}
 	}
 }
