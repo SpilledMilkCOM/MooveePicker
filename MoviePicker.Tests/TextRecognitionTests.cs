@@ -10,7 +10,7 @@ namespace MoviePicker.Tests
 	[TestClass]
 	[ExcludeFromCodeCoverage]
 	[DeploymentItem("app.secret.config")]
-	public class PosterRecognitionTests
+	public class TextRecognitionTests
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
@@ -23,36 +23,25 @@ namespace MoviePicker.Tests
 			_unity = new UnityContainer();
 
 			_unity.RegisterType<ICognitiveConfiguration, CognitiveConfiguration>();
-			_unity.RegisterType<IPosterRecognition, PosterRecognition>();
+			_unity.RegisterType<ITextRecognition, TextRecognition>();
 			_unity.RegisterType<IRestClient, RestClient>(new InjectionProperty("APIKey", apiKey) );
 		}
 
 		[TestMethod, TestCategory("Integration")]
-		public void PosterRecognition_AnylizePoster()
+		public void TextRecognition_AnylizeText()
 		{
 			var test = ConstructTestObject();
 
-			var actual = test.AnalyzePoster("http://mooveepicker.azurewebsites.net/images/MoviePoster_86067c35-d745-4643-abd8-3f348cc9e817.jpg");
-
-			Assert.IsNotNull(actual);
-		}
-
-
-		[TestMethod, TestCategory("Integration")]
-		public void PosterRecognition_AnylizeTable()
-		{
-			var test = ConstructTestObject();
-
-			var actual = test.AnalyzePoster("https://www.boxofficepro.com/wp-content/uploads/2019/03/Table-300x119.png");
+			var actual = test.AnalyzeText("https://www.boxofficepro.com/wp-content/uploads/2019/03/Table-300x119.png");
 
 			Assert.IsNotNull(actual);
 		}
 
 		//----==== PRIVATE ====---------------------------------------------------------
 
-		private IPosterRecognition ConstructTestObject()
+		private ITextRecognition ConstructTestObject()
 		{
-			return _unity.Resolve<IPosterRecognition>();
+			return _unity.Resolve<ITextRecognition>();
 		}
 	}
 }
