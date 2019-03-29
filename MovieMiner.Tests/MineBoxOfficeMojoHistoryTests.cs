@@ -38,6 +38,32 @@ namespace MovieMiner.Tests
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
+		public void MineBoxOfficeMojoHistory_MineWeekend_ThisWeek_Filtered()
+		{
+			var weekendEnding = MovieDateUtil.LastSunday(DateTime.Now);
+			var test = new MineBoxOfficeMojo(weekendEnding);
+
+			var actual = test.MineWeekend(weekendEnding);
+
+			Assert.IsNotNull(actual);
+			Assert.IsTrue(actual.Any(), "The list was empty.");
+
+			actual = FilterMovies(actual);
+
+			foreach (var movie in actual)
+			{
+				var history = new MineBoxOfficeMojoHistory(movie.Identifier);
+				var movies = history.Mine();
+
+				movie.SetBoxOfficeHistory(movies.First().BoxOfficeHistory);
+			}
+
+			Logger.WriteLine($"Weekend Ending: {weekendEnding}");
+
+			WriteMovies(actual.OrderByDescending(item => item.Earnings));
+		}
+
 		//----==== PRIVATE ====--------------------------------------------------------------------------
 
 		private List<IMovie> FilterMovies(List<IMovie> toFilter)

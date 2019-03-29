@@ -99,6 +99,8 @@ namespace MoviePicker.Common
 
 		public bool AdjustEarnings { get; set; }
 
+		public IEnumerable<IBoxOffice> BoxOfficeHistory => _boxOfficeHistory;
+
 		public int ControlId { get; set; }
 
 		public decimal Cost
@@ -181,8 +183,6 @@ namespace MoviePicker.Common
 		public decimal TheaterEfficiency => TheaterCount > 0 ? EarningsBase / TheaterCount : 0;
 
 		public DateTime WeekendEnding { get; set; }
-
-		public IEnumerable<IBoxOffice> BoxOfficeHistory => throw new NotImplementedException();
 
 		public IMovie Clone()
 		{

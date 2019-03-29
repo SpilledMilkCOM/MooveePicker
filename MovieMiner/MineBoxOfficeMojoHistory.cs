@@ -20,11 +20,11 @@ namespace MovieMiner
 		/// 
 		/// </summary>
 		/// <param name="weekendEnding">If this is null then the forecast will be mined.</param>
-		public MineBoxOfficeMojoHistory(string movieName = null)
-			: base($"Box Office Mojo '{movieName}'"
-				  , $"BO Mojo {movieName}", DEFAULT_URL)
+		public MineBoxOfficeMojoHistory(string identifier = null)
+			: base($"Box Office Mojo '{identifier}'"
+				  , $"BO Mojo {identifier}", DEFAULT_URL)
 		{
-			MovieName = movieName;
+			Identifier = identifier;
 			TwitterID = "BoxOfficeMojo";
 
 			var beginOfYear = new DateTime(DateTime.Now.Year, 1, 1);
@@ -35,11 +35,11 @@ namespace MovieMiner
 			}
 		}
 
-		public string MovieName { get; set; }
+		public string Identifier { get; set; }
 
 		public override IMiner Clone()
 		{
-			var result = new MineBoxOfficeMojoHistory(MovieName);
+			var result = new MineBoxOfficeMojoHistory(Identifier);
 
 			Clone(result);
 
@@ -53,7 +53,7 @@ namespace MovieMiner
 
 			// https://www.boxofficemojo.com/movies/?page=weekend&id=alita.htm
 
-			string url = $"{Url}movies/?page=weekend&id={MovieName}.htm";
+			string url = $"{Url}movies/?page=weekend&id={Identifier}.htm";
 			var web = new HtmlWeb();
 
 			ContainsEstimates = false;
@@ -115,6 +115,8 @@ namespace MovieMiner
 				var movie = new Movie();
 
 				movie.SetBoxOfficeHistory(boxOfficeHistory);
+
+				result.Add(movie);		// A list of one (just to conform to the miner interface)
 			}
 
 			return result;

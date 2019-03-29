@@ -92,6 +92,14 @@ namespace MovieMiner.Tests
 				{
 					Logger.WriteLine($"{movie.WeekendEnding.ToString("d")} {movie.Name,-30} ${movie.Earnings:N2}{theaterCount}");
 				}
+
+				if(movie.BoxOfficeHistory != null && movie.BoxOfficeHistory.Any())
+				{
+					foreach (var boxOffice in movie.BoxOfficeHistory)
+					{
+						Logger.WriteLine($"{boxOffice.WeekendEnding.ToShortDateString()}  ${boxOffice.Earnings:N0}  TC-{boxOffice.TheaterCount}");
+					}
+				}
 			}
 		}
 
