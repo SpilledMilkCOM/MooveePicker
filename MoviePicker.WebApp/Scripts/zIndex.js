@@ -65,7 +65,7 @@ function clickChangePercent(button, controlIndex, change) {
 		logit(boxOfficePct.text());
 
 		var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
-		var newPctValue = parseInt(boxOfficePct.text().replace(/%/g, '')) + change;
+		var newPctValue = parseInt(boxOfficePct.text().replace(/%/g, '').replace(/,/g, '')) + change;
 
 		if (newPctValue < -100) {
 			newPctValue = -100;
@@ -75,7 +75,7 @@ function clickChangePercent(button, controlIndex, change) {
 		logit(percentToBackgroundColor(newPctValue));
 
 		boxOfficePct.css({ 'background-color': percentToBackgroundColor(newPctValue) });
-		boxOfficePct.text(newPctValue + '%');
+		boxOfficePct.text(formatWithCommas(newPctValue) + '%');
 		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(newPctValue)) / 100.0));
 
 		clickPicksAsync();
@@ -295,7 +295,7 @@ function sliderOnChange(slider, controlIndex) {
 		logit(percentToBackgroundColor(slider.value));
 
 		boxOfficePct.css({ 'background-color': percentToBackgroundColor(slider.value) });
-		boxOfficePct.text(slider.value + '%');
+		boxOfficePct.text(formatWithCommas(slider.value) + '%');
 		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(slider.value)) / 100.0));
 
 		clickPicksAsync();
@@ -329,7 +329,7 @@ function updateSlider(newValue, controlIndex) {
 		logit((newValue.replace(/\,/g, "") - originalValue) / originalValue * 100);
 
 		boSlider.val((newValue.replace(/\,/g, "") - originalValue) / originalValue * 100);
-		boxOfficePct.text(boSlider.val() + '%');
+		boxOfficePct.text(formatWithCommas(boSlider.val()) + '%');
 	}
 }
 
