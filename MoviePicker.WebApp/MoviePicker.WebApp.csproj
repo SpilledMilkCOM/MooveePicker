@@ -330,7 +330,6 @@
     <Content Include="Views\LowMem\About.cshtml" />
     <Content Include="Views\LowMem\Contact.cshtml" />
     <Content Include="Views\Home\IndexOld.cshtml" />
-    <Content Include="Views\Home\Picks.cshtml" />
     <Content Include="Views\Shared\MovieList.cshtml" />
     <Content Include="Views\Home\Simulation.cshtml" />
     <Content Include="Views\Shared\MovieList2.cshtml" />

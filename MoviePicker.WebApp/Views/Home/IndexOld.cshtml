@@ -50,7 +50,7 @@
 
 		var parameters = parseBoxOfficeWeights();
 
-		var url = "/Home/Picks?" + parameters;
+		var url = "/Home/Index?" + parameters;
 
 		var baseUrl = parseBaseUrl();
 
@@ -177,7 +177,7 @@
 		This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
 		You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up which will be displayed on another page.
 
-		@Html.ActionLink("Home", "Index", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
+		@Html.ActionLink("Home", "Index", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" }) (@Model.Duration.ToString("N0") ms)
 	</div>
 
 	<div class="col-sm-6 col-md-4">
@@ -215,8 +215,6 @@
 
 <div class="row">
 	<div class="col-sm-8 col-sm-offset-1">
-
-		<h5>@Html.ActionLink("<<", "WeekBack", null, htmlAttributes: new { @class = "btn btn-info btn-sm" }) weekend ending @weekendEnding (@Model.Duration.ToString("N0") ms)</h5>
 
 		<div class="col-sm-5">
 			<textarea class="col-xs-12 form-control" id="pasteAreaId" rows="5" style="background-color: lightcyan; vertical-align: top;"
@@ -792,10 +790,10 @@
 			<input class="btn btn-success btn-lg"
 				   onclick="clickPicks()"
 				   type="button"
-				   value="Calculate Picks..."
+				   value="Picks..."
 				   data-toggle="tooltip"
 				   data-placement="bottom"
-				   title="Click to apply weights and recalculate Custom column...">
+				   title="Click to choose picks based on weights and 'your' numbers...">
 		}
 	</div>
 </div>
