@@ -176,11 +176,11 @@ namespace MoviePicker.WebApp.Controllers
 
 				if (topExpert != null)
 				{
-					tweetText = $"So far, {topExpert.Miner.Name} @{topExpert.Miner.TwitterID} leads with a total box office of ${topExpert.TotalPicksFromComparison.ToString("N0")} and ";
+					tweetText = $"So far, {topExpert.Miner.Name} @{topExpert.Miner.TwitterID} leads with a total box office of ${SmallDollars(topExpert.TotalPicksFromComparison)} and ";
 
 					if (topExpert.TotalPicksFromComparison < result.MovieListPerfectPick.Picks[0].TotalEarnings)
 					{
-						tweetText += $"is trailing the perfect pick by ${result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison:N0} ({(result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})";
+						tweetText += $"is trailing the perfect pick by ${SmallDollars(result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison)} ({(result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})";
 					}
 					else
 					{
@@ -191,7 +191,7 @@ namespace MoviePicker.WebApp.Controllers
 
 					foreach (var expert in result.ExpertPicks.OrderByDescending(item => item.TotalPicksFromComparison).Skip(1).Take(2))
 					{
-						tweetText += $"{nl}@{expert.Miner.TwitterID} ${expert.TotalPicksFromComparison:N0} [$-{result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison:N0} (-{(result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})]";
+						tweetText += $"{nl}@{expert.Miner.TwitterID} ${SmallDollars(expert.TotalPicksFromComparison)} [$-{SmallDollars(result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison)} (-{(result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})]";
 					}
 				}
 			}
@@ -1055,6 +1055,31 @@ namespace MoviePicker.WebApp.Controllers
 		private string SharedPicksFromModels()
 		{
 			return $"{TrimParameters(Request.Url.ToString())}?{QueryStringFromModel()}";
+		}
+
+		/// <summary>
+		/// Display a smaller dollar footprint X.XM, X.XK
+		/// </summary>
+		/// <param name="dollars"></param>
+		/// <returns></returns>
+		private string SmallDollars(decimal dollars)
+		{
+			string result = null;
+
+			if (dollars >= 1000000m)
+			{
+				result = $"{dollars / 1000000m:N2}M";
+			}
+			else if (dollars >= 1000m)
+			{
+				result = $"{dollars / 1000m:N2}K";
+			}
+			else
+			{
+				result = dollars.ToString("N0");
+			}
+
+			return result;
 		}
 
 		/// <summary>
