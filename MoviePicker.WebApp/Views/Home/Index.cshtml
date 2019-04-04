@@ -128,7 +128,7 @@
 						<h4>
 							Bonus Comparisons
 							<span class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
-								 title="The table below compares ALL of the movies to the MOST efficient one.
+								  title="The table below compares ALL of the movies to the MOST efficient one.
 								The Difference column is the dollar amount of gain, and the % Difference is just that; Difference divided the actual earnings (percentage gain).
 								The MOST efficient movie shows how much it would have to drop to match second place.">
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
@@ -304,7 +304,7 @@
 						<h4>
 							Theater Counts
 							<span class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
-								 title="The table below contains theater counts and efficiencies ($$ / theater) as well as last week (where applicable).">
+								  title="The table below contains theater counts and efficiencies ($$ / theater) as well as last week (where applicable).">
 								<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 							</span>
 						</h4>
@@ -453,6 +453,9 @@
 
 			@Html.ActionLink("Fandango Weekend", "FandangoDays", ViewUtility.RequestParamsToDynamic(Request)
 				, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of weekend Fandango ticket sales hosted by A.K. Valley." })
+
+			@Html.ActionLink("History", "History", ViewUtility.RequestParamsToDynamic(Request)
+				, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of historical movie data." })
 
 		</div>
 

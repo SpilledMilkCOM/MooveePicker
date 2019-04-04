@@ -18,20 +18,45 @@
 		{
 			var history = movie.BoxOfficeHistory;
 
-			<div class="col-md-6">
-				<div>@movie.Name</div>
+			if (history != null && history.Any())
+			{
 
-				@if(history != null && history.Any())
-				{
-					foreach (var boxOffice in history)
-					{
-						<div>@boxOffice.WeekendEnding.ToShortDateString()</div>
-						<div>@boxOffice.Rank</div>
-						<div>@boxOffice.Earnings</div>
-						<div>@boxOffice.TheaterCount</div>
-					}
-				}
-			</div>
+				<div class="col-md-6">
+					<h4>@movie.Name</h4>
+
+					<table class="table table-responsive">
+						<thead>
+							<tr>
+								@foreach (var boxOffice in history)
+								{
+									<td><strong>@boxOffice.WeekendEnding.ToShortDateString()</strong></td>
+								}
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								@foreach (var boxOffice in history)
+								{
+									<td>@boxOffice.Rank</td>
+								}
+							</tr>
+							<tr>
+								@foreach (var boxOffice in history)
+								{
+									<td>$@boxOffice.Earnings.ToString("N0")</td>
+								}
+							</tr>
+							<tr>
+								@foreach (var boxOffice in history)
+								{
+									<td>@boxOffice.TheaterCount.ToString("N0")</td>
+								}
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			}
 		}
 	}
 </div>

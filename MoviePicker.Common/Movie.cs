@@ -48,6 +48,8 @@ namespace MoviePicker.Common
 				EarningsBase = toCopy.EarningsBase;
 				WeekendEnding = toCopy.WeekendEnding;
 
+				SetBoxOfficeHistory(toCopy.BoxOfficeHistory);
+
 				UpdateEfficiency();
 
 				IsBestPerformer = toCopy.IsBestPerformer;
@@ -324,13 +326,24 @@ namespace MoviePicker.Common
 			return Id.GetHashCode();
 		}
 
+		/// <summary>
+		/// Copy/Clone the history passed in.  (supports null too)
+		/// </summary>
+		/// <param name="history"></param>
 		public void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history)
 		{
-			_boxOfficeHistory = new List<IBoxOffice>();
-
-			foreach (var item in history)
+			if (history == null)
 			{
-				_boxOfficeHistory.Add(item.Clone());
+				_boxOfficeHistory = null;
+			}
+			else
+			{
+				_boxOfficeHistory = new List<IBoxOffice>();
+
+				foreach (var item in history)
+				{
+					_boxOfficeHistory.Add(item.Clone());
+				}
 			}
 		}
 
