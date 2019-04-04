@@ -329,6 +329,62 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult History()
+		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+
+			var loaded = false;
+			var viewModel = new HistoryViewModel { Movies = _minerModel.Miners[MinerModel.FML_INDEX].Movies };
+
+			foreach (var movie in viewModel.Movies)
+			{
+				// Only load the history is needed.
+
+				if (movie.BoxOfficeHistory == null || movie.BoxOfficeHistory.Any())
+				{
+					var mojoMovie = _minerModel.Miners[MinerModel.MOJO_LAST_INDEX].Movies.FirstOrDefault(item => item.Equals(movie));
+
+					if (mojoMovie != null && mojoMovie.Identifier != null)
+					{
+						var history = new MineBoxOfficeMojoHistory(mojoMovie.Identifier);
+						var movies = history.Mine();
+
+						movie.SetBoxOfficeHistory(movies.First().BoxOfficeHistory);
+
+						loaded = true;
+					}
+				}
+			}
+
+			if (loaded)
+			{
+				// Update the FML cache if history was loaded.
+
+				lock (_minerModelCache)
+				{
+					var cachedFmlMovies = _minerModelCache.Miners[MinerModel.MOJO_LAST_INDEX].Movies;
+
+					foreach (var movie in viewModel.Movies)
+					{
+						if (movie.BoxOfficeHistory == null || movie.BoxOfficeHistory.Any())
+						{
+							var fmlMovie = cachedFmlMovies.FirstOrDefault(item => item.Equals(movie));
+
+							fmlMovie?.SetBoxOfficeHistory(movie.BoxOfficeHistory);
+						}
+					}
+				}
+			}
+
+			stopWatch.Stop();
+
+			viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			return View(viewModel);
+		}
+
+		[HttpGet]
 		public ActionResult Index()
 		{
 			// TODO: Collapse this down to a method call.

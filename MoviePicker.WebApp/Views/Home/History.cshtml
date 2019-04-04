@@ -1,0 +1,63 @@
+﻿@model MoviePicker.WebApp.ViewModels.HistoryViewModel
+
+@using MovieMiner;
+
+@{
+	ViewBag.Title = "History";
+}
+
+<script src="~/Scripts/zIndex.js" type="text/javascript"></script>
+
+<h2>@ViewBag.Title</h2>
+<h5>(@Model.Duration.ToString("N0") ms)</h5>
+<h3>Graphs are coming!! (as well as non-linear curve fitting)</h3>
+
+<div class="row">
+	@if (Model.Movies != null && Model.Movies.Any())
+	{
+		foreach (var movie in Model.Movies)
+		{
+			var history = movie.BoxOfficeHistory;
+
+			if (history != null && history.Any())
+			{
+
+				<div class="col-md-6">
+					<h4>@movie.Name</h4>
+
+					<table class="table table-responsive">
+						<thead>
+							<tr>
+								@foreach (var boxOffice in history)
+								{
+									<td><strong>@boxOffice.WeekendEnding.ToShortDateString()</strong></td>
+								}
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								@foreach (var boxOffice in history)
+								{
+									<td>@boxOffice.Rank</td>
+								}
+							</tr>
+							<tr>
+								@foreach (var boxOffice in history)
+								{
+									<td>$@boxOffice.Earnings.ToString("N0")</td>
+								}
+							</tr>
+							<tr>
+								@foreach (var boxOffice in history)
+								{
+									<td>@boxOffice.TheaterCount.ToString("N0")</td>
+								}
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			}
+		}
+	}
+</div>

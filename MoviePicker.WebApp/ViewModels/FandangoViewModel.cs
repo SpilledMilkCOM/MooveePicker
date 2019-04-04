@@ -54,7 +54,6 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public int PastHours { get; set; }
 
-
 		public string PieGraphData
 		{
 			get
