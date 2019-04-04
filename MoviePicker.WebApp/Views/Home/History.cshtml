@@ -1,12 +1,68 @@
 ﻿@model MoviePicker.WebApp.ViewModels.HistoryViewModel
 
-@using MovieMiner;
+@using MoviePicker.WebApp.Utilities;
 
 @{
 	ViewBag.Title = "History";
+
+	var count = 0;
+	var generatedCode = string.Empty;
 }
 
-<script src="~/Scripts/zIndex.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+	google.charts.load('current', { packages: ['corechart', 'line'] });
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawCharts() {
+
+		// Draw all the line graphs.
+
+		@foreach (var movie in Model.Movies)
+		{
+			// Generate javascript code to draw MANY graphs
+
+			var history = movie.BoxOfficeHistory;
+
+			if (history != null && history.Any()) {
+				generatedCode += $"drawChart('chart{count}', '{movie.Name}', {ViewUtility.GraphData(history)});\n";
+
+				count++;
+			}
+		}
+
+		// Html.Raw(generatedCode)
+
+		//drawChart('chart0', 'Dumbo', [[0, 10], [1, 5], [2, 2]]);
+		drawChart('chart0', 'Dumbo', null);
+	}
+
+	//function drawChart(chartId, title, graphData) {
+	function drawChart() {
+		var dataTable = google.visualization.DataTable();
+
+		dataTable.addColumn('number', 'Date');
+		dataTable.addColumn('number', 'Movie');
+		dataTable.addRows([[0, 10], [1, 5], [2, 2]]);
+
+		var options = {
+			hAxis: {
+				title: 'Date'
+			},
+			vAxis: {
+				title: 'Box Office'
+			},
+			colors: ['#AB0D06', '#007329'],
+			trendlines: {
+				0: { type: 'exponential', color: '#333', opacity: 1 },
+				1: { type: 'linear', color: '#111', opacity: .3 }
+			}
+		};
+
+		var chart = new google.visualization.LineChart(document.getElementById('chart0'));
+		chart.draw(dataTable, options);
+	}
+</script>
 
 <h2>@ViewBag.Title</h2>
 <h5>(@Model.Duration.ToString("N0") ms)</h5>
@@ -15,15 +71,22 @@
 <div class="row">
 	@if (Model.Movies != null && Model.Movies.Any())
 	{
+		count = 0;
+
 		foreach (var movie in Model.Movies)
 		{
 			var history = movie.BoxOfficeHistory;
 
 			if (history != null && history.Any())
 			{
+				var chartId = $"chart{count}";
+
+				count++;
 
 				<div class="col-md-6">
 					<h4>@movie.Name</h4>
+
+					<div id="@chartId" style="width: 300px; height: 200px;"></div>
 
 					<table class="table table-responsive">
 						<thead>

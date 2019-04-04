@@ -1,8 +1,10 @@
 ﻿using MovieMiner;
+using MoviePicker.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace MoviePicker.WebApp.Utilities
@@ -38,6 +40,35 @@ namespace MoviePicker.WebApp.Utilities
 			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Return google graph data.
+		/// </summary>
+		/// <param name="history"></param>
+		/// <returns></returns>
+		public static string GraphData(IEnumerable<IBoxOffice> history)
+		{
+			var builder = new StringBuilder();
+			var count = 0;
+
+			builder.Append("[");
+
+			foreach (var boxOffice in history)
+			{
+				if (count != 0)
+				{
+					builder.Append(", ");
+				}
+
+				builder.Append($"[{count}, {boxOffice.Earnings}]");
+
+				count++;
+			}
+
+			builder.Append("]");
+
+			return builder.ToString();
 		}
 
 		/// <summary>
