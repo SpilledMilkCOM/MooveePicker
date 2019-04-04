@@ -1139,6 +1139,9 @@ namespace MoviePicker.WebApp.Controllers
 			return viewModel;
 		}
 
+		/// <summary>
+		/// Update the ViewModel from the MinerModel.
+		/// </summary>
 		private void UpdateViewModel()
 		{
 			// TODO: Use reflection...
