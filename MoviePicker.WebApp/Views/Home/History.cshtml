@@ -12,7 +12,7 @@
 <script type="text/javascript">
 
 	google.charts.load('current', { packages: ['corechart', 'line'] });
-	google.charts.setOnLoadCallback(drawChart);
+	google.charts.setOnLoadCallback(drawCharts);
 
 	function drawCharts() {
 
@@ -24,49 +24,51 @@
 
 			var history = movie.BoxOfficeHistory;
 
-			if (history != null && history.Any()) {
+			if (history != null && history.Count() > 1) {
 				generatedCode += $"drawChart('chart{count}', '{movie.Name}', {ViewUtility.GraphData(history)});\n";
 
 				count++;
 			}
 		}
 
-		// Html.Raw(generatedCode)
+		@Html.Raw(generatedCode)
 
 		//drawChart('chart0', 'Dumbo', [[0, 10], [1, 5], [2, 2]]);
-		drawChart('chart0', 'Dumbo', null);
+		//drawChart('chart0', 'Dumbo', [[0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9]]);
+		//drawChart('chart1', 'Shazam', [[0, 0], [1, 5], [2, 10], [3, 17], [4, 15], [5, 18]]);
 	}
 
-	//function drawChart(chartId, title, graphData) {
-	function drawChart() {
-		var dataTable = google.visualization.DataTable();
+	function drawChart(chartId, title, graphData) {
+	//function drawChart() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('number', 'X');
+		data.addColumn('number', title);
+		//data.addColumn('number', 'Cats');
 
-		dataTable.addColumn('number', 'Date');
-		dataTable.addColumn('number', 'Movie');
-		dataTable.addRows([[0, 10], [1, 5], [2, 2]]);
+		data.addRows(graphData);
 
 		var options = {
 			hAxis: {
-				title: 'Date'
+				title: 'Weekend'
 			},
 			vAxis: {
-				title: 'Box Office'
+				title: 'Box Office $M'
 			},
-			colors: ['#AB0D06', '#007329'],
-			trendlines: {
-				0: { type: 'exponential', color: '#333', opacity: 1 },
-				1: { type: 'linear', color: '#111', opacity: .3 }
-			}
+			colors: ['#a52714']
 		};
 
-		var chart = new google.visualization.LineChart(document.getElementById('chart0'));
-		chart.draw(dataTable, options);
+		var chart = new google.visualization.LineChart(document.getElementById(chartId));
+		chart.draw(data, options);
 	}
 </script>
 
 <h2>@ViewBag.Title</h2>
 <h5>(@Model.Duration.ToString("N0") ms)</h5>
 <h3>Graphs are coming!! (as well as non-linear curve fitting)</h3>
+
+@*
+	<div id="chart0"></div>
+*@
 
 <div class="row">
 	@if (Model.Movies != null && Model.Movies.Any())
@@ -77,7 +79,7 @@
 		{
 			var history = movie.BoxOfficeHistory;
 
-			if (history != null && history.Any())
+			if (history != null && history.Count() > 1)
 			{
 				var chartId = $"chart{count}";
 
@@ -86,7 +88,7 @@
 				<div class="col-md-6">
 					<h4>@movie.Name</h4>
 
-					<div id="@chartId" style="width: 300px; height: 200px;"></div>
+					<div id="@chartId"></div>
 
 					<table class="table table-responsive">
 						<thead>

@@ -523,6 +523,22 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult TestLineGraph()
+		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+
+			var loaded = false;
+			var viewModel = new HistoryViewModel { Movies = _minerModel.Miners[MinerModel.FML_INDEX].Movies };
+
+			stopWatch.Stop();
+
+			viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			return View(viewModel);
+		}
+
+		[HttpGet]
 		public ActionResult Tracking()
 		{
 			var stopWatch = new Stopwatch();
