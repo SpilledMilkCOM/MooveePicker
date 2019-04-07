@@ -1140,11 +1140,11 @@ namespace MoviePicker.WebApp.Controllers
 
 			if (dollars >= 1000000m)
 			{
-				result = $"{dollars / 1000000m:N2}M";
+				result = $"{dollars / 1000000m:N1}M";
 			}
 			else if (dollars >= 1000m)
 			{
-				result = $"{dollars / 1000m:N2}K";
+				result = $"{dollars / 1000m:N1}K";
 			}
 			else
 			{
