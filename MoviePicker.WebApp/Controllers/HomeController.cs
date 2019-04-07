@@ -341,7 +341,7 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				// Only load the history is needed.
 
-				if (movie.BoxOfficeHistory == null || movie.BoxOfficeHistory.Any())
+				if (movie.BoxOfficeHistory == null)
 				{
 					var mojoMovie = _minerModel.Miners[MinerModel.MOJO_LAST_INDEX].Movies.FirstOrDefault(item => item.Equals(movie));
 

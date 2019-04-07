@@ -43,7 +43,7 @@ namespace MoviePicker.WebApp.Utilities
 		}
 
 		/// <summary>
-		/// Return google graph data.
+		/// Return google graph data scaled to Millions
 		/// </summary>
 		/// <param name="history"></param>
 		/// <returns></returns>
@@ -61,7 +61,7 @@ namespace MoviePicker.WebApp.Utilities
 					builder.Append(", ");
 				}
 
-				builder.Append($"[{count}, {boxOffice.Earnings}]");
+				builder.Append($"[{count}, {boxOffice.Earnings / 1000000}]");
 
 				count++;
 			}
