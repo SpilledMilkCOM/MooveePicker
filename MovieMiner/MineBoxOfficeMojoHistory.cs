@@ -112,7 +112,7 @@ namespace MovieMiner
 					}
 				}
 
-				var movie = new Movie();
+				var movie = new Movie { Identifier = Identifier };
 
 				movie.SetBoxOfficeHistory(boxOfficeHistory);
 
