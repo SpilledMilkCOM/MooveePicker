@@ -122,14 +122,21 @@ namespace MovieMiner
 								{
 									if (columnCount == 1)
 									{
-										movie = new Movie { Name = MapName(RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText))) };
+										var movieName = MapName(RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText)));
 
-										if (articleDate.HasValue)
+										// Don't create the movie is the name is hosed up.
+
+										if (!string.IsNullOrEmpty(movieName))
 										{
-											movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+											movie = new Movie { Name = movieName };
+
+											if (articleDate.HasValue)
+											{
+												movie.WeekendEnding = MovieDateUtil.NextSunday(articleDate);
+											}
 										}
 									}
-									else if (columnCount == 4)
+									else if (columnCount == 4 && movie != null)
 									{
 										movie.Earnings = decimal.Parse(column.InnerText) * 1000000;
 									}
