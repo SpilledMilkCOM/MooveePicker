@@ -69,7 +69,6 @@ namespace MoviePicker.WebApp.Controllers
 
 			var result = new CalculateViewModel(ConstructPicksViewModel());
 
-			//return Json(result.MovieList.Picks[0], JsonRequestBehavior.AllowGet);
 			return Json(result, JsonRequestBehavior.AllowGet);
 		}
 
@@ -350,6 +349,7 @@ namespace MoviePicker.WebApp.Controllers
 						var history = new MineBoxOfficeMojoHistory(mojoMovie.Identifier);
 						var movies = history.Mine();
 
+						movie.Identifier = mojoMovie.Identifier;
 						movie.SetBoxOfficeHistory(movies.First().BoxOfficeHistory);
 
 						loaded = true;
@@ -371,7 +371,11 @@ namespace MoviePicker.WebApp.Controllers
 						{
 							var fmlMovie = cachedFmlMovies.FirstOrDefault(item => item.Equals(movie));
 
-							fmlMovie?.SetBoxOfficeHistory(movie.BoxOfficeHistory);
+							if (fmlMovie != null)
+							{
+								fmlMovie.Identifier = movie.Identifier;					// This can be used to link to the Box Office Mojo website.
+								fmlMovie.SetBoxOfficeHistory(movie.BoxOfficeHistory);
+							}
 						}
 					}
 				}
@@ -520,22 +524,6 @@ namespace MoviePicker.WebApp.Controllers
 			RunSimulation(picksViewModel);
 
 			return View(picksViewModel);
-		}
-
-		[HttpGet]
-		public ActionResult TestLineGraph()
-		{
-			var stopWatch = new Stopwatch();
-			stopWatch.Start();
-
-			var loaded = false;
-			var viewModel = new HistoryViewModel { Movies = _minerModel.Miners[MinerModel.FML_INDEX].Movies };
-
-			stopWatch.Stop();
-
-			viewModel.Duration = stopWatch.ElapsedMilliseconds;
-
-			return View(viewModel);
 		}
 
 		[HttpGet]
