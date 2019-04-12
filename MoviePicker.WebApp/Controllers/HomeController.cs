@@ -341,7 +341,7 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				// Only load the history is needed.
 
-				if (movie.BoxOfficeHistory == null || movie.BoxOfficeHistory.Any())
+				if (movie.BoxOfficeHistory == null)
 				{
 					var mojoMovie = _minerModel.Miners[MinerModel.MOJO_LAST_INDEX].Movies.FirstOrDefault(item => item.Equals(movie));
 
@@ -1140,11 +1140,11 @@ namespace MoviePicker.WebApp.Controllers
 
 			if (dollars >= 1000000m)
 			{
-				result = $"{dollars / 1000000m:N2}M";
+				result = $"{dollars / 1000000m:N1}M";
 			}
 			else if (dollars >= 1000m)
 			{
-				result = $"{dollars / 1000m:N2}K";
+				result = $"{dollars / 1000m:N1}K";
 			}
 			else
 			{

@@ -32,18 +32,12 @@
 		}
 
 		@Html.Raw(generatedCode)
-
-		//drawChart('chart0', 'Dumbo', [[0, 10], [1, 5], [2, 2]]);
-		//drawChart('chart0', 'Dumbo', [[0, 0], [1, 10], [2, 23], [3, 17], [4, 18], [5, 9]]);
-		//drawChart('chart1', 'Shazam', [[0, 0], [1, 5], [2, 10], [3, 17], [4, 15], [5, 18]]);
 	}
 
 	function drawChart(chartId, title, graphData) {
-	//function drawChart() {
 		var data = new google.visualization.DataTable();
 		data.addColumn('number', 'X');
 		data.addColumn('number', title);
-		//data.addColumn('number', 'Cats');
 
 		data.addRows(graphData);
 
@@ -62,13 +56,14 @@
 	}
 </script>
 
-<h2>@ViewBag.Title</h2>
+<h2>
+	@ViewBag.Title
+	<span class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
+		  title="The new movies and movies that are only one week old are not shown since they have zero or one point of data.">
+		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+	</span>
+</h2>
 <h5>(@Model.Duration.ToString("N0") ms)</h5>
-<h3>Graphs are coming!! (as well as non-linear curve fitting)</h3>
-
-@*
-	<div id="chart0"></div>
-*@
 
 <div class="row">
 	@if (Model.Movies != null && Model.Movies.Any())
@@ -93,6 +88,7 @@
 					<table class="table table-responsive">
 						<thead>
 							<tr>
+								<td> </td>
 								@foreach (var boxOffice in history)
 								{
 									<td><strong>@boxOffice.WeekendEnding.ToShortDateString()</strong></td>
@@ -101,18 +97,24 @@
 						</thead>
 						<tbody>
 							<tr>
+								<td>Rank</td>
+
 								@foreach (var boxOffice in history)
 								{
 									<td>@boxOffice.Rank</td>
 								}
 							</tr>
 							<tr>
+								<td>BO</td>
+
 								@foreach (var boxOffice in history)
 								{
 									<td>$@boxOffice.Earnings.ToString("N0")</td>
 								}
 							</tr>
 							<tr>
+								<td>TC</td>
+
 								@foreach (var boxOffice in history)
 								{
 									<td>@boxOffice.TheaterCount.ToString("N0")</td>
