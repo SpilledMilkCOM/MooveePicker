@@ -625,43 +625,32 @@
 										<div style="position: relative; width: 0; height: 0;">
 											@if (movie.TheaterCount > 0)
 											{
-												if (lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0))
-												{
-													if (movie.TheaterCount - lastWeek.TheaterCount > 0)
+												var isNew = !(lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0));
+												var leftIndent = isNew ? "50px" : "20px";
+
+												<span class="badge badge-pill badge-light"
+													  data-toggle="tooltip"
+													  data-placement="top"
+													  title="Theater Count"
+													  style="position: absolute; left: @leftIndent; top: 5px;">
+													@movie.TheaterCount
+
+													@if (!isNew)
 													{
-														<span class="badge badge-pill badge-light"
-															  data-toggle="tooltip"
-															  data-placement="top"
-															  title="Theater Count"
-															  style="position: absolute; left: 20px; top: 5px;">
-															@movie.TheaterCount
+														var theaterDiff = movie.TheaterCount - lastWeek.TheaterCount;
+
+														if (theaterDiff > 0)
+														{
 															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
 															@(movie.TheaterCount - lastWeek.TheaterCount)
-														</span>
-													}
-													else if (movie.TheaterCount - lastWeek.TheaterCount < 0)
-													{
-														<span class="badge badge-pill badge-light"
-															  data-toggle="tooltip"
-															  data-placement="top"
-															  title="Theater Count"
-															  style="position: absolute; left: 20px; top: 5px;">
-															@movie.TheaterCount
+														}
+														else
+														{
 															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
 															@(lastWeek.TheaterCount - movie.TheaterCount)
-														</span>
+														}
 													}
-												}
-												else
-												{
-													<span class="badge badge-pill badge-light"
-														  data-toggle="tooltip"
-														  data-placement="top"
-														  title="Theater Count"
-														  style="position: absolute; left: 50px; top: 5px;">
-														@movie.TheaterCount
-													</span>
-												}
+												</span>
 											}
 
 											<span class="glyphicon glyphicon-info-sign"
