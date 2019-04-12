@@ -1,5 +1,6 @@
 ﻿@model MoviePicker.WebApp.ViewModels.HistoryViewModel
 
+@using MoviePicker.Common.Interfaces;
 @using MoviePicker.WebApp.Utilities;
 
 @{
@@ -72,20 +73,31 @@
 
 		foreach (var movie in Model.Movies)
 		{
+			IBoxOffice lastWeek = null;
 			var history = movie.BoxOfficeHistory;
 
 			if (history != null && history.Count() > 1)
 			{
 				var chartId = $"chart{count}";
+				var href = $"http://boxofficemojo.com/movies/?page=weekend&id={movie.Identifier}.htm";
 
 				count++;
 
-				<div class="col-md-6">
-					<h4>@movie.Name</h4>
+				<div class="col-md-6" style="border-color: black; border-width: 2px;">
+					<div class="col-xs-2">
+						<span data-toggle="tooltip"
+							  data-placement="top"
+							  title="Click for the source of @movie.Name on Box Office Mojo including similar movies (comps).">
+							<a style="color: white;" href="@href">
+								<img class="img-responsive img-rounded" src="@movie.ImageUrl" style="box-shadow: 2px 4px 8px 0px grey;" />
+							</a>
+						</span>
+					</div>
+					<div class="col-xs-10">
+						<div id="@chartId"></div>
+					</div>
 
-					<div id="@chartId"></div>
-
-					<table class="table table-responsive">
+					<table class="table">
 						<thead>
 							<tr>
 								<td> </td>
@@ -96,16 +108,23 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>Rank</td>
+							@*
+								<tr>
+									<td>Rank</td>
 
-								@foreach (var boxOffice in history)
-								{
-									<td>@boxOffice.Rank</td>
-								}
-							</tr>
+									@foreach (var boxOffice in history)
+									{
+										<td>@boxOffice.Rank</td>
+									}
+								</tr>
+							*@
 							<tr>
-								<td>BO</td>
+								<td>
+									<span class="label label-primary"
+										  data-toggle="tooltip"
+										  data-placement="top"
+										  title="Box Office Dollars">BO$</span>
+								</td>
 
 								@foreach (var boxOffice in history)
 								{
@@ -113,11 +132,93 @@
 								}
 							</tr>
 							<tr>
-								<td>TC</td>
+								<td>
+									<span class="label label-primary"
+										  data-toggle="tooltip"
+										  data-placement="top"
+										  title="Box Office Percent Decrease/Increase">BO%</span>
+								</td>
+								<td> </td>
+
+								@{
+									lastWeek = history.First();
+
+									foreach (var boxOffice in history.Skip(1))
+									{
+										var percent = boxOffice.Earnings != 0 ? (boxOffice.Earnings - lastWeek.Earnings) / lastWeek.Earnings * 100 : 0;
+										var boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+
+										<td>
+											<span class="badge badge-pill badge-dark"
+												  style="@boPercentBackgroundColorStyle color: black;">
+												@percent.ToString("N0")%
+											</span>
+										</td>
+
+										lastWeek = boxOffice;
+									}
+								}
+							</tr>
+							<tr>
+								<td>
+									<span class="label label-primary"
+										  data-toggle="tooltip"
+										  data-placement="top"
+										  title="Theater Count">TC</span>
+								</td>
+								@{
+									lastWeek = null;
+
+									foreach (var boxOffice in history)
+									{
+										if (boxOffice.TheaterCount > 0)
+										{
+											var isNew = !(lastWeek != null && (boxOffice.TheaterCount - lastWeek.TheaterCount != 0));
+
+											<td>
+												<span class="badge badge-pill badge-light"
+													  data-toggle="tooltip"
+													  data-placement="top"
+													  title="Theater Count">
+													@movie.TheaterCount
+
+													@if (!isNew)
+													{
+														var theaterDiff = boxOffice.TheaterCount - lastWeek.TheaterCount;
+
+														if (theaterDiff > 0)
+														{
+															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
+															@(boxOffice.TheaterCount - lastWeek.TheaterCount)
+														}
+														else
+														{
+															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
+															@(lastWeek.TheaterCount - boxOffice.TheaterCount)
+														}
+													}
+												</span>
+											</td>
+										}
+
+										lastWeek = boxOffice;
+									}
+								}
+							</tr>
+							<tr>
+								<td>
+									<span class="label label-primary"
+										  data-toggle="tooltip"
+										  data-placement="top"
+										  title="Dollars per Theater">$/T</span>
+								</td>
 
 								@foreach (var boxOffice in history)
 								{
-									<td>@boxOffice.TheaterCount.ToString("N0")</td>
+									var dollarsPerTheater = boxOffice.TheaterCount != 0 ? (boxOffice.Earnings / boxOffice.TheaterCount).ToString("N0") : "";
+									<td>
+										$@dollarsPerTheater
+									</td>
 								}
 							</tr>
 						</tbody>

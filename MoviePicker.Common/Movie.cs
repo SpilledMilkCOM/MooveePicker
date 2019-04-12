@@ -46,6 +46,7 @@ namespace MoviePicker.Common
 				ImageUrl = toCopy.ImageUrl;
 				MovieName = toCopy.MovieName;
 				EarningsBase = toCopy.EarningsBase;
+				TheaterCount = toCopy.TheaterCount;
 				WeekendEnding = toCopy.WeekendEnding;
 
 				SetBoxOfficeHistory(toCopy.BoxOfficeHistory);

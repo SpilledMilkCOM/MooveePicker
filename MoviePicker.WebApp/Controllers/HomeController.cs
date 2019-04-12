@@ -334,11 +334,20 @@ namespace MoviePicker.WebApp.Controllers
 			stopWatch.Start();
 
 			var loaded = false;
-			var viewModel = new HistoryViewModel { Movies = _minerModel.Miners[MinerModel.FML_INDEX].Movies };
+			var movieList = new List<IMovie>();
+
+			// When a miner is cloned.  Only the list is cloned, but you can still affect the movie inside the base list.
+			// Which is why EACH movie needs to be cloned here, because its box office list can get updated with the estimates if they are part of the Query string.
+
+			_minerModel.Miners[MinerModel.FML_INDEX].Movies.ForEach(item => movieList.Add(item.Clone()));
+
+			var viewModel = new HistoryViewModel { Movies = movieList };
+
+			ParseViewRequest();
 
 			foreach (var movie in viewModel.Movies)
 			{
-				// Only load the history is needed.
+				// Only load the history if needed.
 
 				if (movie.BoxOfficeHistory == null)
 				{
@@ -350,12 +359,14 @@ namespace MoviePicker.WebApp.Controllers
 						var movies = history.Mine();
 
 						movie.Identifier = mojoMovie.Identifier;
+
 						movie.SetBoxOfficeHistory(movies.First().BoxOfficeHistory);
 
 						loaded = true;
 					}
 				}
 			}
+
 
 			if (loaded)
 			{
@@ -373,11 +384,37 @@ namespace MoviePicker.WebApp.Controllers
 
 							if (fmlMovie != null)
 							{
-								fmlMovie.Identifier = movie.Identifier;					// This can be used to link to the Box Office Mojo website.
+								fmlMovie.Identifier = movie.Identifier;                 // This can be used to link to the Box Office Mojo website.
 								fmlMovie.SetBoxOfficeHistory(movie.BoxOfficeHistory);
 							}
 						}
 					}
+				}
+			}
+
+			// Add the user estimates to the ViewModel values.
+
+			var userMovies = _minerModel.Miners[MinerModel.MY_INDEX].Movies;
+			var theaterCountMovies = _minerModel.Miners[MinerModel.MOJO_THEATER_INDEX].Movies;
+
+			foreach (var movie in viewModel.Movies)
+			{
+				var userMovie = userMovies.FirstOrDefault(item => item.Equals(movie));
+				var theaterCountMovie = theaterCountMovies.FirstOrDefault(item => item.Equals(movie));
+
+				if (userMovie != null && userMovie.Earnings > 0)
+				{
+					var boxOfficeHistory = movie.BoxOfficeHistory?.ToList() ?? new List<IBoxOffice>();
+
+					IBoxOffice boxOffice = new BoxOffice
+					{
+						Earnings = userMovie.Earnings,
+						TheaterCount = theaterCountMovie?.TheaterCount ?? 0,
+						WeekendEnding = userMovie.WeekendEnding
+					};
+
+					boxOfficeHistory.Add(boxOffice);
+					movie.SetBoxOfficeHistory(boxOfficeHistory);
 				}
 			}
 
