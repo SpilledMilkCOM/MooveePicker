@@ -62,6 +62,7 @@ namespace MoviePicker.WebApp.Utilities
 				}
 
 				builder.Append($"[{count}, {boxOffice.Earnings / 1000000}]");
+				//builder.Append($"[{boxOffice.WeekendEnding.ToString("dd/MM")}, {boxOffice.Earnings / 1000000}]");
 
 				count++;
 			}
