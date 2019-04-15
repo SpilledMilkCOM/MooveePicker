@@ -28,7 +28,7 @@ namespace MoviePicker.WebApp.Models
 		public const int PROPHET_INDEX = FML_INDEX + 6;
 		public const int BORPT_INDEX = FML_INDEX + 7;
 		public const int MOJO_THEATER_INDEX = FML_INDEX + 8;
-		public const int MOJO_LAST_INDEX = FML_INDEX + 9;
+		public const int MOJO_LAST_INDEX = FML_INDEX + 9;			// Miner contains the last week values (also contains all the history).
 
 		//private readonly IMoviePicker _moviePickerPrototype = null;
 		private bool _postersDownloaded;
