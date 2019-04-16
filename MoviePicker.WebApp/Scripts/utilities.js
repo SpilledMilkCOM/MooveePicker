@@ -1,4 +1,15 @@
-﻿// ----==== For Bootstrap ====-------------------------------------------------------------------
+﻿// ----==== For responsive google charts ====------------------------------------------------------
+
+$(window).resize(function () {
+
+	// Only call the function if it's defined (might be SLOW), which prevents errors in logging.
+
+	if (typeof drawCharts == 'function') {
+		drawCharts();
+	}
+});
+
+// ----==== For Bootstrap ====---------------------------------------------------------------------
 
 // Uses JQuery to attach a function to load and resize events.
 
@@ -14,7 +25,7 @@ $(document).ready(function () {
 	$('[data-toggle="tooltip"]').tooltip();
 });
 
-// ----==== For Twitter ====-------------------------------------------------------------------
+// ----==== For Twitter ====-----------------------------------------------------------------------
 // For Twitter "follow" and "tweet" buttons.
 
 !function (d, s, id) {

@@ -26,7 +26,7 @@
 			var history = movie.BoxOfficeHistory;
 
 			if (history != null && history.Count() > 1) {
-				generatedCode += $"drawChart('chart{count}', '{movie.Name}', {ViewUtility.GraphData(history)});\n";
+				generatedCode += $"drawChart('chart{count}', '{movie.Name}', {ViewUtility.GraphData(history)});\n\t\t";
 
 				count++;
 			}
@@ -55,6 +55,7 @@
 		var chart = new google.visualization.LineChart(document.getElementById(chartId));
 		chart.draw(data, options);
 	}
+
 </script>
 
 <h2>
@@ -94,7 +95,7 @@
 						</span>
 					</div>
 					<div class="col-xs-10">
-						<div id="@chartId"></div>
+						<div id="@chartId" class="chart-responsive"></div>
 					</div>
 
 					<table class="table">
