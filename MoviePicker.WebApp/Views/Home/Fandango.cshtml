@@ -14,9 +14,10 @@
 <script type="text/javascript">
 
 	google.charts.load("current", { packages: ["corechart"] });
-	google.charts.setOnLoadCallback(drawChart);
+	google.charts.setOnLoadCallback(drawCharts);
 
-	function drawChart() {
+	// Draw many or ONE chart
+	function drawCharts() {
 		var data = google.visualization.arrayToDataTable([['Movie', 'Ticket Sales'], @Html.Raw(Model.PieGraphData)]);
 
 		var options = {
@@ -114,7 +115,7 @@
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
 
-			<div id="hourlyPieChart3d" style="width: 700px; height: 500px;"></div>
+			<div id="hourlyPieChart3d" class="chart-responsive-pie"></div>
 
 			@*================================================================================================================================== BONUS COMP ==== *@
 			@* TODO - Put this in a partial view. *@
@@ -219,7 +220,7 @@
 
 			<div class="input-group col-xs-5 col-sm-5">
 
-				<input id="pastHoursId" class="form-control" placeholder="Past Hours" value="@Request.Params["past"]" />
+				<input id="pastHoursId" class="form-control" placeholder="Past Hours (default 24)" value="@Request.Params["past"]" />
 
 				<div class="input-group-btn">
 					<button class="btn btn-default" type="button" onclick="clickFilter()">Filter</button>
@@ -301,5 +302,3 @@
 		</div>
 	</div>
 }
-
-<div id="hourlyPieChart3d" style="width: 900px; height: 700px;"></div>
