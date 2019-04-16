@@ -235,7 +235,16 @@ function parseBoxOfficeAndWeights() {
 
 		// TODO: Request encode this.
 
-		var weight = $("#weightId" + idx).val().replace(",", "").replace("$", "");
+		var weightField = $("#weightId" + idx);
+		var weight = 0;
+
+		logit(weightField);
+
+		if (weightField != null && weightField.val() != null) {
+			// The field might be hidden so check for it first.
+
+			weight = weightField.val().replace(",", "").replace("$", "");
+		}
 
 		weightList += weight;
 		weightTotal += weight;

@@ -25,10 +25,11 @@ namespace MoviePicker.WebApp.Models
 		public const int BOPRO_INDEX = FML_INDEX + 3;
 		public const int MOJO_INDEX = FML_INDEX + 4;
 		public const int COUPE_INDEX = FML_INDEX + 5;
+		public const int VIS_REC_INDEX = FML_INDEX + 5;				// Same as above
 		public const int PROPHET_INDEX = FML_INDEX + 6;
 		public const int BORPT_INDEX = FML_INDEX + 7;
 		public const int MOJO_THEATER_INDEX = FML_INDEX + 8;
-		public const int MOJO_LAST_INDEX = FML_INDEX + 9;			// Miner contains the last week values (also contains all the history).
+		public const int MOJO_LAST_INDEX = FML_INDEX + 9;           // Miner contains the last week values (also contains all the history).
 
 		//private readonly IMoviePicker _moviePickerPrototype = null;
 		private bool _postersDownloaded;
@@ -353,7 +354,7 @@ namespace MoviePicker.WebApp.Models
 				new MineBoxOfficePro(),
 				new MineBoxOfficeMojo(),
 				//new MineVisualRecreation(),
-				new MineCoupe(),
+				new MineCoupe { IsHidden = true },
 				//new MineCulturedVultures(),
 				new MineBoxOfficeProphet(),
 				new MineBoxOfficeReport(),

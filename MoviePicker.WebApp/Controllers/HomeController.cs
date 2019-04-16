@@ -969,16 +969,14 @@ namespace MoviePicker.WebApp.Controllers
 			idx = 0;
 			hasParams |= intList.Any();
 
-			bool isFirst = true;
-
-			foreach (var miner in _minerModel.Miners)
+			foreach (var miner in _minerModel.Miners.Skip(1))
 			{
-				if (!isFirst && idx < intList.Count)
+				if (idx < intList.Count && !miner.IsHidden)
 				{
-					miner.Weight = intList[idx++];
+					miner.Weight = intList[idx];
 				}
 
-				isFirst = false;
+				idx++;
 			}
 
 			if (hasParams)

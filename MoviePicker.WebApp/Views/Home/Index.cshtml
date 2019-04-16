@@ -8,9 +8,6 @@
 
 @{
 	ViewBag.Title = "Home";
-
-	// The start of a miner traversal (skip custom)
-	int minerCount = 2;     // This scope is pretty far, sorry  :(
 }
 
 <script src="~/Scripts/zGlobal.js" type="text/javascript"></script>
@@ -490,41 +487,47 @@
 
 			<table class="table table-responsive" style="border: none;">
 				<tr>
-					@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
+					@for (int minerCount = MinerModel.TODD_INDEX; minerCount <= MinerModel.BORPT_INDEX; minerCount++)
 					{
-						var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
-						var weightId = string.Format("weightId{0}", minerCount);
-						var name = string.Format("Weight{0}", minerCount);
-						//var badge = miner.Movies.Any() ? string.Format("<span class=\"badge badge-pill badge-light\">{0}</span>", miner.Movies.Count) : string.Empty;
+						// Use indexing to preserve the "hole" of the skipped miner.
+						// The control IDs need to be preserved.
 
-						// TODO: May want to use a utility to speed up the reflection.
+						var miner = Model?.Miners.ToList()[minerCount];
 
-						var valueString = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
+						if (!(miner?.IsHidden ?? true))
+						{
+							var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
+							var weightId = string.Format("weightId{0}", minerCount);
+							var name = string.Format("Weight{0}", minerCount);
+							//var badge = miner.Movies.Any() ? string.Format("<span class=\"badge badge-pill badge-light\">{0}</span>", miner.Movies.Count) : string.Empty;
 
-						<td>
-							<a class="btn @buttonStyle btn-xs"
-							   href="@miner.UrlSource"
-							   target="_blank"
-							   data-toggle="tooltip"
-							   data-placement="bottom"
-							   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
-								@miner.Abbreviation
-							</a>
+							// TODO: May want to use a utility to speed up the reflection.
 
-							<input name="@name"
-								   class="form-control"
-								   id="@weightId"
-								   onblur="weightLostFocus(this.value, @minerCount)"
-								   style="background-color: #dfffdf; width: 50px;"
-								   type="text"
-								   value="@valueString"
-								   data-original-value="@valueString"
-								   data-val-required="The Weight @minerCount field is required."
-								   data-val-number="The field Weight @minerCount must be a number."
-								   data-val="true">
-						</td>
+							var valueString = string.Format("{0:N0}", Model.GetType().GetProperty("Weight" + minerCount)?.GetValue(Model));
 
-						minerCount++;
+							<td>
+								<a class="btn @buttonStyle btn-xs"
+								   href="@miner.UrlSource"
+								   target="_blank"
+								   data-toggle="tooltip"
+								   data-placement="bottom"
+								   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
+									@miner.Abbreviation
+								</a>
+
+								<input name="@name"
+									   class="form-control"
+									   id="@weightId"
+									   onblur="weightLostFocus(this.value, @minerCount)"
+									   style="background-color: #dfffdf; width: 50px;"
+									   type="text"
+									   value="@valueString"
+									   data-original-value="@valueString"
+									   data-val-required="The Weight @minerCount field is required."
+									   data-val-number="The field Weight @minerCount must be a number."
+									   data-val="true">
+							</td>
+						}
 					}
 				</tr>
 			</table>
