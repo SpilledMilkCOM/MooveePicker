@@ -27,7 +27,7 @@ namespace MoviePicker.Tests
 			_unity.RegisterType<IMoviePicker, MooveePicker.MoviePickerUnboundedKnapsack>();
 		}
 
-		[TestMethod]
+		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY)]
 		public void MoviePickerUnboundedKnapsack_ChooseBest_OutOf01()
 		{
 			var test = ConstructTestObject();
@@ -54,7 +54,7 @@ namespace MoviePicker.Tests
 			WritePicker(test);
 			WriteMovies(best);
 
-			Assert.AreEqual(1, best.Movies.Count());
+			Assert.AreEqual(2, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -69,7 +69,7 @@ namespace MoviePicker.Tests
 			WritePicker(test);
 			WriteMovies(best);
 
-			Assert.AreEqual(2, best.Movies.Count());
+			Assert.AreEqual(3, best.Movies.Count());
 		}
 
 		[TestMethod]
@@ -309,6 +309,74 @@ namespace MoviePicker.Tests
 			{
 				Logger.WriteLine(string.Empty);
 				WriteMovies(movieList);
+			}
+		}
+
+		[TestMethod]
+		public void MoviePickerUnboundedKnapsack_ChooseBest10_OutOf02()
+		{
+			var test = ConstructTestObject();
+
+			test.AddMovies(ThisWeeksMoviesPicks().Take(2).ToList());
+
+			var bestList = test.ChooseBest(10);
+
+			WritePicker(test);
+
+			foreach (var best in bestList.OrderByDescending(item => item.TotalEarnings))
+			{
+				WriteMovies(best);
+			}
+		}
+
+		[TestMethod]
+		public void MoviePickerUnboundedKnapsack_ChooseBest10_OutOf04()
+		{
+			var test = ConstructTestObject();
+
+			test.AddMovies(ThisWeeksMoviesPicks().Take(4).ToList());
+
+			var bestList = test.ChooseBest(10);
+
+			WritePicker(test);
+
+			foreach (var best in bestList.OrderByDescending(item => item.TotalEarnings))
+			{
+				WriteMovies(best);
+			}
+		}
+
+		[TestMethod]
+		public void MoviePickerUnboundedKnapsack_ChooseBest10_OutOf05()
+		{
+			var test = ConstructTestObject();
+
+			test.AddMovies(ThisWeeksMoviesPicks().Take(5).ToList());
+
+			var bestList = test.ChooseBest(10);
+
+			WritePicker(test);
+
+			foreach (var best in bestList.OrderByDescending(item => item.TotalEarnings))
+			{
+				WriteMovies(best);
+			}
+		}
+
+		[TestMethod]
+		public void MoviePickerUnboundedKnapsack_ChooseBest10_OutOf08()
+		{
+			var test = ConstructTestObject();
+
+			test.AddMovies(ThisWeeksMoviesPicks().Take(8).ToList());
+
+			var bestList = test.ChooseBest(10);
+
+			WritePicker(test);
+
+			foreach (var best in bestList.OrderByDescending(item => item.TotalEarnings))
+			{
+				WriteMovies(best);
 			}
 		}
 
