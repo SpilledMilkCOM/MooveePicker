@@ -106,10 +106,11 @@ namespace MovieMiner
 						var movieNodes = node.SelectNodes($"//p[contains(., '{DELIMITER}')]|//p[contains(., '{DELIMITER2}')]");     // Find all of the estimate paragraphs
 
 						// As of 11/2/2017 Todd is separating things with <br /> now.
+						// As of 04/17/2019 Todd is putting the estimates all inside a single paragraph
 
-						if (movieNodes.Count == 1)
+						if (movieNodes.Count <= 5)
 						{
-							var innerHtml = HttpUtility.HtmlDecode(movieNodes.First().InnerHtml);
+							var innerHtml = HttpUtility.HtmlDecode(movieNodes.Last().InnerHtml);
 							var delimiters = new string[] { "\n", "<br>", "<br>\n", "<br><br>" };
 							var tokens = innerHtml.Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
 
