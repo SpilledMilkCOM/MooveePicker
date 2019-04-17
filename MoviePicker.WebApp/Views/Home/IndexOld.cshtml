@@ -247,15 +247,24 @@
 
 						@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 						{
+							var buttonStyle = miner.Movies.Any() ? "btn-success" : "btn-info";
 							var errorDetail = string.IsNullOrEmpty(miner.ErrorDetail) ? string.Empty : string.Format("[Error - {0}]", miner.ErrorDetail);
 							var lastUpdated = ((ICache)miner).LastLoaded.HasValue ? string.Format("(last updated {0})", ((ICache)miner).LastLoaded) : string.Empty;
 							var toolTip = string.Format("Click for '{0}' source page... {1}{2}"
 														, miner.Name, lastUpdated, errorDetail);
 
 							<th style="text-align: center;">
-								<a class="btn btn-info btn-xs" href="@miner.UrlSource" target="_blank" data-toggle="tooltip" data-placement="bottom"
+								<a class="btn @buttonStyle btn-xs" href="@miner.UrlSource" target="_blank" data-toggle="tooltip" data-placement="bottom"
 								   title="@toolTip">
-									@miner.Abbreviation
+									@miner.Abbreviation &nbsp;
+									@if (miner.Movies.Count > 0)
+									{
+										<span class="badge badge-pill badge-light"
+											  data-toggle="tooltip"
+											  data-placement="top"
+											  title="Total Movies Estimated">@miner.Movies.Count</span>
+
+										}
 								</a>
 							</th>
 						}
@@ -446,7 +455,6 @@
 								else
 								{
 									<td style="text-align: right">
-										@*@string.Format("{0}", minerMovie?.Earnings.ToString("N0") ?? "not found")*@
 										<div>
 											@string.Format("{0}", minerMovie?.Earnings.ToString("N0"))
 										</div>
@@ -483,30 +491,28 @@
 						movieCount++;
 					}
 
+					@* ================================================================================================================================== MINER WEIGHT ROW ==== *@
+
 					<tr>
 						<td></td>
 						<td></td>
 
 						@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 						{
+							var isSource = miner == Model.Miners.Last() || !miner.Movies.Any();
+							var buttonStyle = isSource ? "btn-info" : "btn-success";
+							var href = isSource ? miner.UrlSource : $"~/Home/Picks?{Model.WeightListForMiner(miner)}";
+							var title = isSource ? $"Click for '{miner.Name}' source page... (last updated {((ICache)miner).LastLoaded.ToString()}"
+												: $"Click for '{miner.Name}' dedicated picks...";
+
 							<td style="text-align: center">
-								@if (miner == Model.Miners.Last() || !miner.Movies.Any())
-								{
-									<a class="btn btn-info btn-xs"
-									   href="@miner.UrlSource"
-									   target="_blank"
-									   data-toggle="tooltip"
-									   data-placement="bottom"
-									   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">@miner.Abbreviation</a>
-								}
-								else
-								{
-									<a class="btn btn-success btn-xs"
-									   href="~/Home/Picks?@string.Format("{0}", Model.WeightListForMiner(miner))"
-									   data-toggle="tooltip"
-									   data-placement="bottom"
-									   title="Click for '@miner.Name' dedicated picks...">@miner.Abbreviation</a>
-								}
+								<a class="btn @buttonStyle btn-xs"
+								   href="@href"
+								   data-toggle="tooltip"
+								   data-placement="bottom"
+								   title="@title">
+									@miner.Abbreviation
+								</a>
 							</td>
 						}
 					</tr>

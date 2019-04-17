@@ -512,7 +512,15 @@
 								   data-toggle="tooltip"
 								   data-placement="bottom"
 								   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
-									@miner.Abbreviation
+									@miner.Abbreviation &nbsp;
+									@if (miner.Movies.Count > 0)
+									{
+										<span class="badge badge-pill badge-light"
+											  data-toggle="tooltip"
+											  data-placement="top"
+											  title="Total Movies Estimated">@miner.Movies.Count</span>
+
+										}
 								</a>
 
 								<input name="@name"
