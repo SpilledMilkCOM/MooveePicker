@@ -84,6 +84,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="MoviePickerSimpleTests.cs" />
+    <Compile Include="MoviePickerUnboundedKnapsackTests.cs" />
     <Compile Include="TextRecognitionTests.cs" />
     <Compile Include="PosterRecognitionTests.cs" />
     <Compile Include="TitleMatchTests.cs" />
