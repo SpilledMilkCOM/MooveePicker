@@ -11,6 +11,8 @@
 
 		public const string WEBSITE_URL = "http://MooveePicker.com";
 
+		public const string FORMAT_DAY_DATE = "ddd MM/dd/yyyy";
+
 		public static string GoogleAdCode
 		{
 			get

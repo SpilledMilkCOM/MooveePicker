@@ -1,14 +1,13 @@
 ﻿@model MoviePicker.WebApp.ViewModels.FandangoViewModel
 
-@using MovieMiner;
-@using MoviePicker.Common.Interfaces;
+@using MoviePicker.WebApp.Models;
 @using MoviePicker.WebApp.Utilities;
-@using System.Text;
 
 @{
 	ViewBag.Title = "Fandango Hourly";
 
-	var weekendEnding = Model.Miner.ContainsEstimates ? MovieDateUtil.GameSunday(isEstimate: Model.Miner.ContainsEstimates).ToShortDateString() : Model.Miner.Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString();
+	var movieList = Model.Movies?.ToList();
+	var weekendEnding = movieList?.FirstOrDefault()?.WeekendEnding.ToString(Constants.FORMAT_DAY_DATE);
 }
 
 <script type="text/javascript">
@@ -72,7 +71,6 @@
 
 @{
 	int movieCount = 1;     // This scope is pretty far, sorry  :(
-	var movieList = Model.Movies.ToList();
 	var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
 
 	<div class="row">

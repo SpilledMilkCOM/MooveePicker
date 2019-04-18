@@ -1,16 +1,13 @@
 ﻿@model MoviePicker.WebApp.ViewModels.FandangoDaysViewModel
 
-@using MovieMiner;
-@using MoviePicker.Common.Interfaces;
+@using MoviePicker.WebApp.Models;
 @using MoviePicker.WebApp.Utilities;
-@using System.Linq;
-@using System.Text;
 
 @{
 	ViewBag.Title = "Fandango Weekend";
 
 	var movieList = Model.Movies?.ToList();
-	var weekendEnding = movieList?.FirstOrDefault()?.WeekendEnding.ToString("ddd MM/dd/yyyy");
+	var weekendEnding = movieList?.FirstOrDefault()?.WeekendEnding.ToString(Constants.FORMAT_DAY_DATE);
 }
 
 <script type="text/javascript">
