@@ -62,7 +62,7 @@ namespace MovieMiner
 
 					// Get the date of the article (hoping that the date is the ONLY thing in such a small font)
 
-					node = doc.DocumentNode.SelectSingleNode("//body//h2[text()='Weekend Predictions']");
+					node = doc.DocumentNode.SelectSingleNode("//body//h2[text()='Weekend Predictions']|//body//h2[text()='Weekend Box Office Predictions']");
 
 					if (node == null)
 					{
