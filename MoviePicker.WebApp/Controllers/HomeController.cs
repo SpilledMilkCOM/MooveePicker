@@ -294,19 +294,47 @@ namespace MoviePicker.WebApp.Controllers
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
 
-			IFandangoViewModel viewModel = new FandangoDaysViewModel(_minerModel.Miners[MinerModel.FML_INDEX], _moviePicker);
+			IFandangoViewModel viewModel = new FandangoDaysViewModel(_minerModel, _moviePicker);
 
 			DownloadMoviePosters();
 
+			ClearMinerModel(0);
+
+			ParseViewRequest();
+
 			viewModel.Load();
+
+			var movieList = viewModel.Movies.OrderByDescending(movie => movie.EarningsBase).ToList();
+			var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
+
+			// Scale the estimates (if they exist) to match the percentages of the sales.
+			// o Use the sales scale outright and multiply the totalEstimate to get BO
+			// o Combine the scales (somehow) and multiply the totalEstimate to get BO
+
+			if (totalBoxOffice > 0)
+			{
+				var myMovieList = _minerModel.Miners[MinerModel.MY_INDEX].Movies;
+				var totalEstimates = myMovieList?.Sum(item => item.EarningsBase) ?? 0;
+
+				if (totalEstimates > 0)
+				{
+					foreach (var movie in movieList)
+					{
+						var myMovie = myMovieList.FirstOrDefault(item => item.Equals(movie));
+
+						if (myMovie != null)
+						{
+							// For now this is option 1.
+							myMovie.Earnings = totalEstimates * movie.EarningsBase / totalBoxOffice;
+						}
+					}
+				}
+			}
 
 			if (viewModel.IsTracking && _minerModel.Miners[MinerModel.FML_INDEX].Movies.Count > 0)
 			{
 				viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
 			}
-
-			var movieList = viewModel.Movies.OrderByDescending(movie => movie.EarningsBase).ToList();
-			var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
 
 			var nl = NEW_LINE_HTML;
 			var tweetText = $"The top @Fandango tickets sales for the weekend ending {_minerModel.WeekendEnding.Value.ToShortDateString()}:{nl}";
@@ -430,17 +458,7 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			// TODO: Collapse this down to a method call.
 
-			// Set the weights to 1 across the board. (treat all 'expert' sources equal)
-
-			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.MOJO_THEATER_INDEX; minerIndex++)
-			{
-				_minerModel.Miners[minerIndex].Weight = 1;
-			}
-
-			// Do NOT include MY numbers when pre-populating the box office values;
-
-			_minerModel.Miners[MinerModel.MY_INDEX].Weight = 0;
-			((ICache)_minerModel.Miners[MinerModel.MY_INDEX]).Load();
+			ClearMinerModel();
 
 			// Adjust the weights (possibly adjust the defaults above).
 
@@ -609,6 +627,21 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
+
+		private void ClearMinerModel(decimal weight = 1)
+		{
+			// Set the weights to 1 across the board. (treat all 'expert' sources equal)
+
+			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.MOJO_THEATER_INDEX; minerIndex++)
+			{
+				_minerModel.Miners[minerIndex].Weight = weight;
+			}
+
+			// Do NOT include MY numbers when pre-populating the box office values;
+
+			_minerModel.Miners[MinerModel.MY_INDEX].Weight = 0;
+			((ICache)_minerModel.Miners[MinerModel.MY_INDEX]).Load();
+		}
 
 		private List<IMovie> CloneList(IEnumerable<IMovie> list)
 		{
@@ -990,7 +1023,7 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		/// <summary>
-		/// Parse ALL of the view Request parameters into the view model.
+		/// Parse ALL of the view Request parameters into the view model. (including the BO and weights)
 		/// </summary>
 		private void ParseViewRequest()
 		{

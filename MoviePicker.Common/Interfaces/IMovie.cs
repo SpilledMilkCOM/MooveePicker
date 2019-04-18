@@ -72,6 +72,11 @@ namespace MoviePicker.Common.Interfaces
 		bool IsBestPerformer { get; set; }
 
 		/// <summary>
+		/// Is this the movie's opening weekend (typically need to include Thursdays ticket sales)
+		/// </summary>
+		bool IsNew { get; set; }
+
+		/// <summary>
 		/// The name of the movie (NOT including the day of the week, if applicable)
 		/// </summary>
 		string MovieName { get; set; }

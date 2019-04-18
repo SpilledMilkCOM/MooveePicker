@@ -75,6 +75,8 @@ namespace MoviePicker.Msf
 
 		public bool IsBestPerformer { get => _movie.IsBestPerformer; set => _movie.IsBestPerformer = value; }
 
+		public bool IsNew { get => _movie.IsNew; set => _movie.IsNew = value; }
+
 		public string IsBestPerformerDebugTag => IsBestPerformer ? "BEST" : string.Empty;
 
 		public string ImageUrl { get => _movie.ImageUrl; set => _movie.ImageUrl = value; }

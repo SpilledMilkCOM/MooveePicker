@@ -69,8 +69,9 @@
 </script>
 
 @{
-	int movieCount = 1;     // This scope is pretty far, sorry  :(
-	var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
+		int movieCount = 1;     // This scope is pretty far, sorry  :(
+		var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
+		var pageTitle = string.Format("{0}{1}", ViewBag.Title, Model.IsScaled ? " (Estimates Scaled)" : string.Empty);
 
 	<div class="row">
 
@@ -78,9 +79,9 @@
 
 		<div class="col-md-6 col-md-offset-1">
 			<h2>
-				@ViewBag.Title
+				@pageTitle
 				<div class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
-					 title="This page represents the aggregation of Fandango data for each day Friday, Saturday, and Sunday from the file hosted by A.K. Valley. The dollars are computed by multiplying the sales by $10 (it's just an average).">
+					 title="This page represents the aggregation of Fandango data for each day Friday, Saturday, and Sunday from the file hosted by A.K. Valley. The dollars in the second batch of posters are computed by multiplying total estimated box office by the percentage of the sales.">
 					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 				</div>
 
@@ -224,7 +225,7 @@
 					while (movieCount <= movieList.Count)
 					{
 						<tr>
-							@for (int col = 0; col < 4 && movieCount <= movieList.Count; col++)
+							@for (int col = 0; col < 5 && movieCount <= movieList.Count; col++)
 							{
 								var movie = movieList[movieCount - 1];
 
@@ -233,20 +234,14 @@
 
 								// TODO: May want to use a utility to speed up the reflection.
 
-								var valueString = string.Format("{0:N0}", movie.Earnings);
-								string divBackgroundColorStyle = null;
-								decimal percent = 0;
-								var hasRows = false;
-
-								divBackgroundColorStyle = null;
-								percent = 0;
-
+								var valueString = string.Format("{0}{1:N0}", Model.IsScaled ? "$" : string.Empty, movie.Earnings);
 								var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey";
+								var labelBackgroundColor = movie.IsNew ? "lightgreen" : "white";
 
 								<td style="padding: 3px;">
 
 									<div data-toggle="tooltip" data-placement="top"
-										 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
+										 title="@string.Format("{0} - {1:N0} BUX{2}", movie.Name, movie.Cost, movie.IsNew ? " (includes preview night)" : string.Empty)">
 
 										<div style="position: relative; width: 0; height: 0">
 											<span class="badge badge-pill badge-light"
@@ -259,24 +254,13 @@
 
 										<img class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
 
-										@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
-										@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
-
-										<table style="position: relative; top: -50px; left: 2px; float: left;">
-											<tr>
-												<td>
-													<input name="@name"
-														   class="form-control"
-														   id="@boId"
-														   style="width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
-														   type="text"
-														   value="@valueString"
-														   data-val-required="The Box Office @movieCount field is required."
-														   data-val-number="The field Box Office @movieCount must be a number."
-														   data-val="true">
-												</td>
-											</tr>
-										</table>
+										<div style="position: relative; top: -60px;">
+											<div name="@name"
+												 id="@boId"
+												 style="padding: 0px 3px 0px 3px; margin: 4px; text-align: center; width: 90px; background: @labelBackgroundColor; opacity: 0.7;">
+												@valueString
+											</div>
+										</div>
 									</div>
 								</td>
 

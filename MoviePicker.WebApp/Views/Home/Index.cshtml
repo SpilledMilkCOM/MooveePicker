@@ -445,14 +445,25 @@
 			<div class="clearfix"></div>
 			<div class="row-divider"> </div>
 
-			@Html.ActionLink("Fandango Hourly", "Fandango", ViewUtility.RequestParamsToDynamic(Request)
-				, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of hourly Fandango ticket sales hosted by A.K. Valley." })
+			@{
+				var dynamicParms = ViewUtility.RequestParamsToDynamic(Request);
 
-			@Html.ActionLink("Fandango Weekend", "FandangoDays", ViewUtility.RequestParamsToDynamic(Request)
-				, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of weekend Fandango ticket sales hosted by A.K. Valley." })
+				@Html.ActionLink("Fandango Hourly", "Fandango", dynamicParms
+					, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of hourly Fandango ticket sales hosted by A.K. Valley." })
 
-			@Html.ActionLink("History", "History", ViewUtility.RequestParamsToDynamic(Request)
-				, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of historical movie data." })
+				@Html.ActionLink("Fandango Weekend Tickets", "FandangoDays", null
+					, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of weekend Fandango ticket sales hosted by A.K. Valley." })
+
+				if (Request.Params["bo"] != null || Request.Params["wl"] != null)
+				{
+					@Html.ActionLink("Fandango Weekend Estimates", "FandangoDays", dynamicParms
+						, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of weekend Fandango ticket sales hosted by A.K. Valley. (scaled based on YOUR estimates)" })
+				}
+
+				@Html.ActionLink("History", "History", dynamicParms
+					, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of historical movie data." })
+
+			}
 
 		</div>
 
