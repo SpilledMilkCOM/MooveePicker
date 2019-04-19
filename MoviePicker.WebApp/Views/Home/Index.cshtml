@@ -449,19 +449,19 @@
 				var dynamicParms = ViewUtility.RequestParamsToDynamic(Request);
 
 				@Html.ActionLink("Fandango Hourly", "Fandango", dynamicParms
-					, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of hourly Fandango ticket sales hosted by A.K. Valley." })
+					, new { @class = "btn btn-info btn-sm", style="margin: 3px;", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of hourly Fandango ticket sales hosted by A.K. Valley." })
 
 				@Html.ActionLink("Fandango Weekend Tickets", "FandangoDays", null
-					, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of weekend Fandango ticket sales hosted by A.K. Valley." })
+					, new { @class = "btn btn-info btn-sm", style = "margin: 3px;", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of weekend Fandango ticket sales hosted by A.K. Valley." })
 
 				if (Request.Params["bo"] != null || Request.Params["wl"] != null)
 				{
 					@Html.ActionLink("Fandango Weekend Estimates", "FandangoDays", dynamicParms
-						, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of weekend Fandango ticket sales hosted by A.K. Valley. (scaled based on YOUR estimates)" })
+						, new { @class = "btn btn-info btn-sm", style = "margin: 3px;", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of weekend Fandango ticket sales hosted by A.K. Valley. (scaled based on YOUR estimates)" })
 				}
 
 				@Html.ActionLink("History", "History", dynamicParms
-					, new { @class = "btn btn-info btn-sm", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of historical movie data." })
+					, new { @class = "btn btn-info btn-sm", style = "margin: 3px;", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of historical movie data." })
 
 			}
 
