@@ -34,7 +34,7 @@ namespace MovieMiner.Tests
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 
-			WriteMovies(actual.OrderByDescending(item => item.Earnings));
+			WriteMovies(actual.OrderByDescending(item => item.TheaterCount));
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]

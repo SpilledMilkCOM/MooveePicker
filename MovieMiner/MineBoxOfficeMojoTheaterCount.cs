@@ -109,6 +109,11 @@ namespace MovieMiner
 							if (columnCount == 2)
 							{
 								movie = new Movie { Name = RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText)) };
+								var anchor = column.SelectSingleNode(".//a");
+								var movieDetailUrl = anchor?.GetAttributeValue("href", null);
+								var argSplit = movieDetailUrl?.Split(new char[] { '=' });
+
+								movie.Identifier = argSplit?[1].Replace(".htm", string.Empty);
 
 								if (_weekendEnding.HasValue)
 								{
