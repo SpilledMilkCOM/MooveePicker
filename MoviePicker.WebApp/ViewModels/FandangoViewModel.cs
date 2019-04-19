@@ -12,9 +12,8 @@ namespace MoviePicker.WebApp.ViewModels
 {
 	public class FandangoViewModel : IFandangoViewModel
 	{
-		private const int AVERAGE_TICKET_PRICE = 10;
-
 		private readonly IMiner _fmlMiner = null;
+		private readonly IMiner _mojoMiner = null;
 		private readonly IMoviePicker _moviePicker = null;
 
 		private List<IMovie> _movies = null;
@@ -26,10 +25,11 @@ namespace MoviePicker.WebApp.ViewModels
 			PastHours = 24;
 		}
 
-		public FandangoViewModel(IMiner fmlMiner, IMoviePicker moviePicker)
+		public FandangoViewModel(IMinerModel minerModel, IMoviePicker moviePicker)
 			: this()
 		{
-			_fmlMiner = fmlMiner;
+			_fmlMiner = minerModel.Miners[MinerModel.FML_INDEX];
+			_mojoMiner = minerModel.Miners[MinerModel.MOJO_LAST_INDEX];
 			_moviePicker = moviePicker;
 		}
 
@@ -68,7 +68,7 @@ namespace MoviePicker.WebApp.ViewModels
 						builder.Append(", ");
 					}
 
-					builder.Append($"['{movie.Name}', {movie.Earnings / AVERAGE_TICKET_PRICE}]");
+					builder.Append($"['{movie.Name}', {movie.Earnings}]");
 
 					isFirst = false;
 				}
@@ -229,12 +229,14 @@ namespace MoviePicker.WebApp.ViewModels
 			foreach (var movie in result)
 			{
 				var found = gameMovies.FirstOrDefault(item => item.Equals(movie));
+				var lastWeek = _mojoMiner?.Movies?.FirstOrDefault(item => item.Equals(movie));
 
 				if (found != null)
 				{
 					movie.Cost = found.Cost;
 					movie.ImageUrl = found.ImageUrl;
 					movie.WeekendEnding = now;
+					movie.IsNew = lastWeek == null;
 				}
 			}
 

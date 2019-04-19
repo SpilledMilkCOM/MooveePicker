@@ -252,7 +252,7 @@ namespace MoviePicker.WebApp.Controllers
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
 
-			IFandangoViewModel viewModel = new FandangoViewModel(_minerModel.Miners[MinerModel.FML_INDEX], _moviePicker);
+			IFandangoViewModel viewModel = new FandangoViewModel(_minerModel, _moviePicker);
 
 			viewModel.PastHours = _controllerUtility.GetRequestInt(Request, "past") ?? 24;
 

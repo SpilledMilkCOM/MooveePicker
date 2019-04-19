@@ -12,8 +12,6 @@ namespace MoviePicker.WebApp.ViewModels
 {
 	public class FandangoDaysViewModel : IFandangoViewModel
 	{
-		private const int AVERAGE_TICKET_PRICE = 10;
-
 		private readonly IMiner _customMiner = null;			// My/Custom estimates.
 		private readonly IMiner _fmlMiner = null;
 		private readonly IMiner _mojoMiner = null;
@@ -73,7 +71,7 @@ namespace MoviePicker.WebApp.ViewModels
 						builder.Append(", ");
 					}
 
-					builder.Append($"['{movie.Name}', {movie.Earnings / AVERAGE_TICKET_PRICE}]");
+					builder.Append($"['{movie.Name}', {movie.Earnings}]");
 
 					isFirst = false;
 				}

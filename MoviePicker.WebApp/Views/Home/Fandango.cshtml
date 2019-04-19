@@ -235,7 +235,7 @@
 					while (movieCount <= movieList.Count)
 					{
 						<tr>
-							@for (int col = 0; col < 4 && movieCount <= movieList.Count; col++)
+							@for (int col = 0; col < 5 && movieCount <= movieList.Count; col++)
 							{
 								var movie = movieList[movieCount - 1];
 
@@ -245,12 +245,7 @@
 								// TODO: May want to use a utility to speed up the reflection.
 
 								var valueString = string.Format("{0:N0}", movie.Earnings);
-								string divBackgroundColorStyle = null;
-								decimal percent = 0;
-								var hasRows = false;
-
-								divBackgroundColorStyle = null;
-								percent = 0;
+								var labelBackgroundColor = movie.IsNew ? "lightgreen" : "white";
 
 								var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey";
 
@@ -270,24 +265,13 @@
 
 										<img class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
 
-										@*<div style="position: relative; top: -100px; left: 20px; float: left; background-color: white; padding: 5px">*@
-										@*<div style="position: relative; top: -50px; left: 30px; float: left; opacity: 0.75">*@
-
-										<table style="position: relative; top: -50px; left: 2px; float: left;">
-											<tr>
-												<td>
-													<input name="@name"
-														   class="form-control"
-														   id="@boId"
-														   style="width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
-														   type="text"
-														   value="@valueString"
-														   data-val-required="The Box Office @movieCount field is required."
-														   data-val-number="The field Box Office @movieCount must be a number."
-														   data-val="true">
-												</td>
-											</tr>
-										</table>
+										<div style="position: relative; top: -60px;">
+											<div name="@name"
+												 id="@boId"
+												 style="padding: 0px 3px 0px 3px; margin: 4px; text-align: center; width: 90px; background: @labelBackgroundColor; opacity: 0.7;">
+												@valueString
+											</div>
+										</div>
 									</div>
 								</td>
 
