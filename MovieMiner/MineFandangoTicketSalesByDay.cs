@@ -16,8 +16,8 @@ namespace MovieMiner
 		/// 
 		/// </summary>
 		/// <param name="weekendEnding">If this is null then the forecast will be mined.</param>
-		public MineFandangoTicketSalesByDay()
-			: base("Fandango Tickets Sales (by day)", "Fandango Dailies", DEFAULT_URL)
+		public MineFandangoTicketSalesByDay(string url = null)
+			: base("Fandango Tickets Sales (by day)", "Fandango Dailies", url ?? DEFAULT_URL)
 		{
 		}
 
