@@ -368,6 +368,7 @@
     <Content Include="Views\Home\FandangoDays.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Home\History.cshtml" />
+    <Content Include="Views\Home\FandangoFutures.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

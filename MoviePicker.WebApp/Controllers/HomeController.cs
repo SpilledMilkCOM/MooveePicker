@@ -328,6 +328,22 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult FandangoFutures()
+		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+
+			var movieList = new List<IMovie>();
+			var viewModel = new HistoryViewModel { Movies = movieList };
+
+			stopWatch.Stop();
+
+			viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			return View(viewModel);
+		}
+
+		[HttpGet]
 		public ActionResult History()
 		{
 			var stopWatch = new Stopwatch();
