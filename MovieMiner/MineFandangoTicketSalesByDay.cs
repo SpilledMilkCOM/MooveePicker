@@ -8,8 +8,6 @@ namespace MovieMiner
 {
 	public class MineFandangoTicketSalesByDay : MinerBase
 	{
-		private const decimal AVERAGE_COST_PER_TICKET = 10;
-
 		private const string DEFAULT_URL = "http://akvalley.pythonanywhere.com/static/fandango_report.txt";
 
 		/// <summary>
@@ -52,7 +50,7 @@ namespace MovieMiner
 						var movie = new Movie
 						{
 							WeekendEnding = Convert.ToDateTime(tokens[1]),
-							Earnings = Convert.ToDecimal(tokens[0]) * AVERAGE_COST_PER_TICKET,
+							Earnings = Convert.ToDecimal(tokens[0]),			// Contains ticket sales (versus dollars)
 							Name = RemovePunctuation(tokens[3])
 						};
 						result.Add(movie);

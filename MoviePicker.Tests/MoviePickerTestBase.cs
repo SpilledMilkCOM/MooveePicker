@@ -10,6 +10,8 @@ namespace MoviePicker.Tests
 	[ExcludeFromCodeCoverage]
 	public abstract class MoviePickerTestBase
 	{
+		protected const string PRIMARY_TEST_CATEGORY = "Mock";
+
 		private ILogger _logger;
 
 		/// <summary>

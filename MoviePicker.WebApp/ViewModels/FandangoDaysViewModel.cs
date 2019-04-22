@@ -12,9 +12,9 @@ namespace MoviePicker.WebApp.ViewModels
 {
 	public class FandangoDaysViewModel : IFandangoViewModel
 	{
-		private const int AVERAGE_TICKET_PRICE = 10;
-
+		private readonly IMiner _customMiner = null;			// My/Custom estimates.
 		private readonly IMiner _fmlMiner = null;
+		private readonly IMiner _mojoMiner = null;
 		private readonly IMoviePicker _moviePicker = null;
 
 		private List<IMovie> _movies = null;
@@ -26,14 +26,19 @@ namespace MoviePicker.WebApp.ViewModels
 			PastHours = 24;
 		}
 
-		public FandangoDaysViewModel(IMiner fmlMiner, IMoviePicker moviePicker)
+		public FandangoDaysViewModel(IMinerModel minerModel, IMoviePicker moviePicker)
 			: this()
 		{
-			_fmlMiner = fmlMiner;
+			_customMiner = minerModel.Miners[MinerModel.MY_INDEX];
+			_fmlMiner = minerModel.Miners[MinerModel.FML_INDEX];
+			_mojoMiner = minerModel.Miners[MinerModel.MOJO_LAST_INDEX];
+
 			_moviePicker = moviePicker;
 		}
 
 		public long Duration { get; set; }
+
+		public bool IsScaled { get; private set; }
 
 		/// <summary>
 		/// The estimated values are in (typically on a Saturday)
@@ -66,7 +71,7 @@ namespace MoviePicker.WebApp.ViewModels
 						builder.Append(", ");
 					}
 
-					builder.Append($"['{movie.Name}', {movie.Earnings / AVERAGE_TICKET_PRICE}]");
+					builder.Append($"['{movie.Name}', {movie.Earnings}]");
 
 					isFirst = false;
 				}
@@ -86,6 +91,36 @@ namespace MoviePicker.WebApp.ViewModels
 			LastUpdated = Miner.LastUpdated.Value;
 
 			_movies = FilterMovies();
+
+			var movieList = _movies.OrderByDescending(movie => movie.EarningsBase).ToList();
+			var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
+
+			// Scale the estimates (if they exist) to match the percentages of the sales.
+			// o Use the sales scale outright and multiply the totalEstimate to get BO
+			// o Combine the scales (somehow) and multiply the totalEstimate to get BO
+
+			if (totalBoxOffice > 0)
+			{
+				var myMovieList = _customMiner.Movies;
+				var totalEstimates = myMovieList?.Sum(item => item.EarningsBase) ?? 0;
+
+				if (totalEstimates > 0)
+				{
+					IsScaled = true;
+
+					foreach (var movie in movieList)
+					{
+						var myMovie = myMovieList.FirstOrDefault(item => item.Equals(movie));
+
+						if (myMovie != null)
+						{
+							// For now this is option 1.
+							movie.Earnings = totalEstimates * movie.EarningsBase / totalBoxOffice;
+						}
+					}
+				}
+			}
+
 			MovieList = MakePick(true);
 			MovieListBonusOff = MakePick(false);
 		}
@@ -221,12 +256,25 @@ namespace MoviePicker.WebApp.ViewModels
 			foreach (var movie in result)
 			{
 				var found = gameMovies.FirstOrDefault(item => item.Equals(movie));
+				var lastWeek = _mojoMiner?.Movies?.FirstOrDefault(item => item.Equals(movie));
 
 				if (found != null)
 				{
 					movie.Cost = found.Cost;
 					movie.ImageUrl = found.ImageUrl;
 					movie.WeekendEnding = endDate ?? DateTime.Now;
+					movie.IsNew = lastWeek == null;
+
+					if (movie.IsNew)
+					{
+						if (compoundMovie == null)
+						{
+							movie.Earnings = Miner.Movies.Where(movie2 => startDate.AddDays(-1) <= movie2.WeekendEnding
+																		&& movie2.WeekendEnding <= endDate
+																		&& movie2.Equals(movie))
+														.Sum(movie3 => movie3.EarningsBase);
+						}
+					}
 				}
 			}
 

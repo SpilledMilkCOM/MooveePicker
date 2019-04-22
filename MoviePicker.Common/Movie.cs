@@ -100,6 +100,9 @@ namespace MoviePicker.Common
 			}
 		}
 
+		/// <summary>
+		/// Used within simulations to whether or not that this movie's earnings is adjusted (for the simulation)
+		/// </summary>
 		public bool AdjustEarnings { get; set; }
 
 		public IEnumerable<IBoxOffice> BoxOfficeHistory => _boxOfficeHistory;
@@ -156,6 +159,8 @@ namespace MoviePicker.Common
 				_isBestPerformer = value;
 			}
 		}
+
+		public bool IsNew { get; set; }
 
 		public string MovieName
 		{
