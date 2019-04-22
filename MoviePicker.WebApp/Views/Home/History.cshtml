@@ -136,7 +136,7 @@
 
 									foreach (var boxOffice in history.Skip(1))
 									{
-										var percent = boxOffice.Earnings != 0 ? (boxOffice.Earnings - lastWeek.Earnings) / lastWeek.Earnings * 100 : 0;
+										var percent = (boxOffice.Earnings != 0 && lastWeek.Earnings != 0) ? (boxOffice.Earnings - lastWeek.Earnings) / lastWeek.Earnings * 100 : 0;
 										var boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 
 										<td>
