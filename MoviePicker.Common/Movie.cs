@@ -213,6 +213,11 @@ namespace MoviePicker.Common
 				{
 					result = true;
 				}
+				else if(Identifier != null && compareTo.Identifier != null)
+				{
+					// The Identifier will trump all other equalities if they are set.
+					result = Identifier == compareTo.Identifier;
+				}
 				else
 				{
 					// Make all the tests case insensitive.
@@ -221,7 +226,6 @@ namespace MoviePicker.Common
 					var testMovieName = compareTo.MovieName.ToLower().Replace(" ", string.Empty);
 
 					result = movieName.Equals(testMovieName);
-
 
 					if (!result)
 					{
