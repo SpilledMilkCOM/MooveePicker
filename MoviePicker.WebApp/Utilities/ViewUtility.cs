@@ -47,7 +47,39 @@ namespace MoviePicker.WebApp.Utilities
 		/// </summary>
 		/// <param name="history"></param>
 		/// <returns></returns>
-		public static string GraphData(IEnumerable<IBoxOffice> history)
+		public static string GraphDataBar(IEnumerable<IBoxOffice> history)
+		{
+			var builder = new StringBuilder();
+			var count = 1;
+
+			builder.Append("[");
+
+			foreach (var boxOffice in history)
+			{
+				if (count != 1)
+				{
+					builder.Append(", ");
+				}
+
+				//[{v: [8, 0, 0], f: '8 am'}, 1],
+
+				builder.Append($"[{{v: [{boxOffice.Earnings}, 0, 0], f: '{boxOffice.WeekendEnding.ToString("MM/dd")}'}}, {count}]");
+				//builder.Append($"[{boxOffice.WeekendEnding.ToString("dd/MM")}, {boxOffice.Earnings / 1000000}]");
+
+				count++;
+			}
+
+			builder.Append("]");
+
+			return builder.ToString();
+		}
+
+		/// <summary>
+		/// Return google graph data scaled to Millions
+		/// </summary>
+		/// <param name="history"></param>
+		/// <returns></returns>
+		public static string GraphDataLine(IEnumerable<IBoxOffice> history)
 		{
 			var builder = new StringBuilder();
 			var count = 0;
@@ -231,6 +263,31 @@ namespace MoviePicker.WebApp.Utilities
 				{
 					dictionary.Add(key, request.Params[key]);
 				}
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Display a smaller dollar footprint X.XM, X.XK
+		/// </summary>
+		/// <param name="dollars"></param>
+		/// <returns></returns>
+		public static string SmallDollars(decimal dollars)
+		{
+			string result = null;
+
+			if (dollars >= 1000000m)
+			{
+				result = $"{dollars / 1000000m:N1}M";
+			}
+			else if (dollars >= 1000m)
+			{
+				result = $"{dollars / 1000m:N1}K";
+			}
+			else
+			{
+				result = dollars.ToString("N0");
 			}
 
 			return result;

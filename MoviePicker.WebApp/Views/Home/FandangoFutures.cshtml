@@ -1,0 +1,149 @@
+﻿@model MoviePicker.WebApp.ViewModels.HistoryViewModel
+
+@using MoviePicker.Common.Interfaces;
+@using MoviePicker.WebApp.Utilities;
+
+@{
+	ViewBag.Title = "Fandango Futures";
+
+	var count = 0;
+	var generatedCode = string.Empty;
+}
+
+<script type="text/javascript">
+
+	google.charts.load('current', { packages: ['corechart', 'bar'] });
+	google.charts.setOnLoadCallback(drawCharts);
+
+	function drawCharts() {
+
+		// Draw all the line graphs.
+
+		@foreach (var movie in Model.Movies)
+		{
+			// Generate javascript code to draw MANY graphs
+
+			var history = movie.BoxOfficeHistory;
+
+			if (history != null && history.Count() > 1) {
+				generatedCode += $"drawChart('chart{count}', '{movie.Name}', {ViewUtility.GraphDataBar(history)});\n\t\t";
+
+				count++;
+			}
+		}
+
+		@Html.Raw(generatedCode)
+	}
+
+	function drawChart(chartId, title, graphData) {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Date');
+		data.addColumn('number', 'Tickets');
+
+		//data.addRows([
+		//	[{v: [8, 0, 0], f: '8 am'}, 1],
+		//	[{v: [9, 0, 0], f: '9 am'}, 2],
+		//	[{v: [10, 0, 0], f:'10 am'}, 3],
+		//	[{v: [11, 0, 0], f: '11 am'}, 4],
+		//	[{v: [12, 0, 0], f: '12 pm'}, 5],
+		//	[{v: [13, 0, 0], f: '1 pm'}, 6],
+		//	[{v: [14, 0, 0], f: '2 pm'}, 7],
+		//	[{v: [15, 0, 0], f: '3 pm'}, 8],
+		//	[{v: [16, 0, 0], f: '4 pm'}, 9],
+		//	[{v: [17, 0, 0], f: '5 pm'}, 10],
+		//]);
+
+		data.addRows(graphData);
+
+		var options = {
+			title: title,
+			hAxis: {
+				title: 'Date',
+				viewWindow: {
+					min: [0, 30, 0],
+					max: [10000, 30, 0]
+				}
+			},
+			vAxis: {
+				title: 'Tickets'
+			}
+		};
+
+		var chart = new google.visualization.ColumnChart(document.getElementById(chartId));
+		chart.draw(data, options);
+	}
+
+</script>
+
+<h2>
+	@ViewBag.Title
+	<span class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
+		  title="The new movies and movies that are only one week old are not shown since they have zero or one point of data.">
+		<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+	</span>
+</h2>
+<h5>(@Model.Duration.ToString("N0") ms)</h5>
+
+<div class="row">
+	@if (Model.Movies != null && Model.Movies.Any())
+	{
+		count = 0;
+
+		foreach (var movie in Model.Movies)
+		{
+			IBoxOffice lastWeek = null;
+			var history = movie.BoxOfficeHistory;
+
+			if (history != null && history.Count() > 1)
+			{
+				var chartId = $"chart{count}";
+				var href = $"http://boxofficemojo.com/movies/?page=weekend&id={movie.Identifier}.htm";
+
+				count++;
+
+				<div class="col-md-6" style="border: 1px solid black; padding: 5px;">
+					<div class="col-xs-2">
+						<span data-toggle="tooltip"
+							  data-placement="top"
+							  title="Click for the source of @movie.Name on Box Office Mojo including similar movies (comps).">
+							<a style="color: white;" href="@href">
+								<img class="img-responsive img-rounded" src="@movie.ImageUrl" style="box-shadow: 2px 4px 8px 0px grey;" />
+							</a>
+						</span>
+					</div>
+					<div class="col-xs-10">
+						<div id="@chartId" class="chart-responsive"></div>
+					</div>
+
+					<table class="table">
+						<thead>
+							<tr>
+								<td> </td>
+								@foreach (var boxOffice in history)
+								{
+									<td><strong>@boxOffice.WeekendEnding.ToString("MM/dd")</strong></td>
+								}
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<span class="label label-primary"
+										  data-toggle="tooltip"
+										  data-placement="top"
+										  title="Ticketx">TIX</span>
+								</td>
+
+								@foreach (var boxOffice in history)
+								{
+									<td>@boxOffice.Earnings.ToString("N0")</td>
+								}
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			}
+		}
+	}
+</div>

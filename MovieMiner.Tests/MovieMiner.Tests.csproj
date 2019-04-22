@@ -97,6 +97,7 @@
     <Compile Include="MineBoxOfficeMojoTests.cs" />
     <Compile Include="MineBoxOfficeProphetTests.cs" />
     <Compile Include="MineBonusBarTests.cs" />
+    <Compile Include="MineFandangoTicketSalesFutureTests.cs" />
     <Compile Include="MineVisualRecreationTests.cs" />
     <Compile Include="MineFandangoTicketSalesByDayTests.cs" />
     <Compile Include="MineFandangoTicketSalesTests.cs" />
@@ -137,6 +138,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="appSettings.secret.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

@@ -26,7 +26,7 @@
 			var history = movie.BoxOfficeHistory;
 
 			if (history != null && history.Count() > 1) {
-				generatedCode += $"drawChart('chart{count}', '{movie.Name}', {ViewUtility.GraphData(history)});\n\t\t";
+				generatedCode += $"drawChart('chart{count}', '{movie.Name}', {ViewUtility.GraphDataLine(history)});\n\t\t";
 
 				count++;
 			}
@@ -104,21 +104,11 @@
 								<td> </td>
 								@foreach (var boxOffice in history)
 								{
-									<td><strong>@boxOffice.WeekendEnding.ToShortDateString()</strong></td>
+									<td><strong>@boxOffice.WeekendEnding.ToString("MM/dd")</strong></td>
 								}
 							</tr>
 						</thead>
 						<tbody>
-							@*
-								<tr>
-									<td>Rank</td>
-
-									@foreach (var boxOffice in history)
-									{
-										<td>@boxOffice.Rank</td>
-									}
-								</tr>
-							*@
 							<tr>
 								<td>
 									<span class="label label-primary"
@@ -129,7 +119,7 @@
 
 								@foreach (var boxOffice in history)
 								{
-									<td>$@boxOffice.Earnings.ToString("N0")</td>
+									<td>$@ViewUtility.SmallDollars(boxOffice.Earnings)</td>
 								}
 							</tr>
 							<tr>
@@ -189,11 +179,13 @@
 
 														if (theaterDiff > 0)
 														{
+															<br />
 															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
 															@(boxOffice.TheaterCount - lastWeek.TheaterCount)
 														}
 														else
 														{
+															<br />
 															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
 															@(lastWeek.TheaterCount - boxOffice.TheaterCount)
 														}
