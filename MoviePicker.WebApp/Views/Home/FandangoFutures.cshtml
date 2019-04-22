@@ -4,7 +4,7 @@
 @using MoviePicker.WebApp.Utilities;
 
 @{
-	ViewBag.Title = "History";
+	ViewBag.Title = "Fandango Futures";
 
 	var count = 0;
 	var generatedCode = string.Empty;
@@ -12,7 +12,7 @@
 
 <script type="text/javascript">
 
-	google.charts.load('current', { packages: ['corechart', 'line'] });
+	google.charts.load('current', { packages: ['corechart', 'bar'] });
 	google.charts.setOnLoadCallback(drawCharts);
 
 	function drawCharts() {
@@ -26,7 +26,7 @@
 			var history = movie.BoxOfficeHistory;
 
 			if (history != null && history.Count() > 1) {
-				generatedCode += $"drawChart('chart{count}', '{movie.Name}', {ViewUtility.GraphData(history)});\n\t\t";
+				generatedCode += $"drawChart('chart{count}', '{movie.Name}', {ViewUtility.GraphDataBar(history)});\n\t\t";
 
 				count++;
 			}
@@ -37,22 +37,39 @@
 
 	function drawChart(chartId, title, graphData) {
 		var data = new google.visualization.DataTable();
-		data.addColumn('number', 'X');
-		data.addColumn('number', title);
+		data.addColumn('string', 'Date');
+		data.addColumn('number', 'Tickets');
+
+		//data.addRows([
+		//	[{v: [8, 0, 0], f: '8 am'}, 1],
+		//	[{v: [9, 0, 0], f: '9 am'}, 2],
+		//	[{v: [10, 0, 0], f:'10 am'}, 3],
+		//	[{v: [11, 0, 0], f: '11 am'}, 4],
+		//	[{v: [12, 0, 0], f: '12 pm'}, 5],
+		//	[{v: [13, 0, 0], f: '1 pm'}, 6],
+		//	[{v: [14, 0, 0], f: '2 pm'}, 7],
+		//	[{v: [15, 0, 0], f: '3 pm'}, 8],
+		//	[{v: [16, 0, 0], f: '4 pm'}, 9],
+		//	[{v: [17, 0, 0], f: '5 pm'}, 10],
+		//]);
 
 		data.addRows(graphData);
 
 		var options = {
+			title: title,
 			hAxis: {
-				title: 'Weekend'
+				title: 'Date',
+				viewWindow: {
+					min: [0, 30, 0],
+					max: [10000, 30, 0]
+				}
 			},
 			vAxis: {
-				title: 'Box Office $M'
-			},
-			colors: ['#a52714']
+				title: 'Tickets'
+			}
 		};
 
-		var chart = new google.visualization.LineChart(document.getElementById(chartId));
+		var chart = new google.visualization.ColumnChart(document.getElementById(chartId));
 		chart.draw(data, options);
 	}
 
@@ -104,122 +121,22 @@
 								<td> </td>
 								@foreach (var boxOffice in history)
 								{
-									<td><strong>@boxOffice.WeekendEnding.ToShortDateString()</strong></td>
+									<td><strong>@boxOffice.WeekendEnding.ToString("MM/dd")</strong></td>
 								}
 							</tr>
 						</thead>
 						<tbody>
-							@*
-								<tr>
-									<td>Rank</td>
-
-									@foreach (var boxOffice in history)
-									{
-										<td>@boxOffice.Rank</td>
-									}
-								</tr>
-							*@
 							<tr>
 								<td>
 									<span class="label label-primary"
 										  data-toggle="tooltip"
 										  data-placement="top"
-										  title="Box Office Dollars">BO$</span>
+										  title="Ticketx">TIX</span>
 								</td>
 
 								@foreach (var boxOffice in history)
 								{
-									<td>$@boxOffice.Earnings.ToString("N0")</td>
-								}
-							</tr>
-							<tr>
-								<td>
-									<span class="label label-primary"
-										  data-toggle="tooltip"
-										  data-placement="top"
-										  title="Box Office Percent Decrease/Increase">BO%</span>
-								</td>
-								<td> </td>
-
-								@{
-									lastWeek = history.First();
-
-									foreach (var boxOffice in history.Skip(1))
-									{
-										var percent = boxOffice.Earnings != 0 ? (boxOffice.Earnings - lastWeek.Earnings) / lastWeek.Earnings * 100 : 0;
-										var boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
-
-										<td>
-											<span class="badge badge-pill badge-dark"
-												  style="@boPercentBackgroundColorStyle color: black;">
-												@percent.ToString("N0")%
-											</span>
-										</td>
-
-										lastWeek = boxOffice;
-									}
-								}
-							</tr>
-							<tr>
-								<td>
-									<span class="label label-primary"
-										  data-toggle="tooltip"
-										  data-placement="top"
-										  title="Theater Count">TC</span>
-								</td>
-								@{
-									lastWeek = null;
-
-									foreach (var boxOffice in history)
-									{
-										if (boxOffice.TheaterCount > 0)
-										{
-											var isNew = !(lastWeek != null && (boxOffice.TheaterCount - lastWeek.TheaterCount != 0));
-
-											<td>
-												<span class="badge badge-pill badge-light"
-													  data-toggle="tooltip"
-													  data-placement="top"
-													  title="Theater Count">
-													@boxOffice.TheaterCount
-
-													@if (!isNew)
-													{
-														var theaterDiff = boxOffice.TheaterCount - lastWeek.TheaterCount;
-
-														if (theaterDiff > 0)
-														{
-															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
-															@(boxOffice.TheaterCount - lastWeek.TheaterCount)
-														}
-														else
-														{
-															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
-															@(lastWeek.TheaterCount - boxOffice.TheaterCount)
-														}
-													}
-												</span>
-											</td>
-										}
-
-										lastWeek = boxOffice;
-									}
-								}
-							</tr>
-							<tr>
-								<td>
-									<span class="label label-primary"
-										  data-toggle="tooltip"
-										  data-placement="top"
-										  title="Dollars per Theater">$/T</span>
-								</td>
-
-								@foreach (var boxOffice in history)
-								{
-									var dollarsPerTheater = boxOffice.TheaterCount != 0 ? (boxOffice.Earnings / boxOffice.TheaterCount).ToString("N0") : "";
-									<td>
-										$@dollarsPerTheater
-									</td>
+									<td>@boxOffice.Earnings.ToString("N0")</td>
 								}
 							</tr>
 						</tbody>

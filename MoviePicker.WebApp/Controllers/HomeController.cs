@@ -7,12 +7,12 @@ using MoviePicker.WebApp.Utilities;
 using MoviePicker.WebApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Web;
 using System.Web.Mvc;
 
 using TopMoviePicker = MooveePicker.MoviePicker;
@@ -175,11 +175,11 @@ namespace MoviePicker.WebApp.Controllers
 
 				if (topExpert != null)
 				{
-					tweetText = $"So far, {topExpert.Miner.Name} @{topExpert.Miner.TwitterID} leads with a total box office of ${SmallDollars(topExpert.TotalPicksFromComparison)} and ";
+					tweetText = $"So far, {topExpert.Miner.Name} @{topExpert.Miner.TwitterID} leads with a total box office of ${ViewUtility.SmallDollars(topExpert.TotalPicksFromComparison)} and ";
 
 					if (topExpert.TotalPicksFromComparison < result.MovieListPerfectPick.Picks[0].TotalEarnings)
 					{
-						tweetText += $"is trailing the perfect pick by ${SmallDollars(result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison)} ({(result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})";
+						tweetText += $"is trailing the perfect pick by ${ViewUtility.SmallDollars(result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison)} ({(result.MovieListPerfectPick.Picks[0].TotalEarnings - topExpert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})";
 					}
 					else
 					{
@@ -190,7 +190,7 @@ namespace MoviePicker.WebApp.Controllers
 
 					foreach (var expert in result.ExpertPicks.OrderByDescending(item => item.TotalPicksFromComparison).Skip(1).Take(2))
 					{
-						tweetText += $"{nl}@{expert.Miner.TwitterID} ${SmallDollars(expert.TotalPicksFromComparison)} [$-{SmallDollars(result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison)} (-{(result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})]";
+						tweetText += $"{nl}@{expert.Miner.TwitterID} ${ViewUtility.SmallDollars(expert.TotalPicksFromComparison)} [$-{ViewUtility.SmallDollars(result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison)} (-{(result.MovieListPerfectPick.Picks[0].TotalEarnings - expert.TotalPicksFromComparison) / result.MovieListPerfectPick.Picks[0].TotalEarnings * 100:N0}{PERCENT_HTML})]";
 					}
 				}
 			}
@@ -330,11 +330,40 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult FandangoFutures()
 		{
+			const string FUTURE_URL_KEY = "fandango:future";
+
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
 
 			var movieList = new List<IMovie>();
 			var viewModel = new HistoryViewModel { Movies = movieList };
+			var futureMiner = new MineFandangoTicketSalesFuture(ConfigurationManager.AppSettings[FUTURE_URL_KEY]);
+
+			// When a miner is cloned.  Only the list is cloned, but you can still affect the movie inside the base list.
+			// Which is why EACH movie needs to be cloned here, because its box office list can get updated with the estimates if they are part of the Query string.
+
+			_minerModel.Miners[MinerModel.FML_INDEX].Movies.ForEach(item => movieList.Add(item.Clone()));
+
+			var futureMovies = futureMiner.Mine();
+
+			foreach (var movie in viewModel.Movies)
+			{
+				var futureMovieBoxOffice = futureMovies.Where(item => item.Equals(movie));
+
+				if (futureMovieBoxOffice != null && futureMovieBoxOffice.Any())
+				{
+					var boList = new List<IBoxOffice>();
+
+					// In this case the weekend ending is just a date (not necessarily a weekend).
+
+					foreach (var boxOffice in futureMovieBoxOffice)
+					{
+						boList.Add(new BoxOffice { Earnings = boxOffice.EarningsBase, WeekendEnding = boxOffice.WeekendEnding });
+					}
+
+					movie.SetBoxOfficeHistory(boList);
+				}
+			}
 
 			stopWatch.Stop();
 
@@ -1166,31 +1195,6 @@ namespace MoviePicker.WebApp.Controllers
 		private string SharedPicksFromModels()
 		{
 			return $"{TrimParameters(Request.Url.ToString())}?{QueryStringFromModel()}";
-		}
-
-		/// <summary>
-		/// Display a smaller dollar footprint X.XM, X.XK
-		/// </summary>
-		/// <param name="dollars"></param>
-		/// <returns></returns>
-		private string SmallDollars(decimal dollars)
-		{
-			string result = null;
-
-			if (dollars >= 1000000m)
-			{
-				result = $"{dollars / 1000000m:N1}M";
-			}
-			else if (dollars >= 1000m)
-			{
-				result = $"{dollars / 1000m:N1}K";
-			}
-			else
-			{
-				result = dollars.ToString("N0");
-			}
-
-			return result;
 		}
 
 		/// <summary>
