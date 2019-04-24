@@ -32,7 +32,7 @@ namespace MovieMiner
 
 			Abbreviation = abbr?.Trim();
 			CacheConfiguration = new CacheConfiguration();              // Just take the default for now.
-			ContainsEstimates = true;									// Override this if actuals.
+			ContainsEstimates = true;                                   // Override this if actuals.
 			Expiration = DateTime.Now.Subtract(new TimeSpan(1));        // This will trigger the first load.
 			GameDays = 3;
 			IsHidden = false;
@@ -177,7 +177,7 @@ namespace MovieMiner
 
 				return result;
 			}
-			private set
+			protected set
 			{
 				lock (_movieLock)
 				{
@@ -211,7 +211,7 @@ namespace MovieMiner
 
 		public abstract IMiner Clone();
 
-		public void Expire()
+		public virtual void Expire()
 		{
 			// Assign the exipration to the past versus Now so that it's guaranteed to load the next time.
 			Expiration = DateTime.Now.Subtract(new TimeSpan(1));
@@ -237,7 +237,7 @@ namespace MovieMiner
 					CloneCausedReload = true;
 					LastLoaded = DateTime.Now;
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					Error = $"Error Loading";
 					ErrorDetail = ex.Message;

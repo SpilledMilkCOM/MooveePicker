@@ -59,7 +59,6 @@ namespace MoviePicker.WebApp
 			// https://msdn.microsoft.com/en-us/library/ff660872(v=pandp.20).aspx
 
 			// Since the MinerModel will contain mined data then I probably want to keep this around longer than a single call.
-			// (But if everything else is manipulated through Angular then it might not be a big deal.)
 
 			container.RegisterType<IMinerModel, MinerModel>(new ContainerControlledLifetimeManager(), new InjectionConstructor(true));		// Effectively a singleton.
 

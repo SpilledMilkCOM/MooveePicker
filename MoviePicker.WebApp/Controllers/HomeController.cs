@@ -416,6 +416,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			var viewModel = new HistoryViewModel { Movies = movieList };
 
+			ClearMinerModel(0);
+
 			ParseViewRequest();
 
 			foreach (var movie in viewModel.Movies)
@@ -501,8 +503,6 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Index()
 		{
-			// TODO: Collapse this down to a method call.
-
 			ClearMinerModel();
 
 			// Adjust the weights (possibly adjust the defaults above).
@@ -1035,11 +1035,14 @@ namespace MoviePicker.WebApp.Controllers
 
 			hasParams = decimalList.Any();
 
-			foreach (var movie in _minerModel.Miners[MinerModel.MY_INDEX].Movies)
+			if (hasParams)
 			{
-				if (idx < decimalList.Count)
+				foreach (var movie in _minerModel.Miners[MinerModel.MY_INDEX].Movies)
 				{
-					movie.Earnings = decimalList[idx++];
+					if (idx < decimalList.Count)
+					{
+						movie.Earnings = decimalList[idx++];
+					}
 				}
 			}
 

@@ -274,6 +274,13 @@ namespace MoviePicker.WebApp.ViewModels
 																		&& movie2.Equals(movie))
 														.Sum(movie3 => movie3.EarningsBase);
 						}
+						else if (movie.Day == DayOfWeek.Friday)
+						{
+							// Can't use Equals() here since it uses the day comparison if it exists.
+
+							movie.Earnings += Miner.Movies.Where(movie2 => startDate.AddDays(-1) == movie2.WeekendEnding && movie2.MovieName == movie.MovieName)
+														.Sum(movie3 => movie3.EarningsBase);
+						}
 					}
 				}
 			}

@@ -121,7 +121,7 @@ namespace MoviePicker.Msf
 
 		public IMovie Clone()
 		{
-			return _movie = _movie.Clone();
+			return new MsfMovieWrapper(_movie.Clone());
 		}
 
 		public override int GetHashCode()
