@@ -405,7 +405,7 @@
 								<span style="font-weight: bold;">
 									@movie.Cost BUX &nbsp;&nbsp;
 
-									@if(compoundBuxTotal > 0)
+									@if(compoundBuxTotal > 0 && movie.Day.HasValue)
 									{
 										var buxPercent = $"{movie.Cost / (decimal)compoundBuxTotal * 100:N1}%";
 
