@@ -298,10 +298,12 @@
 
 					@{
 						var compoundMovie = Model.Miners.FirstOrDefault(miner => miner.CompoundMovie != null)?.CompoundMovie;
+						var compoundBuxTotal = 0m;
 
 						if (compoundMovie != null)
 						{
 							var compoundMovieImageUrl = compoundMovie.ImageUrl.Replace($"-{compoundMovie.Day.Value.ToString()}", string.Empty);
+							compoundBuxTotal = Model.Miners.First().Movies.Where(item => item.Day.HasValue).Sum(item => item.Cost);
 
 							<tr>
 								<td>
@@ -309,7 +311,7 @@
 								</td>
 								<td>@compoundMovie.MovieName TOTAL</td>
 
-								@foreach (var miner in Model.Miners.Skip(2))
+								@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 								{
 									var compoundTotal = miner.CompoundTotal;
 
@@ -403,6 +405,13 @@
 								<span style="font-weight: bold;">
 									@movie.Cost BUX &nbsp;&nbsp;
 
+									@if(compoundBuxTotal > 0)
+									{
+										var buxPercent = $"{movie.Cost / (decimal)compoundBuxTotal * 100:N1}%";
+
+										@buxPercent<br/>
+									}
+
 									@if (movie.TheaterCount > 0)
 									{
 										if (lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0))
@@ -456,6 +465,13 @@
 									<td style="text-align: right">
 										<div>
 											@string.Format("{0}", minerMovie?.Earnings.ToString("N0"))
+
+											@if (minerMovie != null && minerMovie.Day.HasValue && miner.CompoundTotal > 0)
+											{
+												var moviePercent = string.Format("{0:N1}%", minerMovie?.Earnings / miner.CompoundTotal * 100);
+
+												<br />@moviePercent
+											}
 										</div>
 
 										@{
