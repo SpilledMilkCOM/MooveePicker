@@ -14,7 +14,7 @@
 <h4>Last Updated: @string.Format("{0}", ((ICache)Model).LastLoaded)</h4>
 <h4>Expires: @string.Format("{0}", ((ICache)Model).Expiration)</h4>
 
-<h3>@Model.Name (@Model.Movies.Count)</h3>
+<h3>@Model.Name (@string.Format("{0}", Model.Movies?.Count ?? 0))</h3>
 
 <div class="row">
 	<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
@@ -23,16 +23,19 @@
 	<div class="col-sm-3 hidden-xs" style="font-weight: bold;">Weekend</div>
 	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">History</div>
 
-	@foreach (var movie in Model.Movies)
+	@if (Model.Movies != null)
 	{
-		<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">@movie.Name</div>
-		<div class="col-sm-4 hidden-xs">@movie.Name</div>
-		<div class="col-xs-1">@movie.Id</div>
+		foreach (var movie in Model.Movies)
+		{
+			<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">@movie.Name</div>
+			<div class="col-sm-4 hidden-xs">@movie.Name</div>
+			<div class="col-xs-1">@movie.Id</div>
 
-		<div class="col-xs-5 col-sm-2" style="text-align: right;">@string.Format("{0:N0}", movie.Earnings)</div>
+			<div class="col-xs-5 col-sm-2" style="text-align: right;">@string.Format("{0:N0}", movie.Earnings)</div>
 
-		<div class="col-sm-3 hidden-xs">@string.Format("{0}", movie.WeekendEnding.ToShortDateString())</div>
-		<div class="col-sm-2 hidden-xs">@string.Format("{0}", movie.BoxOfficeHistory?.Count().ToString() ?? "--")</div>
+			<div class="col-sm-3 hidden-xs">@string.Format("{0}", movie.WeekendEnding.ToShortDateString())</div>
+			<div class="col-sm-2 hidden-xs">@string.Format("{0}", movie.BoxOfficeHistory?.Count().ToString() ?? "--")</div>
+		}
 	}
 </div>
 

@@ -241,7 +241,7 @@
 								<td style="padding: 3px;">
 
 									<div data-toggle="tooltip" data-placement="top"
-										 title="@string.Format("{0} - {1:N0} BUX{2}", movie.Name, movie.Cost, movie.IsNew ? " (includes preview night)" : string.Empty)">
+										 title="@string.Format("{0} - {1:N0} BUX{2}", movie.Name, movie.Cost, (movie.IsNew && (!movie.Day.HasValue || movie.Day == DayOfWeek.Friday)) ? " (includes preview night)" : string.Empty)">
 
 										<div style="position: relative; width: 0; height: 0">
 											<span class="badge badge-pill badge-light"
