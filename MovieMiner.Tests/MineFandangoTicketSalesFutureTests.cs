@@ -46,9 +46,6 @@ namespace MovieMiner.Tests
 			var gameEnd = MovieDateUtil.GameSunday();
 
 			WriteMovies(actual);
-			//WriteMovies(actual.Where(movie => movie.WeekendEnding == gameEnd.AddDays(-2)));
-			//WriteMovies(actual.Where(movie => movie.WeekendEnding == gameEnd.AddDays(-1)));
-			//WriteMovies(actual.Where(movie => movie.WeekendEnding == gameEnd));
 		}
 
 		private IMiner ConstructTest()
