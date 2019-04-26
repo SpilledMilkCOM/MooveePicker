@@ -151,6 +151,13 @@ namespace MovieMiner
 											}
 										}
 
+										var idx = rawText.IndexOf('\n');
+
+										if (idx > 0)
+										{
+											rawText = rawText.Substring(0, idx);
+										}
+
 										movie.Earnings = decimal.Parse(rawText);
 									}
 
