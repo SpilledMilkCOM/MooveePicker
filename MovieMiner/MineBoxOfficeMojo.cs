@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 
@@ -60,7 +61,7 @@ namespace MovieMiner
 			{
 				result = MineForecast();
 
-				if (Error == NO_DATA)
+				if (Error == NO_DATA || !result.Any())
 				{
 					// Retry until you get some data.
 
