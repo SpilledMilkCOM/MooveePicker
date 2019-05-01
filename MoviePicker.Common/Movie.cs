@@ -217,6 +217,13 @@ namespace MoviePicker.Common
 				{
 					// The Identifier will trump all other equalities if they are set.
 					result = Identifier == compareTo.Identifier;
+
+					if (result && Day.HasValue && compareTo.Day.HasValue)
+					{
+						// If both days have values then they HAVE TO MATCH.
+
+						result = Day.Value == compareTo.Day.Value;
+					}
 				}
 				else
 				{

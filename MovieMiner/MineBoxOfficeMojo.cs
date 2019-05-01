@@ -15,8 +15,6 @@ namespace MovieMiner
 		private const string DELIMITER = "- $";
 		private const string NO_DATA = "No Data";
 
-		private DateTime? _weekendEnding;
-
 		/// <summary>
 		/// 
 		/// </summary>
@@ -26,8 +24,10 @@ namespace MovieMiner
 				  , $"BO Mojo {weekendEnding?.ToShortDateString()}", DEFAULT_URL)
 		{
 			TwitterID = "BoxOfficeMojo";
-			_weekendEnding = weekendEnding?.Date;
+			WeekendEnding = weekendEnding?.Date;
 		}
+
+		public DateTime? WeekendEnding { get; private set; }
 
 		public override IMiner Clone()
 		{
@@ -35,7 +35,7 @@ namespace MovieMiner
 
 			Clone(result);
 
-			result._weekendEnding = _weekendEnding;
+			result.WeekendEnding = WeekendEnding;
 
 			return result;
 		}
@@ -44,15 +44,15 @@ namespace MovieMiner
 		{
 			var result = new List<IMovie>();
 
-			if (_weekendEnding.HasValue)
+			if (WeekendEnding.HasValue)
 			{
 				var lastSunday = MovieDateUtil.LastSunday(MovieDateUtil.GameSunday(null, ContainsEstimates).AddDays(-1));
 
 				// Check to see if the weekend ending is out of date.
 
-				if (ContainsEstimates || (_weekendEnding.Value < lastSunday && !ContainsEstimates))
+				if (ContainsEstimates || (WeekendEnding.Value < lastSunday && !ContainsEstimates))
 				{
-					_weekendEnding = lastSunday;
+					WeekendEnding = lastSunday;
 				}
 
 				result = MineDate();
@@ -83,7 +83,7 @@ namespace MovieMiner
 
 		public List<IMovie> MineWeekend(DateTime? date = null)
 		{
-			_weekendEnding = date;
+			WeekendEnding = date;
 			return MineDate();
 		}
 
@@ -101,9 +101,9 @@ namespace MovieMiner
 			ContainsEstimates = false;
 
 			// Might have to tweak this offset a bit to get the numbers to match.
-			var sundayOffset = (int)new DateTime(_weekendEnding.Value.Year, 1, 1).DayOfWeek;
+			var sundayOffset = (int)new DateTime(WeekendEnding.Value.Year, 1, 1).DayOfWeek;
 
-			url = $"{Url}weekend/chart/?view={_weekendEnding.Value.Year}&yr={_weekendEnding.Value.Year}&wknd={((_weekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
+			url = $"{Url}weekend/chart/?view={WeekendEnding.Value.Year}&yr={WeekendEnding.Value.Year}&wknd={((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
 
 			var doc = web.Load(url);
 
@@ -143,9 +143,9 @@ namespace MovieMiner
 									Identifier = argSplit?[1].Replace(".htm", string.Empty)
 								};
 
-								if (_weekendEnding.HasValue)
+								if (WeekendEnding.HasValue)
 								{
-									movie.WeekendEnding = _weekendEnding.Value;
+									movie.WeekendEnding = WeekendEnding.Value;
 								}
 							}
 							else if (columnCount == 4)

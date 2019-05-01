@@ -24,7 +24,7 @@ namespace MoviePicker.WebApp.Models
 		public const int BOPRO_INDEX = FML_INDEX + 3;
 		public const int MOJO_INDEX = FML_INDEX + 4;
 		public const int COUPE_INDEX = FML_INDEX + 5;
-		public const int VIS_REC_INDEX = FML_INDEX + 5;				// Same as above
+		public const int VIS_REC_INDEX = FML_INDEX + 5;             // Same as above
 		public const int PROPHET_INDEX = FML_INDEX + 6;
 		public const int BORPT_INDEX = FML_INDEX + 7;
 		public const int MOJO_THEATER_INDEX = FML_INDEX + 8;
@@ -62,6 +62,8 @@ namespace MoviePicker.WebApp.Models
 			// Only download the posters once.
 
 			clone._postersDownloaded = _postersDownloaded;
+
+			// TODO: Why isn't this Parallel?
 
 			foreach (var miner in Miners)
 			{
@@ -613,6 +615,34 @@ namespace MoviePicker.WebApp.Models
 									// Need to readjust the movies.
 									miner.SetMovies(SpreadCompoundMovies(compoundMovies, movieList));
 								}
+
+								if (miner == miners.Last())
+								{
+									var lastMojoMiner = miner as MineBoxOfficeMojo;
+									var mojoMovies = lastMojoMiner.Movies;				// A copy of its movie list
+
+									// Last week's BO Mojo movies need to be loaded on their own and NOT rely on the current compound movie spread.
+									// (Only this miner mines the Identifier so you have to pull the movie from this miner's list of movies.)
+
+									var firstCompoundMovie = mojoMovies.FirstOrDefault(item => item.Equals(compoundMovies.First()));
+									var dailyMiner = new MineBoxOfficeMojoDaily(firstCompoundMovie.Identifier, lastMojoMiner.WeekendEnding);
+
+									var movies = dailyMiner.Mine();         // Each movie will have their corresponding DayOfWeek set.
+
+									foreach (var movie in movies)
+									{
+										movie.Name = firstCompoundMovie.MovieName;
+										var found = mojoMovies.FirstOrDefault(item => item.Equals(movie));
+
+										if (found != null)
+										{
+											found.Earnings = movie.Earnings;
+										}
+									}
+
+									lastMojoMiner.SetCompoundLoaded(true);
+									lastMojoMiner.SetMovies(mojoMovies);
+								}
 							}
 
 							// Assign the id, name, and cost to each movie.
@@ -664,6 +694,7 @@ namespace MoviePicker.WebApp.Models
 						Name = movieDay.MovieName,
 						Day = movieDay.Day,
 						Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
+						Identifier = rootMovie.Identifier,
 						TheaterCount = theaterCount,
 						WeekendEnding = movieDay.WeekendEnding
 					});
