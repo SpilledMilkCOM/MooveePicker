@@ -18,7 +18,6 @@ namespace MoviePicker.WebApp.Models
 	/// </summary>
 	public class MinerModel : IMinerModel
 	{
-		//private const int NERD_INDEX = 1;
 		public const int FML_INDEX = 0;
 		public const int MY_INDEX = FML_INDEX + 1;
 		public const int TODD_INDEX = FML_INDEX + 2;
@@ -645,21 +644,6 @@ namespace MoviePicker.WebApp.Models
 			miners.ToList()[MY_INDEX].Mine();
 
 			return result;
-		}
-
-		/// <summary>
-		/// Remove movies in picks whose box office value is 0.
-		/// </summary>
-		/// <param name="picks"></param>
-		/// <param name="clonedList"></param>
-		private void RemoveZeroPicks(IMovieList picks)
-		{
-			var removaList = picks.Movies.Where(movie => movie.Earnings == 0);
-
-			foreach (var toRemove in removaList)
-			{
-				picks.Remove(toRemove);
-			}
 		}
 
 		private List<IMovie> SpreadCompoundMovies(List<IMovie> compoundMovies, List<IMovie> movies)

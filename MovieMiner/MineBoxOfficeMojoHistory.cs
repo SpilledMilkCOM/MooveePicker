@@ -11,8 +11,6 @@ namespace MovieMiner
 	public class MineBoxOfficeMojoHistory : MinerBase
 	{
 		private const string DEFAULT_URL = "http://boxofficemojo.com/";
-		private const string DELIMITER = "- $";
-		private const string NO_DATA = "No Data";
 
 		private Dictionary<string, int> _monthMap = new Dictionary<string, int>(12);
 
@@ -50,8 +48,6 @@ namespace MovieMiner
 		{
 			var result = new List<IMovie>();
 			var boxOfficeHistory = new List<IBoxOffice>();
-
-			// https://www.boxofficemojo.com/movies/?page=weekend&id=alita.htm
 
 			string url = $"{Url}movies/?page=weekend&id={Identifier}.htm";
 			var web = new HtmlWeb();
