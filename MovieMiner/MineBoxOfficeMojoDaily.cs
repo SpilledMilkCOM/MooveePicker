@@ -73,36 +73,48 @@ namespace MovieMiner
 
 					foreach (var column in rowColumns)
 					{
-						IBoxOffice boxOffice = null;
+						IMovie movie = null;
 
 						if (columnCount == 2)       // Friday
 						{
-							boxOffice = new BoxOffice { Earnings = ParseEarnings(FirstToken(column.InnerText)), WeekendEnding = WeekendEnding.Value.AddDays(-2) };
+							movie = new Movie
+							{
+								Day = DayOfWeek.Friday,
+								Earnings = ParseEarnings(FirstToken(column.InnerText)),
+								Identifier = Identifier,
+								WeekendEnding = WeekendEnding.Value
+							};
 						}
 						else if (columnCount == 3)  // Saturday
 						{
-							boxOffice = new BoxOffice { Earnings = ParseEarnings(FirstToken(column.InnerText)), WeekendEnding = WeekendEnding.Value.AddDays(-1) };
+							movie = new Movie
+							{
+								Day = DayOfWeek.Saturday,
+								Earnings = ParseEarnings(FirstToken(column.InnerText)),
+								Identifier = Identifier,
+								WeekendEnding = WeekendEnding.Value
+							};
 						}
 						else if (columnCount == 4)  // Sunday
 						{
-							boxOffice = new BoxOffice { Earnings = ParseEarnings(FirstToken(column.InnerText)), WeekendEnding = WeekendEnding.Value };
+							movie = new Movie
+							{
+								Day = DayOfWeek.Sunday,
+								Earnings = ParseEarnings(FirstToken(column.InnerText)),
+								Identifier = Identifier,
+								WeekendEnding = WeekendEnding.Value
+							};
 						}
 
 						columnCount++;
 
-						if (boxOffice != null)
+						if (movie != null)
 						{
-							boxOfficeHistory.Add(boxOffice);
+							result.Add(movie);
 						}
 					}
 				}
 			}
-
-			var movie = new Movie { Identifier = Identifier };
-
-			movie.SetBoxOfficeHistory(boxOfficeHistory);
-
-			result.Add(movie);      // A list of one (just to conform to the miner interface)
 
 			return result;
 		}

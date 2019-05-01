@@ -87,6 +87,11 @@ namespace MovieMiner
 			return MineDate();
 		}
 
+		public void SetCompoundLoaded(bool compoundLoaded)
+		{
+			CompoundLoaded = compoundLoaded;
+		}
+
 		private List<IMovie> MineDate()
 		{
 			var result = new List<IMovie>();
