@@ -374,6 +374,11 @@ namespace MoviePicker.Common
 			// Add "Movie" to the end?
 
 			Hashtag = HASHTAG + textInfo.ToTitleCase(_movieName).Replace(" ", string.Empty);
+
+			if (Day.HasValue)
+			{
+				Hashtag += " " + Day.Value.ToString().Substring(0, 3).ToUpper();
+			}
 		}
 
 		private void UpdateEfficiency()
