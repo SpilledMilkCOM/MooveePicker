@@ -28,24 +28,267 @@
 
 		@* ================================================================================================================================== PICKS COLUMN ==== *@
 
-		<div class="col-md-6">
+		<div class="col-md-6 col-md-offset-3">
 
 			<div id="picksColumn">
-				@if (Model.MovieListPerfectPick != null)
-				{
-					@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
-				}
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#menuPicks1">Bonus ON</a></li>
+					<li><a data-toggle="tab" href="#menuPicks2">Bonus OFF</a></li>
+					<li><a data-toggle="tab" href="#menuPicks3">Perfect Pick</a></li>
+				</ul>
 
-				@if (Model.MovieList != null)
-				{
-					@Html.Partial("MovieListMini2", Model.MovieList)
-				}
+				<div class="tab-content">
+					<div id="menuPicks1" class="tab-pane fade in active">
+						@if (Model.MovieList != null)
+						{
+							@Html.Partial("MovieListMini2", Model.MovieList)
+						}
+					</div>
 
-				@if (Model.MovieListBonusOff != null)
-				{
-					@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
-				}
+					<div id="menuPicks2" class="tab-pane fade in">
+						@if (Model.MovieListBonusOff != null)
+						{
+							@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
+						}
+					</div>
+
+					<div id="menuPicks3" class="tab-pane fade in">
+						@if (Model.MovieListPerfectPick != null)
+						{
+							@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
+						}
+						else
+						{
+							<h4>Estimates Not In Yet</h4>
+						}
+					</div>
+				</div>
 			</div>
+		</div>
+
+		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
+
+		<div class="row-divider"> </div>
+
+		<div class="col-xs-12" width="100%" style="height: 250px; overflow-x: auto; overflow-y: hidden; white-space: nowrap;">
+			<table>
+				@{
+					movieCount = 1;
+
+					while (movieCount <= Model.Miners.First().Movies.Count)
+					{
+						<tr>
+							@for (int col = 0; col < 15 && movieCount <= Model.Miners.First().Movies.Count; col++)
+							{
+								var movie = Model.Miners.First().Movies[movieCount - 1];
+
+								var boId = string.Format("boId{0}", movieCount);
+								var imageId = string.Format("imageId{0}", movie.ControlId);
+								var name = string.Format("BoxOffice{0}", movieCount);
+
+								// TODO: May want to use a utility to speed up the reflection.
+
+								var value = (decimal)Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model);
+								var valueString = string.Format("{0:N0}", value);
+								var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
+								var inputBackgroundColor = lastWeek == null ? "lightgreen" : "cyan";
+								string boPercentBackgroundColorStyle = null;
+								decimal percent = 0;
+								var hasRows = false;
+
+								// Build the tooltip from the miner values.
+
+								var toolTip = new StringBuilder();
+
+								toolTip.Append("<table>");
+
+								foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
+								{
+									var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
+
+									if (minerMovie != null)
+									{
+										toolTip.Append("<tr><td style=\"padding: 5px;\">");
+										toolTip.Append(miner.Abbreviation);
+										toolTip.Append("</td><td style=\"padding: 5px;\">");
+
+										if (!string.IsNullOrEmpty(miner.Error))
+										{
+											toolTip.Append(miner.Error);
+										}
+										else
+										{
+											toolTip.Append(minerMovie.EarningsBase.ToString("N0"));
+										}
+
+										if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
+										{
+											percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+											boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+
+											toolTip.Append($"</td><td style=\"padding: 4px; color: black; {boPercentBackgroundColorStyle}\">{percent.ToString("N0")}%</td></tr>");
+										}
+										else
+										{
+											toolTip.Append("</td><td></td></tr>");
+										}
+
+										hasRows = true;
+									}
+								}
+
+								if (!hasRows)
+								{
+									toolTip.Append("<tr><td>No data available (yet)</td></tr>");
+								}
+
+								toolTip.Append("</table>");
+
+								boPercentBackgroundColorStyle = "background-color: white;";
+								percent = 0;
+
+								var myMovie = Model.Miners.ToList()[1].Movies.FirstOrDefault(item => item.Name == movie.Name);
+
+								if (lastWeek != null && myMovie != null && lastWeek.EarningsBase > 0)
+								{
+									percent = (myMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+									boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+								}
+
+								var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "2px";
+								var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey;";
+
+								// THIS IS DIFFERENT THAN INDEX!!
+
+								var tooltipPlacement = movieCount == 15 ? "left" : "right";
+
+								<td style="padding: 3px;">
+
+									<div>
+
+										<div style="position: relative; width: 0; height: 0;">
+											@if (movie.TheaterCount > 0)
+											{
+												if (lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0))
+												{
+													if (movie.TheaterCount - lastWeek.TheaterCount > 0)
+													{
+														<span class="badge badge-pill badge-light"
+															  data-toggle="tooltip"
+															  data-placement="bottom"
+															  title="Theater Count"
+															  style="position: absolute; left: 20px; top: 5px;">
+															@movie.TheaterCount
+															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
+															@(movie.TheaterCount - lastWeek.TheaterCount)
+														</span>
+													}
+													else if (movie.TheaterCount - lastWeek.TheaterCount < 0)
+													{
+														<span class="badge badge-pill badge-light"
+															  data-toggle="tooltip"
+															  data-placement="bottom"
+															  title="Theater Count"
+															  style="position: absolute; left: 20px; top: 5px;">
+															@movie.TheaterCount
+															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
+															@(lastWeek.TheaterCount - movie.TheaterCount)
+														</span>
+													}
+												}
+												else
+												{
+													<span class="badge badge-pill badge-light"
+														  data-toggle="tooltip"
+														  data-placement="bottom"
+														  title="Theater Count"
+														  style="position: absolute; left: 50px; top: 5px;">
+														@movie.TheaterCount
+													</span>
+												}
+											}
+
+											<span class="glyphicon glyphicon-info-sign"
+												  aria-hidden="true"
+												  data-toggle="tooltip"
+												  data-placement="bottom"
+												  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
+												  title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"
+												  style="position: absolute; left: 130px; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
+											</span>
+
+										</div>
+
+										<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle min-height: 220px; min-width: 150px;" src="@movie.ImageUrl" />
+
+										<div style="position: relative; width: 0; height: 0">
+											<table style="position: absolute; left: -5px; top: -225px; width: 10px; height: 210px; opacity: 0.7;">
+												<tr>
+													<td>
+														@if (lastWeek != null && value > lastWeek.EarningsBase * 2)
+														{
+															// Adjust the slider to MORE than 100% since the value is already greater than 100% and the slider won't work.
+
+															var sliderMax = (Math.Round(value / lastWeek.EarningsBase, 0) + 1) * 100;
+
+															<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="@sliderMax" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+														}
+														else
+														{
+															<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+														}
+													</td>
+												</tr>
+											</table>
+										</div>
+
+										<div style="position: relative; width: 0; height: 0">
+											<input name="@name"
+												   class="form-control"
+												   id="@boId"
+												   onblur="boxOfficeLostFocus('@valueString', this.value, @movie.ControlId)"
+												   style="position: absolute; left: 20px; top: -40px; background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
+												   type="text"
+												   value="@valueString"
+												   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
+												   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
+												   data-val-required="The Box Office @movie.ControlId field is required."
+												   data-val-number="The field Box Office @movie.ControlId must be a number."
+												   data-val="true">
+
+											<span id="@string.Format("{0}Pct", boId)" class="badge badge-pill badge-dark"
+												  style="position: absolute; left: 100px; top: -50px; @boPercentBackgroundColorStyle color: black;">
+												@percent.ToString("N0")%
+											</span>
+
+											<span id="@string.Format("{0}UpPct", boId)"
+												  class="glyphicon glyphicon-triangle-top"
+												  aria-hidden="true"
+												  style="position: absolute; left: 130px; top: -30px; color: white; cursor: pointer;"
+												  onclick="clickChangePercent(this, @movie.ControlId, 1)">
+											</span>
+											<span id="@string.Format("{0}DownPct", boId)"
+												  class="glyphicon glyphicon-triangle-bottom"
+												  aria-hidden="true"
+												  style="position: absolute; left: 130px; top: -17px; color: white; cursor: pointer;"
+												  onclick="clickChangePercent(this, @movie.ControlId, -1)">
+											</span>
+										</div>
+
+									</div>
+								</td>
+
+								movieCount++;
+							}
+						</tr>
+					}
+				}
+			</table>
+		</div>
+
+		<div class="col-xs-12">
+
+			@* ================================================================================================================================== MINER WEIGHTS ==== *@
 
 			<table class="table table-responsive" style="border: none;">
 				<tr>
@@ -68,6 +311,16 @@
 							   data-placement="bottom"
 							   title="Click for '@miner.Name' source page... (last updated @string.Format("{0}", ((ICache)miner).LastLoaded.ToString()))">
 								@miner.Abbreviation
+
+								@if (miner.Movies.Count > 0)
+								{
+									<span class="badge badge-pill badge-light"
+										  data-toggle="tooltip"
+										  data-placement="top"
+										  title="Total Movies Estimated">
+										@miner.Movies.Count
+									</span>
+								}
 							</a>
 
 							<input name="@name"
@@ -86,20 +339,17 @@
 						minerCount++;
 					}
 					<td>
-						<input class="btn btn-success btn-lg"
+						<input class="btn btn-success"
 							   style="margin-top: 10px;"
 							   onclick="navigateTo('/Home/IndexWide')"
 							   type="button"
-							   value="Calculate Picks"
+							   value="Calc Picks"
 							   data-toggle="tooltip"
 							   data-placement="bottom"
 							   title="Click to recalculate page...">
 					</td>
 				</tr>
 			</table>
-		</div>
-
-		<div class="col-md-6">
 
 			<ul class="nav nav-tabs">
 				<li class="active"><a data-toggle="tab" href="#menu1">Bonus Comparisons</a></li>
@@ -156,7 +406,7 @@
 													 class="col-xs-3 col-sm-1"
 													 style="@backgroundColor text-align: right;">@string.Format("{0:N2}", movie.Efficiency / 1000m)</div>
 
-													<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="@backgroundColor">--</div>
+													@*<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="@backgroundColor">--</div>*@
 
 													<div class="col-xs-3 hidden-sm hidden-md hidden-lg" style="@backgroundColor font-weight: bold;">Difference:</div>
 
@@ -178,7 +428,7 @@
 																	@string.Format("{0:N0}", nextRankedMovie.Efficiency * movie.Cost - movie.EarningsBase)
 																</div>
 																<div id="@string.Format("bonusCompDiffPctUp{0}", movieCount)"
-																	 class="col-xs-2 col-sm-1"
+																	 class="col-xs-2 col-sm-1 col-xs-offset-8 col-sm-offset-0"
 																	 style="@backgroundColor text-align: right;">--</div>
 																<div id="@string.Format("bonusCompDiffPctDown{0}", movieCount)"
 																	 class="col-xs-2 col-sm-1"
@@ -197,7 +447,7 @@
 																@string.Format("{0:N0}", mostEfficient.Efficiency * movie.Cost - movie.EarningsBase)
 															</div>
 															<div id="@string.Format("bonusCompDiffPctUp{0}", movieCount)"
-																 class="col-xs-2 col-sm-1"
+																 class="col-xs-2 col-sm-1 col-xs-offset-8 col-sm-offset-0"
 																 style="@backgroundColor text-align: right; color: #33cc33">
 																@string.Format("{0:N1}%", (mostEfficient.Efficiency * movie.Cost - movie.EarningsBase) / movie.EarningsBase * 100)
 															</div>
@@ -229,7 +479,7 @@
 															 style="@backgroundColor text-align: right;">--</div>
 
 														<div id="@string.Format("bonusCompDiffPctUp{0}", movieCount)"
-															 class="col-xs-2 col-sm-1"
+															 class="col-xs-2 col-sm-1 col-xs-offset-8 col-sm-offset-0"
 															 style="@backgroundColor text-align: right; color: #33cc33">--</div>
 
 														<div id="@string.Format("bonusCompDiffPctDown{0}", movieCount)"
@@ -395,231 +645,6 @@
 
 					</div>
 				</div>
-			</div>
-		</div>
-
-		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
-
-		<div class="col-md-12">
-
-			<div class="col-md-6">
-
-			</div>
-
-			<div class="col-xs-12" width="100%" style="overflow-x: auto; white-space: nowrap; height: 250px; overflow-y: hidden;">
-				<table>
-					@{
-						movieCount = 1;
-
-						while (movieCount <= Model.Miners.First().Movies.Count)
-						{
-							<tr>
-								@for (int col = 0; col < 15 && movieCount <= Model.Miners.First().Movies.Count; col++)
-								{
-									var movie = Model.Miners.First().Movies[movieCount - 1];
-
-									var boId = string.Format("boId{0}", movieCount);
-									var imageId = string.Format("imageId{0}", movie.ControlId);
-									var name = string.Format("BoxOffice{0}", movieCount);
-
-									// TODO: May want to use a utility to speed up the reflection.
-
-									var value = (decimal)Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model);
-									var valueString = string.Format("{0:N0}", value);
-									var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => item.Name == movie.Name);
-									var inputBackgroundColor = lastWeek == null ? "lightgreen" : "cyan";
-									string boPercentBackgroundColorStyle = null;
-									decimal percent = 0;
-									var hasRows = false;
-
-									// Build the tooltip from the miner values.
-
-									var toolTip = new StringBuilder();
-
-									toolTip.Append("<table>");
-
-									foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
-									{
-										var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
-
-										if (minerMovie != null)
-										{
-											toolTip.Append("<tr><td style=\"padding: 5px;\">");
-											toolTip.Append(miner.Abbreviation);
-											toolTip.Append("</td><td style=\"padding: 5px;\">");
-
-											if (!string.IsNullOrEmpty(miner.Error))
-											{
-												toolTip.Append(miner.Error);
-											}
-											else
-											{
-												toolTip.Append(minerMovie.EarningsBase.ToString("N0"));
-											}
-
-											if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
-											{
-												percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-												boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
-
-												toolTip.Append($"</td><td style=\"padding: 4px; color: black; {boPercentBackgroundColorStyle}\">{percent.ToString("N0")}%</td></tr>");
-											}
-											else
-											{
-												toolTip.Append("</td><td></td></tr>");
-											}
-
-											hasRows = true;
-										}
-									}
-
-									if (!hasRows)
-									{
-										toolTip.Append("<tr><td>No data available (yet)</td></tr>");
-									}
-
-									toolTip.Append("</table>");
-
-									boPercentBackgroundColorStyle = "background-color: white;";
-									percent = 0;
-
-									var myMovie = Model.Miners.ToList()[1].Movies.FirstOrDefault(item => item.Name == movie.Name);
-
-									if (lastWeek != null && myMovie != null && lastWeek.EarningsBase > 0)
-									{
-										percent = (myMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-										boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
-									}
-
-									var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "2px";
-									var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey;";
-
-									// THIS IS DIFFERENT THAN INDEX!!
-
-									var tooltipPlacement = movieCount == 15 ? "left" : "right";
-
-									<td style="padding: 3px;">
-
-										<div>
-
-											<div style="position: relative; width: 0; height: 0;">
-												@if (movie.TheaterCount > 0)
-												{
-													if (lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0))
-													{
-														if (movie.TheaterCount - lastWeek.TheaterCount > 0)
-														{
-															<span class="badge badge-pill badge-light"
-																  data-toggle="tooltip"
-																  data-placement="bottom"
-																  title="Theater Count"
-																  style="position: absolute; left: 20px; top: 5px;">
-																@movie.TheaterCount
-																<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
-																@(movie.TheaterCount - lastWeek.TheaterCount)
-															</span>
-														}
-														else if (movie.TheaterCount - lastWeek.TheaterCount < 0)
-														{
-															<span class="badge badge-pill badge-light"
-																  data-toggle="tooltip"
-																  data-placement="bottom"
-																  title="Theater Count"
-																  style="position: absolute; left: 20px; top: 5px;">
-																@movie.TheaterCount
-																<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
-																@(lastWeek.TheaterCount - movie.TheaterCount)
-															</span>
-														}
-													}
-													else
-													{
-														<span class="badge badge-pill badge-light"
-															  data-toggle="tooltip"
-															  data-placement="bottom"
-															  title="Theater Count"
-															  style="position: absolute; left: 50px; top: 5px;">
-															@movie.TheaterCount
-														</span>
-													}
-												}
-
-												<span class="glyphicon glyphicon-info-sign"
-													  aria-hidden="true"
-													  data-toggle="tooltip"
-													  data-placement="@tooltipPlacement"
-													  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
-													  title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"
-													  style="position: absolute; left: 130px; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
-												</span>
-
-											</div>
-
-											<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle min-height: 220px; min-width: 150px;" src="@movie.ImageUrl" />
-
-											<div style="position: relative; width: 0; height: 0">
-												<table style="position: absolute; left: -5px; top: -225px; width: 10px; height: 210px; opacity: 0.7;">
-													<tr>
-														<td>
-															@if (lastWeek != null && value > lastWeek.EarningsBase * 2)
-															{
-																// Adjust the slider to MORE than 100% since the value is already greater than 100% and the slider won't work.
-
-																var sliderMax = (Math.Round(value / lastWeek.EarningsBase, 0) + 1) * 100;
-
-																<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="@sliderMax" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
-															}
-															else
-															{
-																<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
-															}
-														</td>
-													</tr>
-												</table>
-											</div>
-
-											<div style="position: relative; width: 0; height: 0">
-												<input name="@name"
-													   class="form-control"
-													   id="@boId"
-													   onblur="boxOfficeLostFocus('@valueString', this.value, @movie.ControlId)"
-													   style="position: absolute; left: 20px; top: -40px; background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
-													   type="text"
-													   value="@valueString"
-													   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
-													   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
-													   data-val-required="The Box Office @movie.ControlId field is required."
-													   data-val-number="The field Box Office @movie.ControlId must be a number."
-													   data-val="true">
-
-												<span id="@string.Format("{0}Pct", boId)" class="badge badge-pill badge-dark"
-													  style="position: absolute; left: 100px; top: -50px; @boPercentBackgroundColorStyle color: black;">
-													@percent.ToString("N0")%
-												</span>
-
-												<span id="@string.Format("{0}UpPct", boId)"
-													  class="glyphicon glyphicon-triangle-top"
-													  aria-hidden="true"
-													  style="position: absolute; left: 130px; top: -30px; color: white; cursor: pointer;"
-													  onclick="clickChangePercent(this, @movie.ControlId, 1)">
-												</span>
-												<span id="@string.Format("{0}DownPct", boId)"
-													  class="glyphicon glyphicon-triangle-bottom"
-													  aria-hidden="true"
-													  style="position: absolute; left: 130px; top: -17px; color: white; cursor: pointer;"
-													  onclick="clickChangePercent(this, @movie.ControlId, -1)">
-												</span>
-											</div>
-
-										</div>
-									</td>
-
-									movieCount++;
-								}
-							</tr>
-						}
-					}
-				</table>
 			</div>
 		</div>
 
