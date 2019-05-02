@@ -567,6 +567,7 @@
 								var boId = string.Format("boId{0}", movie.ControlId);
 								var imageId = string.Format("imageId{0}", movie.ControlId);
 								var name = string.Format("BoxOffice{0}", movie.ControlId);
+								var posterId = string.Format("posterId{0}", movieCount);
 
 								// TODO: May want to use a utility to speed up the reflection.
 
@@ -642,7 +643,7 @@
 
 								<td style="padding: 3px;">
 
-									<div>
+									<div id="@posterId">
 
 										<div style="position: relative; width: 0; height: 0;">
 											@if (movie.TheaterCount > 0)
@@ -682,6 +683,15 @@
 												  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="max-width: 400px;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
 												  title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"
 												  style="position: absolute; left: 130px; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
+											</span>
+
+											<span class="glyphicon glyphicon-remove"
+												  aria-hidden="true"
+												  data-toggle="tooltip"
+												  data-placement="bottom"
+												  onclick="clickHidePoster('@posterId')"
+												  title="Hide movie"
+												  style="position: absolute; left: 130px; top: 25px; color: white; cursor: pointer; background: gray; opacity: 0.8">
 											</span>
 
 										</div>
