@@ -89,7 +89,7 @@ namespace MoviePicker.WebApp.Models
 
 			AssignTheaterCounts(clone);
 
-			// If any of the miners are reloaded, then the composite movies (in any) need to be reassigned based on Todd's spread.
+			// If any of the miners are reloaded, then the composite movies (if any) need to be reassigned based on Todd's spread.
 			// The miner's that have loaded their own composite movies will not be overwritten.
 
 			if (clone.Miners.Any(miner => miner.CloneCausedReload))
@@ -115,6 +115,11 @@ namespace MoviePicker.WebApp.Models
 
 								// Need to readjust the movies. (of the singleton)
 								Miners[idx].SetMovies(SpreadCompoundMovies(compoundMovies, Miners[idx].Movies));
+
+								if (miner == clone.Miners.Last())
+								{
+									LoadLastBoxOfficeMojoCompound(miner as MineBoxOfficeMojo, compoundMovies.First());
+								}
 							}
 						}
 
@@ -488,6 +493,39 @@ namespace MoviePicker.WebApp.Models
 		}
 
 		/// <summary>
+		/// Load the compound movies for the previous week.
+		/// </summary>
+		/// <param name="lastMojoMiner"></param>
+		/// <param name="firstCompoundMovie"></param>
+		private void LoadLastBoxOfficeMojoCompound(MineBoxOfficeMojo lastMojoMiner, IMovie firstCompoundMovie)
+		{
+			var mojoMovies = lastMojoMiner.Movies;              // A copy of its movie list
+
+			// Last week's BO Mojo movies need to be loaded on their own and NOT rely on the current compound movie spread.
+			// (Only this miner mines the Identifier so you have to pull the movie from this miner's list of movies.)
+
+			var firstMojoMovie = mojoMovies.FirstOrDefault(item => item.Equals(firstCompoundMovie));
+			var dailyMiner = new MineBoxOfficeMojoDaily(firstMojoMovie.Identifier, lastMojoMiner.WeekendEnding);
+
+			var movies = dailyMiner.Mine();         // Each movie will have their corresponding DayOfWeek set.
+
+			foreach (var movie in movies)
+			{
+				movie.Name = firstMojoMovie.MovieName;
+				var found = mojoMovies.FirstOrDefault(item => item.Equals(movie));
+
+				if (found != null)
+				{
+					found.Earnings = movie.Earnings;
+					found.WeekendEnding = movie.WeekendEnding;
+				}
+			}
+
+			lastMojoMiner.SetCompoundLoaded(true);
+			lastMojoMiner.SetMovies(mojoMovies);
+		}
+
+		/// <summary>
 		/// Make the FML picks for a miner (both with bonus and without)
 		/// </summary>
 		/// <param name="miner">The miner to adjust the picks.</param>
@@ -618,30 +656,7 @@ namespace MoviePicker.WebApp.Models
 
 								if (miner == miners.Last())
 								{
-									var lastMojoMiner = miner as MineBoxOfficeMojo;
-									var mojoMovies = lastMojoMiner.Movies;				// A copy of its movie list
-
-									// Last week's BO Mojo movies need to be loaded on their own and NOT rely on the current compound movie spread.
-									// (Only this miner mines the Identifier so you have to pull the movie from this miner's list of movies.)
-
-									var firstCompoundMovie = mojoMovies.FirstOrDefault(item => item.Equals(compoundMovies.First()));
-									var dailyMiner = new MineBoxOfficeMojoDaily(firstCompoundMovie.Identifier, lastMojoMiner.WeekendEnding);
-
-									var movies = dailyMiner.Mine();         // Each movie will have their corresponding DayOfWeek set.
-
-									foreach (var movie in movies)
-									{
-										movie.Name = firstCompoundMovie.MovieName;
-										var found = mojoMovies.FirstOrDefault(item => item.Equals(movie));
-
-										if (found != null)
-										{
-											found.Earnings = movie.Earnings;
-										}
-									}
-
-									lastMojoMiner.SetCompoundLoaded(true);
-									lastMojoMiner.SetMovies(mojoMovies);
+									LoadLastBoxOfficeMojoCompound(miner as MineBoxOfficeMojo, compoundMovies.First());
 								}
 							}
 
