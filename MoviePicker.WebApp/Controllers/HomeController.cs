@@ -209,7 +209,8 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public FileStreamResult ExtractToCSV()
 		{
-			StringBuilder builder = new StringBuilder();
+			var builder = new StringBuilder();
+			var theaterCounts = _minerModel.Miners[MinerModel.MOJO_THEATER_INDEX];
 
 			// Column headers are FIRST!
 
@@ -234,7 +235,15 @@ namespace MoviePicker.WebApp.Controllers
 					var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
 
 					builder.Append(",");
-					builder.Append(minerMovie?.Earnings);
+
+					if (miner == theaterCounts)
+					{
+						builder.Append(minerMovie?.TheaterCount);
+					}
+					else
+					{
+						builder.Append(minerMovie?.Earnings);
+					}
 				}
 
 				builder.AppendLine();
@@ -548,17 +557,17 @@ namespace MoviePicker.WebApp.Controllers
 			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
 		}
 
-		[HttpGet]
-		public ActionResult MorePicks()
-		{
-			ParseViewRequest();
+		//[HttpGet]
+		//public ActionResult MorePicks()
+		//{
+		//	ParseViewRequest();
 
-			ControllerUtility.SetTwitterCard(ViewBag);
+		//	ControllerUtility.SetTwitterCard(ViewBag);
 
-			DownloadMoviePosters();
+		//	DownloadMoviePosters();
 
-			return View(ConstructMorePicksViewModel());
-		}
+		//	return View(ConstructMorePicksViewModel());
+		//}
 
 		[HttpGet]
 		public ActionResult ShareBonusOffPicks()
