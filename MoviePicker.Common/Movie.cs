@@ -217,6 +217,13 @@ namespace MoviePicker.Common
 				{
 					// The Identifier will trump all other equalities if they are set.
 					result = Identifier == compareTo.Identifier;
+
+					if (result && Day.HasValue && compareTo.Day.HasValue)
+					{
+						// If both days have values then they HAVE TO MATCH.
+
+						result = Day.Value == compareTo.Day.Value;
+					}
 				}
 				else
 				{
@@ -367,6 +374,11 @@ namespace MoviePicker.Common
 			// Add "Movie" to the end?
 
 			Hashtag = HASHTAG + textInfo.ToTitleCase(_movieName).Replace(" ", string.Empty);
+
+			if (Day.HasValue)
+			{
+				Hashtag += " " + Day.Value.ToString().Substring(0, 3).ToUpper();
+			}
 		}
 
 		private void UpdateEfficiency()

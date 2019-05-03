@@ -52,19 +52,16 @@ namespace MoviePicker.WebApp.Utilities
 			var builder = new StringBuilder();
 			var count = 1;
 
-			builder.Append("[");
+			builder.Append("[['Date', 'Tickets'],");
 
 			foreach (var boxOffice in history)
 			{
 				if (count != 1)
 				{
-					builder.Append(", ");
+					builder.Append(",");
 				}
 
-				//[{v: [8, 0, 0], f: '8 am'}, 1],
-
-				builder.Append($"[{{v: [{boxOffice.Earnings}, 0, 0], f: '{boxOffice.WeekendEnding.ToString("MM/dd")}'}}, {count}]");
-				//builder.Append($"[{boxOffice.WeekendEnding.ToString("dd/MM")}, {boxOffice.Earnings / 1000000}]");
+				builder.Append($"['{boxOffice.WeekendEnding.ToString("MM/dd")}', {boxOffice.Earnings}]");
 
 				count++;
 			}

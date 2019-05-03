@@ -82,6 +82,19 @@ function clickChangePercent(button, controlIndex, change) {
 	}
 }
 
+function clickHidePoster(posterId) {
+
+	// Also need functionality to move the other DIVs up into this postion.
+
+	logit('clickHidePoster(' + posterId +')');
+
+	var div = $('#' + posterId);
+
+	if (div != null) {
+		div.css({ 'display': 'none' });
+	}
+}
+
 function clickMorePicks() {
 
 	logit('clickMorePicks');

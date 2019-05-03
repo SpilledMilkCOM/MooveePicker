@@ -121,13 +121,17 @@
 			// TODO: Request encode this.
 
 			var weightField = $("#weightId" + idx);
+			var weight = 0;
 
 			logit(weightField);
 
 			if (weightField != null && weightField.val() != null) {
 				// The field might be hidden so check for it first.
-				weightList += weightField.val().replace(",", "").replace("$", "");
+
+				weight = weightField.val().replace(",", "").replace("$", "");
 			}
+
+			weightList += weight;
 		}
 
 		return "bo=" + boList + "&wl=" + weightList;
@@ -274,7 +278,6 @@
 
 						<td></td>
 						<td></td>
-						@*<td></td>*@
 
 						@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 						{
@@ -287,21 +290,29 @@
 							{
 								<td></td>
 							}
-							@*<td></td>*@
 						}
 					</tr>
 				</thead>
 
 				<tbody>
 
-					@* Are there any compound movies?  Movie(s) that are split up into multiple days. *@
+					@*==================================================================================== COMPOUND MOVIE ==========
+						Are there any compound movies?  Movie(s) that are split up into multiple days.
+					*@
 
 					@{
 						var compoundMovie = Model.Miners.FirstOrDefault(miner => miner.CompoundMovie != null)?.CompoundMovie;
 						var compoundBuxTotal = 0m;
+						decimal customCompoundTotal = 0m;
 
 						if (compoundMovie != null)
 						{
+							// TODO: Might want to fill in  the
+
+							customCompoundTotal += (decimal)(Model.GetType().GetProperty("BoxOffice1")?.GetValue(Model) ?? 0m);
+							customCompoundTotal += (decimal)(Model.GetType().GetProperty("BoxOffice2")?.GetValue(Model) ?? 0m);
+							customCompoundTotal += (decimal)(Model.GetType().GetProperty("BoxOffice3")?.GetValue(Model) ?? 0m);
+
 							var compoundMovieImageUrl = compoundMovie.ImageUrl.Replace($"-{compoundMovie.Day.Value.ToString()}", string.Empty);
 							compoundBuxTotal = Model.Miners.First().Movies.Where(item => item.Day.HasValue).Sum(item => item.Cost);
 
@@ -315,7 +326,9 @@
 								{
 									var compoundTotal = miner.CompoundTotal;
 
-									<td>@string.Format("{0}", compoundTotal > 0 ? compoundTotal.ToString("N0") : string.Empty)</td>
+									<td style="text-align: right">
+										@string.Format("{0}", compoundTotal > 0 ? compoundTotal.ToString("N0") : string.Empty)
+									</td>
 								}
 							</tr>
 						}
@@ -343,17 +356,10 @@
 
 						<tr style="@movieIsNewStyle ">
 
-							@* Movie Image *@
+							@*======================================= Movie Image Column ================= *@
 
 							<td>
-								@if (movie.Day.HasValue)
-								{
-									<img height="100" src="@movie.ImageUrl" style="border-radius: 3px; box-shadow: 2px 4px 8px 0px grey; position: relative; bottom: -15px; float: left;" />
-								}
-								else
-								{
-									<img height="100" src="@movie.ImageUrl" style="border-radius: 3px; box-shadow: 2px 4px 8px 0px grey" />
-								}
+								<img height="100" src="@movie.ImageUrl" style="border-radius: 3px; box-shadow: 2px 4px 8px 0px grey;" />
 							</td>
 
 							@* Movie Details and edit field *@
@@ -392,24 +398,45 @@
 
 									@*The majority of this input was taken from Html.TextBoxFor*@
 
-									<input name="@name"
-										   class="form-control"
-										   id="@id"
-										   style="background-color: lightcyan; width: 100px;"
-										   type="text"
-										   value="@valueString"
-										   data-val-required="The Box Office @movieCount field is required."
-										   data-val-number="The field Box Office @movieCount must be a number."
-										   data-val="true">
+									<table>
+										<tr>
+											<td>
+												<input name="@name"
+													   class="form-control"
+													   id="@id"
+													   style="background-color: lightcyan; width: 100px;"
+													   type="text"
+													   value="@valueString"
+													   data-val-required="The Box Office @movieCount field is required."
+													   data-val-number="The field Box Office @movieCount must be a number."
+													   data-val="true">
+											</td>
+
+											@if (movie.Day.HasValue && customCompoundTotal > 0)
+											{
+												<td>&nbsp;&nbsp;&nbsp;</td>
+												<td>
+													<span class="glyphicon glyphicon-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+														  style="color: grey;"
+														  title="Percentage of the total weekend box office dollars for compound movie."></span>
+													&nbsp;&nbsp;
+													@string.Format("{0:N1}%", value / customCompoundTotal * 100)
+												</td>
+											}
+										</tr>
+									</table>
 								}
+
 								<span style="font-weight: bold;">
 									@movie.Cost BUX &nbsp;&nbsp;
 
-									@if(compoundBuxTotal > 0 && movie.Day.HasValue)
+									@if (compoundBuxTotal > 0 && movie.Day.HasValue)
 									{
 										var buxPercent = $"{movie.Cost / (decimal)compoundBuxTotal * 100:N1}%";
 
-										@buxPercent<br/>
+										<span class="glyphicon glyphicon-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+											  title="Percentage of the total BUX for compound movie."></span>
+										@buxPercent<br />
 									}
 
 									@if (movie.TheaterCount > 0)
@@ -452,6 +479,8 @@
 								</span>
 							</td>
 
+							@*==================================================================== Miner Data =====*@
+
 							@foreach (var miner in Model.Miners.Where(item => !item.IsHidden))
 							{
 								var minerMovie = miner.Movies?.FirstOrDefault(item => item.Name == movie.Name);
@@ -470,7 +499,11 @@
 											{
 												var moviePercent = string.Format("{0:N1}%", minerMovie?.Earnings / miner.CompoundTotal * 100);
 
-												<br />@moviePercent
+												<br />
+												<span class="glyphicon glyphicon-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+													  style="color: grey;"
+													  title="Percentage of the total weekend box office dollars for compound movie."></span>
+												@moviePercent
 											}
 										</div>
 

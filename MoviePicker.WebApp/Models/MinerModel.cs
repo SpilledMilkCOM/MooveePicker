@@ -18,14 +18,13 @@ namespace MoviePicker.WebApp.Models
 	/// </summary>
 	public class MinerModel : IMinerModel
 	{
-		//private const int NERD_INDEX = 1;
 		public const int FML_INDEX = 0;
 		public const int MY_INDEX = FML_INDEX + 1;
 		public const int TODD_INDEX = FML_INDEX + 2;
 		public const int BOPRO_INDEX = FML_INDEX + 3;
 		public const int MOJO_INDEX = FML_INDEX + 4;
 		public const int COUPE_INDEX = FML_INDEX + 5;
-		public const int VIS_REC_INDEX = FML_INDEX + 5;				// Same as above
+		public const int VIS_REC_INDEX = FML_INDEX + 5;             // Same as above
 		public const int PROPHET_INDEX = FML_INDEX + 6;
 		public const int BORPT_INDEX = FML_INDEX + 7;
 		public const int MOJO_THEATER_INDEX = FML_INDEX + 8;
@@ -64,6 +63,8 @@ namespace MoviePicker.WebApp.Models
 
 			clone._postersDownloaded = _postersDownloaded;
 
+			// TODO: Why isn't this Parallel?
+
 			foreach (var miner in Miners)
 			{
 				miner.ContainsEstimates = containsEstimates;
@@ -88,7 +89,7 @@ namespace MoviePicker.WebApp.Models
 
 			AssignTheaterCounts(clone);
 
-			// If any of the miners are reloaded, then the composite movies (in any) need to be reassigned based on Todd's spread.
+			// If any of the miners are reloaded, then the composite movies (if any) need to be reassigned based on Todd's spread.
 			// The miner's that have loaded their own composite movies will not be overwritten.
 
 			if (clone.Miners.Any(miner => miner.CloneCausedReload))
@@ -114,6 +115,11 @@ namespace MoviePicker.WebApp.Models
 
 								// Need to readjust the movies. (of the singleton)
 								Miners[idx].SetMovies(SpreadCompoundMovies(compoundMovies, Miners[idx].Movies));
+
+								if (miner == clone.Miners.Last())
+								{
+									LoadLastBoxOfficeMojoCompound(miner as MineBoxOfficeMojo, compoundMovies.First());
+								}
 							}
 						}
 
@@ -487,6 +493,39 @@ namespace MoviePicker.WebApp.Models
 		}
 
 		/// <summary>
+		/// Load the compound movies for the previous week.
+		/// </summary>
+		/// <param name="lastMojoMiner"></param>
+		/// <param name="firstCompoundMovie"></param>
+		private void LoadLastBoxOfficeMojoCompound(MineBoxOfficeMojo lastMojoMiner, IMovie firstCompoundMovie)
+		{
+			var mojoMovies = lastMojoMiner.Movies;              // A copy of its movie list
+
+			// Last week's BO Mojo movies need to be loaded on their own and NOT rely on the current compound movie spread.
+			// (Only this miner mines the Identifier so you have to pull the movie from this miner's list of movies.)
+
+			var firstMojoMovie = mojoMovies.FirstOrDefault(item => item.Equals(firstCompoundMovie));
+			var dailyMiner = new MineBoxOfficeMojoDaily(firstMojoMovie.Identifier, lastMojoMiner.WeekendEnding);
+
+			var movies = dailyMiner.Mine();         // Each movie will have their corresponding DayOfWeek set.
+
+			foreach (var movie in movies)
+			{
+				movie.Name = firstMojoMovie.MovieName;
+				var found = mojoMovies.FirstOrDefault(item => item.Equals(movie));
+
+				if (found != null)
+				{
+					found.Earnings = movie.Earnings;
+					found.WeekendEnding = movie.WeekendEnding;
+				}
+			}
+
+			lastMojoMiner.SetCompoundLoaded(true);
+			lastMojoMiner.SetMovies(mojoMovies);
+		}
+
+		/// <summary>
 		/// Make the FML picks for a miner (both with bonus and without)
 		/// </summary>
 		/// <param name="miner">The miner to adjust the picks.</param>
@@ -614,6 +653,11 @@ namespace MoviePicker.WebApp.Models
 									// Need to readjust the movies.
 									miner.SetMovies(SpreadCompoundMovies(compoundMovies, movieList));
 								}
+
+								if (miner == miners.Last())
+								{
+									LoadLastBoxOfficeMojoCompound(miner as MineBoxOfficeMojo, compoundMovies.First());
+								}
 							}
 
 							// Assign the id, name, and cost to each movie.
@@ -647,21 +691,6 @@ namespace MoviePicker.WebApp.Models
 			return result;
 		}
 
-		/// <summary>
-		/// Remove movies in picks whose box office value is 0.
-		/// </summary>
-		/// <param name="picks"></param>
-		/// <param name="clonedList"></param>
-		private void RemoveZeroPicks(IMovieList picks)
-		{
-			var removaList = picks.Movies.Where(movie => movie.Earnings == 0);
-
-			foreach (var toRemove in removaList)
-			{
-				picks.Remove(toRemove);
-			}
-		}
-
 		private List<IMovie> SpreadCompoundMovies(List<IMovie> compoundMovies, List<IMovie> movies)
 		{
 			var rootMovie = movies.FirstOrDefault(movie => movie.Equals(compoundMovies.FirstOrDefault()));
@@ -680,6 +709,7 @@ namespace MoviePicker.WebApp.Models
 						Name = movieDay.MovieName,
 						Day = movieDay.Day,
 						Earnings = movieDay.Earnings / compoundTotal * rootMovie.Earnings,
+						Identifier = rootMovie.Identifier,
 						TheaterCount = theaterCount,
 						WeekendEnding = movieDay.WeekendEnding
 					});

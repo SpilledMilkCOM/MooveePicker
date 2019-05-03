@@ -203,6 +203,7 @@
     <Compile Include="ViewModels\ErrorViewModel.cs" />
     <Compile Include="Models\ExpertPickModel.cs" />
     <Compile Include="ViewModels\FandangoDaysViewModel.cs" />
+    <Compile Include="ViewModels\FandangoFutureViewModel.cs" />
     <Compile Include="ViewModels\HistoryViewModel.cs" />
     <Compile Include="ViewModels\ImagesViewModel.cs" />
     <Compile Include="ViewModels\IndexViewModel.cs" />

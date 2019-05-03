@@ -299,6 +299,7 @@ namespace MovieMiner
 			clone.Abbreviation = Abbreviation;
 			clone.CacheConfiguration = CacheConfiguration;
 			clone.ContainsEstimates = ContainsEstimates;
+			//clone.CompoundLoaded = CompoundLoaded;			// Don't copy this so the compound movies are reloaded.
 			clone.Expiration = Expiration;
 			clone.IsHidden = IsHidden;
 			clone.LastLoaded = LastLoaded;

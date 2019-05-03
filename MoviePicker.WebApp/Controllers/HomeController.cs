@@ -363,35 +363,10 @@ namespace MoviePicker.WebApp.Controllers
 			var stopWatch = new Stopwatch();
 			stopWatch.Start();
 
-			var movieList = new List<IMovie>();
-			var viewModel = new HistoryViewModel { Movies = movieList };
 			var futureMiner = new MineFandangoTicketSalesFuture(ConfigurationManager.AppSettings[FUTURE_URL_KEY]);
+			var viewModel = new FandangoFutureViewModel(_minerModel, futureMiner);
 
-			// When a miner is cloned.  Only the list is cloned, but you can still affect the movie inside the base list.
-			// Which is why EACH movie needs to be cloned here, because its box office list can get updated with the estimates if they are part of the Query string.
-
-			_minerModel.Miners[MinerModel.FML_INDEX].Movies.ForEach(item => movieList.Add(item.Clone()));
-
-			var futureMovies = futureMiner.Mine();
-
-			foreach (var movie in viewModel.Movies)
-			{
-				var futureMovieBoxOffice = futureMovies.Where(item => item.Equals(movie));
-
-				if (futureMovieBoxOffice != null && futureMovieBoxOffice.Any())
-				{
-					var boList = new List<IBoxOffice>();
-
-					// In this case the weekend ending is just a date (not necessarily a weekend).
-
-					foreach (var boxOffice in futureMovieBoxOffice)
-					{
-						boList.Add(new BoxOffice { Earnings = boxOffice.EarningsBase, WeekendEnding = boxOffice.WeekendEnding });
-					}
-
-					movie.SetBoxOfficeHistory(boList);
-				}
-			}
+			viewModel.Load();
 
 			stopWatch.Stop();
 
