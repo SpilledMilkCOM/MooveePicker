@@ -307,6 +307,8 @@
 
 						if (compoundMovie != null)
 						{
+							var lastCompoundTotal = Model.Miners.Last().CompoundTotal;
+
 							// TODO: Might want to fill in  the
 
 							customCompoundTotal += (decimal)(Model.GetType().GetProperty("BoxOffice1")?.GetValue(Model) ?? 0m);
@@ -325,9 +327,28 @@
 								@foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 								{
 									var compoundTotal = miner.CompoundTotal;
+									var customPercent = 0m;
+									var boPercentBackgroundColorStyle = "background-color: white;";
+
+									if (lastCompoundTotal != 0)
+									{
+										customPercent = (compoundTotal - lastCompoundTotal) / lastCompoundTotal * 100m;
+										boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(customPercent);
+									}
 
 									<td style="text-align: right">
 										@string.Format("{0}", compoundTotal > 0 ? compoundTotal.ToString("N0") : string.Empty)
+
+										@if (customPercent != 0)
+										{
+											<span class="badge badge-pill badge-dark"
+												  data-toggle="tooltip"
+												  data-placement="top"
+												  title="Gain or loss from previous week."
+												  style="@boPercentBackgroundColorStyle color: black;">
+												@customPercent.ToString("N1")%
+											</span>
+										}
 									</td>
 								}
 							</tr>
@@ -378,7 +399,7 @@
 
 									if (lastWeek != null && movie != null && lastWeek.EarningsBase > 0 && value != 0)
 									{
-										customPercent = (value - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+										customPercent = (value - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100m;
 										boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(customPercent);
 									}
 
@@ -389,7 +410,7 @@
 											  data-placement="top"
 											  title="Gain or loss from previous week."
 											  style="@boPercentBackgroundColorStyle color: black;">
-											@customPercent.ToString("N0")%
+											@customPercent.ToString("N1")%
 										</span>
 									}
 
@@ -497,7 +518,7 @@
 
 											@if (minerMovie != null && minerMovie.Day.HasValue && miner.CompoundTotal > 0)
 											{
-												var moviePercent = string.Format("{0:N1}%", minerMovie?.Earnings / miner.CompoundTotal * 100);
+												var moviePercent = string.Format("{0:N2}%", minerMovie?.Earnings / miner.CompoundTotal * 100);
 
 												<br />
 												<span class="glyphicon glyphicon-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
@@ -526,7 +547,7 @@
 														  data-placement="top"
 														  title="Gain or loss from previous week."
 														  style="@divColorStyle color: black;">
-														@percent.ToString("N0")%
+														@percent.ToString("N1")%
 													</span>
 												}
 											}

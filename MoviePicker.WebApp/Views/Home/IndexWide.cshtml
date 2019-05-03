@@ -34,7 +34,10 @@
 				<ul class="nav nav-tabs">
 					<li class="active"><a data-toggle="tab" href="#menuPicks1">Bonus ON</a></li>
 					<li><a data-toggle="tab" href="#menuPicks2">Bonus OFF</a></li>
-					<li><a data-toggle="tab" href="#menuPicks3">Perfect Pick</a></li>
+					@if (Model.MovieListPerfectPick != null)
+					{
+						<li><a data-toggle="tab" href="#menuPicks3">Perfect Pick</a></li>
+					}
 				</ul>
 
 				<div class="tab-content">
@@ -51,17 +54,15 @@
 							@Html.Partial("MovieListMini2", Model.MovieListBonusOff)
 						}
 					</div>
+					@if (Model.MovieListPerfectPick != null)
+					{
+						<div id="menuPicks3" class="tab-pane fade in">
 
-					<div id="menuPicks3" class="tab-pane fade in">
-						@if (Model.MovieListPerfectPick != null)
-						{
 							@Html.Partial("MovieListMini2", Model.MovieListPerfectPick)
-						}
-						else
-						{
-							<h4>Estimates Not In Yet</h4>
-						}
-					</div>
+
+
+						</div>
+					}
 				</div>
 			</div>
 		</div>

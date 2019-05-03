@@ -561,20 +561,6 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult Picks()
-		{
-			ParseViewRequest();
-
-			// Hide the last miner (BO Mojo for previous week).
-
-			_minerModel.Miners.Last().IsHidden = true;
-
-			ControllerUtility.SetTwitterCard(ViewBag);
-
-			return View(ConstructPicksViewModel());
-		}
-
-		[HttpGet]
 		public ActionResult ShareBonusOffPicks()
 		{
 			return View("SharePicks", ConstructSharePicksViewModel(false, false));
