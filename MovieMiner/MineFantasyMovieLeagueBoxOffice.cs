@@ -95,7 +95,7 @@ namespace MovieMiner
 				var imageNode = tableRow?.SelectSingleNode("td//div[contains(@class, 'proxy-img')]");
 				var name = RemovePunctuation(HttpUtility.HtmlDecode(nameNode?.InnerText));
 				var dayOfWeek = ParseDayOfWeek(name);
-				var movieName = ParseName(name, dayOfWeek);
+				var movieName = ParseName(MapName(name), dayOfWeek);
 
 				var movie = new Movie
 				{

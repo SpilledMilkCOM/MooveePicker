@@ -505,7 +505,7 @@ namespace MoviePicker.WebApp.Models
 			// (Only this miner mines the Identifier so you have to pull the movie from this miner's list of movies.)
 
 			var firstMojoMovie = mojoMovies.FirstOrDefault(item => item.Equals(firstCompoundMovie));
-			var dailyMiner = new MineBoxOfficeMojoDaily(firstMojoMovie.Identifier, lastMojoMiner.WeekendEnding);
+			var dailyMiner = new MineBoxOfficeMojoDaily(firstMojoMovie?.Identifier, lastMojoMiner.WeekendEnding);
 
 			var movies = dailyMiner.Mine();         // Each movie will have their corresponding DayOfWeek set.
 
