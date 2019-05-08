@@ -331,7 +331,7 @@ namespace MovieMiner
 
 			if (result != null)
 			{
-				result = result.Replace("é", "e");
+				result = result.Replace("é", "e").Replace("PokÃmon", "Pokemon");
 			}
 
 			return result;

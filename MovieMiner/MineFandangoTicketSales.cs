@@ -48,7 +48,7 @@ namespace MovieMiner
 							Id = id,
 							WeekendEnding = Convert.ToDateTime(tokens[0]),
 							Earnings = Convert.ToDecimal(tokens[1]),
-							Name = RemovePunctuation(tokens[2])
+							Name = MapName(RemovePunctuation(tokens[2]))
 						};
 						result.Add(movie);
 					}
