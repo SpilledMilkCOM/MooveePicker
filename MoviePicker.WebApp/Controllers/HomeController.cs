@@ -212,6 +212,7 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			var builder = new StringBuilder();
 			var theaterCounts = _minerModel.Miners[MinerModel.MOJO_THEATER_INDEX];
+			var lastWeekMojo = _minerModel.Miners[MinerModel.MOJO_LAST_INDEX];
 
 			// Column headers are FIRST!
 
@@ -221,6 +222,14 @@ namespace MoviePicker.WebApp.Controllers
 			{
 				builder.Append(",");
 				builder.Append(miner.Abbreviation);
+
+				if (miner == lastWeekMojo)
+				{
+					// Basically doubles up the last week's Mojo (BO and Theater Count)
+
+					builder.Append(",");
+					builder.Append(miner.Abbreviation + " TC");
+				}
 			}
 
 			builder.AppendLine();
@@ -244,6 +253,14 @@ namespace MoviePicker.WebApp.Controllers
 					else
 					{
 						builder.Append(minerMovie?.Earnings.ToString(CultureInfo.InvariantCulture));
+					}
+
+					if (miner == lastWeekMojo)
+					{
+						// Basically doubles up the last week's Mojo (BO and Theater Count)
+
+						builder.Append(",");
+						builder.Append(minerMovie?.TheaterCount);
 					}
 				}
 

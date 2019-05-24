@@ -331,9 +331,7 @@ namespace MovieMiner
 
 			if (result != null)
 			{
-				// BO Mojo put a number in.
-
-				result = result.Replace("Creed 2", "Creed II");
+				result = result.Replace("é", "e").Replace("PokÃmon", "Pokemon").Replace("Pokmon", "Pokemon");
 			}
 
 			return result;

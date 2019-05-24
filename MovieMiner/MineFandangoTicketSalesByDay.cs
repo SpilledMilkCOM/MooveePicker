@@ -51,7 +51,7 @@ namespace MovieMiner
 						{
 							WeekendEnding = Convert.ToDateTime(tokens[1]),
 							Earnings = Convert.ToDecimal(tokens[0]),			// Contains ticket sales (versus dollars)
-							Name = RemovePunctuation(tokens[3])
+							Name = MapName(RemovePunctuation(tokens[3]))
 						};
 						result.Add(movie);
 					}
