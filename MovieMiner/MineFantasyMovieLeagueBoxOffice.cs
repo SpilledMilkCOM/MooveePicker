@@ -209,6 +209,7 @@ namespace MovieMiner
 					//		Jan 1 - 3
 					//		Jan 30 - Feb 1
 					//		Dec 30 - Jan 1		(could span a year)
+					//		May 31 - 2			(WHY do this now? 05/31/2019, but they DID IT!)
 
 					char[] delimiter = { '-' };
 					var dateChunks = dateText.Split(delimiter);
@@ -235,7 +236,20 @@ namespace MovieMiner
 						{
 							// The second piece was just a number.
 
-							result.End = new DateTime(result.Start.Value.Year, result.Start.Value.Month, Convert.ToInt32(dateChunks[1]));
+							var dayOfMonth = Convert.ToInt32(dateChunks[1]);
+
+							if (dayOfMonth > result.Start.Value.Day)
+							{
+								result.End = new DateTime(result.Start.Value.Year, result.Start.Value.Month, dayOfMonth);
+							}
+							else
+							{
+								// The number was smaller which signifies the NEXT month.
+
+								var nextMonth = result.Start.Value.AddMonths(1);
+
+								result.End = new DateTime(nextMonth.Year, nextMonth.Month, dayOfMonth);
+							}
 						}
 					}
 				}
