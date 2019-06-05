@@ -135,7 +135,25 @@ namespace MovieMiner
 			var days = monthDays[1].Split(new char[] { '\u0096' });     // One of those extra long hyphens.
 			var month = _monthMap[monthDays[0]];
 
-			return new DateTime(year, month, int.Parse(days[1]));
+			if (monthDays.Length > 2)
+			{
+				// May 31-Jun 2
+
+				if (month == 12)
+				{
+					// If crossing from Dec to Jan
+					month = 0;
+					year++;
+				}
+
+				return new DateTime(year, month + 1, int.Parse(monthDays[2]));
+			}
+			else
+			{
+				// May 10-12
+
+				return new DateTime(year, month, int.Parse(days[1]));
+			}
 		}
 	}
 }
