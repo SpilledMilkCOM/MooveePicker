@@ -82,3 +82,4 @@ The current defaults that I use are on the [About](http://mooveepicker.com/home/
 * Added an auto scale out in the App Service Plan  >80% memory +1 instance.
   * Added notification
 * There is no default to scale the instances back down.  Had to add one when memory is <10% decrement an instance.
+* Added Key Vault and Certificate to get the service secure using HTTPS.
