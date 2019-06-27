@@ -205,6 +205,7 @@ namespace MoviePicker.Common
 		public override bool Equals(object obj)
 		{
 			bool result = false;
+			bool contains = false;
 			var compareTo = obj as IMovie;
 
 			if (compareTo != null)
@@ -213,7 +214,7 @@ namespace MoviePicker.Common
 				{
 					result = true;
 				}
-				else if(Identifier != null && compareTo.Identifier != null)
+				else if (Identifier != null && compareTo.Identifier != null)
 				{
 					// The Identifier will trump all other equalities if they are set.
 					result = Identifier == compareTo.Identifier;
@@ -239,6 +240,7 @@ namespace MoviePicker.Common
 						// Not an exact match so try starts with (limited contains)
 
 						result = movieName.StartsWith(testMovieName) || testMovieName.StartsWith(movieName);
+						contains = result;
 					}
 
 					if (!result)
@@ -246,6 +248,7 @@ namespace MoviePicker.Common
 						// Not an exact match so try ends with (limited contains)
 
 						result = movieName.EndsWith(testMovieName) || testMovieName.EndsWith(movieName);
+						contains = result;
 					}
 
 					if (!result)
@@ -253,6 +256,7 @@ namespace MoviePicker.Common
 						// Not an exact match so try "contains"
 
 						result = movieName.IndexOf(testMovieName) > 1 || testMovieName.IndexOf(movieName) > 1;
+						contains = result;
 					}
 
 					if (result)
@@ -272,27 +276,40 @@ namespace MoviePicker.Common
 							{
 								result = false;
 							}
+
+							if (contains)
+							{
+								var tokens1 = MovieName.Split();
+								var tokens2 = compareTo.MovieName.Split();
+
+								if (tokens1.Length == 1 || tokens2.Length == 1)
+								{
+									// If either are a single word then the first words need to match exactly.  This may need to progress to other words.
+
+									result = tokens1[0].ToLower().Equals(tokens2[0].ToLower());
+								}
+							}
 						}
 					}
 
-					if (!result)
-					{
-						// Compare the first X characters
+					//if (!result)
+					//{
+					//	// Compare the first X characters
 
-						int length = 10;
+					//	int length = 10;
 
-						if (movieName.Length < length)
-						{
-							length = movieName.Length;
-						}
+					//	if (movieName.Length < length)
+					//	{
+					//		length = movieName.Length;
+					//	}
 
-						if (testMovieName.Length < length)
-						{
-							length = testMovieName.Length;
-						}
+					//	if (testMovieName.Length < length)
+					//	{
+					//		length = testMovieName.Length;
+					//	}
 
-						result = movieName.Substring(0, length) == testMovieName.Substring(0, length);
-					}
+					//	result = movieName.Substring(0, length) == testMovieName.Substring(0, length);
+					//}
 
 					if (!result)
 					{

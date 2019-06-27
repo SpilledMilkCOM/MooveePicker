@@ -38,6 +38,15 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod, TestCategory("Mock")]
+		public void Movie_Equals_StartsWith_Matches2()
+		{
+			var movie1 = new Movie { Name = "Anna" };
+			var movie2 = new Movie { Name = "Annabelle Comes Home" };
+
+			Assert.IsFalse(movie1.Equals(movie2), "The movie names equal");
+		}
+
+		[TestMethod, TestCategory("Mock")]
 		public void Movie_Equals_StartsWithSecond_Matches()
 		{
 			var movie1 = new Movie { Name = "Star Wars A New Hope" };
