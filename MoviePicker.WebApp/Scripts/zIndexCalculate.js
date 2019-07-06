@@ -72,8 +72,33 @@ function boxOffice(movies, bestPerformer) {
 		var movie = movies[movieCount];
 		var controlIndex = movie.ControlId;
 		var boxOffice = $('#boId' + controlIndex);
+		var boxOfficeCompoundPct = $('#boId' + controlIndex + 'CompoundPct');
 
 		logit('controlIndex = ' + controlIndex);
+
+		// Look for compound movie controls
+
+		if (boxOfficeCompoundPct != null && movie.Day != null) {
+			var customCompoundTotal = 0;
+
+			// Find the movies that have box office compound percent control
+
+			for (var counter = 0; counter < length; counter++) {
+				var pctControl = $('#boId' + movies[counter].ControlId + 'CompoundPct');
+
+				if (pctControl != null) {
+					logit('adding movie = ' + movies[counter].ControlId + ' :: EarningsBase = ' + movies[counter].EarningsBase);
+					customCompoundTotal += movies[counter].EarningsBase;
+				}
+			}
+
+			if (customCompoundTotal > 0) {
+				logit('compound movie = ' + controlIndex + ':: compound total ' + customCompoundTotal);
+				logit((movie.EarningsBase / customCompoundTotal * 100) + '%');
+
+				boxOfficeCompoundPct.val((movie.EarningsBase / customCompoundTotal * 100) + '%');
+			}
+		}
 
 		if (boxOffice != null) {
 			var boxOfficeImage = $('#imageId' + controlIndex);
