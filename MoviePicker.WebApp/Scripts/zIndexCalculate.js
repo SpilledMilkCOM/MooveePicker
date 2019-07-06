@@ -86,7 +86,8 @@ function boxOffice(movies, bestPerformer) {
 			for (var counter = 0; counter < length; counter++) {
 				var pctControl = $('#boId' + movies[counter].ControlId + 'CompoundPct');
 
-				if (pctControl != null) {
+				if (pctControl != null && pctControl.length) {
+					logit('length = ' + pctControl.length);
 					logit('adding movie = ' + movies[counter].ControlId + ' :: EarningsBase = ' + movies[counter].EarningsBase);
 					customCompoundTotal += movies[counter].EarningsBase;
 				}
@@ -96,7 +97,7 @@ function boxOffice(movies, bestPerformer) {
 				logit('compound movie = ' + controlIndex + ':: compound total ' + customCompoundTotal);
 				logit((movie.EarningsBase / customCompoundTotal * 100) + '%');
 
-				boxOfficeCompoundPct.val((movie.EarningsBase / customCompoundTotal * 100) + '%');
+				boxOfficeCompoundPct.text((movie.EarningsBase / customCompoundTotal * 100).toFixed(1) + '%');
 			}
 		}
 
@@ -113,7 +114,7 @@ function boxOffice(movies, bestPerformer) {
 			boxOffice.val(formatWithCommas(movie.EarningsBase));
 
 			if (boxOfficePct != null) {
-				boxOfficePct.val(percent + '%');
+				boxOfficePct.text(percent.toFixed(0) + '%');
 			}
 
 			boxOfficePct.css({ 'background-color': percentToBackgroundColor(percent) });
