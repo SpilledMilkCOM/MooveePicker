@@ -806,6 +806,36 @@
 								movieCount++;
 							}
 						</tr>
+
+						if (compoundMovie != null && movieCount == 4)
+						{
+							<tr>
+								<td>
+									<input class="form-control"
+										   id="compoundFieldId"
+										   onblur="boxOfficeCompoundLostFocus('@customCompoundTotal', this.value)"
+										   type="text"
+										   value="@string.Format("{0:N0}", customCompoundTotal)"
+										   data-previous-value="@customCompoundTotal"
+										   data-val-required="The Compound Box Office field is required."
+										   data-val-number="The Compound Box Office field must be a number."
+										   data-val="true"
+										   style="margin-left: 20px; width: 120px; box-shadow: inset 0 0 3px #000000">
+								</td>
+								<td>
+									<span id="compoundUpId"
+										  class="glyphicon glyphicon-triangle-top"
+										  aria-hidden="true"
+										  style="cursor: pointer; margin-left: 10px;">
+									</span>
+									<span id="compoundDownId"
+										  class="glyphicon glyphicon-triangle-bottom"
+										  aria-hidden="true"
+										  style="cursor: pointer; margin-left: 5px;">
+									</span>
+								</td>
+							</tr>
+						}
 					}
 				}
 			</table>

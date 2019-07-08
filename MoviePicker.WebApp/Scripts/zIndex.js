@@ -1,6 +1,27 @@
 ﻿var MINER_COUNT = 2;
 var SCREEN_COUNT_MAX = 8;
 
+
+function boxOfficeCompoundLostFocus(oldValue, newValue) {
+
+	if (oldValue != newValue) {
+
+		clearWeights();
+
+		clearMoviePicksPosters('bonusOnMovieList');
+		clearMoviePicksPosters('bonusOffMovieList');
+
+		// Get the separate values of the compound movies
+
+		// Find percentages using old value (previous value)
+
+		// Muliply new compound total by percentages to change each value.
+		// Call boxOfficeLostFocus() after value has changed for each control.
+
+		clickPicksAsync();
+	}
+}
+
 function boxOfficeLostFocus(oldValue, newValue, movieIndex) {
 
 	if (oldValue != newValue) {

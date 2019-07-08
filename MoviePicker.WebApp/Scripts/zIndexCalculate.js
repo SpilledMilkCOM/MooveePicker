@@ -80,6 +80,7 @@ function boxOffice(movies, bestPerformer) {
 		// Look for compound movie controls
 
 		if (controlExists(boxOfficeCompoundPct) && movie.Day != null) {
+			var boxOfficeCompound = $('#compoundFieldId');
 			var customCompoundTotal = 0;
 
 			// Find the movies that have box office compound percent control
@@ -99,6 +100,8 @@ function boxOffice(movies, bestPerformer) {
 				logit((movie.EarningsBase / customCompoundTotal * 100) + '%');
 
 				boxOfficeCompoundPct.text((movie.EarningsBase / customCompoundTotal * 100).toFixed(1) + '%');
+
+				boxOfficeCompound.val(formatWithCommas(customCompoundTotal));
 			}
 		}
 
