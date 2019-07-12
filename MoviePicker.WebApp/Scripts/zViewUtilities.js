@@ -32,6 +32,16 @@ function formatWithCommas(value) {
 	return valueAsString.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+// Test for jQuery control existance
+function controlExists(control) {
+	return control != null && control.length;
+}
+
+// Converts text with commas into a raw value
+function getRawValue(value) {
+	return value.replace(/,/g, '');
+}
+
 // Log a message to the console (based on consoleOn flag set above)
 function logit(message) {
 	if (consoleOn == true) {

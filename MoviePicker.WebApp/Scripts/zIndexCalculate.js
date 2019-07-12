@@ -68,17 +68,19 @@ function bonusComparison(movies) {
 // Fill in the already scaffoled Box Office fields and sliders.
 function boxOffice(movies, bestPerformer) {
 
+	// Loop through the movies which are sorted by efficiency (versus control index)
 	for (var movieCount = 0, length = movies.length; movieCount < length; movieCount++) {
 		var movie = movies[movieCount];
 		var controlIndex = movie.ControlId;
-		var boxOffice = $('#boId' + controlIndex);
+		var boxOffice = $('#boId' + controlIndex);		// Find the box office field.
 		var boxOfficeCompoundPct = $('#boId' + controlIndex + 'CompoundPct');
 
 		logit('controlIndex = ' + controlIndex);
 
 		// Look for compound movie controls
 
-		if (boxOfficeCompoundPct != null && movie.Day != null) {
+		if (controlExists(boxOfficeCompoundPct) && movie.Day != null) {
+			var boxOfficeCompound = $('#compoundFieldId');
 			var customCompoundTotal = 0;
 
 			// Find the movies that have box office compound percent control
@@ -86,7 +88,8 @@ function boxOffice(movies, bestPerformer) {
 			for (var counter = 0; counter < length; counter++) {
 				var pctControl = $('#boId' + movies[counter].ControlId + 'CompoundPct');
 
-				if (pctControl != null) {
+				if (controlExists(pctControl)) {
+					logit('length = ' + pctControl.length);
 					logit('adding movie = ' + movies[counter].ControlId + ' :: EarningsBase = ' + movies[counter].EarningsBase);
 					customCompoundTotal += movies[counter].EarningsBase;
 				}
@@ -96,11 +99,15 @@ function boxOffice(movies, bestPerformer) {
 				logit('compound movie = ' + controlIndex + ':: compound total ' + customCompoundTotal);
 				logit((movie.EarningsBase / customCompoundTotal * 100) + '%');
 
-				boxOfficeCompoundPct.val((movie.EarningsBase / customCompoundTotal * 100) + '%');
+				boxOfficeCompoundPct.text((movie.EarningsBase / customCompoundTotal * 100).toFixed(1) + '%');
+
+				boxOfficeCompound.val(formatWithCommas(customCompoundTotal));
 			}
 		}
 
-		if (boxOffice != null) {
+		// If the box office field exists, then fill in all of the fields.
+
+		if (controlExists(boxOffice)) {
 			var boxOfficeImage = $('#imageId' + controlIndex);
 			var boxOfficePct = $('#boId' + controlIndex + 'Pct');
 			var boxOfficeSlider = $('#boSliderId' + controlIndex);
@@ -112,17 +119,17 @@ function boxOffice(movies, bestPerformer) {
 
 			boxOffice.val(formatWithCommas(movie.EarningsBase));
 
-			if (boxOfficePct != null) {
-				boxOfficePct.val(percent + '%');
+			if (controlExists(boxOfficePct)) {
+				boxOfficePct.text(percent.toFixed(0) + '%');
 			}
 
 			boxOfficePct.css({ 'background-color': percentToBackgroundColor(percent) });
 
-			if (boxOfficeSlider != null) {
+			if (controlExists(boxOfficeSlider != null)) {
 				boxOfficeSlider.val(percent);
 			}
 
-			if (boxOfficeImage != null) {
+			if (controlExists(boxOfficeImage)) {
 				var shadowColor = "grey";
 
 				if (bestPerformer != null && controlIndex == bestPerformer.ControlId) {
