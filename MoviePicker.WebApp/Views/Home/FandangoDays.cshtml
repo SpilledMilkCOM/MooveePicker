@@ -69,9 +69,9 @@
 </script>
 
 @{
-		int movieCount = 1;     // This scope is pretty far, sorry  :(
-		var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
-		var pageTitle = string.Format("{0}{1}", ViewBag.Title, Model.IsScaled ? " (Estimates Scaled)" : string.Empty);
+	int movieCount = 1;     // This scope is pretty far, sorry  :(
+	var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
+	var pageTitle = string.Format("{0}{1}", ViewBag.Title, Model.IsScaled ? " (Estimates Scaled)" : string.Empty);
 
 	<div class="row">
 
@@ -215,6 +215,15 @@
 			<h2> </h2>
 
 			<a href="@Model.Miner.Url" target="_blank"><strong>File Last Updated: </strong></a>@Model.LastUpdated (Central)
+
+			@if (Model.LastUpdated.AddDays(1) < DateTime.UtcNow.AddHours(-5))
+			{
+				// Adjust for Central time above.
+				<div>
+					&nbsp; Last Updated Date is @string.Format("{0:N0}", (DateTime.UtcNow.AddHours(-5) - Model.LastUpdated).TotalHours) hours old.
+					<span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="color: red"></span>
+				</div>
+			}
 
 			<div class="row-divider"> </div>
 

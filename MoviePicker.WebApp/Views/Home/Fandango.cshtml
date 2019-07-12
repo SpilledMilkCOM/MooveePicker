@@ -208,79 +208,88 @@
 
 		@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
 
-		<div class="col-md-4">
+	<div class="col-md-4">
 
-			<h2> </h2>
+		<h2> </h2>
 
-			<a href="@Model.Miner.Url" target="_blank"><strong>File Last Updated: </strong></a>@Model.LastUpdated (Central)
+		<a href="@Model.Miner.Url" target="_blank"><strong>File Last Updated: </strong></a>@Model.LastUpdated (Central)
 
-			<div>Filtered to: @Model.FilteredTo</div>
-
-			<div class="input-group col-xs-5 col-sm-5">
-
-				<input id="pastHoursId" class="form-control" placeholder="Past Hours (default 24)" style="width: 75rem" value="@Request.Params["past"]" />
-
-				<div class="input-group-btn">
-					<button class="btn btn-default" type="button" onclick="clickFilter()">Filter</button>
-				</div>
+		@if (Model.LastUpdated.AddDays(1) < DateTime.UtcNow.AddHours(-5))
+		{
+			// Adjust for Central time above.
+			<div>
+				&nbsp; Last Updated Date is @string.Format("{0:N0}", (DateTime.UtcNow.AddHours(-5) - Model.LastUpdated).TotalHours) hours old.
+				<span class="glyphicon glyphicon-info-sign" aria-hidden="true" style="color: red"></span>
 			</div>
+		}
 
-			<div class="clearfix"></div>
-			<div class="row-divider"> </div>
+		<div>Filtered to: @Model.FilteredTo</div>
 
-			<table>
-				@{
-					movieCount = 1;
+		<div class="input-group col-xs-5 col-sm-5">
 
-					while (movieCount <= movieList.Count)
-					{
-						<tr>
-							@for (int col = 0; col < 5 && movieCount <= movieList.Count; col++)
-							{
-								var movie = movieList[movieCount - 1];
+			<input id="pastHoursId" class="form-control" placeholder="Past Hours (default 24)" style="width: 75rem" value="@Request.Params["past"]" />
 
-								var boId = string.Format("boId{0}", movieCount);
-								var name = string.Format("BoxOffice{0}", movieCount);
+			<div class="input-group-btn">
+				<button class="btn btn-default" type="button" onclick="clickFilter()">Filter</button>
+			</div>
+		</div>
 
-								// TODO: May want to use a utility to speed up the reflection.
+		<div class="clearfix"></div>
+		<div class="row-divider"> </div>
 
-								var valueString = string.Format("{0:N0}", movie.Earnings);
-								var labelBackgroundColor = movie.IsNew ? "lightgreen" : "white";
+		<table>
+			@{
+				movieCount = 1;
 
-								var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey";
+				while (movieCount <= movieList.Count)
+				{
+					<tr>
+						@for (int col = 0; col < 5 && movieCount <= movieList.Count; col++)
+						{
+							var movie = movieList[movieCount - 1];
 
-								<td style="padding: 3px;">
+							var boId = string.Format("boId{0}", movieCount);
+							var name = string.Format("BoxOffice{0}", movieCount);
 
-									<div data-toggle="tooltip" data-placement="top"
-										 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
+							// TODO: May want to use a utility to speed up the reflection.
 
-										<div style="position: relative; width: 0; height: 0">
-											<span class="badge badge-pill badge-light"
-												  style="position: absolute; left: 30px; top: 5px;"
-												  data-toggle="tooltip"
-												  data-placement="right">
-												@((movie.EarningsBase / totalBoxOffice * 100).ToString("N1")) %
-											</span>
-										</div>
+							var valueString = string.Format("{0:N0}", movie.Earnings);
+							var labelBackgroundColor = movie.IsNew ? "lightgreen" : "white";
 
-										<img class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
+							var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey";
 
-										<div style="position: relative; top: -60px;">
-											<div name="@name"
-												 id="@boId"
-												 style="padding: 0px 3px 0px 3px; margin: 4px; text-align: center; width: 90px; background: @labelBackgroundColor; opacity: 0.7;">
-												@valueString
-											</div>
+							<td style="padding: 3px;">
+
+								<div data-toggle="tooltip" data-placement="top"
+									 title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)">
+
+									<div style="position: relative; width: 0; height: 0">
+										<span class="badge badge-pill badge-light"
+											  style="position: absolute; left: 30px; top: 5px;"
+											  data-toggle="tooltip"
+											  data-placement="right">
+											@((movie.EarningsBase / totalBoxOffice * 100).ToString("N1")) %
+										</span>
+									</div>
+
+									<img class="img-responsive img-rounded" style="@backgroundStyle" src="@movie.ImageUrl" />
+
+									<div style="position: relative; top: -60px;">
+										<div name="@name"
+											 id="@boId"
+											 style="padding: 0px 3px 0px 3px; margin: 4px; text-align: center; width: 90px; background: @labelBackgroundColor; opacity: 0.7;">
+											@valueString
 										</div>
 									</div>
-								</td>
+								</div>
+							</td>
 
-								movieCount++;
-							}
-						</tr>
-					}
+							movieCount++;
+						}
+					</tr>
 				}
-			</table>
-		</div>
+			}
+		</table>
+	</div>
 	</div>
 }
