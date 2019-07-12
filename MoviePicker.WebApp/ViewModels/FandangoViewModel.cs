@@ -35,7 +35,7 @@ namespace MoviePicker.WebApp.ViewModels
 
 		public long Duration { get; set; }
 
-		public DateTime FilteredTo => LastUpdated.AddHours(-PastHours);
+		public DateTime FilteredTo => (LastUpdated > new DateTime().AddHours(PastHours)) ? LastUpdated.AddHours(-PastHours) : LastUpdated;
 
 		/// <summary>
 		/// The estimated values are in (typically on a Saturday)
@@ -83,7 +83,14 @@ namespace MoviePicker.WebApp.ViewModels
 		{
 			((ICache)Miner).Load();
 
-			LastUpdated = Miner.Movies.Max(movie => movie.WeekendEnding);
+			if (Miner.LastUpdated.HasValue)
+			{
+				LastUpdated = Miner.LastUpdated.Value;
+			}
+			else if (Miner.Movies.Any())
+			{
+				LastUpdated = Miner.Movies.Max(movie => movie.WeekendEnding);
+			}
 
 			_movies = FilterMovies();
 			MovieList = MakePick(true);
