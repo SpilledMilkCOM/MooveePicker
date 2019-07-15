@@ -48,6 +48,7 @@ namespace MovieMiner.Tests
 
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Any(), "The list was empty.");
+			Logger.WriteLine($"Contains Estimates: {test.ContainsEstimates}");
 
 			actual = FilterMovies(actual);
 

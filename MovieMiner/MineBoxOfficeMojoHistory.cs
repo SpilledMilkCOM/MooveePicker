@@ -8,6 +8,9 @@ using System;
 
 namespace MovieMiner
 {
+	/// <summary>
+	/// Loads up the history list in an IMovie
+	/// </summary>
 	public class MineBoxOfficeMojoHistory : MinerBase
 	{
 		private const string DEFAULT_URL = "http://boxofficemojo.com/";
