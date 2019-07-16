@@ -1,4 +1,4 @@
-﻿var consoleOn = true;
+﻿var consoleOn = false;
 
 function changeStyle(id, style, value) {
 	var ctrl = $('#' + id);

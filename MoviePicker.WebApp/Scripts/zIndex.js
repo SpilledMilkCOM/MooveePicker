@@ -1,8 +1,9 @@
 ﻿var MINER_COUNT = 2;
 var SCREEN_COUNT_MAX = 8;
 
-
 function boxOfficeCompoundLostFocus(oldValue, newValue) {
+
+	logit('boxOfficeCompoundLostFocus()');
 
 	if (oldValue != newValue) {
 
@@ -11,12 +12,17 @@ function boxOfficeCompoundLostFocus(oldValue, newValue) {
 		clearMoviePicksPosters('bonusOnMovieList');
 		clearMoviePicksPosters('bonusOffMovieList');
 
-		// Get the separate values of the compound movies
+		var compoundField = $('#compoundFieldId');
 
-		// Find percentages using old value (previous value)
+		if (controlExists(compoundField)) {
+			updateCompoundEqualPercentages();
 
-		// Muliply new compound total by percentages to change each value.
-		// Call boxOfficeLostFocus() after value has changed for each control.
+			// Change the compound movies based on their percentage
+
+			updateCompoundBoxOffice(1, newValue);
+			updateCompoundBoxOffice(2, newValue);
+			updateCompoundBoxOffice(3, newValue);
+		}
 
 		clickPicksAsync();
 	}
@@ -63,12 +69,25 @@ function clearMoviePicksPostersAll() {
 }
 
 function clearWeights() {
-	logit("clearWeights");
+	logit("clearWeights()");
 
 	for (idx = MINER_COUNT; idx <= 7; idx++) {
 		$("#weightId" + idx).val(0);
 
 		logit("#weightId" + idx + " = " + $("#weightId" + idx).val());
+	}
+}
+
+function clickChangeCompoundPercent(change) {
+	var compoundField = $('#compoundFieldId');
+
+	if (controlExists(compoundField)) {
+		var oldValue = compoundField.val().replace(/,/g, '');
+		var newValue = oldValue * (100.0 + change) / 100.0;
+
+		compoundField.val(formatWithCommas(newValue));
+
+		boxOfficeCompoundLostFocus(oldValue, newValue);		// "generate" the event and trigger the change.
 	}
 }
 
@@ -86,7 +105,7 @@ function clickChangePercent(button, controlIndex, change) {
 		logit('boxOfficePct.text() = ' + boxOfficePct.text());
 
 		var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
-		var newPctValue = parseInt(boxOfficePct.text().replace(/%/g, '').replace(/,/g, '')) + change;
+		var newPctValue = parseFloat(boxOfficePct.text().replace(/%/g, '').replace(/,/g, '')) + change;
 
 		if (newPctValue < -100) {
 			newPctValue = -100;
@@ -102,7 +121,7 @@ function clickChangePercent(button, controlIndex, change) {
 
 		boxOfficePct.css({ 'background-color': percentToBackgroundColor(newPctValue) });
 		boxOfficePct.text(formatWithCommas(newPctValue) + '%');
-		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(newPctValue)) / 100.0));
+		boxOffice.val(formatWithCommas(originalValue * (100.0 + newPctValue) / 100.0));
 
 		logit('boxOffice.val() = ' + boxOffice.val());
 
@@ -368,6 +387,93 @@ function updateBoxOffice(controlIndex) {
 		//}
 
 		boxOffice.val(formatWithCommas(value));
+	}
+}
+
+function updateCompoundBoxOffice(controlId, newValue) {
+
+	logit('updateCompoundBoxOffice(' + controlId + ', ' + newValue + ')');
+
+	var boxOfficeCompoundPct = $('#boId' + controlId + 'CompoundPct');
+
+	if (controlExists(boxOfficeCompoundPct)) {
+		var pctValue = parseFloat(boxOfficeCompoundPct.text().replace(/%/g, '').replace(/,/g, ''));
+
+		logit('pctValue = ' + pctValue);
+
+		// Muliply new compound total by percentages to change each value.
+		// Don't need to change the percent.
+
+		var boxOffice = $('#boId' + controlId);
+		var value = newValue * pctValue / 100.0;
+
+		boxOffice.val(formatWithCommas(value));
+		//boxOffice.prop('data-original-value', value);
+		boxOffice.attr('data-original-value', value);
+
+		logit('data-original-value = ' + boxOffice.attr('data-original-value'));
+	}
+}
+
+// Adjust the percentages if they are all 0, make them all 33.3%
+function updateCompoundEqualPercentages() {
+	logit('updateCompoundEqualPercentages()');
+
+	var allEqual = false;
+	var pctValue1 = 0;
+	var pctValue2 = 0;
+
+	var boxOfficeCompoundPct = $('#boId1CompoundPct');
+
+	if (controlExists(boxOfficeCompoundPct)) {
+		pctValue1 = parseInt(boxOfficeCompoundPct.text().replace(/%/g, '').replace(/,/g, ''));
+
+		logit('pctValue1 = ' + pctValue1);
+
+		if (pctValue1 == 0) {
+			boxOfficeCompoundPct = $('#boId2CompoundPct');
+
+			if (controlExists(boxOfficeCompoundPct)) {
+				pctValue2 = parseInt(boxOfficeCompoundPct.text().replace(/%/g, '').replace(/,/g, ''));
+
+				logit('pctValue2 = ' + pctValue2);
+
+				allEqual = pctValue1 == pctValue2;
+
+				if (allEqual) {
+					boxOfficeCompoundPct = $('#boId3CompoundPct');
+
+					if (controlExists(boxOfficeCompoundPct)) {
+						pctValue2 = parseInt(boxOfficeCompoundPct.text().replace(/%/g, '').replace(/,/g, ''));
+
+						logit('pctValue2 = ' + pctValue2);
+
+						allEqual = pctValue1 == pctValue2;
+					}
+				}
+			}
+		}
+
+	}
+
+	if (allEqual) {
+		boxOfficeCompoundPct = $('#boId1CompoundPct');
+
+		if (controlExists(boxOfficeCompoundPct)) {
+			boxOfficeCompoundPct.text('33.3%');
+		}
+
+		boxOfficeCompoundPct = $('#boId2CompoundPct');
+
+		if (controlExists(boxOfficeCompoundPct)) {
+			boxOfficeCompoundPct.text('33.3%');
+		}
+
+		boxOfficeCompoundPct = $('#boId3CompoundPct');
+
+		if (controlExists(boxOfficeCompoundPct)) {
+			boxOfficeCompoundPct.text('33.3%');
+		}
 	}
 }
 
