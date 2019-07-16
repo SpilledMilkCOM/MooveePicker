@@ -758,6 +758,7 @@
 												   style="position: absolute; left: 20px; top: -40px; background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
 												   type="text"
 												   value="@valueString"
+												   data-isnew="@string.Format("{0}", lastWeek == null ? "true" : "false")"
 												   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
 												   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
 												   data-val-required="The Box Office @movie.ControlId field is required."
@@ -765,7 +766,7 @@
 												   data-val="true">
 
 
-											@if (movie.Day.HasValue && customCompoundTotal > 0)
+											@if (movie.Day.HasValue)
 											{
 												<span class="badge badge-pill badge-dark"
 													  data-toggle="tooltip"
@@ -774,7 +775,7 @@
 													  style="position: absolute; left: 15px; top: -50px; color: dimgrey; background-color: lightskyblue">
 													<span class="glyphicon glyphicon-tasks" aria-hidden="true"
 														  style="color: dimgrey;"></span>
-													<span id="@string.Format("{0}CompoundPct", boId)">@string.Format("{0:N1}%", value / customCompoundTotal * 100)</span>
+													<span id="@string.Format("{0}CompoundPct", boId)">@string.Format("{0:N1}%", customCompoundTotal > 0 ? value / customCompoundTotal * 100 : 0)</span>
 												</span>
 											}
 

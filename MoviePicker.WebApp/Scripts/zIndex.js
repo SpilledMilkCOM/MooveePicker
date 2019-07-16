@@ -73,7 +73,7 @@ function clearWeights() {
 }
 
 function clickChangePercent(button, controlIndex, change) {
-	logit(controlIndex + ' - changing percent ' + change);
+	logit('clickChangePercent() - ' + controlIndex + ' - changing percent ' + change);
 
 	global().lastMovieControlIndex = controlIndex;
 
@@ -83,7 +83,7 @@ function clickChangePercent(button, controlIndex, change) {
 	var boxOfficePct = $('#boId' + controlIndex + 'Pct');
 
 	if (boxOfficePct != null && boxOffice != null) {
-		logit(boxOfficePct.text());
+		logit('boxOfficePct.text() = ' + boxOfficePct.text());
 
 		var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
 		var newPctValue = parseInt(boxOfficePct.text().replace(/%/g, '').replace(/,/g, '')) + change;
@@ -92,12 +92,19 @@ function clickChangePercent(button, controlIndex, change) {
 			newPctValue = -100;
 		}
 
-		logit(originalValue);
+		logit('originalValue = ' + originalValue);
+		logit('newPctValue = ' + newPctValue);
 		logit(percentToBackgroundColor(newPctValue));
+
+		if (originalValue <= 0) {
+			originalValue = 1;
+		}
 
 		boxOfficePct.css({ 'background-color': percentToBackgroundColor(newPctValue) });
 		boxOfficePct.text(formatWithCommas(newPctValue) + '%');
 		boxOffice.val(formatWithCommas(originalValue * (100.0 + parseInt(newPctValue)) / 100.0));
+
+		logit('boxOffice.val() = ' + boxOffice.val());
 
 		clickPicksAsync();
 	}
@@ -107,7 +114,7 @@ function clickHidePoster(posterId) {
 
 	// Also need functionality to move the other DIVs up into this postion.
 
-	logit('clickHidePoster(' + posterId +')');
+	logit('clickHidePoster(' + posterId + ')');
 
 	var div = $('#' + posterId);
 
@@ -349,8 +356,18 @@ function sliderOnChange(slider, controlIndex) {
 function updateBoxOffice(controlIndex) {
 	var boxOffice = $('#boId' + controlIndex);
 
-	if (boxOffice != null) {
-		boxOffice.val(formatWithCommas(boxOffice.val().replace(/\,/g, "")));
+	if (controlExists(boxOffice)) {
+		var value = boxOffice.val().replace(/\,/g, "");
+		//var isNew = boxOffice.attr('data-isnew') == "true";
+
+		//if (isNew) {
+		//	// Since this is called from LostFocus, THIS value should be set into the orginal value.
+		//	// Only the scroll buttons will adjust the percentage (leaving original-value alone).
+
+		//	boxOffice.prop('data-original-value', value);
+		//}
+
+		boxOffice.val(formatWithCommas(value));
 	}
 }
 

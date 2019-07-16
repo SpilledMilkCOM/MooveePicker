@@ -89,7 +89,6 @@ function boxOffice(movies, bestPerformer) {
 				var pctControl = $('#boId' + movies[counter].ControlId + 'CompoundPct');
 
 				if (controlExists(pctControl)) {
-					logit('length = ' + pctControl.length);
 					logit('adding movie = ' + movies[counter].ControlId + ' :: EarningsBase = ' + movies[counter].EarningsBase);
 					customCompoundTotal += movies[counter].EarningsBase;
 				}
@@ -112,7 +111,7 @@ function boxOffice(movies, bestPerformer) {
 			var boxOfficePct = $('#boId' + controlIndex + 'Pct');
 			var boxOfficeSlider = $('#boSliderId' + controlIndex);
 			var originalValue = boxOffice.attr('data-original-value').replace(/,/g, '');
-			var percent = (movie.EarningsBase - originalValue) / originalValue * 100;
+			var percent = originalValue > 0 ? (movie.EarningsBase - originalValue) / originalValue * 100 : 0;
 
 			logit(originalValue);
 			logit(percent + '%');
