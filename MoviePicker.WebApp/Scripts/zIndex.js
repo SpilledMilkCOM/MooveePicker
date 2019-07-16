@@ -87,7 +87,7 @@ function clickChangeCompoundPercent(change) {
 
 		compoundField.val(formatWithCommas(newValue));
 
-		boxOfficeCompoundLostFocus(oldValue, newValue);		// "generate" the event and trigger the change.
+		boxOfficeCompoundLostFocus(oldValue, formatWithCommas(newValue));		// "generate" the event and trigger the change.
 	}
 }
 
@@ -394,6 +394,8 @@ function updateCompoundBoxOffice(controlId, newValue) {
 
 	logit('updateCompoundBoxOffice(' + controlId + ', ' + newValue + ')');
 
+	newValue = newValue.replace(/,/g, '');
+
 	var boxOfficeCompoundPct = $('#boId' + controlId + 'CompoundPct');
 
 	if (controlExists(boxOfficeCompoundPct)) {
@@ -475,6 +477,8 @@ function updateCompoundEqualPercentages() {
 			boxOfficeCompoundPct.text('33.3%');
 		}
 	}
+
+	logit('EXIT - updateCompoundEqualPercentages()');
 }
 
 // Update the slider when other values change.
