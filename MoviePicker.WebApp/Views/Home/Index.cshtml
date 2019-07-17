@@ -25,42 +25,52 @@
 
 	<div class="row">
 
-		@* ================================================================================================================================== PICKS COLUMN ==== *@
+		@* ================================================================================================================================== LEFT COLUMN ==== *@
 
 		<div class="col-md-6 col-md-offset-1">
 
-			<div class="col-sm-8 col-sm-push-4">
-				<h2>
-					Welcome to @Constants.APPLICATION_NAME
-				</h2>
-				<h4>
-					Weekend Ending: @weekendEnding (<span id="durationId">@Model.Duration.ToString("N0")</span> ms)
-				</h4>
-			</div>
+			@* =============================================================================================== TITLE ==== *@
 
-			<div class="col-xs-4 col-sm-pull-8 hidden-sm hidden-md hidden-lg">
-				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" style="vertical-align: top;" />
-			</div>
+			<div id="titleSection">
+				<div class="col-sm-8 col-sm-push-4">
+					<h2>
+						Welcome to @Constants.APPLICATION_NAME
+					</h2>
+					<h4>
+						Weekend Ending: @weekendEnding (<span id="durationId">@Model.Duration.ToString("N0")</span> ms)
+					</h4>
+				</div>
 
-			<div class="col-sm-8 col-sm-push-4">
-				This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
-				This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
-				You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up.
-				<br />
+				<div class="col-xs-4 col-sm-pull-8 hidden-sm hidden-md hidden-lg">
+					<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" style="vertical-align: top;" />
+				</div>
 
-				@Html.ActionLink("Old Look", "IndexOld", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
+				<div class="col-sm-8 col-sm-push-4">
+					This website is used to aggregate box office movie data for use in the <a href="https://fantasymovieleague.com/" target="_blank">Fantasy Movie League</a>  game.
+					This will help <strong>YOU</strong> gather the data so you can make better projections for your weekly picks.
+					You may use the weights to determine how well you "trust" each source to generate your own numbers and then "Pick" your line-up.
+					<br />
 
-				@Html.ActionLink("Wide Look", "IndexWide", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
+					@Html.ActionLink("Old Look", "IndexOld", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
 
-				<a class="btn btn-success" style="margin-left: 70px;"
-				   onclick="navigateToExplicit('@string.Format("/Home/ExpertPicks?{0}", Request.QueryString)')"
-				   data-toggle="tooltip"
-				   data-placement="bottom"
-				   title="Experts League - Click to see the available picks by the experts..."><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
-			</div>
+					@Html.ActionLink("Wide Look", "IndexWide", ViewUtility.RequestParamsToDynamic(Request), new { @class = "btn btn-info btn-sm" })
 
-			<div class="hidden-xs col-xs-4 col-sm-pull-8" style="display: inline-block; float: none; vertical-align: middle !important;">
-				<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
+					<a class="btn btn-success" style="margin-left: 70px;"
+					   onclick="navigateToExplicit('@string.Format("/Home/ExpertPicks?{0}", Request.QueryString)')"
+					   data-toggle="tooltip"
+					   data-placement="bottom"
+					   title="Experts League - Click to see the available picks by the experts..."><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+
+					<a class="btn btn-xs btn-info" style="margin-left: 10px;"
+					   onclick="clickCollapseTitle()"
+					   data-toggle="tooltip"
+					   data-placement="top"
+					   title="Collapse title area"><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span></a>
+				</div>
+
+				<div class="hidden-xs col-xs-4 col-sm-pull-8" style="display: inline-block; float: none; vertical-align: middle !important;">
+					<img class="img-responsive" src="~/Images/MooveePickerCow512x512.png" width="200" />
+				</div>
 			</div>
 
 			<div class="clearfix"></div>
@@ -115,6 +125,12 @@
 						   data-placement="bottom"
 						   title="Click to track all the experts against the estimates and Perfect Pick for each movie..." />
 				}
+
+				<a id="showTitle" class="btn btn-xs btn-info" style="display: none"
+				   onclick="clickShowTitle()"
+				   data-toggle="tooltip"
+				   data-placement="bottom"
+				   title="Show title area"><span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span></a>
 			</div>
 
 			<div class="clearfix"></div>
@@ -495,11 +511,13 @@
 
 		</div>
 
+		@* ================================================================================================================================== RIGHT COLUMN ==== *@
+
 		<div class="col-md-4">
 
 			@* ================================================================================================================================== MINER WEIGHT COLUMN ==== *@
 
-			<table class="table table-responsive" style="border: none;">
+			<table id="minerWeights" class="table table-responsive" style="border: none;">
 				<tr>
 					@for (int minerCount = MinerModel.TODD_INDEX; minerCount <= MinerModel.BORPT_INDEX; minerCount++)
 					{
@@ -556,292 +574,287 @@
 
 			@* ================================================================================================================================== BOX OFFICE COLUMN ==== *@
 
-			<table>
-				@{
-					decimal customCompoundTotal = 0m;
+			<div height="200px" style="overflow-y: auto; overflow-x: hidden; white-space: nowrap; -webkit-overflow-scrolling: touch;">
+				<table>
+					@{
+						decimal customCompoundTotal = 0m;
 
-					if (compoundMovie != null)
-					{
-						customCompoundTotal = Model.BoxOffice1 + Model.BoxOffice2;
-
-						if (Model.Miners.First().Movies[2].Day.HasValue)
+						if (compoundMovie != null)
 						{
-							customCompoundTotal += Model.BoxOffice3;
-						}
-					}
+							customCompoundTotal = Model.BoxOffice1 + Model.BoxOffice2;
 
-					movieCount = 1;
-
-					while (movieCount <= Model.Miners.First().Movies.Count)
-					{
-						<tr>
-							@for (int col = 0; col < 3 && movieCount <= Model.Miners.First().Movies.Count; col++)
+							if (Model.Miners.First().Movies[2].Day.HasValue)
 							{
-								var movie = Model.Miners.First().Movies[movieCount - 1];
+								customCompoundTotal += Model.BoxOffice3;
+							}
+						}
 
-								var boId = string.Format("boId{0}", movie.ControlId);
-								var imageId = string.Format("imageId{0}", movie.ControlId);
-								var name = string.Format("BoxOffice{0}", movie.ControlId);
-								var posterId = string.Format("posterId{0}", movieCount);
+						movieCount = 1;
 
-								// TODO: May want to use a utility to speed up the reflection.
-
-								var value = (decimal)Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model);
-								var valueString = string.Format("{0:N0}", value);
-								var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => (item.Id != 0 && item.Id == movie.Id) || item.Name == movie.Name);
-								var inputBackgroundColor = lastWeek == null ? "lightgreen" : "cyan";
-								string boPercentBackgroundColorStyle = null;
-								decimal percent = 0;
-								var hasRows = false;
-
-								// Build the tooltip from the miner values.
-
-								var toolTip = new StringBuilder();
-
-								toolTip.Append("<table>");
-
-								foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
+						while (movieCount <= Model.Miners.First().Movies.Count)
+						{
+							<tr>
+								@for (int col = 0; col < 3 && movieCount <= Model.Miners.First().Movies.Count; col++)
 								{
-									var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
+									var movie = Model.Miners.First().Movies[movieCount - 1];
 
-									if (minerMovie != null)
+									var boId = string.Format("boId{0}", movie.ControlId);
+									var imageId = string.Format("imageId{0}", movie.ControlId);
+									var name = string.Format("BoxOffice{0}", movie.ControlId);
+									var posterId = string.Format("posterId{0}", movieCount);
+
+									// TODO: May want to use a utility to speed up the reflection.
+
+									var value = (decimal)Model.GetType().GetProperty("BoxOffice" + movieCount)?.GetValue(Model);
+									var valueString = string.Format("{0:N0}", value);
+									var lastWeek = Model.Miners.Last().Movies?.FirstOrDefault(item => (item.Id != 0 && item.Id == movie.Id) || item.Name == movie.Name);
+									var inputBackgroundColor = lastWeek == null ? "lightgreen" : "cyan";
+									string boPercentBackgroundColorStyle = null;
+									decimal percent = 0;
+									var hasRows = false;
+
+									// Build the tooltip from the miner values.
+
+									var toolTip = new StringBuilder();
+
+									toolTip.Append("<table>");
+
+									foreach (var miner in Model.Miners.Where(item => !item.IsHidden).Skip(1))
 									{
-										toolTip.Append($"<tr><td style=\"padding: 5px;\">{miner.Abbreviation}</td><td style=\"padding: 5px;\">");
+										var minerMovie = miner.Movies.FirstOrDefault(item => item.Name == movie.Name);
 
-										if (!string.IsNullOrEmpty(miner.Error) && !string.IsNullOrEmpty(miner.ErrorDetail))
+										if (minerMovie != null)
 										{
-											toolTip.Append(miner.Error);
-										}
-										else
-										{
-											toolTip.Append(minerMovie.EarningsBase.ToString("N0"));
-										}
+											toolTip.Append($"<tr><td style=\"padding: 5px;\">{miner.Abbreviation}</td><td style=\"padding: 5px;\">");
 
-										toolTip.Append("</td>");
-
-										if (movie.Day.HasValue)
-										{
-											var compoundTotal = miner.CompoundTotal;
-
-											if (compoundTotal > 0)
+											if (!string.IsNullOrEmpty(miner.Error) && !string.IsNullOrEmpty(miner.ErrorDetail))
 											{
-												toolTip.Append($"<td><span class=\"glyphicon glyphicon-tasks\" aria-hidden=\"true\" style=\"margin-left: 5px; color: grey;\"></span>{minerMovie.EarningsBase / compoundTotal * 100:N1}%</td>");
+												toolTip.Append(miner.Error);
 											}
 											else
 											{
-												toolTip.Append($"<td></td>");
+												toolTip.Append(minerMovie.EarningsBase.ToString("N0"));
 											}
-										}
 
-										if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
-										{
-											percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-											boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+											toolTip.Append("</td>");
 
-											toolTip.Append($"<td style=\"padding: 4px; color: black; {boPercentBackgroundColorStyle}\">{percent.ToString("N0")}%</td>");
-										}
-										else
-										{
-											toolTip.Append("<td></td>");
-										}
-
-										toolTip.Append("</tr>");
-
-										hasRows = true;
-									}
-								}
-
-								if (!hasRows)
-								{
-									toolTip.Append("<tr><td>No data available (yet)</td></tr>");
-								}
-
-								toolTip.Append("</table>");
-
-								boPercentBackgroundColorStyle = "background-color: white;";
-								percent = 0;
-
-								var myMovie = Model.Miners.ToList()[MinerModel.MY_INDEX].Movies.FirstOrDefault(item => item.Name == movie.Name);
-
-								if (lastWeek != null && myMovie != null && lastWeek.EarningsBase > 0)
-								{
-									percent = (myMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
-									boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
-								}
-
-								var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "2px";
-								var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey;";
-
-								<td style="padding: 3px;">
-
-									<div id="@posterId">
-
-										<div style="position: relative; width: 0; height: 0;">
-											@if (movie.TheaterCount > 0)
+											if (lastWeek != null && minerMovie != null && lastWeek.EarningsBase > 0)
 											{
-												var isNew = !(lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0));
-												var leftIndent = isNew ? "50px" : "20px";
+												percent = (minerMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+												boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 
-												<span class="badge badge-pill badge-light"
+												toolTip.Append($"<td style=\"padding: 4px; color: black; {boPercentBackgroundColorStyle}\">{percent.ToString("N0")}%</td>");
+											}
+											else
+											{
+												toolTip.Append("<td></td>");
+											}
+
+											toolTip.Append("</tr>");
+
+											hasRows = true;
+										}
+									}
+
+									if (!hasRows)
+									{
+										toolTip.Append("<tr><td>No data available (yet)</td></tr>");
+									}
+
+									toolTip.Append("</table>");
+
+									boPercentBackgroundColorStyle = "background-color: white;";
+									percent = 0;
+
+									var myMovie = Model.Miners.ToList()[MinerModel.MY_INDEX].Movies.FirstOrDefault(item => item.Name == movie.Name);
+
+									if (lastWeek != null && myMovie != null && lastWeek.EarningsBase > 0)
+									{
+										percent = (myMovie.EarningsBase - lastWeek.EarningsBase) / lastWeek.EarningsBase * 100;
+										boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
+									}
+
+									var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "2px";
+									var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey;";
+
+									<td style="padding: 3px;">
+
+										<div id="@posterId">
+
+											<div style="position: relative; width: 0; height: 0;">
+												@if (movie.TheaterCount > 0)
+												{
+													var isNew = !(lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0));
+													var leftIndent = isNew ? "50px" : "20px";
+
+													<span class="badge badge-pill badge-light"
+														  data-toggle="tooltip"
+														  data-placement="@((movieCount - 1) / 3 == 0 ? "bottom" : "top")"
+														  title="Theater Count"
+														  style="position: absolute; left: @leftIndent; top: 5px;">
+														@movie.TheaterCount
+
+														@if (!isNew)
+														{
+															var theaterDiff = movie.TheaterCount - lastWeek.TheaterCount;
+
+															if (theaterDiff > 0)
+															{
+																<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
+																@(movie.TheaterCount - lastWeek.TheaterCount)
+															}
+															else
+															{
+																<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
+																@(lastWeek.TheaterCount - movie.TheaterCount)
+															}
+														}
+													</span>
+												}
+
+												<span class="glyphicon glyphicon-info-sign"
+													  aria-hidden="true"
 													  data-toggle="tooltip"
 													  data-placement="@((movieCount - 1) / 3 == 0 ? "bottom" : "top")"
-													  title="Theater Count"
-													  style="position: absolute; left: @leftIndent; top: 5px;">
-													@movie.TheaterCount
-
-													@if (!isNew)
-													{
-														var theaterDiff = movie.TheaterCount - lastWeek.TheaterCount;
-
-														if (theaterDiff > 0)
-														{
-															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
-															@(movie.TheaterCount - lastWeek.TheaterCount)
-														}
-														else
-														{
-															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
-															@(lastWeek.TheaterCount - movie.TheaterCount)
-														}
-													}
+													  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="min-width: 200px; white-space: pre-wrap;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
+													  title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"
+													  style="position: absolute; left: 130px; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
 												</span>
-											}
 
-											<span class="glyphicon glyphicon-info-sign"
-												  aria-hidden="true"
-												  data-toggle="tooltip"
-												  data-placement="@((movieCount - 1) / 3 == 0 ? "bottom" : "top")"
-												  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="min-width: 200px; white-space: pre-wrap;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
-												  title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"
-												  style="position: absolute; left: 130px; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
-											</span>
+												<span class="glyphicon glyphicon-remove"
+													  aria-hidden="true"
+													  data-toggle="tooltip"
+													  data-placement="bottom"
+													  onclick="clickHidePoster('@posterId')"
+													  title="Hide movie"
+													  style="position: absolute; left: 130px; top: 25px; color: white; cursor: pointer; background: gray; opacity: 0.8">
+												</span>
 
-											<span class="glyphicon glyphicon-remove"
-												  aria-hidden="true"
-												  data-toggle="tooltip"
-												  data-placement="bottom"
-												  onclick="clickHidePoster('@posterId')"
-												  title="Hide movie"
-												  style="position: absolute; left: 130px; top: 25px; color: white; cursor: pointer; background: gray; opacity: 0.8">
-											</span>
+											</div>
 
-										</div>
+											<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle min-height: 220px; min-width: 150px;" src="@movie.ImageUrl" />
 
-										<img id="@imageId" class="img-responsive img-rounded" style="@backgroundStyle min-height: 220px; min-width: 150px;" src="@movie.ImageUrl" />
+											<div style="position: relative; width: 0; height: 0">
+												<table style="position: absolute; left: -5px; top: -225px; width: 10px; height: 210px; opacity: 0.7;">
+													<tr>
+														<td>
+															@if (lastWeek != null && value > lastWeek.EarningsBase * 2)
+															{
+																// Adjust the slider to MORE than 100% since the value is already greater than 100% and the slider won't work.
 
-										<div style="position: relative; width: 0; height: 0">
-											<table style="position: absolute; left: -5px; top: -225px; width: 10px; height: 210px; opacity: 0.7;">
-												<tr>
-													<td>
-														@if (lastWeek != null && value > lastWeek.EarningsBase * 2)
-														{
-															// Adjust the slider to MORE than 100% since the value is already greater than 100% and the slider won't work.
+																var sliderMax = (Math.Round(value / lastWeek.EarningsBase, 0) + 1) * 100;
 
-															var sliderMax = (Math.Round(value / lastWeek.EarningsBase, 0) + 1) * 100;
+																<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="@sliderMax" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+															}
+															else
+															{
+																<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
+															}
+														</td>
+													</tr>
+												</table>
+											</div>
 
-															<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="@sliderMax" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
-														}
-														else
-														{
-															<input class="vertical-slider" orient="vertical" id="@string.Format("boSliderId{0}", movie.ControlId)" type="range" onchange="sliderOnChange(this, @movie.ControlId)" min="-100" max="100" value="@string.Format("{0}", lastWeek == null ? "0" : percent.ToString("N0"))" />
-														}
-													</td>
-												</tr>
-											</table>
-										</div>
-
-										<div style="position: relative; width: 0; height: 0">
-											<input name="@name"
-												   class="form-control"
-												   id="@boId"
-												   onblur="boxOfficeLostFocus('@valueString', this.value, @movie.ControlId)"
-												   style="position: absolute; left: 20px; top: -40px; background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
-												   type="text"
-												   value="@valueString"
-												   data-isnew="@string.Format("{0}", lastWeek == null ? "true" : "false")"
-												   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
-												   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
-												   data-val-required="The Box Office @movie.ControlId field is required."
-												   data-val-number="The field Box Office @movie.ControlId must be a number."
-												   data-val="true">
+											<div style="position: relative; width: 0; height: 0">
+												<input name="@name"
+													   class="form-control"
+													   id="@boId"
+													   onblur="boxOfficeLostFocus('@valueString', this.value, @movie.ControlId)"
+													   style="position: absolute; left: 20px; top: -40px; background-color: @inputBackgroundColor; width: 100px; opacity: 0.8; box-shadow: inset 0 0 3px #000000"
+													   type="text"
+													   value="@valueString"
+													   data-isnew="@string.Format("{0}", lastWeek == null ? "true" : "false")"
+													   data-original-value="@string.Format("{0}", lastWeek == null ? myMovie.EarningsBase : lastWeek.EarningsBase)"
+													   data-original-theater-count="@string.Format("{0}", lastWeek == null ? 0 : lastWeek.TheaterCount)"
+													   data-val-required="The Box Office @movie.ControlId field is required."
+													   data-val-number="The field Box Office @movie.ControlId must be a number."
+													   data-val="true">
 
 
-											@if (movie.Day.HasValue)
-											{
-												<span class="badge badge-pill badge-dark"
+												@if (movie.Day.HasValue)
+												{
+													<span class="badge badge-pill badge-dark"
+														  data-toggle="tooltip"
+														  data-placement="top"
+														  title="Percentage of Weekend Total"
+														  style="position: absolute; left: 15px; top: -50px; color: dimgrey; background-color: lightskyblue">
+														<span class="glyphicon glyphicon-tasks" aria-hidden="true"
+															  style="color: dimgrey;"></span>
+														<span id="@string.Format("{0}CompoundPct", boId)">@string.Format("{0:N1}%", customCompoundTotal > 0 ? value / customCompoundTotal * 100 : 0)</span>
+													</span>
+												}
+
+												<span id="@string.Format("{0}Pct", boId)" class="badge badge-pill badge-dark"
 													  data-toggle="tooltip"
 													  data-placement="top"
-													  title="Percentage of Weekend Total"
-													  style="position: absolute; left: 15px; top: -50px; color: dimgrey; background-color: lightskyblue">
-													<span class="glyphicon glyphicon-tasks" aria-hidden="true"
-														  style="color: dimgrey;"></span>
-													<span id="@string.Format("{0}CompoundPct", boId)">@string.Format("{0:N1}%", customCompoundTotal > 0 ? value / customCompoundTotal * 100 : 0)</span>
+													  title="Gain or loss from previous week."
+													  style="position: absolute; left: 100px; top: -50px; @boPercentBackgroundColorStyle color: black;">
+													@percent.ToString("N0")%
 												</span>
-											}
 
-											<span id="@string.Format("{0}Pct", boId)" class="badge badge-pill badge-dark"
-												  data-toggle="tooltip"
-												  data-placement="top"
-												  title="Gain or loss from previous week."
-												  style="position: absolute; left: 100px; top: -50px; @boPercentBackgroundColorStyle color: black;">
-												@percent.ToString("N0")%
-											</span>
+												<span id="@string.Format("{0}UpPct", boId)"
+													  class="glyphicon glyphicon-triangle-top"
+													  aria-hidden="true"
+													  style="position: absolute; left: 130px; top: -30px; color: white; cursor: pointer;"
+													  onclick="clickChangePercent(this, @movie.ControlId, 1)">
+												</span>
+												<span id="@string.Format("{0}DownPct", boId)"
+													  class="glyphicon glyphicon-triangle-bottom"
+													  aria-hidden="true"
+													  style="position: absolute; left: 130px; top: -17px; color: white; cursor: pointer;"
+													  onclick="clickChangePercent(this, @movie.ControlId, -1)">
+												</span>
+											</div>
 
-											<span id="@string.Format("{0}UpPct", boId)"
-												  class="glyphicon glyphicon-triangle-top"
-												  aria-hidden="true"
-												  style="position: absolute; left: 130px; top: -30px; color: white; cursor: pointer;"
-												  onclick="clickChangePercent(this, @movie.ControlId, 1)">
-											</span>
-											<span id="@string.Format("{0}DownPct", boId)"
-												  class="glyphicon glyphicon-triangle-bottom"
-												  aria-hidden="true"
-												  style="position: absolute; left: 130px; top: -17px; color: white; cursor: pointer;"
-												  onclick="clickChangePercent(this, @movie.ControlId, -1)">
-											</span>
 										</div>
+									</td>
 
-									</div>
-								</td>
-
-								movieCount++;
-							}
-						</tr>
-
-						if (compoundMovie != null && movieCount == 4)
-						{
-							<tr>
-								<td>
-									<input class="form-control"
-										   id="compoundFieldId"
-										   onblur="boxOfficeCompoundLostFocus('@customCompoundTotal', this.value)"
-										   type="text"
-										   value="@string.Format("{0:N0}", customCompoundTotal)"
-										   data-previous-value="@customCompoundTotal"
-										   data-val-required="The Compound Box Office field is required."
-										   data-val-number="The Compound Box Office field must be a number."
-										   data-val="true"
-										   style="margin-left: 20px; width: 120px; box-shadow: inset 0 0 3px #000000">
-								</td>
-								<td>
-									<span id="compoundUpId"
-										  class="glyphicon glyphicon-triangle-bottom"
-										  aria-hidden="true"
-										  onclick="clickChangeCompoundPercent(-1)"
-										  style="cursor: pointer; margin-left: 10px;">
-									</span>
-									<span id="compoundDownId"
-										  class="glyphicon glyphicon-triangle-top"
-										  aria-hidden="true"
-										  onclick="clickChangeCompoundPercent(1)"
-										  style="cursor: pointer; margin-left: 5px;">
-									</span>
-								</td>
+									movieCount++;
+								}
 							</tr>
+
+							if (compoundMovie != null && movieCount == 4)
+							{
+								string compoundToolTip = "BUX AND STUFF";
+
+								<tr>
+									<td>
+										<input class="form-control"
+											   id="compoundFieldId"
+											   onblur="boxOfficeCompoundLostFocus('@customCompoundTotal', this.value)"
+											   type="text"
+											   value="@string.Format("{0:N0}", customCompoundTotal)"
+											   data-previous-value="@customCompoundTotal"
+											   data-val-required="The Compound Box Office field is required."
+											   data-val-number="The Compound Box Office field must be a number."
+											   data-val="true"
+											   style="margin-left: 20px; width: 130px; background-color: lightskyblue; box-shadow: inset 0 0 3px #000000">
+									</td>
+									<td>
+										<span id="compoundUpId"
+											  class="glyphicon glyphicon-triangle-bottom"
+											  aria-hidden="true"
+											  onclick="clickChangeCompoundPercent(-1)"
+											  style="cursor: pointer; margin-left: 10px;">
+										</span>
+										<span id="compoundDownId"
+											  class="glyphicon glyphicon-triangle-top"
+											  aria-hidden="true"
+											  onclick="clickChangeCompoundPercent(1)"
+											  style="cursor: pointer; margin-left: 5px;">
+										</span>
+										<span class="glyphicon glyphicon-tasks" aria-hidden="true"
+											  data-toggle="tooltip"
+											  data-placement="bottom"
+											  title="@compoundToolTip"
+											  style="color: dimgrey; margin-left: 15px;"></span>
+									</td>
+								</tr>
+							}
 						}
 					}
-				}
-			</table>
+				</table>
+			</div>
 		</div>
 
 	</div> @* end class="row" *@

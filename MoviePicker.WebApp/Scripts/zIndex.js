@@ -129,6 +129,26 @@ function clickChangePercent(button, controlIndex, change) {
 	}
 }
 
+function clickCollapseTitle() {
+	var titleSection = $('#titleSection');
+
+	if (controlExists(titleSection)) {
+		titleSection.css({ 'display': 'none' });
+	}
+
+	var minerWeights = $('#minerWeights');
+
+	if (controlExists(minerWeights)) {
+		minerWeights.css({ 'display': 'none' });
+	}
+
+	var showTitle = $('#showTitle');
+
+	if (controlExists(showTitle)) {
+		showTitle.css({ 'display': 'initial' });
+	}
+}
+
 function clickHidePoster(posterId) {
 
 	// Also need functionality to move the other DIVs up into this postion.
@@ -195,6 +215,26 @@ function clickPicksAsync() {
 	logit(baseUrl + url);
 
 	calculate(url);
+}
+
+function clickShowTitle() {
+	var titleSection = $('#titleSection');
+
+	if (controlExists(titleSection)) {
+		titleSection.css({ 'display': 'initial' });
+	}
+
+	var minerWeights = $('#minerWeights');
+
+	if (controlExists(minerWeights)) {
+		minerWeights.css({ 'display': 'initial' });
+	}
+
+	var showTitle = $('#showTitle');
+
+	if (controlExists(showTitle)) {
+		showTitle.css({ 'display': 'none' });
+	}
 }
 
 function clickTracking(uniqueId) {
