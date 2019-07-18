@@ -17,6 +17,15 @@ $(window).on("load resize", function () {
 	// Change the height style attribute of the class .fill-screen to the window's inner height.
 
 	$(".fill-screen").css("height", window.innerHeight);
+
+	var screenRelative = $(".fill-screenrelative");
+
+//	var location = elementLocation(screenRelative);
+
+	var top = screenRelative.offset().top;
+	var margin = 5;
+
+	$(".fill-screenrelative").css("height", window.innerHeight - top - margin);
 });
 
 $(document).ready(function () {

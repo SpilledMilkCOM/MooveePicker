@@ -147,6 +147,9 @@ function clickCollapseTitle() {
 	if (controlExists(showTitle)) {
 		showTitle.css({ 'display': 'initial' });
 	}
+
+	//window.onresize();
+	window.dispatchEvent(new Event('resize'));
 }
 
 function clickHidePoster(posterId) {
@@ -235,6 +238,8 @@ function clickShowTitle() {
 	if (controlExists(showTitle)) {
 		showTitle.css({ 'display': 'none' });
 	}
+
+	window.dispatchEvent(new Event('resize'));
 }
 
 function clickTracking(uniqueId) {

@@ -1,5 +1,6 @@
 ﻿var consoleOn = false;
 
+// Change an element's style, given the id
 function changeStyle(id, style, value) {
 	var ctrl = $('#' + id);
 
@@ -12,12 +13,28 @@ function changeStyle(id, style, value) {
 	}
 }
 
+// Change an element's text.
 function changeText(id, value) {
 	var ctrl = $('#' + id);
 
 	if (ctrl != null && ctrl.text() != value) {
 		ctrl.text(value);
 	}
+}
+
+// Determine location of a DOM element.
+function elementLocation(el) {
+	var elementX = 0;
+	var elementY = 0;
+
+	// Add up all of the offsets from the element to the parent and older generations.
+
+	for (; el != null; el = el.offsetParent) {
+		elementX += el.offsetLeft;
+		elementY += el.offsetTop;
+	}
+
+	return { x: elementX, y: elementY };
 }
 
 // Formats a number with commas and truncates the decimal.
