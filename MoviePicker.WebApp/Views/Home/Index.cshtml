@@ -815,7 +815,24 @@
 
 							if (compoundMovie != null && movieCount == 4)
 							{
-								string compoundToolTip = "BUX Compound Percentages";
+								var toolTipBuilder = new StringBuilder();
+								var compoundMovies = Model.Miners.First().Movies.Where(item => item.Day.HasValue).ToList();
+								decimal? compoundBuxTotal = (compoundMovies != null && compoundMovies.Any()) ? compoundMovies.Sum(item => item.Cost) : (decimal?)null;
+
+								if (compoundBuxTotal.HasValue && compoundBuxTotal > 0)
+								{
+									toolTipBuilder.Append("<table>");
+
+									foreach (var movieDay in compoundMovies)
+									{
+										toolTipBuilder.Append("<tr>");
+										toolTipBuilder.Append($"<td>{movieDay.Day.ToString().Substring(0, 3).ToUpper()}</td>");
+										toolTipBuilder.Append($"<td style=\"padding-left: 20px;\">{movieDay.Cost / compoundBuxTotal.Value * 100m:N1}%</td>");
+										toolTipBuilder.Append("</tr>");
+									}
+
+									toolTipBuilder.Append("</table>");
+								}
 
 								<tr>
 									<td>
@@ -846,7 +863,8 @@
 										<span class="glyphicon glyphicon-tasks" aria-hidden="true"
 											  data-toggle="tooltip"
 											  data-placement="bottom"
-											  title="@compoundToolTip"
+											  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="min-width: 200px; white-space: pre-wrap;"></div><div class="tooltip-extra">@toolTipBuilder.ToString()</div></div>'
+											  title="BUX Compound Percentages"
 											  style="color: dimgrey; margin-left: 15px;"></span>
 									</td>
 								</tr>
