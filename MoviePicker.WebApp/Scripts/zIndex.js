@@ -22,6 +22,7 @@ function boxOfficeCompoundLostFocus(oldValue, newValue) {
 			updateCompoundBoxOffice(1, newValue);
 			updateCompoundBoxOffice(2, newValue);
 			updateCompoundBoxOffice(3, newValue);
+			updateCompoundBoxOffice(4, newValue);
 		}
 
 		clickPicksAsync();
