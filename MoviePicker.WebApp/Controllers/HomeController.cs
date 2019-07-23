@@ -1182,6 +1182,7 @@ namespace MoviePicker.WebApp.Controllers
 			var minerPick = MinerWeightToMiner();
 			var lineupArticle = minerPick == null ? "my" : "the";
 			var subTitle = bonusOn ? "Bonus ON" : "Bonus OFF";
+			decimal? tiebreaker = null;
 
 			if (bonusMovieName == null)
 			{
@@ -1195,6 +1196,17 @@ namespace MoviePicker.WebApp.Controllers
 				bonusMovieName = "it";
 			}
 
+			var miners = _viewModel.Miners.ToList();
+
+			if (minerPick == null && miners[MinerModel.MY_INDEX].Movies.Any())
+			{
+				tiebreaker = miners[MinerModel.MY_INDEX].Movies[0].EarningsBase;
+			}
+			else if (minerPick.Movies.Any())
+			{
+				tiebreaker = minerPick.Movies[0].EarningsBase;
+			}
+
 			bonusMovieName = (bonusOn) ? $", counting on {bonusMovieName} as the bonus movie" : $", hoping for {bonusMovieName} as the bonus movie";
 
 			viewModel.TwitterDescription = $"{leadingMovieName} leads {lineupArticle} lineup{bonusMovieName}{spentBuxText}.";
@@ -1204,6 +1216,12 @@ namespace MoviePicker.WebApp.Controllers
 			var defaultTwitterText = minerPick == null ? "Check out my @fml_movies picks:" : $"If you're {minerPick.Name} @{minerPick.TwitterID} your @fml_movies picks are:";
 
 			defaultTwitterText += NEW_LINE_HTML + picks.ToString();
+
+			if (tiebreaker.HasValue)
+			{
+				defaultTwitterText += $"{NEW_LINE_HTML}(tiebrk ${tiebreaker:N0})";
+			}
+
 			defaultTwitterText += $"{NEW_LINE_HTML}[cost {spentBux.ToString("N0")} BUX]{NEW_LINE_HTML}{NEW_LINE_HTML}#ShowYourScreens @SpilledMilkCOM RT if you like this #PerfectPick";
 
 			ControllerUtility.SetTwitterCard(ViewBag, "summary_large_image"
