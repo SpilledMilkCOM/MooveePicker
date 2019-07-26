@@ -1089,6 +1089,10 @@ namespace MoviePicker.WebApp.Controllers
 			};
 		}
 
+		/// <summary>
+		/// Create a QueryString from the model.  (BoxOffice / bo - Weight List / wl)
+		/// </summary>
+		/// <returns>QueryString</returns>
 		private string QueryStringFromModel()
 		{
 			var stringBuilder = new StringBuilder();

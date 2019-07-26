@@ -475,7 +475,10 @@
 			@{
 				var dynamicParms = ViewUtility.RequestParamsToDynamic(Request);
 
-				@Html.ActionLink("Fandango Hourly", "Fandango", dynamicParms
+				@*
+					Uncomment when Fandango files come back (leave the pages, so they can be tested - but take away the link.)
+					
+					@Html.ActionLink("Fandango Hourly", "Fandango", dynamicParms
 					, new { @class = "btn btn-info btn-sm", style = "margin: 3px;", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of hourly Fandango ticket sales hosted by A.K. Valley." })
 
 				@Html.ActionLink("Fandango Weekend Tickets", "FandangoDays", null
@@ -485,7 +488,7 @@
 				{
 					@Html.ActionLink("Fandango Weekend Estimates", "FandangoDays", dynamicParms
 						, new { @class = "btn btn-info btn-sm", style = "margin: 3px;", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of weekend Fandango ticket sales hosted by A.K. Valley. (scaled based on YOUR estimates)" })
-				}
+				}*@
 
 				@Html.ActionLink("History", "History", dynamicParms
 					, new { @class = "btn btn-info btn-sm", style = "margin: 3px;", data_toggle = "tooltip", data_placement = "bottom", title = "A graphical page of historical movie data." })
@@ -675,6 +678,7 @@
 									}
 
 									var tableIndent = (percent == 0 || percent == -100m) ? "20px" : "2px";
+									var infoIndent = (col == 0) ? "110px" : "70px";
 									var backgroundStyle = (Model.Rank(movie) == 1) ? "box-shadow: 2px 4px 8px 0px green;" : "box-shadow: 2px 4px 8px 0px grey;";
 
 									<td style="padding: 3px;">
@@ -685,31 +689,33 @@
 												@if (movie.TheaterCount > 0)
 												{
 													var isNew = !(lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0));
-													var leftIndent = isNew ? "50px" : "20px";
+													//var leftIndent = isNew ? "50px" : "20px";
 
-													<span class="badge badge-pill badge-light"
-														  data-toggle="tooltip"
-														  data-placement="@((movieCount - 1) / 3 == 0 ? "bottom" : "top")"
-														  title="Theater Count"
-														  style="position: absolute; left: @leftIndent; top: 5px;">
-														@movie.TheaterCount
+												<span class="badge badge-pill badge-light"
+													  data-toggle="tooltip"
+													  data-placement="@((movieCount - 1) / 3 == 0 ? "bottom" : "top")"
+													  title="Theater Count"
+													  style="position: absolute; left: 20px; top: 5px;">
+													@movie.TheaterCount
 
-														@if (!isNew)
+													@if (!isNew)
+													{
+														var theaterDiff = movie.TheaterCount - lastWeek.TheaterCount;
+
+														if (theaterDiff > 0)
 														{
-															var theaterDiff = movie.TheaterCount - lastWeek.TheaterCount;
-
-															if (theaterDiff > 0)
-															{
-																<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
-																@(movie.TheaterCount - lastWeek.TheaterCount)
-															}
-															else
-															{
-																<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
-																@(lastWeek.TheaterCount - movie.TheaterCount)
-															}
+															<br />
+															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
+															@(movie.TheaterCount - lastWeek.TheaterCount)
 														}
-													</span>
+														else
+														{
+															<br />
+															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
+															@(lastWeek.TheaterCount - movie.TheaterCount)
+														}
+													}
+												</span>
 												}
 
 												<span class="glyphicon glyphicon-info-sign"
@@ -718,7 +724,7 @@
 													  data-placement="@((movieCount - 1) / 3 == 0 ? "bottom" : "top")"
 													  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="min-width: 200px; white-space: pre-wrap;"></div><div class="tooltip-extra">@toolTip.ToString()</div></div>'
 													  title="@string.Format("{0} - {1:N0} BUX", movie.Name, movie.Cost)"
-													  style="position: absolute; left: 110px; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
+													  style="position: absolute; left: @infoIndent; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
 												</span>
 
 												<span class="glyphicon glyphicon-remove"
