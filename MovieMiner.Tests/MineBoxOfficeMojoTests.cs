@@ -35,6 +35,7 @@ namespace MovieMiner.Tests
 			Assert.IsNotNull(actual);
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 
+			Logger.WriteLine(test.UrlSource);
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 
@@ -95,6 +96,7 @@ namespace MovieMiner.Tests
 			Assert.IsTrue(actual.Any(), "The list was empty.");
 
 			Logger.WriteLine($"Weekend Ending: {weekendEnding}");
+			Logger.WriteLine(test.UrlSource);
 			WriteMovies(actual.OrderByDescending(item => item.Earnings));
 		}
 

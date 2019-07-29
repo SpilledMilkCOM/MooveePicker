@@ -51,6 +51,10 @@ namespace MoviePicker.WebApp.Models
 			}
 		}
 
+		/// <summary>
+		/// Clone ALL of the miners in the list.  NEW data may be loaded so adjsut for that.
+		/// </summary>
+		/// <returns>The MinerModel clone.</returns>
 		public IMinerModel Clone()
 		{
 			var clone = new MinerModel(false) { Miners = new List<IMiner>() };
@@ -63,7 +67,7 @@ namespace MoviePicker.WebApp.Models
 
 			clone._postersDownloaded = _postersDownloaded;
 
-			// TODO: Why isn't this Parallel?
+			// TODO: Why isn't this Parallel? (probably reasons)
 
 			foreach (var miner in Miners)
 			{
@@ -162,9 +166,26 @@ namespace MoviePicker.WebApp.Models
 						}
 					}
 				}
+
+				if (containsEstimates && clone.Miners[FML_INDEX].CloneCausedReload)
+				{
+					LoadBoxOfficeMojoEstimates(clone.Miners[FML_INDEX]);
+
+					var masterMiner = Miners[FML_INDEX];
+
+					if (masterMiner != null)
+					{
+						// There is still nothing to prevent this from happening twice (or multiple times).
+
+						lock (masterMiner)
+						{
+							LoadBoxOfficeMojoEstimates(masterMiner);
+						}
+					}
+				}
 			}
 
-			FilterMinerMovies(clone.Miners);
+			FilterMinersMovies(clone.Miners);
 
 			return clone;
 		}
@@ -183,7 +204,7 @@ namespace MoviePicker.WebApp.Models
 
 			MineMiners(miners);
 
-			FilterMinerMovies(miners);
+			FilterMinersMovies(miners);
 
 			AssignTheaterCounts(this);
 
@@ -309,6 +330,11 @@ namespace MoviePicker.WebApp.Models
 			}
 		}
 
+		/// <summary>
+		/// Assign the theater counts from MojoTheaterCount.
+		/// NOTE: Reloading the FML movies will overwrite the theater count so then need to be corrected.
+		/// </summary>
+		/// <param name="clone"></param>
 		private void AssignTheaterCounts(MinerModel clone)
 		{
 			var theaterCountMiner = clone.Miners[MOJO_THEATER_INDEX];
@@ -342,6 +368,11 @@ namespace MoviePicker.WebApp.Models
 			}
 		}
 
+		/// <summary>
+		/// Return a list of the compound movies (Day has a value)
+		/// </summary>
+		/// <param name="movies"></param>
+		/// <returns>List of compound/breakout movies.</returns>
 		private List<IMovie> CompoundMovies(IList<IMovie> movies)
 		{
 			return movies.Where(movie => movie.Day.HasValue).ToList();
@@ -443,37 +474,42 @@ namespace MoviePicker.WebApp.Models
 		/// Filter out the data that does not match the base date.
 		/// </summary>
 		/// <param name="minerData"></param>
-		private void FilterMinerMovies(List<IMiner> minerData)
+		private void FilterMinersMovies(List<IMiner> minerData)
 		{
 			DateTime? weekendEnding = minerData[FML_INDEX].Movies?.FirstOrDefault()?.WeekendEnding;
 
 			for (int index = FML_INDEX + 1; index < minerData.Count - 1; index++)
 			{
-				var hasData = minerData[index].Movies?.Count > 0;
-				var minerWeekendEnding = minerData[index].Movies?.FirstOrDefault()?.WeekendEnding;
-
-				if (WeekendEndingMatch(weekendEnding, minerWeekendEnding))
-				{
-					// Remove movies that did not get mapped.  Most likely duplicates or bad data.
-
-					FilterOutMovieIdZero(minerData[index]);
-				}
-				else
-				{
-					if (hasData && (string.IsNullOrEmpty(minerData[index].Error) || minerData[index].Error?.IndexOf("Error") < 0))
-					{
-						// Only set this if there was data and there's no error.
-						minerData[index].Error = "Old Data";
-						minerData[index].ErrorDetail = $"The box office data is from the weekend ending {minerData[index].Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString()}";
-					}
-
-					minerData[index].Clear();
-				}
+				FilterMinerMovies(minerData[index], weekendEnding);
 			}
 
 			// BO Mojo has a HUGE list of movies that were mined
 
 			FilterOutMovieIdZero(minerData.Last());
+		}
+
+		private void FilterMinerMovies(IMiner miner, DateTime? weekendEnding)
+		{
+			var hasData = miner.Movies?.Count > 0;
+			var minerWeekendEnding = miner.Movies?.FirstOrDefault()?.WeekendEnding;
+
+			if (WeekendEndingMatch(weekendEnding, minerWeekendEnding))
+			{
+				// Remove movies that did not get mapped.  Most likely duplicates or bad data.
+
+				FilterOutMovieIdZero(miner);
+			}
+			else
+			{
+				if (hasData && (string.IsNullOrEmpty(miner.Error) || miner.Error?.IndexOf("Error") < 0))
+				{
+					// Only set this if there was data and there's no error.
+					miner.Error = "Old Data";
+					miner.ErrorDetail = $"The box office data is from the weekend ending {miner.Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString()}";
+				}
+
+				miner.Clear();
+			}
 		}
 
 		private void FilterOutMovieIdZero(IMiner miner)
@@ -489,6 +525,34 @@ namespace MoviePicker.WebApp.Models
 				}
 
 				miner.SetMovies(movies);     // Update the internal list with the reduced size.
+			}
+		}
+
+		/// <summary>
+		/// Replace the estimates in the FML Miner with the Box Office Mojo estimates.
+		/// </summary>
+		/// <param name="fmlMiner">The FML Miner with estimate data.</param>
+		private void LoadBoxOfficeMojoEstimates(IMiner fmlMiner)
+		{
+			var gameSunday = MovieDateUtil.LastSunday();
+			//var gameSunday = MovieDateUtil.GameSunday();
+			var mojoEstimates = new MineBoxOfficeMojo(gameSunday);
+			var mojoMovies = mojoEstimates.Mine();
+
+			FilterMinerMovies(mojoEstimates, gameSunday);
+
+			if (fmlMiner.Movies != null && fmlMiner.Movies.Any()
+				&& mojoMovies != null && mojoMovies.Any())
+			{
+				foreach (var fmlMovie in fmlMiner.Movies)
+				{
+					var found = mojoMovies.FirstOrDefault(item => item.Equals(fmlMovie));
+
+					if (found != null)
+					{
+						fmlMovie.Earnings = found.EarningsBase;		// DON'T assign the bonus (if there is one).
+					}
+				}
 			}
 		}
 
@@ -591,7 +655,13 @@ namespace MoviePicker.WebApp.Models
 			baseList = miners.First().Movies;
 			result.Add(baseList);
 
+			// Get the contains estimates value from the FML Miner.
 			var containsEstimates = miners.First().ContainsEstimates;
+
+			if (containsEstimates)
+			{
+				LoadBoxOfficeMojoEstimates(miners.First());
+			}
 
 			// TODO: Fix this for the FML base list.  This will break when another compound movie (multi-day) comes into play.
 
