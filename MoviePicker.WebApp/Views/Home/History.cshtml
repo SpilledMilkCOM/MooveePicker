@@ -74,8 +74,12 @@
 
 		foreach (var movie in Model.Movies)
 		{
+			const int DATA_COLUMNS = 7;
 			IBoxOffice lastWeek = null;
 			var history = movie.BoxOfficeHistory;
+			var majorRows = history == null ? 0 : history.Count() / DATA_COLUMNS + 1;     // The data can only be a certain width, otherwise it bleeds out of its bounding box.
+			var toSkip = 0;
+			var toTake = DATA_COLUMNS;
 
 			if (history != null && history.Count() > 1)
 			{
@@ -99,122 +103,138 @@
 					</div>
 
 					<table class="table">
-						<thead>
-							<tr>
-								<td> </td>
-								@foreach (var boxOffice in history)
-								{
-									<td><strong>@boxOffice.WeekendEnding.ToString("MM/dd")</strong></td>
-								}
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<span class="label label-primary"
-										  data-toggle="tooltip"
-										  data-placement="top"
-										  title="Box Office Dollars">BO$</span>
-								</td>
-
-								@foreach (var boxOffice in history)
-								{
-									<td>$@ViewUtility.SmallDollars(boxOffice.Earnings)</td>
-								}
-							</tr>
-							<tr>
-								<td>
-									<span class="label label-primary"
-										  data-toggle="tooltip"
-										  data-placement="top"
-										  title="Box Office Percent Decrease/Increase">BO%</span>
-								</td>
-								<td> </td>
-
-								@{
-									lastWeek = history.First();
-
-									foreach (var boxOffice in history.Skip(1))
+						@while (toSkip < history.Count())
+						{
+							<thead>
+								<tr>
+									<td> </td>
+									@foreach (var boxOffice in history.Skip(toSkip).Take(toTake))
 									{
-										var percent = (boxOffice.Earnings != 0 && lastWeek.Earnings != 0) ? (boxOffice.Earnings - lastWeek.Earnings) / lastWeek.Earnings * 100 : 0;
-										var boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
-
-										<td>
-											<span class="badge badge-pill badge-dark"
-												  style="@boPercentBackgroundColorStyle color: black;">
-												@percent.ToString("N0")%
-											</span>
-										</td>
-
-										lastWeek = boxOffice;
+										<td><strong>@boxOffice.WeekendEnding.ToString("MM/dd")</strong></td>
 									}
-								}
-							</tr>
-							<tr>
-								<td>
-									<span class="label label-primary"
-										  data-toggle="tooltip"
-										  data-placement="top"
-										  title="Theater Count">TC</span>
-								</td>
-								@{
-									lastWeek = null;
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<span class="label label-primary"
+											  data-toggle="tooltip"
+											  data-placement="top"
+											  title="Box Office Dollars">BO$</span>
+									</td>
 
-									foreach (var boxOffice in history)
+									@foreach (var boxOffice in history.Skip(toSkip).Take(toTake))
 									{
-										if (boxOffice.TheaterCount > 0)
+										<td>$@ViewUtility.SmallDollars(boxOffice.Earnings)</td>
+									}
+								</tr>
+								<tr>
+									<td>
+										<span class="label label-primary"
+											  data-toggle="tooltip"
+											  data-placement="top"
+											  title="Box Office Percent Decrease/Increase">BO%</span>
+									</td>
+
+									@if (toSkip == 0)
+									{
+										<td> </td>
+									}
+
+									@{
+										var toTakeOffset = 0;
+
+										if (toSkip == 0)
 										{
-											var isNew = !(lastWeek != null && (boxOffice.TheaterCount - lastWeek.TheaterCount != 0));
-
-											<td>
-												<span class="badge badge-pill badge-light"
-													  data-toggle="tooltip"
-													  data-placement="top"
-													  title="Theater Count">
-													@boxOffice.TheaterCount
-
-													@if (!isNew)
-													{
-														var theaterDiff = boxOffice.TheaterCount - lastWeek.TheaterCount;
-
-														if (theaterDiff > 0)
-														{
-															<br />
-															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
-															@(boxOffice.TheaterCount - lastWeek.TheaterCount)
-														}
-														else
-														{
-															<br />
-															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
-															@(lastWeek.TheaterCount - boxOffice.TheaterCount)
-														}
-													}
-												</span>
-											</td>
+											lastWeek = history.First();
+											toTakeOffset = -1;
 										}
 
-										lastWeek = boxOffice;
-									}
-								}
-							</tr>
-							<tr>
-								<td>
-									<span class="label label-primary"
-										  data-toggle="tooltip"
-										  data-placement="top"
-										  title="Dollars per Theater">$/T</span>
-								</td>
+										foreach (var boxOffice in history.Skip(toSkip + 1).Take(toTake + toTakeOffset))
+										{
+											var percent = (boxOffice.Earnings != 0 && lastWeek.Earnings != 0) ? (boxOffice.Earnings - lastWeek.Earnings) / lastWeek.Earnings * 100 : 0;
+											var boPercentBackgroundColorStyle = ViewUtility.PercentColorFromLastWeek(percent);
 
-								@foreach (var boxOffice in history)
-								{
-									var dollarsPerTheater = boxOffice.TheaterCount != 0 ? (boxOffice.Earnings / boxOffice.TheaterCount).ToString("N0") : "";
+											<td>
+												<span class="badge badge-pill badge-dark"
+													  style="@boPercentBackgroundColorStyle color: black;">
+													@percent.ToString("N0")%
+												</span>
+											</td>
+
+											lastWeek = boxOffice;
+										}
+
+									}
+								</tr>
+								<tr>
 									<td>
-										$@dollarsPerTheater
+										<span class="label label-primary"
+											  data-toggle="tooltip"
+											  data-placement="top"
+											  title="Theater Count">TC</span>
 									</td>
-								}
-							</tr>
-						</tbody>
+									@{
+										lastWeek = null;
+
+										foreach (var boxOffice in history.Skip(toSkip).Take(toTake))
+										{
+											if (boxOffice.TheaterCount > 0)
+											{
+												var isNew = !(lastWeek != null && (boxOffice.TheaterCount - lastWeek.TheaterCount != 0));
+
+												<td>
+													<span class="badge badge-pill badge-light"
+														  data-toggle="tooltip"
+														  data-placement="top"
+														  title="Theater Count">
+														@boxOffice.TheaterCount
+
+														@if (!isNew)
+														{
+															var theaterDiff = boxOffice.TheaterCount - lastWeek.TheaterCount;
+
+															if (theaterDiff > 0)
+															{
+																<br />
+																<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
+																@(boxOffice.TheaterCount - lastWeek.TheaterCount)
+															}
+															else
+															{
+																<br />
+																<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
+																@(lastWeek.TheaterCount - boxOffice.TheaterCount)
+															}
+														}
+													</span>
+												</td>
+											}
+
+											lastWeek = boxOffice;
+										}
+									}
+								</tr>
+								<tr>
+									<td>
+										<span class="label label-primary"
+											  data-toggle="tooltip"
+											  data-placement="top"
+											  title="Dollars per Theater">$/T</span>
+									</td>
+
+									@foreach (var boxOffice in history.Skip(toSkip).Take(toTake))
+									{
+										var dollarsPerTheater = boxOffice.TheaterCount != 0 ? (boxOffice.Earnings / boxOffice.TheaterCount).ToString("N0") : "";
+										<td>
+											$@dollarsPerTheater
+										</td>
+									}
+								</tr>
+							</tbody>
+
+							toSkip += toTake;       // Get the next row
+						}
 					</table>
 				</div>
 
