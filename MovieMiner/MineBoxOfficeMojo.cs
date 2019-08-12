@@ -103,7 +103,7 @@ namespace MovieMiner
 			// Might have to tweak this offset a bit to get the numbers to match.
 			var sundayOffset = (int)new DateTime(WeekendEnding.Value.Year, 1, 1).DayOfWeek;
 
-			url = $"{Url}weekend/chart/?view={WeekendEnding.Value.Year}&yr={WeekendEnding.Value.Year}&wknd={((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
+			url = $"{Url}weekend/chart/?yr={WeekendEnding.Value.Year}&wknd={((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
 
 			var doc = web.Load(url);
 
@@ -115,7 +115,6 @@ namespace MovieMiner
 
 			// TODO: Parse the header for column titles for mapping.
 
-			//var tableRows = doc.DocumentNode?.SelectNodes("//table[@border='0' and @cellspacing='1' and @cellpadding='5']/tbody/tr[position()>1]");
 			var tableRows = doc.DocumentNode?.SelectNodes("//table[@cellpadding='5']//tr[position()>1]");
 
 			if (tableRows != null)
