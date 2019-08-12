@@ -534,8 +534,8 @@ namespace MoviePicker.WebApp.Models
 		/// <param name="fmlMiner">The FML Miner with estimate data.</param>
 		private void LoadBoxOfficeMojoEstimates(IMiner fmlMiner)
 		{
-			var gameSunday = MovieDateUtil.LastSunday();
-			//var gameSunday = MovieDateUtil.GameSunday();
+			//var gameSunday = MovieDateUtil.LastSunday();
+			var gameSunday = MovieDateUtil.GameSunday();
 			var mojoEstimates = new MineBoxOfficeMojo(gameSunday);
 			var mojoMovies = mojoEstimates.Mine();
 
@@ -548,7 +548,7 @@ namespace MoviePicker.WebApp.Models
 				{
 					var found = mojoMovies.FirstOrDefault(item => item.Equals(fmlMovie));
 
-					if (found != null)
+					if (found != null && found.WeekendEnding == fmlMovie.WeekendEnding)
 					{
 						fmlMovie.Earnings = found.EarningsBase;		// DON'T assign the bonus (if there is one).
 					}
