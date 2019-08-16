@@ -1,4 +1,4 @@
-﻿using MoviePicker.Common.Interfaces;
+﻿using SM.Common.Interfaces;
 using MoviePicker.Tests;
 using SM.Common.Utils;
 using System;

@@ -2,6 +2,8 @@
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
+using SM.Common.Interfaces;
+using SM.Common.Tests;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;

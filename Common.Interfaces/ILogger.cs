@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MoviePicker.Common.Interfaces
+namespace SM.Common.Interfaces
 {
 	public interface ILogger
 	{

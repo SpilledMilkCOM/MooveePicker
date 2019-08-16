@@ -383,6 +383,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.Interfaces\Common.Interfaces.csproj">
+      <Project>{7fe5b3ce-8020-4fa1-9355-128ba0db9b26}</Project>
+      <Name>Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MovieMiner\MovieMiner.csproj">
       <Project>{1213dd7e-2ade-4d0b-9e36-7c4552b24612}</Project>
       <Name>MovieMiner</Name>

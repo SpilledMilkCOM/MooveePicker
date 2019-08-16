@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common.Interfaces\Common.Interfaces.csproj" />
     <ProjectReference Include="..\MoviePicker.Common\MoviePicker.Common.csproj" />
     <ProjectReference Include="..\MoviePicker.Msf\MoviePicker.Msf.csproj" />
     <ProjectReference Include="..\MoviePicker\MoviePicker.csproj" />

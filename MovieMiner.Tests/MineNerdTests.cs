@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MoviePicker.Common.Interfaces;
 using Newtonsoft.Json;
+using SM.Common.Interfaces;
+using SM.Common.Tests;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Unity;

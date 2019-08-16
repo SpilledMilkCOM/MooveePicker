@@ -82,6 +82,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.Interfaces\Common.Interfaces.csproj">
+      <Project>{7fe5b3ce-8020-4fa1-9355-128ba0db9b26}</Project>
+      <Name>Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MoviePicker.Common\MoviePicker.Common.csproj">
       <Project>{C413BA12-DCD8-485E-B008-087BA02004CB}</Project>
       <Name>MoviePicker.Common</Name>

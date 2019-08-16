@@ -9,7 +9,8 @@ namespace MoviePicker.Tests
 {
 	[TestClass]
 	[ExcludeFromCodeCoverage]
-	[DeploymentItem("app.secret.config")]
+	[DeploymentItem("app.config")]
+	[DeploymentItem("appSettings.secret.config")]
 	public class PosterRecognitionTests
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
@@ -32,7 +33,7 @@ namespace MoviePicker.Tests
 		{
 			var test = ConstructTestObject();
 
-			var actual = test.AnalyzePoster("http://mooveepicker.azurewebsites.net/images/MoviePoster_86067c35-d745-4643-abd8-3f348cc9e817.jpg");
+			var actual = test.AnalyzePoster("https://mooveepicker.com/Images/MoviePoster_p16311223_p_v12_ac.jpg");
 
 			Assert.IsNotNull(actual);
 		}

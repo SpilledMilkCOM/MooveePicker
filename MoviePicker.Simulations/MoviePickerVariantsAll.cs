@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
+using SM.Common.Interfaces;
 using SM.Common.Utils;
 
 namespace MooveePicker.Simulations

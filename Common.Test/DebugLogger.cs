@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using MoviePicker.Common.Interfaces;
 
-namespace MoviePicker.Tests
+using SM.Common.Interfaces;
+
+namespace SM.Common.Tests
 {
-	[ExcludeFromCodeCoverage]
 	public class DebugLogger : ILogger
 	{
 		public ConsoleColor ForegroundColor { get; set; }

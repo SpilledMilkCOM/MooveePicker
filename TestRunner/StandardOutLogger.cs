@@ -1,6 +1,6 @@
 ﻿using System;
 
-using MoviePicker.Common.Interfaces;
+using SM.Common.Interfaces;
 
 namespace MoviePicker.Tests
 {

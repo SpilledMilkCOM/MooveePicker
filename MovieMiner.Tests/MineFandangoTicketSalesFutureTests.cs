@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
+using SM.Common.Interfaces;
+using SM.Common.Tests;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
