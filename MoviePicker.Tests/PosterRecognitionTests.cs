@@ -40,6 +40,15 @@ namespace MoviePicker.Tests
 			Assert.IsNotNull(actual);
 		}
 
+		[TestMethod, TestCategory("Integration")]
+		public void PosterRecognition_DescribePoster()
+		{
+			var test = ConstructTestObject();
+
+			var actual = test.DescribePoster("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360");
+
+			Assert.IsNotNull(actual);
+		}
 
 		[TestMethod, TestCategory("Integration")]
 		public void PosterRecognition_AnylizeTable()

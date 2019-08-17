@@ -15,12 +15,24 @@ namespace MoviePicker.Cognitive
 			// https://[location].api.cognitive.microsoft.com/vision/v1.0/analyze[?visualFeatures][&details][&language] 
 
 			_restClient.BaseAddress = "https://southcentralus.api.cognitive.microsoft.com";
-			_restClient.EndPointMethod = "/vision/v2.0/analyze";
 		}
 
 		public string AnalyzePoster(string posterUrl)
 		{
 			string result = null;
+
+			_restClient.EndPointMethod = "/vision/v2.0/analyze";
+
+			result = _restClient.Post($"{{\"url\":\"{posterUrl}\"}}");
+
+			return result;
+		}
+
+		public string DescribePoster(string posterUrl)
+		{
+			string result = null;
+
+			_restClient.EndPointMethod = "/vision/v2.0/describe";
 
 			result = _restClient.Post($"{{\"url\":\"{posterUrl}\"}}");
 
