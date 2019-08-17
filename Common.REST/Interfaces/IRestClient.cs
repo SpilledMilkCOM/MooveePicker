@@ -1,4 +1,7 @@
-﻿namespace SM.Common.REST.Interfaces
+﻿using System.Collections.Specialized;
+using System.Net;
+
+namespace SM.Common.REST.Interfaces
 {
 	public interface IRestClient
 	{
@@ -9,6 +12,8 @@
 		string ContentType { get; set; }
 
 		string EndPointMethod { get; set; }
+
+		NameValueCollection Headers { get; }
 
 		void AddParamter(string key, string value);
 
