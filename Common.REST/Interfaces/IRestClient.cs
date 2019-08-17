@@ -6,6 +6,8 @@
 
 		string BaseAddress { get; set; }
 
+		string ContentType { get; set; }
+
 		string EndPointMethod { get; set; }
 
 		void AddParamter(string key, string value);

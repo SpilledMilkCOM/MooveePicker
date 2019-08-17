@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Cognitive;
+using SM.Common.REST;
+using SM.Common.REST.Interfaces;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using Unity;

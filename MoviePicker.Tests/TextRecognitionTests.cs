@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Cognitive;
+using SM.Common.REST;
+using SM.Common.REST.Interfaces;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using Unity;
@@ -9,7 +11,8 @@ namespace MoviePicker.Tests
 {
 	[TestClass]
 	[ExcludeFromCodeCoverage]
-	[DeploymentItem("app.secret.config")]
+	[DeploymentItem("app.config")]
+	[DeploymentItem("appSettings.secret.config")]
 	public class TextRecognitionTests
 	{
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx

@@ -109,6 +109,10 @@
       <Project>{7fe5b3ce-8020-4fa1-9355-128ba0db9b26}</Project>
       <Name>Common.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common.REST\Common.REST.csproj">
+      <Project>{a32818b6-6c8d-47b1-bfe2-af00e8db185f}</Project>
+      <Name>Common.REST</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common.Test\Common.Test.csproj">
       <Project>{896c2a23-d9f0-46f0-84bf-0ff8c355013d}</Project>
       <Name>Common.Test</Name>

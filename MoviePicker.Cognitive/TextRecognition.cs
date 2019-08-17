@@ -1,4 +1,6 @@
-﻿namespace MoviePicker.Cognitive
+﻿using SM.Common.REST.Interfaces;
+
+namespace MoviePicker.Cognitive
 {
 	public class TextRecognition : ITextRecognition
 	{

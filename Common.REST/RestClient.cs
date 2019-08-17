@@ -11,11 +11,14 @@ namespace SM.Common.REST
 
 		public RestClient()
 		{
+			ContentType = "application/json";
 		}
 
 		public string APIKey { get; set; }
 
 		public string BaseAddress { get; set; }
+
+		public string ContentType { get; set; }
 
 		public string EndPointMethod { get; set; }
 
@@ -40,8 +43,16 @@ namespace SM.Common.REST
 			using (var webClient = new WebClient())
 			{
 				webClient.BaseAddress = BaseAddress;
-				webClient.Headers.Add("Content-Type", "application/json");
-				webClient.Headers.Add("Ocp-Apim-Subscription-Key", APIKey);
+
+				if (ContentType != null)
+				{
+					webClient.Headers.Add("Content-Type", ContentType);
+				}
+
+				if (APIKey != null)
+				{
+					webClient.Headers.Add("Ocp-Apim-Subscription-Key", APIKey);
+				}
 
 				var response = webClient.UploadData($"{EndPointMethod}{_parameters}", "POST", Encoding.Default.GetBytes(dataToPost));
 
