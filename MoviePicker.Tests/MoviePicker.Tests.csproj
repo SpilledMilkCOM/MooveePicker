@@ -86,7 +86,7 @@
     <Compile Include="MoviePickerSimpleTests.cs" />
     <Compile Include="MoviePickerUnboundedKnapsackTests.cs" />
     <Compile Include="TextRecognitionTests.cs" />
-    <Compile Include="PosterRecognitionTests.cs" />
+    <Compile Include="ComputerVisionTests.cs" />
     <Compile Include="TitleMatchTests.cs" />
     <Compile Include="MovieTests.cs" />
     <Compile Include="Old\MoviePickerTest_20170820.cs" />

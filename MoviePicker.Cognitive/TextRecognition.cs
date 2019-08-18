@@ -15,7 +15,7 @@ namespace MoviePicker.Cognitive
 			// https://[location].api.cognitive.microsoft.com/vision/v2.0/ocr[?language][&detectOrientation] 
 
 			_restClient.BaseAddress = "https://southcentralus.api.cognitive.microsoft.com";
-			_restClient.EndPointMethod = "/vision/v2.0/ocr?language=en";
+			_restClient.EndpointMethod = "/vision/v2.0/ocr?language=en";
 		}
 
 		public string AnalyzeText(string posterUrl)
