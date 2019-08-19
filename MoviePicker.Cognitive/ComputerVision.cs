@@ -1,6 +1,8 @@
-﻿using SM.Common.REST;
+﻿using MoviePicker.Cognitive.Parameters;
+using SM.Common.REST;
 using SM.Common.REST.Interfaces;
-using System.Net;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace MoviePicker.Cognitive
 {
@@ -25,11 +27,19 @@ namespace MoviePicker.Cognitive
 			_restClient.BaseAddress = "https://southcentralus.api.cognitive.microsoft.com";
 		}
 
-		public string Analyze(string posterUrl)
+		public string Analyze(string posterUrl, List<VisualFeature> visualFeatures = null, List<Detail> details = null, Language language = Language.undefined)
 		{
 			// https://[location].api.cognitive.microsoft.com/vision/v1.0/analyze[?visualFeatures][&details][&language] 
 
 			_restClient.EndpointMethod = $"/{BASE_METHOD}/{API_VERSION}/analyze";
+
+			_restClient.AddParameters("visualFeatures", visualFeatures?.Select(item => item.ToString()));
+			_restClient.AddParameters("details", details?.Select(item => item.ToString()));
+
+			if (language != Language.undefined)
+			{
+				_restClient.AddParameter("language", language.ToString());
+			}
 
 			return _restClient.Post($"{{\"url\":\"{posterUrl}\"}}");
 		}

@@ -7,8 +7,8 @@ namespace MoviePicker.Cognitive
 	{
 		string APIKey { get; set; }
 
-		List<Details> Details { get; set; }
+		List<Detail> Details { get; set; }
 
-		List<VisualFeatures> VisualFeatures { get; set; }
+		List<VisualFeature> VisualFeatures { get; set; }
 	}
 }

@@ -1,9 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Cognitive;
+using MoviePicker.Cognitive.Parameters;
 using SM.Common.Interfaces;
 using SM.Common.REST;
 using SM.Common.REST.Interfaces;
 using SM.Common.Tests;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using Unity;
@@ -46,7 +48,7 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod, TestCategory("Integration")]
-		public void ComputerVision_AnylizePoster()
+		public void ComputerVision_Analyze()
 		{
 			var test = ConstructTestObject();
 
@@ -56,7 +58,76 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod, TestCategory("Integration")]
-		public void ComputerVision_DescribePoster()
+		public void ComputerVision_Analyze_WithCelebrityFaces()
+		{
+			var visualFeatures = new List<VisualFeature> { VisualFeature.Faces };
+			var details = new List<Detail> { Detail.Celebrities };
+			var test = ConstructTestObject();
+
+			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360"
+									, visualFeatures, details);
+
+			Assert.IsNotNull(actual);
+
+			Logger.WriteLine(actual);
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void ComputerVision_Analyze_WithFaces()
+		{
+			var visualFeatures = new List<VisualFeature> { VisualFeature.Faces };
+			var test = ConstructTestObject();
+
+			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360", visualFeatures);
+
+			Assert.IsNotNull(actual);
+
+			Logger.WriteLine(actual);
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void ComputerVision_Analyze_WithAdultDescriptionFaces()
+		{
+			var visualFeatures = new List<VisualFeature> { VisualFeature.Adult, VisualFeature.Description, VisualFeature.Faces };
+			var test = ConstructTestObject();
+
+			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360", visualFeatures);
+
+			Assert.IsNotNull(actual);
+
+			Logger.WriteLine(actual);
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void ComputerVision_Analyze_WithTags()
+		{
+			var visualFeatures = new List<VisualFeature> { VisualFeature.Tags };
+			var test = ConstructTestObject();
+
+			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360"
+							, visualFeatures);
+
+			Assert.IsNotNull(actual);
+
+			Logger.WriteLine(actual);
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void ComputerVision_Analyze_WithTagsSpanish()
+		{
+			var visualFeatures = new List<VisualFeature> { VisualFeature.Tags };
+			var test = ConstructTestObject();
+
+			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360"
+							, visualFeatures, language: Language.es);
+
+			Assert.IsNotNull(actual);
+
+			Logger.WriteLine(actual);
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void ComputerVision_Describe()
 		{
 			var test = ConstructTestObject();
 

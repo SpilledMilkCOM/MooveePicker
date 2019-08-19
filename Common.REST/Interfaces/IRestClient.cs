@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace SM.Common.REST.Interfaces
 {
@@ -27,7 +28,9 @@ namespace SM.Common.REST.Interfaces
 		/// </summary>
 		/// <param name="key">Parameter name</param>
 		/// <param name="value">Parameter value</param>
-		void AddParamter(string key, string value);
+		void AddParameter(string key, string value);
+
+		void AddParameters(string key, IEnumerable<string> parameters);
 
 		string Get();
 

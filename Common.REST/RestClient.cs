@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -44,7 +46,7 @@ namespace SM.Common.REST
 
 		//----==== PUBLIC ====--------------------------------------------------------------------
 
-		public void AddParamter(string key, string value)
+		public void AddParameter(string key, string value)
 		{
 			if (_parameters == null)
 			{
@@ -56,6 +58,36 @@ namespace SM.Common.REST
 			}
 
 			_parameters += $"{key}={value}";
+		}
+
+		/// <summary>
+		/// Adds a comma separated list to the parameter.
+		/// </summary>
+		/// <param name="key">The parameter key</param>
+		/// <param name="parameters">A list of objects whose ToString() value will be used.</param>
+		public void AddParameters(string key, IEnumerable<string> parameters)
+		{
+			if (_parameters == null)
+			{
+				_parameters = "?";
+			}
+			else
+			{
+				_parameters += "&";
+			}
+
+			if (parameters != null)
+			{
+				if (parameters.Any())
+				{
+					_parameters += $"{key}={parameters.First()}";
+				}
+
+				foreach (var parameter in parameters.Skip(1))
+				{
+					_parameters += $",{parameter}";
+				}
+			}
 		}
 
 		public string Get()

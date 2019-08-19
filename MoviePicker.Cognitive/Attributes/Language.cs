@@ -2,10 +2,26 @@
 {
 	public enum Language
 	{
-		en,		// English, Default
-		es,		// Spanish
-		ja,		// Japanese
-		pt,		// Portuguese
-		zh		// Simplified Chinese
+		undefined = -1,
+		/// <summary>
+		/// English, Default
+		/// </summary>
+		en,
+		/// <summary>
+		/// Spanish
+		/// </summary>
+		es,
+		/// <summary>
+		/// Japanese
+		/// </summary>
+		ja,
+		/// <summary>
+		/// Portuguese
+		/// </summary>
+		pt,
+		/// <summary>
+		/// Simplified Chinese
+		/// </summary>
+		zh
 	}
 }
