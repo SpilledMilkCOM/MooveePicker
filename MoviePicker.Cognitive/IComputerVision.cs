@@ -14,6 +14,6 @@ namespace MoviePicker.Cognitive
 					, int maxCandidates = 1
 					, Language language = Language.undefined);
 
-		object GetThumbnail(int width, int height, bool smartCropping);
+		object GetThumbnail(string posterUrl, int width, int height, bool smartCropping);
 	}
 }
