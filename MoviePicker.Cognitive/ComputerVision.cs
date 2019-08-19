@@ -44,11 +44,32 @@ namespace MoviePicker.Cognitive
 			return _restClient.Post($"{{\"url\":\"{posterUrl}\"}}");
 		}
 
-		public string Describe(string posterUrl)
+		public string Describe(string posterUrl, int maxCandidates = 1, Language language = Language.undefined)
 		{
 			// https://[location].api.cognitive.microsoft.com/vision/v2.0/describe[?maxCandidates][&language]
 
 			_restClient.EndpointMethod = $"/{BASE_METHOD}/{API_VERSION}/describe";
+
+			if (maxCandidates != 1)		// Since 1 is the default.
+			{
+				_restClient.AddParameter("maxCandidates", maxCandidates.ToString());
+			}
+
+			if (language != Language.undefined)
+			{
+				_restClient.AddParameter("language", language.ToString());
+			}
+
+			return _restClient.Post($"{{\"url\":\"{posterUrl}\"}}");
+		}
+
+		public object GetThumbnail(string posterUrl, int width, int height, bool smartCropping)
+		{
+			_restClient.EndpointMethod = $"/{BASE_METHOD}/{API_VERSION}/getthumbnail";
+
+			_restClient.AddParameter("width", width.ToString());
+			_restClient.AddParameter("height", height.ToString());
+			_restClient.AddParameter("smartCropping", smartCropping.ToString());
 
 			return _restClient.Post($"{{\"url\":\"{posterUrl}\"}}");
 		}

@@ -10,6 +10,10 @@ namespace MoviePicker.Cognitive
 					, List<Detail> details = null
 					, Language language = Language.undefined);
 
-		string Describe(string fileName);
+		string Describe(string fileName
+					, int maxCandidates = 1
+					, Language language = Language.undefined);
+
+		object GetThumbnail(int width, int height, bool smartCropping);
 	}
 }
