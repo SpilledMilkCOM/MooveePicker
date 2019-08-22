@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Net.Http;
+using System.Net;
 using System.Text;
 
 using SM.Common.REST.Interfaces;
@@ -12,20 +12,16 @@ namespace SM.Common.REST
 	/// <summary>
 	/// A generic class that 
 	/// </summary>
-	public class RestClient : IRestClient
+	public class RestClientOld : IRestClient
 	{
 		public const string HEADER_CONTENT_TYPE = "Content-Type";
 
-		public delegate void AddHeadersMethod();
+		//public delegate void AddHeadersMethod();
 
 		private string _parameters;
-		private AddHeadersMethod _addHeadersMethod;
+		private RestClient.AddHeadersMethod _addHeadersMethod;
 
-		// MS recommends only having ONE instance per application.
-		// Many of the methods are thread safe.
-		private static HttpClient _client = new HttpClient();
-
-		public RestClient()
+		public RestClientOld()
 		{
 			ContentType = "application/json";
 
@@ -33,8 +29,7 @@ namespace SM.Common.REST
 		}
 
 		// Inject the method versus overriding.
-		public AddHeadersMethod AddHeaders
-		{
+		public RestClient.AddHeadersMethod AddHeaders {
 			get => _addHeadersMethod;
 			set => _addHeadersMethod = (value == null) ? throw new ArgumentNullException("The AddHeaders method cannot be null.") : value;
 		}
@@ -97,45 +92,48 @@ namespace SM.Common.REST
 
 		public string Get()
 		{
-			Headers.Clear();
-			AddHeaders?.Invoke();
+			string result = null;
 
-			_client.BaseAddress = new Uri(BaseAddress);
-
-			foreach (var key in Headers.AllKeys)
+			using (var webClient = new WebClient())
 			{
-				_client.DefaultRequestHeaders.Add(key, Headers[key]);
+				webClient.BaseAddress = BaseAddress;
+
+				// The content type may not be needed for this, but it's provided in the default headers.
+				// TODO: May need to clean this up too.
+
+				AddHeaders?.Invoke();
+
+				webClient.Headers.Add(Headers);
+
+				result = webClient.DownloadString($"{EndpointMethod}{_parameters}");
 			}
 
-			var result = _client.GetStringAsync($"{EndpointMethod}{_parameters}");
-
-			result.Wait();      // Basically turning this synchronous.
-
-			return result.Result;
+			return result;
 		}
 
 		public string Post(string dataToPost)
 		{
-			Headers.Clear();
-			AddHeaders?.Invoke();
+			string result = null;
 
-			_client.BaseAddress = new Uri(BaseAddress);
-
-			foreach (var key in Headers.AllKeys)
+			using (var webClient = new WebClient())
 			{
-				_client.DefaultRequestHeaders.Add(key, Headers[key]);
+				webClient.BaseAddress = BaseAddress;
+
+				AddHeaders?.Invoke();
+
+				webClient.Headers.Add(Headers);
+
+				var response = webClient.UploadData($"{EndpointMethod}{_parameters}", "POST", Encoding.Default.GetBytes(dataToPost));
+
+				if (response != null)
+				{
+					result = Encoding.Default.GetString(response);
+				}
 			}
 
-//			var content = new ByteArrayContent(Encoding.Default.GetBytes(dataToPost));
-			var content = new StringContent(dataToPost, Encoding.UTF8, ContentType);
-
-			var responseResult = _client.PostAsync($"{EndpointMethod}{_parameters}", content).Result.Content.ReadAsStringAsync();
-
-			responseResult.Wait();      // Basically turning this synchronous.
-
-			return responseResult.Result;
+			return result;
 		}
 
-	//----==== PRIVATE ====--------------------------------------------------------------------
-}
+		//----==== PRIVATE ====--------------------------------------------------------------------
+	}
 }
