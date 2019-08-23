@@ -73,6 +73,21 @@ namespace MoviePicker.Tests
 		}
 
 		[TestMethod, TestCategory("Integration")]
+		public void ComputerVision_Analyze_WithCelebrityFaces_Dora()
+		{
+			var visualFeatures = new List<VisualFeature> { VisualFeature.Faces };
+			var details = new List<Detail> { Detail.Celebrities };
+			var test = ConstructTestObject();
+
+			var actual = test.Analyze("https://images.noovie.com/posters/movies/137736/standard/dora-and-the-lost-city-of-gold-2019-poster-2.jpg?1562688856"
+									, visualFeatures, details);
+
+			Assert.IsNotNull(actual);
+
+			Logger.WriteLine(actual);
+		}
+
+		[TestMethod, TestCategory("Integration")]
 		public void ComputerVision_Analyze_WithFaces()
 		{
 			var visualFeatures = new List<VisualFeature> { VisualFeature.Faces };

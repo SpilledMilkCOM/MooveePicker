@@ -123,10 +123,13 @@ namespace SM.Common.REST
 
 			foreach (var key in Headers.AllKeys)
 			{
-				_client.DefaultRequestHeaders.Add(key, Headers[key]);
+				if (key != "Content-Type")
+				{
+					_client.DefaultRequestHeaders.Add(key, Headers[key]);
+				}
 			}
 
-//			var content = new ByteArrayContent(Encoding.Default.GetBytes(dataToPost));
+			//			var content = new ByteArrayContent(Encoding.Default.GetBytes(dataToPost));
 			var content = new StringContent(dataToPost, Encoding.UTF8, ContentType);
 
 			var responseResult = _client.PostAsync($"{EndpointMethod}{_parameters}", content).Result.Content.ReadAsStringAsync();
@@ -136,6 +139,6 @@ namespace SM.Common.REST
 			return responseResult.Result;
 		}
 
-	//----==== PRIVATE ====--------------------------------------------------------------------
-}
+		//----==== PRIVATE ====--------------------------------------------------------------------
+	}
 }
