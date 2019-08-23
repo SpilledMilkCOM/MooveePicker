@@ -5,6 +5,7 @@ using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Models;
 using MoviePicker.WebApp.Utilities;
 using MoviePicker.WebApp.ViewModels;
+using SM.Common.Emoji;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -1223,7 +1224,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			if (tiebreaker.HasValue)
 			{
-				defaultTwitterText += $"{NEW_LINE_HTML}(tiebrk ${tiebreaker:N0})";
+				defaultTwitterText += $"{NEW_LINE_HTML}(${tiebreaker:N0} {EmojiConstants.NECKTIE})";
 			}
 
 			defaultTwitterText += $"{NEW_LINE_HTML}[cost {spentBux.ToString("N0")} BUX]{NEW_LINE_HTML}{NEW_LINE_HTML}#ShowYourScreens @SpilledMilkCOM RT if you like this #PerfectPick";

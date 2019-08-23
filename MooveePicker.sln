@@ -46,9 +46,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoviePicker.Cognitive", "Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.REST", "Common.REST\Common.REST.csproj", "{A32818B6-6C8D-47B1-BFE2-AF00E8DB185F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Test", "Common.Test\Common.Test.csproj", "{896C2A23-D9F0-46F0-84BF-0FF8C355013D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Test", "Common.Test\Common.Test.csproj", "{896C2A23-D9F0-46F0-84BF-0FF8C355013D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Interfaces", "Common.Interfaces\Common.Interfaces.csproj", "{7FE5B3CE-8020-4FA1-9355-128BA0DB9B26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Interfaces", "Common.Interfaces\Common.Interfaces.csproj", "{7FE5B3CE-8020-4FA1-9355-128BA0DB9B26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Emoji", "Common.Emoji\Common.Emoji.csproj", "{7AEE99D0-DE09-4782-839C-ABFBFCF34130}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -334,6 +336,22 @@ Global
 		{7FE5B3CE-8020-4FA1-9355-128BA0DB9B26}.Release|x64.Build.0 = Release|Any CPU
 		{7FE5B3CE-8020-4FA1-9355-128BA0DB9B26}.Release|x86.ActiveCfg = Release|Any CPU
 		{7FE5B3CE-8020-4FA1-9355-128BA0DB9B26}.Release|x86.Build.0 = Release|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Debug|ARM.Build.0 = Debug|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Debug|x64.Build.0 = Debug|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Debug|x86.Build.0 = Debug|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Release|ARM.ActiveCfg = Release|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Release|ARM.Build.0 = Release|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Release|x64.ActiveCfg = Release|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Release|x64.Build.0 = Release|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Release|x86.ActiveCfg = Release|Any CPU
+		{7AEE99D0-DE09-4782-839C-ABFBFCF34130}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

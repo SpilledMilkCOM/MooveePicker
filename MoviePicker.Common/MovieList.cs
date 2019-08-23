@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MoviePicker.Common.Interfaces;
+using SM.Common.Emoji;
 
 namespace MoviePicker.Common
 {
@@ -177,11 +178,12 @@ namespace MoviePicker.Common
 			{
 				var multiplier = (movieGroup.Count() > 1) ? $" x{movieGroup.Count()}" : string.Empty;
 				var movie = movieGroup.First();
+				var bonus = movie.IsBestPerformer ? $" {EmojiConstants.GREEN_HEART}" : string.Empty;
 				// Now that Twitter is up to 280 characters you'll get more visibility if you #hashtag the movie name (or maybe use its @idname)
 				var abbreviation = movie.Hashtag; //movie.Abbreviation;
 
 				// Prefix with a linefeed ASC(10) = 0x0A
-				result.Append($"%0a{abbreviation}{multiplier}");
+				result.Append($"%0a{abbreviation}{multiplier}{bonus}");
 			}
 
 			return result.ToString();

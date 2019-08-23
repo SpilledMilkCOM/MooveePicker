@@ -383,6 +383,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common.Emoji\Common.Emoji.csproj">
+      <Project>{7aee99d0-de09-4782-839c-abfbfcf34130}</Project>
+      <Name>Common.Emoji</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common.Interfaces\Common.Interfaces.csproj">
       <Project>{7fe5b3ce-8020-4fa1-9355-128ba0db9b26}</Project>
       <Name>Common.Interfaces</Name>
