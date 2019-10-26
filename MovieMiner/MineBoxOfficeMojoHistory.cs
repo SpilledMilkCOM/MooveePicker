@@ -13,7 +13,7 @@ namespace MovieMiner
 	/// </summary>
 	public class MineBoxOfficeMojoHistory : MinerBase
 	{
-		private const string DEFAULT_URL = "http://boxofficemojo.com/";
+		private const string DEFAULT_URL = "https://boxofficemojo.com/";
 
 		private Dictionary<string, int> _monthMap = new Dictionary<string, int>(12);
 
@@ -52,7 +52,7 @@ namespace MovieMiner
 			var result = new List<IMovie>();
 			var boxOfficeHistory = new List<IBoxOffice>();
 
-			string url = $"{Url}movies/?page=weekend&id={Identifier}.htm";
+			string url = $"{Url}{Identifier.Replace("?ref", "weekend/?ref")}";		// Wan't only the weekend values.  Daily might be handy later.
 			var web = new HtmlWeb();
 
 			ContainsEstimates = false;
@@ -63,7 +63,7 @@ namespace MovieMiner
 
 			// Get table rows (skipping the first row - header)
 
-			var tableRows = doc.DocumentNode?.SelectNodes("//table[@class='chart-wide']//tr[position()>1]");
+			var tableRows = doc.DocumentNode?.SelectNodes("//table//tr[position()>1]");
 
 			if (tableRows != null)
 			{
@@ -80,11 +80,7 @@ namespace MovieMiner
 						{
 							if (columnCount == 0)
 							{
-								var href = column.GetAttributeValue("href", null);      // The year is contained within the link.
-								var year = DateTime.Now.Year;
-								var weekendEnding = ParseEndDate(HttpUtility.HtmlDecode(column.InnerText), year);
-
-								boxOffice = new BoxOffice { WeekendEnding = weekendEnding };
+								boxOffice = new BoxOffice { WeekendEnding = ParseEndDate(HttpUtility.HtmlDecode(column.InnerText)) };
 							}
 							else if (columnCount == 1)
 							{
@@ -115,7 +111,7 @@ namespace MovieMiner
 
 				movie.SetBoxOfficeHistory(boxOfficeHistory);
 
-				result.Add(movie);		// A list of one (just to conform to the miner interface)
+				result.Add(movie);      // A list of one (just to conform to the miner interface)
 			}
 
 			return result;
@@ -126,13 +122,22 @@ namespace MovieMiner
 			return Convert.ToInt32(number.Replace(",", string.Empty));
 		}
 
+		private DateTime ParseEndDate(string date)
+		{
+			var result = new DateTime();
+
+			DateTime.TryParse(date, out result);		// Won't throw error.
+
+			return result;
+		}
+
 		/// <summary>
 		/// Parse a short date
 		/// </summary>
 		/// <param name="shortDate">A string/date range in the format MMM dd-dd</param>
 		/// <param name="year"></param>
 		/// <returns></returns>
-		private DateTime ParseEndDate(string shortDate, int year)
+		private DateTime ParseEndDateOld(string shortDate, int year)
 		{
 			var monthDays = shortDate.Split();
 			var days = monthDays[1].Split(new char[] { '\u0096' });     // One of those extra long hyphens.

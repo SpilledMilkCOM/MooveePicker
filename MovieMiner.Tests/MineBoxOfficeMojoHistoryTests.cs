@@ -30,7 +30,7 @@ namespace MovieMiner.Tests
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]
 		public void MineBoxOfficeMojoHistory_Mine()
 		{
-			var test = new MineBoxOfficeMojoHistory("alita");
+			var test = new MineBoxOfficeMojoHistory("release/rl939755009/?ref_=bo_we_table_2");
 
 			var actual = test.Mine();
 

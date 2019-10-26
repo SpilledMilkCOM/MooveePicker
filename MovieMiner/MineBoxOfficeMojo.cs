@@ -141,12 +141,11 @@ namespace MovieMiner
 							{
 								var anchor = column.SelectSingleNode(".//a");
 								var movieDetailUrl = anchor?.GetAttributeValue("href", null);
-								var argSplit = movieDetailUrl?.Split(new char[] { '=' });
 
 								movie = new Movie
 								{
 									Name = RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText)),
-									Identifier = argSplit?[1].Replace(".htm", string.Empty)
+									Identifier = movieDetailUrl.Replace(DEFAULT_URL, string.Empty)
 								};
 
 								if (WeekendEnding.HasValue)
