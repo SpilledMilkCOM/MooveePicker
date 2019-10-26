@@ -649,7 +649,7 @@ namespace MoviePicker.WebApp.Models
 			List<IMovie> baseList = null;
 			List<IMovie> compoundMovies = null;
 
-			// FML Base list is first.
+			// !!!!! FML Base list is first !!!!! 
 
 			((ICache)miners.First()).Load();
 			baseList = miners.First().Movies;
@@ -657,6 +657,8 @@ namespace MoviePicker.WebApp.Models
 
 			// Get the contains estimates value from the FML Miner.
 			var containsEstimates = miners.First().ContainsEstimates;
+			var weekendEnding = WeekendEnding;      // The actual end date of the game.
+			var gameDays = WeekendEnding.HasValue ? WeekendEnding.Value.Subtract(MovieDateUtil.GameStartTime()).Days + 1 : 3;
 
 			if (containsEstimates)
 			{
@@ -698,6 +700,7 @@ namespace MoviePicker.WebApp.Models
 					if (miner != baseList)
 					{
 						miner.ContainsEstimates = containsEstimates;
+						miner.GameDays = gameDays;
 
 						List<IMovie> movieList = null;
 

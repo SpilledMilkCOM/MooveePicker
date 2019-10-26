@@ -27,6 +27,8 @@ namespace MovieMiner
 
 		bool CloneCausedReload { get; }
 
+		int GameDays { get; set; }
+
 		bool IsHidden { get; set; }
 
 		DateTime? LastUpdated { get; set; }

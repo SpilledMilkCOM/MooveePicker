@@ -169,11 +169,16 @@ namespace MoviePicker.WebApp.Tests.Models
 			var test = new MinerModel(true);
 
 			Assert.IsNotNull(test.Miners);
-			Assert.IsTrue(test.Miners[MinerModel.MOJO_INDEX].Movies.Count > 0);
+
+			var miner = test.Miners[MinerModel.MOJO_INDEX];
+
+			Assert.IsTrue(miner.Movies.Count > 0);
 
 			Logger.WriteLine("=========================== MOJO'S NUMBERS ===========================");
 
-			foreach (var movie in test.Miners.Last().Movies)
+			Logger.WriteLine(test.WeekendEnding.ToString());
+
+			foreach (var movie in miner.Movies)
 			{
 				Logger.WriteLine($"{movie.Id}  {movie.WeekendEnding}  \"{movie.Name}\", ${movie.EarningsBase}, {movie.Cost} BUX");
 			}
