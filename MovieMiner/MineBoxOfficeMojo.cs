@@ -11,7 +11,7 @@ namespace MovieMiner
 {
 	public class MineBoxOfficeMojo : MinerBase
 	{
-		private const string DEFAULT_URL = "http://boxofficemojo.com/";
+		private const string DEFAULT_URL = "https://boxofficemojo.com/";
 		private const string DELIMITER = "- $";
 		private const string NO_DATA = "No Data";
 
@@ -103,7 +103,10 @@ namespace MovieMiner
 			// Might have to tweak this offset a bit to get the numbers to match.
 			var sundayOffset = (int)new DateTime(WeekendEnding.Value.Year, 1, 1).DayOfWeek;
 
-			url = $"{Url}weekend/chart/?yr={WeekendEnding.Value.Year}&wknd={((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
+			//  https://www.boxofficemojo.com/weekend/2019W42/
+
+			//url = $"{Url}weekend/chart/?yr={WeekendEnding.Value.Year}&wknd={((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
+			url = $"{Url}weekend/{WeekendEnding.Value.Year}W{((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}/";
 
 			var doc = web.Load(url);
 
@@ -115,7 +118,11 @@ namespace MovieMiner
 
 			// TODO: Parse the header for column titles for mapping.
 
-			var tableRows = doc.DocumentNode?.SelectNodes("//table[@cellpadding='5']//tr[position()>1]");
+			//var tableRows = doc.DocumentNode?.SelectNodes("//table[@cellpadding='5']//tr[position()>1]");
+			//var tableRows = doc.DocumentNode?.SelectNodes("//body//table[@class='a-bordered a-horizontal-stripes a-size-base a-span12 mojo-body-table mojo-body-table-compact scrolling-data-table']");
+			//var tableRows = doc.DocumentNode?.SelectNodes("//body//table[contains(@class, 'scrolling-data-table')]");
+
+			var tableRows = doc.DocumentNode?.SelectNodes("//body//table//tr[position()>1]");
 
 			if (tableRows != null)
 			{
