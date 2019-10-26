@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoviePicker.Cognitive;
 using MoviePicker.Cognitive.Parameters;
-using SM.Common.Interfaces;
 using SM.Common.REST;
 using SM.Common.REST.Interfaces;
 using SM.Common.Tests;
