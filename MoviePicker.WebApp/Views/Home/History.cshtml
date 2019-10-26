@@ -1,5 +1,6 @@
 ﻿@model MoviePicker.WebApp.ViewModels.HistoryViewModel
 
+@using MovieMiner;
 @using MoviePicker.Common.Interfaces;
 @using MoviePicker.WebApp.Utilities;
 
@@ -84,7 +85,7 @@
 			if (history != null && history.Count() > 1)
 			{
 				var chartId = $"chart{count}";
-				var href = $"http://boxofficemojo.com/movies/?page=weekend&id={movie.Identifier}.htm";
+				var href = $"{MineBoxOfficeMojo.DEFAULT_URL}{movie.Identifier}";
 
 				count++;
 
