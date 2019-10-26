@@ -70,7 +70,7 @@ namespace MovieMiner
 						Error = string.Empty;
 						result = MineForecast(pastArticles);
 
-						if (string.IsNullOrEmpty(Error) || Error == FOUR_DAY)
+						if (result.Count > 0 && (string.IsNullOrEmpty(Error) || Error == FOUR_DAY))
 						{
 							break;
 						}
@@ -192,11 +192,13 @@ namespace MovieMiner
 
 			if (articleNumber == 1)
 			{
-				node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, '/news/?id=')]");
+				//node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, '/news/?id=')]");
+				node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, '/article/')]");
 			}
 			else
 			{
-				var nodes = doc.DocumentNode.SelectNodes("//body//a[contains(@href, '/news/?id=')]");
+				//var nodes = doc.DocumentNode.SelectNodes("//body//a[contains(@href, '/news/?id=')]");
+				var nodes = doc.DocumentNode.SelectNodes("//body//a[contains(@href, '/article/')]");
 
 				if (nodes != null && articleNumber <= nodes.Count)
 				{
@@ -220,20 +222,22 @@ namespace MovieMiner
 
 					// Get the date of the article (hoping that the date is the ONLY thing in such a small font)
 
-					node = doc.DocumentNode.SelectSingleNode("//body//font[@size='1']");
+					//node = doc.DocumentNode.SelectSingleNode("//body//font[@size='1']");
+					node = doc.DocumentNode.SelectSingleNode("//body//div[@class='mojo-news-byline']");
 
 					if (node != null)
 					{
 						// Remove the first child span.
 
-						if (node.HasChildNodes)
+						if (node.ChildNodes.Count > 1)
 						{
-							string articleText = HttpUtility.HtmlDecode(node.FirstChild.InnerText).Trim();
+							string articleText = HttpUtility.HtmlDecode(node.ChildNodes[1].InnerText).Trim();
+							var tokens = articleText.Split(new char[] { '-' });
 							DateTime parsedDateTime;
 
-							if (DateTime.TryParse(articleText, out parsedDateTime))
+							if (tokens.Length > 0 && DateTime.TryParse(tokens[0].Replace("PDT", string.Empty), out parsedDateTime))
 							{
-								articleDate = parsedDateTime;
+								articleDate = parsedDateTime.Date;
 							}
 						}
 					}
@@ -242,7 +246,7 @@ namespace MovieMiner
 
 					// The movies are just in a <ul> tag (unsorted list)
 
-					var movieNodes = doc.DocumentNode?.SelectNodes("//body//table//li");
+					var movieNodes = doc.DocumentNode?.SelectNodes("//body//ul/li/span[@class='a-list-item']");
 
 					if (movieNodes == null)
 					{
