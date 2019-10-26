@@ -91,7 +91,7 @@ namespace MoviePicker.WebApp.Models
 				idx++;
 			}
 
-			AssignTheaterCounts(clone);
+			// AssignTheaterCounts(clone);
 
 			// If any of the miners are reloaded, then the composite movies (if any) need to be reassigned based on Todd's spread.
 			// The miner's that have loaded their own composite movies will not be overwritten.
@@ -206,7 +206,7 @@ namespace MoviePicker.WebApp.Models
 
 			FilterMinersMovies(miners);
 
-			AssignTheaterCounts(this);
+			// AssignTheaterCounts(this);
 
 			MakePicks(miners);
 

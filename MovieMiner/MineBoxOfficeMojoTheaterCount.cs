@@ -10,7 +10,7 @@ namespace MovieMiner
 {
 	public class MineBoxOfficeMojoTheaterCount : MinerBase
 	{
-		private const string DEFAULT_URL = "http://boxofficemojo.com/";
+		private const string DEFAULT_URL = MineBoxOfficeMojo.DEFAULT_URL;
 		private const string DELIMITER = "- $";
 		private const string NO_DATA = "No Data";
 
@@ -55,13 +55,13 @@ namespace MovieMiner
 					_weekendEnding = lastSunday;
 				}
 
-				result = MineDate();
+				// result = MineDate();
 			}
 			else
 			{
 				_weekendEnding = MovieDateUtil.GameSunday(null, ContainsEstimates);
 
-				result = MineDate();
+				// result = MineDate();
 			}
 
 			return result;
