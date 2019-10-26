@@ -24,7 +24,7 @@ namespace MovieMiner.Tests
 			_unity = new UnityContainer();
 
 			_unity.RegisterType<ILogger, DebugLogger>();
-			_unity.RegisterType<IMiner, MineBoxOfficeMojoDaily>(new InjectionConstructor("marvel2019", new DateTime(2019, 4, 28)));
+			_unity.RegisterType<IMiner, MineBoxOfficeMojoDaily>(new InjectionConstructor("release/rl939755009/?ref_=bo_we_table_2", new DateTime(2019, 10, 20)));
 		}
 
 		[TestMethod, TestCategory(PRIMARY_TEST_CATEGORY), TestCategory("Single")]

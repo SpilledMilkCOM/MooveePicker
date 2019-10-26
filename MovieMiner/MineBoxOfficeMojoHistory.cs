@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Common;
-using System;
 
 namespace MovieMiner
 {
@@ -13,7 +13,7 @@ namespace MovieMiner
 	/// </summary>
 	public class MineBoxOfficeMojoHistory : MinerBase
 	{
-		private const string DEFAULT_URL = "https://boxofficemojo.com/";
+		private const string DEFAULT_URL = MineBoxOfficeMojo.DEFAULT_URL;
 
 		private Dictionary<string, int> _monthMap = new Dictionary<string, int>(12);
 

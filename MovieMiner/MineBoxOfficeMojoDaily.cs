@@ -4,12 +4,13 @@ using HtmlAgilityPack;      // Handles crappy (NOT well formed) HTML
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Common;
 using System;
+using System.Web;
 
 namespace MovieMiner
 {
 	public class MineBoxOfficeMojoDaily : MinerBase
 	{
-		private const string DEFAULT_URL = "http://boxofficemojo.com/";
+		private const string DEFAULT_URL = MineBoxOfficeMojo.DEFAULT_URL;
 
 		/// <summary>
 		/// 
@@ -37,15 +38,17 @@ namespace MovieMiner
 			return result;
 		}
 
+		/// <summary>
+		/// Returns a list of daily values based on the WeekendEnding
+		/// </summary>
+		/// <returns></returns>
 		public override List<IMovie> Mine()
 		{
 			var result = new List<IMovie>();
-			var boxOfficeHistory = new List<IBoxOffice>();
 
 			//https://www.boxofficemojo.com/daily/chart/?sortdate=2019-04-26&track=marvel2019.htm
 
-			var weekendEnding = WeekendEnding?.ToString("");
-			string url = $"{Url}daily/chart/?sortdate={WeekendEnding?.ToString("yyyy-MM-dd")}&track={Identifier}.htm";
+			string url = $"{Url}{Identifier}";
 			var web = new HtmlWeb();
 
 			ContainsEstimates = false;
@@ -59,7 +62,7 @@ namespace MovieMiner
 			// Need to find the movie row using the Identifier
 			// Had some trouble finding the ancestor so just traverse up the document.
 
-			var tableRow = doc.DocumentNode?.SelectSingleNode($"//tr/td/b/a[@href='/movies/?page=daily&id={Identifier}.htm']")?.ParentNode?.ParentNode?.ParentNode;
+			var tableRow = doc.DocumentNode?.SelectSingleNode($"//tr[position()>1]");		// The most recent one.
 
 			if (tableRow != null)
 			{
@@ -69,49 +72,33 @@ namespace MovieMiner
 
 				if (rowColumns != null)
 				{
+					IMovie movie = null;
 					int columnCount = 0;
 
 					foreach (var column in rowColumns)
 					{
-						IMovie movie = null;
+						if (columnCount == 0)       // Date
+						{
+							movie = new Movie
+							{
+								Identifier = Identifier,
+								WeekendEnding = ParseEndDate(HttpUtility.HtmlDecode(column.InnerText))
+							};
 
-						if (columnCount == 2)       // Friday
-						{
-							movie = new Movie
-							{
-								Day = DayOfWeek.Friday,
-								Earnings = ParseEarnings(FirstToken(column.InnerText)),
-								Identifier = Identifier,
-								WeekendEnding = WeekendEnding.Value
-							};
+							movie.Day = movie.WeekendEnding.DayOfWeek;
+							movie.WeekendEnding = MovieDateUtil.GameSunday(movie.WeekendEnding);		// These movies should all have the same WeekendEnding
 						}
-						else if (columnCount == 3)  // Saturday
+						else if (columnCount == 3)  // Earnings
 						{
-							movie = new Movie
-							{
-								Day = DayOfWeek.Saturday,
-								Earnings = ParseEarnings(FirstToken(column.InnerText)),
-								Identifier = Identifier,
-								WeekendEnding = WeekendEnding.Value
-							};
-						}
-						else if (columnCount == 4)  // Sunday
-						{
-							movie = new Movie
-							{
-								Day = DayOfWeek.Sunday,
-								Earnings = ParseEarnings(FirstToken(column.InnerText)),
-								Identifier = Identifier,
-								WeekendEnding = WeekendEnding.Value
-							};
+							movie.Earnings = ParseEarnings(FirstToken(column.InnerText));
 						}
 
 						columnCount++;
+					}
 
-						if (movie != null)
-						{
-							result.Add(movie);
-						}
+					if (movie != null && movie.WeekendEnding == WeekendEnding)      // Only want the matching movies in the Weekend provided.
+					{
+						result.Add(movie);
 					}
 				}
 			}
@@ -126,9 +113,13 @@ namespace MovieMiner
 			return tokens[0];
 		}
 
-		private int ParseInt(string number)
+		private DateTime ParseEndDate(string date)
 		{
-			return Convert.ToInt32(number.Replace(",", string.Empty));
+			var result = new DateTime();
+
+			DateTime.TryParse(date, out result);        // Won't throw error.
+
+			return result;
 		}
 	}
 }

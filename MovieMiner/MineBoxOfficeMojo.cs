@@ -11,7 +11,7 @@ namespace MovieMiner
 {
 	public class MineBoxOfficeMojo : MinerBase
 	{
-		private const string DEFAULT_URL = "https://boxofficemojo.com/";
+		public const string DEFAULT_URL = "https://boxofficemojo.com/";
 		private const string DELIMITER = "- $";
 		private const string NO_DATA = "No Data";
 
