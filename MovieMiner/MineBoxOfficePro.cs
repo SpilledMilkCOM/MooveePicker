@@ -107,7 +107,7 @@ namespace MovieMiner
 
 					//node = doc.DocumentNode.SelectSingleNode("//body//div[@class='post-container']/table");
 					//node = doc.DocumentNode.SelectSingleNode("//body//table[@class='wp-block-table aligncenter']");
-					node = doc.DocumentNode.SelectSingleNode("//body//table[@width='726']");
+					node = doc.DocumentNode.SelectSingleNode("//body//table[@width='716']");
 
 					// TODO: Parse the header for column titles for mapping.
 
