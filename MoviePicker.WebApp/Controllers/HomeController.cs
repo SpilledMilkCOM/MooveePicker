@@ -438,7 +438,10 @@ namespace MoviePicker.WebApp.Controllers
 
 						movie.Identifier = mojoMovie.Identifier;
 
-						movie.SetBoxOfficeHistory(movies.First().BoxOfficeHistory);
+						if (movies.Any())
+						{
+							movie.SetBoxOfficeHistory(movies.First().BoxOfficeHistory);
+						}
 
 						loaded = true;
 					}
