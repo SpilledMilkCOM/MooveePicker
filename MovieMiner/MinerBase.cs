@@ -329,9 +329,9 @@ namespace MovieMiner
 		{
 			var result = name;
 
-			if (result != null && result == "Hobbs  Shaw")
+			if (result != null && result.Contains("Zombieland 2"))
 			{
-				result = "Fast Furious Presents Hobbs  Shaw";
+				result = result.Replace("Zombieland 2", "Zombieland");
 				//result = result.Replace("é", "e").Replace("PokÃmon", "Pokemon").Replace("Pokmon", "Pokemon");
 			}
 
