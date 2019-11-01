@@ -149,7 +149,9 @@ namespace MovieMiner
 		public static DateTime GameStartTime()
 		{
 			var now = Now;
-			var result = new DateTime(now.Year, now.Month, now.Day + (DayOfWeek.Friday - now.DayOfWeek), now.Hour, now.Minute, now.Second);
+			var result = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+
+			result.AddDays(DayOfWeek.Friday - now.DayOfWeek);
 
 			if (DayOfWeek.Friday - now.DayOfWeek < 0)
 			{
