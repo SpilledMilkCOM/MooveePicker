@@ -241,7 +241,7 @@ namespace MovieMiner
 							var tokens = articleText.Split(new char[] { '-' });
 							DateTime parsedDateTime;
 
-							if (tokens.Length > 0 && DateTime.TryParse(tokens[0].Replace("PDT", string.Empty), out parsedDateTime))
+							if (tokens.Length > 0 && DateTime.TryParse(tokens[0].Replace("PDT", string.Empty).Replace("PST", string.Empty), out parsedDateTime))
 							{
 								articleDate = parsedDateTime.Date;
 							}
