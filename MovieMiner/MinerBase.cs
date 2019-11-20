@@ -329,9 +329,10 @@ namespace MovieMiner
 		{
 			var result = name;
 
-			if (result != null && result.Contains("Zombieland 2"))
+			if (result != null && result.Contains("Frozen II"))
 			{
-				result = result.Replace("Zombieland 2", "Zombieland");
+				result = result.Replace("Frozen II", "Frozen 2");
+				//result = result.Replace("Zombieland 2", "Zombieland");
 				//result = result.Replace("é", "e").Replace("PokÃmon", "Pokemon").Replace("Pokmon", "Pokemon");
 			}
 
