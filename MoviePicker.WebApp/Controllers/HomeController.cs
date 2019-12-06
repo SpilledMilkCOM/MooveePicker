@@ -212,7 +212,7 @@ namespace MoviePicker.WebApp.Controllers
 		public FileStreamResult ExtractToCSV()
 		{
 			var builder = new StringBuilder();
-			var theaterCounts = _minerModel.Miners[MinerModel.MOJO_THEATER_INDEX];
+			var theaterCounts = _minerModel.Miners[MinerModel.NUMBERS_THEATER_INDEX];
 			var lastWeekMojo = _minerModel.Miners[MinerModel.MOJO_LAST_INDEX];
 
 			// Column headers are FIRST!
@@ -476,7 +476,7 @@ namespace MoviePicker.WebApp.Controllers
 			// Add the user estimates to the ViewModel values.
 
 			var userMovies = _minerModel.Miners[MinerModel.MY_INDEX].Movies;
-			var theaterCountMovies = _minerModel.Miners[MinerModel.MOJO_THEATER_INDEX].Movies;
+			var theaterCountMovies = _minerModel.Miners[MinerModel.NUMBERS_THEATER_INDEX].Movies;
 
 			foreach (var movie in viewModel.Movies)
 			{
@@ -556,7 +556,7 @@ namespace MoviePicker.WebApp.Controllers
 
 			// Set the weights to 1 across the board. (treat all sources equal)
 
-			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.MOJO_THEATER_INDEX; minerIndex++)
+			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.NUMBERS_THEATER_INDEX; minerIndex++)
 			{
 				_minerModel.Miners[minerIndex].Weight = 1;
 			}
@@ -669,7 +669,7 @@ namespace MoviePicker.WebApp.Controllers
 		{
 			// Set the weights to 1 across the board. (treat all 'expert' sources equal)
 
-			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.MOJO_THEATER_INDEX; minerIndex++)
+			for (int minerIndex = MinerModel.MY_INDEX + 1; minerIndex < MinerModel.NUMBERS_THEATER_INDEX; minerIndex++)
 			{
 				_minerModel.Miners[minerIndex].Weight = weight;
 			}

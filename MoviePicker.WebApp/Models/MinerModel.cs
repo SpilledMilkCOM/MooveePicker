@@ -27,7 +27,7 @@ namespace MoviePicker.WebApp.Models
 		public const int VIS_REC_INDEX = FML_INDEX + 5;             // Same as above
 		public const int PROPHET_INDEX = FML_INDEX + 6;
 		public const int BORPT_INDEX = FML_INDEX + 7;
-		public const int MOJO_THEATER_INDEX = FML_INDEX + 8;
+		public const int NUMBERS_THEATER_INDEX = FML_INDEX + 8;
 		public const int MOJO_LAST_INDEX = FML_INDEX + 9;           // Miner contains the last week values (also contains all the history).
 
 		//private readonly IMoviePicker _moviePickerPrototype = null;
@@ -91,7 +91,7 @@ namespace MoviePicker.WebApp.Models
 				idx++;
 			}
 
-			// AssignTheaterCounts(clone);
+			AssignTheaterCounts(clone);
 
 			// If any of the miners are reloaded, then the composite movies (if any) need to be reassigned based on Todd's spread.
 			// The miner's that have loaded their own composite movies will not be overwritten.
@@ -206,7 +206,7 @@ namespace MoviePicker.WebApp.Models
 
 			FilterMinersMovies(miners);
 
-			// AssignTheaterCounts(this);
+			AssignTheaterCounts(this);
 
 			MakePicks(miners);
 
@@ -337,7 +337,7 @@ namespace MoviePicker.WebApp.Models
 		/// <param name="clone"></param>
 		private void AssignTheaterCounts(MinerModel clone)
 		{
-			var theaterCountMiner = clone.Miners[MOJO_THEATER_INDEX];
+			var theaterCountMiner = clone.Miners[NUMBERS_THEATER_INDEX];
 			var fmlMiner = clone.Miners[FML_INDEX];
 
 			if (theaterCountMiner.CloneCausedReload || fmlMiner.CloneCausedReload)
@@ -395,7 +395,7 @@ namespace MoviePicker.WebApp.Models
 				//new MineCulturedVultures(),
 				new MineBoxOfficeProphet(),
 				new MineBoxOfficeReport(),
-				new MineBoxOfficeMojoTheaterCount { IsHidden = true }
+				new MineTheNumbers { IsHidden = true }
 			};
 
 			// Grab last weeks results for comparisons.  Always put this list last.

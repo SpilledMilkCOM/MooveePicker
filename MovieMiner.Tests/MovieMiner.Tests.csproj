@@ -97,6 +97,7 @@
     <Compile Include="MineBoxOfficeMojoTests.cs" />
     <Compile Include="MineBoxOfficeProphetTests.cs" />
     <Compile Include="MineBonusBarTests.cs" />
+    <Compile Include="MineTheNumbersTests.cs" />
     <Compile Include="MineFandangoTicketSalesFutureTests.cs" />
     <Compile Include="MineVisualRecreationTests.cs" />
     <Compile Include="MineFandangoTicketSalesByDayTests.cs" />

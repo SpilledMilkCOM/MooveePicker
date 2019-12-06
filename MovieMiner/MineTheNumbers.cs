@@ -9,9 +9,9 @@ using MoviePicker.Common;
 
 namespace MovieMiner
 {
-	public class MineBoxOfficeMojo : MinerBase
+	public class MineTheNumbers : MinerBase
 	{
-		public const string DEFAULT_URL = "https://boxofficemojo.com/";
+		public const string DEFAULT_URL = "https://www.the-numbers.com/";
 		private const string DELIMITER = "- $";
 		private const string NO_DATA = "No Data";
 
@@ -19,9 +19,8 @@ namespace MovieMiner
 		/// 
 		/// </summary>
 		/// <param name="weekendEnding">If this is null then the forecast will be mined.</param>
-		public MineBoxOfficeMojo(DateTime? weekendEnding = null)
-			: base($"Box Office Mojo {weekendEnding?.ToShortDateString()}"
-				  , $"BO Mojo {weekendEnding?.ToShortDateString()}", DEFAULT_URL)
+		public MineTheNumbers(DateTime? weekendEnding = null)
+			: base($"The Numbers", $"#'s", DEFAULT_URL)
 		{
 			TwitterID = "BoxOfficeMojo";
 			WeekendEnding = weekendEnding?.Date;
@@ -31,7 +30,7 @@ namespace MovieMiner
 
 		public override IMiner Clone()
 		{
-			var result = new MineBoxOfficeMojo();
+			var result = new MineTheNumbers();
 
 			Clone(result);
 
@@ -43,70 +42,13 @@ namespace MovieMiner
 		public override List<IMovie> Mine()
 		{
 			var result = new List<IMovie>();
-
-			if (WeekendEnding.HasValue)
-			{
-				var lastSunday = MovieDateUtil.LastSunday(MovieDateUtil.GameSunday(null, ContainsEstimates).AddDays(-1));
-
-				// Check to see if the weekend ending is out of date.
-
-				if (ContainsEstimates || (WeekendEnding.Value < lastSunday && !ContainsEstimates))
-				{
-					WeekendEnding = lastSunday;
-				}
-
-				result = MineDate();
-			}
-			else
-			{
-				result = MineForecast();
-
-				if (Error == NO_DATA || !result.Any())
-				{
-					// Retry until you get some data.
-
-					for (int pastArticles = 2; pastArticles < 4; pastArticles++)
-					{
-						Error = string.Empty;
-						result = MineForecast(pastArticles);
-
-						if (result.Count > 0 && (string.IsNullOrEmpty(Error) || Error == FOUR_DAY))
-						{
-							break;
-						}
-					}
-				}
-			}
-
-			return result;
-		}
-
-		public List<IMovie> MineWeekend(DateTime? date = null)
-		{
-			WeekendEnding = date;
-			return MineDate();
-		}
-
-		public void SetCompoundLoaded(bool compoundLoaded)
-		{
-			CompoundLoaded = compoundLoaded;
-		}
-
-		private List<IMovie> MineDate()
-		{
-			var result = new List<IMovie>();
-			string url = $"{Url}weekend/chart/";
+			string url = $"{Url}/daily-box-office-chart";
 			var web = new HtmlWeb();
 
 			ContainsEstimates = false;
+			WeekendEnding = MovieDateUtil.GameSunday();		// This page should always have the "current" theater count.
 
-			// Might have to tweak this offset a bit to get the numbers to match.
-			var sundayOffset = (int)new DateTime(WeekendEnding.Value.Year, 1, 1).DayOfWeek;
-
-			//  https://www.boxofficemojo.com/weekend/2019W42/
-
-			//url = $"{Url}weekend/chart/?yr={WeekendEnding.Value.Year}&wknd={((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
-			url = $"{Url}weekend/{WeekendEnding.Value.Year}W{((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}/";
+			//  https://www.the-numbers.com/daily-box-office-chart
 
 			var doc = web.Load(url);
 
@@ -116,13 +58,8 @@ namespace MovieMiner
 			// Select all of the <script> nodes that are children of <body> with an attribute of "src"
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
-			// TODO: Parse the header for column titles for mapping.
-
-			//var tableRows = doc.DocumentNode?.SelectNodes("//table[@cellpadding='5']//tr[position()>1]");
-			//var tableRows = doc.DocumentNode?.SelectNodes("//body//table[@class='a-bordered a-horizontal-stripes a-size-base a-span12 mojo-body-table mojo-body-table-compact scrolling-data-table']");
-			//var tableRows = doc.DocumentNode?.SelectNodes("//body//table[contains(@class, 'scrolling-data-table')]");
-
-			var tableRows = doc.DocumentNode?.SelectNodes("//body//table//tr[position()>1]");
+			//var tableRows = doc.DocumentNode?.SelectNodes("//body//table//tr[position()>1]");
+			var tableRows = doc.DocumentNode?.SelectNodes("//body//table//tr");
 
 			if (tableRows != null)
 			{
@@ -139,13 +76,9 @@ namespace MovieMiner
 						{
 							if (columnCount == 2)
 							{
-								var anchor = column.SelectSingleNode(".//a");
-								var movieDetailUrl = anchor?.GetAttributeValue("href", null);
-
 								movie = new Movie
 								{
-									Name = MapName(RemovePunctuation(HttpUtility.HtmlDecode(column.InnerText))),
-									Identifier = movieDetailUrl.Replace(DEFAULT_URL, string.Empty)
+									Name = RemovePunctuation(MapName(HttpUtility.HtmlDecode(column.InnerText)))
 								};
 
 								if (WeekendEnding.HasValue)
@@ -155,9 +88,9 @@ namespace MovieMiner
 							}
 							else if (columnCount == 4)
 							{
-								movie.Earnings = decimal.Parse(column.InnerText?.Replace("$", string.Empty).Replace("-", "0"));
+								movie.Earnings = ParseEarnings(column.InnerText);
 							}
-							else if (columnCount == 6)
+							else if (columnCount == 7)
 							{
 								decimal theaterCount = 0;
 
