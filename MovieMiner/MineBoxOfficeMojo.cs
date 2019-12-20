@@ -153,7 +153,7 @@ namespace MovieMiner
 									movie.WeekendEnding = WeekendEnding.Value;
 								}
 							}
-							else if (columnCount == 4)
+							else if (columnCount == 3)
 							{
 								movie.Earnings = decimal.Parse(column.InnerText?.Replace("$", string.Empty).Replace("-", "0"));
 							}
