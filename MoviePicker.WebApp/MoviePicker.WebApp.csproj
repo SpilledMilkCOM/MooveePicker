@@ -283,6 +283,7 @@
     <None Include="Properties\PublishProfiles\MooveePicker - Web Deploy.pubxml" />
     <Content Include="Images\Sunday-Monday-mask.png" />
     <Content Include="apple-touch-icon-120x120-precomposed.png" />
+    <Content Include="Images\Tips.jpg" />
     <Content Include="robots.txt" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -372,6 +373,7 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Home\History.cshtml" />
     <Content Include="Views\Home\FandangoFutures.cshtml" />
+    <Content Include="Views\LowMem\Donation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

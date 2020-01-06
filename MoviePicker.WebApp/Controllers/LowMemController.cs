@@ -50,6 +50,12 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
+		public ActionResult Donation()
+		{
+			return View();
+		}
+
+		[HttpGet]
 		public ActionResult Images()
 		{
 			var viewModel = new ImagesViewModel();
