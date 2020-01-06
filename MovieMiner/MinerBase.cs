@@ -335,6 +335,10 @@ namespace MovieMiner
 				//result = result.Replace("Zombieland 2", "Zombieland");
 				//result = result.Replace("é", "e").Replace("PokÃmon", "Pokemon").Replace("Pokmon", "Pokemon");
 			}
+			if (result != null && result.Contains("Star Wars"))
+			{
+				result = result.Replace("Episode IX  ", string.Empty);
+			}
 
 			return result;
 		}
