@@ -106,7 +106,8 @@ namespace MovieMiner
 			//  https://www.boxofficemojo.com/weekend/2019W42/
 
 			//url = $"{Url}weekend/chart/?yr={WeekendEnding.Value.Year}&wknd={((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
-			url = $"{Url}weekend/{WeekendEnding.Value.Year}W{((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}/";
+			//url = $"{Url}weekend/{WeekendEnding.Value.Year}W{((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}/";
+			url = $"{Url}weekend/{WeekendEnding.Value.Year}W{((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1:00}/";
 
 			var doc = web.Load(url);
 
