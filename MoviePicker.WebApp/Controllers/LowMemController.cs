@@ -50,7 +50,7 @@ namespace MoviePicker.WebApp.Controllers
 		}
 
 		[HttpGet]
-		public ActionResult Donation()
+		public ActionResult Donate()
 		{
 			return View();
 		}

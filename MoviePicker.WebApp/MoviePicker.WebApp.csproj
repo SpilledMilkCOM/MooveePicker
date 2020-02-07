@@ -373,7 +373,7 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Home\History.cshtml" />
     <Content Include="Views\Home\FandangoFutures.cshtml" />
-    <Content Include="Views\LowMem\Donation.cshtml" />
+    <Content Include="Views\LowMem\Donate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
