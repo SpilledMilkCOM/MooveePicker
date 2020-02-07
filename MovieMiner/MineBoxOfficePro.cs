@@ -72,7 +72,8 @@ namespace MovieMiner
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
 			//var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'estimates-weekend')]");
-			var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'weekend-forecast')]");
+			//var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, 'weekend-forecast')]");
+			var node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@class, 'single-item__link')]");
 
 			if (node != null)
 			{
