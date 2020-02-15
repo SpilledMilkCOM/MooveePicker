@@ -3,7 +3,9 @@ using MoviePicker.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 
@@ -13,6 +15,8 @@ namespace MoviePicker.WebApp.Utilities
 	{
 		private const long KB = 1024;
 		private const int SHIFT_KB = 8;
+
+		private static string _version = null;
 
 		public static string BytesToAbbreviation(long bytes)
 		{
@@ -288,6 +292,16 @@ namespace MoviePicker.WebApp.Utilities
 			}
 
 			return result;
+		}
+
+		public static string Version()
+		{
+			if (_version == null)
+			{
+				_version = File.GetCreationTime(Assembly.GetExecutingAssembly().Location).ToString("yyyy.MM.dd");
+			}
+
+			return _version;
 		}
 	}
 }
