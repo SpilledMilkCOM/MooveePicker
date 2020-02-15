@@ -13,7 +13,6 @@ namespace MovieMiner
 	{
 		public const string DEFAULT_URL = "https://www.the-numbers.com/";
 		private const string DELIMITER = "- $";
-		private const string NO_DATA = "No Data";
 
 		/// <summary>
 		/// 
