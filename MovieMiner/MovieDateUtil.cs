@@ -43,6 +43,69 @@ namespace MovieMiner
 		}
 
 		/// <summary>
+		/// Always moving forward from Now
+		/// </summary>
+		/// <returns>Game start time within the time zone</returns>
+		public static DateTime GameEndTime()
+		{
+			var now = Now;
+			var result = new DateTime(now.Year, now.Month, now.Day + (DayOfWeek.Tuesday - now.DayOfWeek), now.Hour, now.Minute, now.Second);
+
+			if (DayOfWeek.Friday - now.DayOfWeek < 0)
+			{
+				// Went backwards to Tuesday so add a whole week.
+
+				result = result.AddDays(7);
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Always moving forward from Now
+		/// </summary>
+		/// <returns>Game start time within the time zone</returns>
+		public static DateTime GameStartTime()
+		{
+			var now = Now;
+			var result = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
+
+			result = result.AddDays(DayOfWeek.Friday - now.DayOfWeek);
+
+			if (DayOfWeek.Friday - now.DayOfWeek < 0)
+			{
+				// Went backwards to Friday so add a whole week.
+
+				result = result.AddDays(7);
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Going back from weekend ending
+		/// </summary>
+		/// <param name="weekendEnding"></param>
+		/// <param name="dayOfWeek">The start day of week (could be a Thursday).</param>
+		/// <returns>Game start time within the time zone</returns>
+		public static DateTime GameStartTime(DateTime weekendEnding, DayOfWeek dayOfWeek = DayOfWeek.Friday)
+		{
+			var result = weekendEnding;
+			var difference = dayOfWeek - weekendEnding.DayOfWeek;
+
+			result = result.AddDays(difference);
+
+			if (difference > 0)
+			{
+				// Went ahead in time...  Need to go back to prior day of week.
+
+				result = result.AddDays(-7);
+			}
+
+			return result;
+		}
+
+		/// <summary>
 		/// The date of the Sunday's (end of game)
 		/// </summary>
 		/// <param name="dateTime"></param>
@@ -121,46 +184,6 @@ namespace MovieMiner
 			}
 
 			return new TimeSpan();
-		}
-
-		/// <summary>
-		/// Always moving forward from Now
-		/// </summary>
-		/// <returns>Game start time within the time zone</returns>
-		public static DateTime GameEndTime()
-		{
-			var now = Now;
-			var result = new DateTime(now.Year, now.Month, now.Day + (DayOfWeek.Tuesday - now.DayOfWeek), now.Hour, now.Minute, now.Second);
-
-			if (DayOfWeek.Friday - now.DayOfWeek < 0)
-			{
-				// Went backwards to Tuesday so add a whole week.
-
-				result.AddDays(7);
-			}
-
-			return result;
-		}
-
-		/// <summary>
-		/// Always moving forward from Now
-		/// </summary>
-		/// <returns>Game start time within the time zone</returns>
-		public static DateTime GameStartTime()
-		{
-			var now = Now;
-			var result = new DateTime(now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
-
-			result.AddDays(DayOfWeek.Friday - now.DayOfWeek);
-
-			if (DayOfWeek.Friday - now.DayOfWeek < 0)
-			{
-				// Went backwards to Friday so add a whole week.
-
-				result.AddDays(7);
-			}
-
-			return result;
 		}
 
 		private static DateTime Now => DateTime.Now.AddHours(TZ_OFFSET).Date;
