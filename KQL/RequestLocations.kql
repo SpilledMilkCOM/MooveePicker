@@ -1,0 +1,33 @@
+// FILE: RequestLocations.kql
+
+requests
+| where operation_SyntheticSource != "Bot"
+        and timestamp > ago(6h)
+| project timestamp
+        , name 
+        , duration
+        , client_City 
+        , client_StateOrProvince
+| order by timestamp asc
+
+// NOT FOUND
+
+requests
+| where operation_SyntheticSource != "Bot"
+        and timestamp > ago(6h)
+        and name endswith "NotFound" 
+| project timestamp
+        , extract("404;.*", 0, url)
+        , client_IP 
+        , client_City 
+        , client_StateOrProvince
+| order by timestamp asc
+
+requests
+| where operation_SyntheticSource != "Bot"
+        and timestamp > ago(6h)
+| summarize count() by name
+
+// Shows the columns on a default query
+requests
+| limit 100

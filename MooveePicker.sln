@@ -50,7 +50,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Test", "Common.Test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Interfaces", "Common.Interfaces\Common.Interfaces.csproj", "{7FE5B3CE-8020-4FA1-9355-128BA0DB9B26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Emoji", "Common.Emoji\Common.Emoji.csproj", "{7AEE99D0-DE09-4782-839C-ABFBFCF34130}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Emoji", "Common.Emoji\Common.Emoji.csproj", "{7AEE99D0-DE09-4782-839C-ABFBFCF34130}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationInsights", "ApplicationInsights", "{8DE104FC-FEA8-492D-88E1-EE29D6D29590}"
+	ProjectSection(SolutionItems) = preProject
+		KQL\RequestLocations.kql = KQL\RequestLocations.kql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
