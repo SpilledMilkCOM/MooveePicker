@@ -1,4 +1,5 @@
 // FILE: RequestLocations.kql
+// REF: https://docs.microsoft.com/en-us/azure/kusto/query/
 
 requests
 | where operation_SyntheticSource != "Bot"

@@ -54,6 +54,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Emoji", "Common.Emoj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationInsights", "ApplicationInsights", "{8DE104FC-FEA8-492D-88E1-EE29D6D29590}"
 	ProjectSection(SolutionItems) = preProject
+		KQL\Counts.kql = KQL\Counts.kql
 		KQL\RequestLocations.kql = KQL\RequestLocations.kql
 	EndProjectSection
 EndProject

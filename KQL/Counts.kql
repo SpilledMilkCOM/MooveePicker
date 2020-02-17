@@ -1,0 +1,18 @@
+// FILE: Counts.kql
+// REF: https://docs.microsoft.com/en-us/azure/kusto/query/
+
+let timeWindow=ago(7d);
+let PageViewCount = pageViews
+| where timestamp > timeWindow
+| summarize pageViewCount=count()
+| extend joinColumn="Source"
+| project joinColumn, pageViewCount;
+let RequestCount = requests
+| where timestamp > timeWindow
+| summarize requestCount=count()
+| extend joinColumn="Source"
+| project joinColumn, requestCount;
+PageViewCount
+| join (RequestCount) on joinColumn             // Could use "on $left.joinColumn == $right.joinColumn"
+| project pageViewCount
+    , requestCount
