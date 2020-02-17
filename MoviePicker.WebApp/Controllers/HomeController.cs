@@ -274,134 +274,134 @@ namespace MoviePicker.WebApp.Controllers
 			return File(stream, "text/plain", "MooveePickerData.txt");
 		}
 
-		[HttpGet]
-		public ActionResult Fandango()
-		{
-			var stopWatch = new Stopwatch();
-			stopWatch.Start();
+		//[HttpGet]
+		//public ActionResult Fandango()
+		//{
+		//	var stopWatch = new Stopwatch();
+		//	stopWatch.Start();
 
-			IFandangoViewModel viewModel = new FandangoViewModel(_minerModel, _moviePicker);
+		//	IFandangoViewModel viewModel = new FandangoViewModel(_minerModel, _moviePicker);
 
-			viewModel.PastHours = _controllerUtility.GetRequestInt(Request, "past") ?? 24;
+		//	viewModel.PastHours = _controllerUtility.GetRequestInt(Request, "past") ?? 24;
 
-			DownloadMoviePosters();
+		//	DownloadMoviePosters();
 
-			viewModel.Load();
+		//	viewModel.Load();
 
-			if (viewModel.IsTracking && _minerModel.Miners[MinerModel.FML_INDEX].Movies.Count > 0)
-			{
-				viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
-			}
+		//	if (viewModel.IsTracking && _minerModel.Miners[MinerModel.FML_INDEX].Movies.Count > 0)
+		//	{
+		//		viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
+		//	}
 
-			var movieList = viewModel.Movies.OrderByDescending(movie => movie.EarningsBase).ToList();
-			var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
+		//	var movieList = viewModel.Movies.OrderByDescending(movie => movie.EarningsBase).ToList();
+		//	var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
 
-			var nl = NEW_LINE_HTML;
-			var tweetText = $"The top @Fandango tickets sales for the past {viewModel.PastHours} hours:{nl}";
+		//	var nl = NEW_LINE_HTML;
+		//	var tweetText = $"The top @Fandango tickets sales for the past {viewModel.PastHours} hours:{nl}";
 
-			foreach (var movie in movieList.Take(3))
-			{
-				tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}{PERCENT_HTML}";
-			}
+		//	foreach (var movie in movieList.Take(3))
+		//	{
+		//		tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}{PERCENT_HTML}";
+		//	}
 
-			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
+		//	tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
 
-			ControllerUtility.SetTwitterCard(ViewBag, null, $"{Constants.APPLICATION_NAME} - Fandango Hourly Sales", "A breakdown of the hourly ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
+		//	ControllerUtility.SetTwitterCard(ViewBag, null, $"{Constants.APPLICATION_NAME} - Fandango Hourly Sales", "A breakdown of the hourly ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
 
 
-			stopWatch.Stop();
+		//	stopWatch.Stop();
 
-			viewModel.Duration = stopWatch.ElapsedMilliseconds;
+		//	viewModel.Duration = stopWatch.ElapsedMilliseconds;
 
-			return View(viewModel);
-		}
+		//	return View(viewModel);
+		//}
 
-		[HttpGet]
-		public ActionResult FandangoDays()
-		{
-			var stopWatch = new Stopwatch();
-			stopWatch.Start();
+		//[HttpGet]
+		//public ActionResult FandangoDays()
+		//{
+		//	var stopWatch = new Stopwatch();
+		//	stopWatch.Start();
 
-			IFandangoViewModel viewModel = new FandangoDaysViewModel(_minerModel, _moviePicker);
+		//	IFandangoViewModel viewModel = new FandangoDaysViewModel(_minerModel, _moviePicker);
 
-			DownloadMoviePosters();
+		//	DownloadMoviePosters();
 
-			ClearMinerModel(0);
+		//	ClearMinerModel(0);
 
-			ParseViewRequest();
+		//	ParseViewRequest();
 
-			viewModel.Load();
+		//	viewModel.Load();
 
-			var movieList = viewModel.Movies.OrderByDescending(movie => movie.EarningsBase).ToList();
-			var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
+		//	var movieList = viewModel.Movies.OrderByDescending(movie => movie.EarningsBase).ToList();
+		//	var totalBoxOffice = movieList.Sum(movie => movie.EarningsBase);
 
-			// Scale the estimates (if they exist) to match the percentages of the sales.
-			// o Use the sales scale outright and multiply the totalEstimate to get BO
-			// o Combine the scales (somehow) and multiply the totalEstimate to get BO
+		//	// Scale the estimates (if they exist) to match the percentages of the sales.
+		//	// o Use the sales scale outright and multiply the totalEstimate to get BO
+		//	// o Combine the scales (somehow) and multiply the totalEstimate to get BO
 
-			if (totalBoxOffice > 0)
-			{
-				var myMovieList = _minerModel.Miners[MinerModel.MY_INDEX].Movies;
-				var totalEstimates = myMovieList?.Sum(item => item.EarningsBase) ?? 0;
+		//	if (totalBoxOffice > 0)
+		//	{
+		//		var myMovieList = _minerModel.Miners[MinerModel.MY_INDEX].Movies;
+		//		var totalEstimates = myMovieList?.Sum(item => item.EarningsBase) ?? 0;
 
-				if (totalEstimates > 0)
-				{
-					foreach (var movie in movieList)
-					{
-						var myMovie = myMovieList.FirstOrDefault(item => item.Equals(movie));
+		//		if (totalEstimates > 0)
+		//		{
+		//			foreach (var movie in movieList)
+		//			{
+		//				var myMovie = myMovieList.FirstOrDefault(item => item.Equals(movie));
 
-						if (myMovie != null)
-						{
-							// For now this is option 1.
-							myMovie.Earnings = totalEstimates * movie.EarningsBase / totalBoxOffice;
-						}
-					}
-				}
-			}
+		//				if (myMovie != null)
+		//				{
+		//					// For now this is option 1.
+		//					myMovie.Earnings = totalEstimates * movie.EarningsBase / totalBoxOffice;
+		//				}
+		//			}
+		//		}
+		//	}
 
-			if (viewModel.IsTracking && _minerModel.Miners[MinerModel.FML_INDEX].Movies.Count > 0)
-			{
-				viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
-			}
+		//	if (viewModel.IsTracking && _minerModel.Miners[MinerModel.FML_INDEX].Movies.Count > 0)
+		//	{
+		//		viewModel.MovieListPerfectPick = PerfectPick(viewModel.Movies);
+		//	}
 
-			var nl = NEW_LINE_HTML;
-			var tweetText = $"The top @Fandango tickets sales for the weekend ending {_minerModel.WeekendEnding.Value.ToShortDateString()}:{nl}";
+		//	var nl = NEW_LINE_HTML;
+		//	var tweetText = $"The top @Fandango tickets sales for the weekend ending {_minerModel.WeekendEnding.Value.ToShortDateString()}:{nl}";
 
-			foreach (var movie in movieList.Take(3))
-			{
-				tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}{PERCENT_HTML}";
-			}
+		//	foreach (var movie in movieList.Take(3))
+		//	{
+		//		tweetText += $"{nl}{movie.Hashtag} {(movie.EarningsBase / totalBoxOffice * 100).ToString("N1")}{PERCENT_HTML}";
+		//	}
 
-			tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
+		//	tweetText += $"{nl}{nl}#ShowYourScreens @SpilledMilkCOM";
 
-			ControllerUtility.SetTwitterCard(ViewBag, null, $"{Constants.APPLICATION_NAME} - Fandango Weekend Sales", "A breakdown of the weekend ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
+		//	ControllerUtility.SetTwitterCard(ViewBag, null, $"{Constants.APPLICATION_NAME} - Fandango Weekend Sales", "A breakdown of the weekend ticket sales by percentages. (click-through for up-to-date numbers)", null, null, tweetText);
 
-			stopWatch.Stop();
+		//	stopWatch.Stop();
 
-			viewModel.Duration = stopWatch.ElapsedMilliseconds;
+		//	viewModel.Duration = stopWatch.ElapsedMilliseconds;
 
-			return View(viewModel);
-		}
+		//	return View(viewModel);
+		//}
 
-		[HttpGet]
-		public ActionResult FandangoFutures()
-		{
-			const string FUTURE_URL_KEY = "fandango:future";
+		//[HttpGet]
+		//public ActionResult FandangoFutures()
+		//{
+		//	const string FUTURE_URL_KEY = "fandango:future";
 
-			var stopWatch = new Stopwatch();
-			stopWatch.Start();
+		//	var stopWatch = new Stopwatch();
+		//	stopWatch.Start();
 
-			var futureMiner = new MineFandangoTicketSalesFuture(ConfigurationManager.AppSettings[FUTURE_URL_KEY]);
-			var viewModel = new FandangoFutureViewModel(_minerModel, futureMiner);
+		//	var futureMiner = new MineFandangoTicketSalesFuture(ConfigurationManager.AppSettings[FUTURE_URL_KEY]);
+		//	var viewModel = new FandangoFutureViewModel(_minerModel, futureMiner);
 
-			viewModel.Load();
+		//	viewModel.Load();
 
-			stopWatch.Stop();
+		//	stopWatch.Stop();
 
-			viewModel.Duration = stopWatch.ElapsedMilliseconds;
+		//	viewModel.Duration = stopWatch.ElapsedMilliseconds;
 
-			return View(viewModel);
-		}
+		//	return View(viewModel);
+		//}
 
 		[HttpGet]
 		public ActionResult History()
