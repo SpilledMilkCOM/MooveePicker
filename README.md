@@ -2,7 +2,8 @@
 ### A simulation that picks movies.
 
 Given a set of movies with *Earnings* and *Cost* (as well as other rules),
-chooses the best lineup of movies to run in your theaters.
+chooses the best lineup of movies to run in your theaters.  [MooVee Picker](https://mooveepicker.com) allows you
+to use industry expert data as a basis for choosing your own line-up in the [Fantasy Movie League](https://fantasymovieleague.com/) game.
 
 ##### Basic Algorithm
 
@@ -70,6 +71,8 @@ The current defaults that I use are on the [About](http://mooveepicker.com/home/
 * How to add Application Insights to monitor the web app.
 * How to add Adsterra.com ads (removed them due to ads that take over your browser - NOT GOOD)
 * More about [Open Graph](http://ogp.me/) Facebook's standard for web page metadata.
+* Kusto Query Language (KQL) queries for Azure Application Insights logs.
+  * A *GREAT* training reference: [Kusto Query Language (KQL) from Scratch](https://app.pluralsight.com/course-player?clipId=b9fc66c1-8f47-4d14-af5f-a6758b86ff2f)
 
 ##### Azure Notes
 * Application Settings
