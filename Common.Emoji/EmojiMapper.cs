@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SM.Common.Emoji
 {
@@ -11,7 +10,7 @@ namespace SM.Common.Emoji
 		{
 			_map = new Dictionary<string, string>();
 
-			_map.Add("necktie", "");
+			_map.Add("necktie", EmojiConstants.NECKTIE);
 		}
 	}
 }
