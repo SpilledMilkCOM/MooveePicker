@@ -294,11 +294,13 @@ namespace MoviePicker.WebApp.Utilities
 			return result;
 		}
 
-		public static string Version()
+		public static string Version(string version = null)
 		{
-			if (_version == null)
+			if (_version == null && version != null)
 			{
-				_version = File.GetCreationTime(Assembly.GetExecutingAssembly().Location).ToString("yyyy.MM.dd");
+				//_version = File.GetCreationTime(Assembly.GetExecutingAssembly().Location).ToString("yyyy.MM.dd");
+
+				_version = version;
 			}
 
 			return _version;

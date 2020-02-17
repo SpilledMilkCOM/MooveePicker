@@ -107,6 +107,8 @@ namespace MoviePicker.Common
 
 		public IEnumerable<IBoxOffice> BoxOfficeHistory => _boxOfficeHistory;
 
+		public DateTime? BoxOfficeHistoryExpiration { get; private set; }
+
 		public int ControlId { get; set; }
 
 		public decimal Cost
@@ -350,7 +352,7 @@ namespace MoviePicker.Common
 		/// Copy/Clone the history passed in.  (supports null too)
 		/// </summary>
 		/// <param name="history"></param>
-		public void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history)
+		public void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history, DateTime? expiration = null)
 		{
 			if (history == null)
 			{
@@ -365,6 +367,10 @@ namespace MoviePicker.Common
 					_boxOfficeHistory.Add(item.Clone());
 				}
 			}
+
+			// Regardless of whether this is set or not, don't try again for another X hours.
+
+			BoxOfficeHistoryExpiration = expiration ?? DateTime.Now.AddHours(2);
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------

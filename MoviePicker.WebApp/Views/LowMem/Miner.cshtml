@@ -19,9 +19,10 @@
 <div class="row">
 	<div class="col-sm-4 hidden-xs" style="font-weight: bold;">Name</div>
 	<div class="col-sm-1 hidden-xs" style="font-weight: bold;">ID</div>
-	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Earnings</div>
-	<div class="col-sm-3 hidden-xs" style="font-weight: bold;">Weekend</div>
-	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">History</div>
+	<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Earnings</div>
+	<div class="col-sm-1 hidden-xs" style="font-weight: bold;">Weekend</div>
+	<div class="col-sm-1 hidden-xs" style="font-weight: bold;">History</div>
+	<div class="col-sm-2 hidden-xs" style="font-weight: bold;">Expires</div>
 
 	@if (Model.Movies != null)
 	{
@@ -31,10 +32,11 @@
 			<div class="col-sm-4 hidden-xs">@movie.Name</div>
 			<div class="col-xs-1">@movie.Id</div>
 
-			<div class="col-xs-5 col-sm-2" style="text-align: right;">@string.Format("{0:N0}", movie.Earnings)</div>
+			<div class="col-xs-5 col-sm-1" style="text-align: right;">@string.Format("{0:N0}", movie.Earnings)</div>
 
-			<div class="col-sm-3 hidden-xs">@string.Format("{0}", movie.WeekendEnding.ToShortDateString())</div>
-			<div class="col-sm-2 hidden-xs">@string.Format("{0}", movie.BoxOfficeHistory?.Count().ToString() ?? "--")</div>
+			<div class="col-sm-1 hidden-xs">@string.Format("{0}", movie.WeekendEnding.ToShortDateString())</div>
+			<div class="col-sm-1 hidden-xs">@string.Format("{0}", movie.BoxOfficeHistory?.Count().ToString() ?? "--")</div>
+			<div class="col-sm-2 hidden-xs">@string.Format("{0}", movie.BoxOfficeHistoryExpiration?.ToString() ?? "--")</div>
 		}
 	}
 </div>

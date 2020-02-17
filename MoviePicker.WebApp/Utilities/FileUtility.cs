@@ -11,8 +11,8 @@ namespace MoviePicker.WebApp.Utilities
 		private const int MOVIE_EXPIRATION_DAYS = 90;
 
 		//private const int SHARED_EXPIRATION_MINUTES = 5;
-		private const int SHARED_EXPIRATION_MINUTES = 60;			// One hour.
-		private const int TWITTER_EXPIRATION_MINUTES = 24 * 60;		// One day - may want to back this off later.
+		private const int SHARED_EXPIRATION_MINUTES = 60;           // One hour.
+		private const int TWITTER_EXPIRATION_MINUTES = 24 * 60;     // One day - may want to back this off later.
 		private const string MOVIE_POSTER_PREFIX = "MoviePoster_";
 
 		private static bool _isCleaningUp = false;
@@ -140,6 +140,11 @@ namespace MoviePicker.WebApp.Utilities
 			}
 
 			return result;
+		}
+
+		public static DateTime? FileDate(string serverPath)
+		{
+			return File.Exists(serverPath) ? File.GetLastWriteTime(serverPath) : (DateTime?)null;
 		}
 
 		/// <summary>

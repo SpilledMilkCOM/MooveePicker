@@ -317,6 +317,7 @@ namespace MovieMiner
 
 			// Create a NEW list of movies, the movie objects are still shared between this object and the cloned object.
 			// (you can't just assign the list over otherwise the list will be shared too and you'll get iteration problems amongst the threads)
+			// The BoxOfficeHistory should be attached to the movies if loaded.
 
 			clone.Movies = new List<IMovie>(Movies);
 

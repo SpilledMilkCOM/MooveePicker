@@ -274,6 +274,7 @@ namespace MoviePicker.WebApp.Controllers
 			return File(stream, "text/plain", "MooveePickerData.txt");
 		}
 
+		// ===== FANDANGO R.I.P.=====
 		//[HttpGet]
 		//public ActionResult Fandango()
 		//{
@@ -431,23 +432,33 @@ namespace MoviePicker.WebApp.Controllers
 				{
 					var mojoMovie = _minerModel.Miners[MinerModel.MOJO_LAST_INDEX].Movies.FirstOrDefault(item => item.Equals(movie));
 
-					if (mojoMovie != null && mojoMovie.Identifier != null)
+					if (mojoMovie != null)
 					{
-						var history = new MineBoxOfficeMojoHistory(mojoMovie.Identifier);
-						var movies = history.Mine();
-
-						movie.Identifier = mojoMovie.Identifier;
-
-						if (movies.Any())
+						if (mojoMovie.BoxOfficeHistory == null                          // Load history if it's not loaded.
+						&& (!mojoMovie.BoxOfficeHistoryExpiration.HasValue              // Load if expiration has never been set.
+							|| mojoMovie.BoxOfficeHistoryExpiration < DateTime.Now)     // Load if expiration has expired.
+						&& mojoMovie.Identifier != null)
 						{
-							movie.SetBoxOfficeHistory(movies.First().BoxOfficeHistory);
-						}
+							var history = new MineBoxOfficeMojoHistory(mojoMovie.Identifier);
+							var movies = history.Mine();
 
-						loaded = true;
+							movie.Identifier = mojoMovie.Identifier;
+
+							if (movies.Any())
+							{
+								movie.SetBoxOfficeHistory(movies.First().BoxOfficeHistory);
+							}
+
+							loaded = true;
+						}
+						else if (mojoMovie.BoxOfficeHistory != null)
+						{
+							// Reuse the old expiration date.  (Don't set it to something new, because the damn thing will NEVER expire!)
+							movie.SetBoxOfficeHistory(mojoMovie.BoxOfficeHistory, mojoMovie.BoxOfficeHistoryExpiration);
+						}
 					}
 				}
 			}
-
 
 			if (loaded)
 			{
@@ -455,13 +466,13 @@ namespace MoviePicker.WebApp.Controllers
 
 				lock (_minerModelCache)
 				{
-					var cachedFmlMovies = _minerModelCache.Miners[MinerModel.MOJO_LAST_INDEX].Movies;
+					var cachedMojoMovies = _minerModelCache.Miners[MinerModel.MOJO_LAST_INDEX].Movies;
 
 					foreach (var movie in viewModel.Movies)
 					{
 						if (movie.BoxOfficeHistory == null || movie.BoxOfficeHistory.Any())
 						{
-							var fmlMovie = cachedFmlMovies.FirstOrDefault(item => item.Equals(movie));
+							var fmlMovie = cachedMojoMovies.FirstOrDefault(item => item.Equals(movie));
 
 							if (fmlMovie != null)
 							{
@@ -509,6 +520,8 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult Index()
 		{
+			SetVersion();
+
 			ClearMinerModel();
 
 			// Adjust the weights (possibly adjust the defaults above).
@@ -665,6 +678,10 @@ namespace MoviePicker.WebApp.Controllers
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
 
+		/// <summary>
+		/// Set all the miner weights to parameter value.
+		/// </summary>
+		/// <param name="weight"></param>
 		private void ClearMinerModel(decimal weight = 1)
 		{
 			// Set the weights to 1 across the board. (treat all 'expert' sources equal)
@@ -1240,6 +1257,14 @@ namespace MoviePicker.WebApp.Controllers
 											, defaultTwitterText);
 
 			ControllerUtility.SetOpenGraph(ViewBag, Request);
+		}
+
+		private void SetVersion()
+		{
+			var versionFilePath = $"{Server?.MapPath("~")}bin{Path.DirectorySeparatorChar}MoviePicker.WebApp.dll";
+			var fileDate = FileUtility.FileDate(versionFilePath);
+
+			ViewUtility.Version(fileDate?.ToString("yyyy.MM.dd"));
 		}
 
 		private string SharedPicksFromModels()

@@ -11,3 +11,16 @@ dependencies
 dependencies
 | where type == "HTTP"
 | limit 100
+
+// Last hits
+dependencies
+| where timestamp > ago(20m)
+| order by timestamp desc 
+| project timestamp
+, operation_Name 
+, operation_SyntheticSource 
+, target
+, name
+, client_IP
+, client_City
+, client_StateOrProvince

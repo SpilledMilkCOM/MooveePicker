@@ -24,6 +24,8 @@ namespace MoviePicker.Msf
 
 		public IEnumerable<IBoxOffice> BoxOfficeHistory => _movie.BoxOfficeHistory;
 
+		public DateTime? BoxOfficeHistoryExpiration => _movie.BoxOfficeHistoryExpiration;
+
 		public int ControlId
 		{
 			get { return _movie.ControlId; }
@@ -129,9 +131,9 @@ namespace MoviePicker.Msf
 			return Id.GetHashCode();
 		}
 
-		public void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history)
+		public void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history, DateTime? expiration = null)
 		{
-			_movie.SetBoxOfficeHistory(history);
+			_movie.SetBoxOfficeHistory(history, expiration);
 		}
 	}
 }
