@@ -331,6 +331,11 @@ namespace MovieMiner
 		{
 			var result = name;
 
+			if (result != null && result.ToLower().Contains("Brahms The Boy 2".ToLower()))
+			{
+				result = "Brahms The Boy II";
+			}
+
 			if (result != null && result.ToLower().Contains("Birds of Prey".ToLower()))
 			{
 				result = "Birds of Prey";
