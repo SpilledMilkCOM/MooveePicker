@@ -4,6 +4,7 @@ using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Utilities;
+using SM.COMS.Utilities.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,10 +31,13 @@ namespace MoviePicker.WebApp.Models
 		public const int MOJO_LAST_INDEX = FML_INDEX + 9;           // Miner contains the last week values (also contains all the history).
 
 		//private readonly IMoviePicker _moviePickerPrototype = null;
+		private readonly IMailUtility _mailUtility;
 		private bool _postersDownloaded;
 
-		public MinerModel(bool createWithData)
+		public MinerModel(bool createWithData, IMailUtility mailUtility)
 		{
+			_mailUtility = mailUtility;
+
 			if (createWithData)
 			{
 				Miners = CreateMinersWithData();
@@ -56,7 +60,7 @@ namespace MoviePicker.WebApp.Models
 		/// <returns>The MinerModel clone.</returns>
 		public IMinerModel Clone()
 		{
-			var clone = new MinerModel(false) { Miners = new List<IMiner>() };
+			var clone = new MinerModel(false, _mailUtility) { Miners = new List<IMiner>() };
 			var idx = 0;
 			var containsEstimates = Miners.Any() ? Miners[FML_INDEX].ContainsEstimates : false;
 

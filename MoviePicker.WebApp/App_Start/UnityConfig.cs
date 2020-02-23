@@ -13,6 +13,11 @@ using System;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
+using System.Configuration;
+using SM.COMS.Models.Interfaces;
+using SM.COMS.Models;
+using SM.COMS.Utilities;
+using SM.COMS.Utilities.Interfaces;
 
 namespace MoviePicker.WebApp
 {
@@ -48,19 +53,27 @@ namespace MoviePicker.WebApp
         /// </remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-			// NOTE: To load from web.config uncomment the line below.
-			// Make sure to add a Unity.Configuration to the using statements.
-			// container.LoadConfiguration();
+            // NOTE: To load from web.config uncomment the line below.
+            // Make sure to add a Unity.Configuration to the using statements.
+            // container.LoadConfiguration();
 
-			// TODO: Register your type's mappings here.
-			// container.RegisterType<IProductRepository, ProductRepository>();
+            // TODO: Register your type's mappings here.
+            // container.RegisterType<IProductRepository, ProductRepository>();
 
-			// Understanding Lifetime Managers
-			// https://msdn.microsoft.com/en-us/library/ff660872(v=pandp.20).aspx
+            // Initialize the Send Grid key to send email.
+            var sendGridKey = ConfigurationManager.AppSettings["SendGridKey"];
 
-			// Since the MinerModel will contain mined data then I probably want to keep this around longer than a single call.
+            container.RegisterType<IMailModel, MailModel>();
+            container.RegisterType<IMailUtility, MailUtil>(new InjectionConstructor(sendGridKey));
 
-			container.RegisterType<IMinerModel, MinerModel>(new ContainerControlledLifetimeManager(), new InjectionConstructor(true));		// Effectively a singleton.
+            // Understanding Lifetime Managers
+            // https://msdn.microsoft.com/en-us/library/ff660872(v=pandp.20).aspx
+
+            // Since the MinerModel will contain mined data then I probably want to keep this around longer than a single call.
+            // Inject "true" for the constructor because we want this filled with data.
+
+            container.RegisterType<IMinerModel, MinerModel>(new ContainerControlledLifetimeManager()		// Effectively a singleton.
+                    , new InjectionConstructor(true, container.Resolve<IMailUtility>()));
 
 			// Each request will create a new IndexViewModel (PerThreadLifetimeManager)
 
@@ -80,6 +93,6 @@ namespace MoviePicker.WebApp
 
 			container.RegisterType<IBoxOfficeDataSource, BoxOfficeDataSource>();
 			container.RegisterType<IBoxOfficeSource, BoxOfficeSource>();
-		}
+        }
 	}
 }
