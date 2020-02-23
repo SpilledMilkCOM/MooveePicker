@@ -1,11 +1,11 @@
-# MooVee Picker
+# ![MooVee Picker Logo](https://mooveepicker.com/Images/Moovee%20Picker%20Cow64x64.png) MooVee Picker
 ### A simulation that picks movies.
 
 Given a set of movies with *Earnings* and *Cost* (as well as other rules),
 chooses the best lineup of movies to run in your theaters.  [MooVee Picker](https://mooveepicker.com) allows you
 to use industry expert data as a basis for choosing your own line-up in the [Fantasy Movie League](https://fantasymovieleague.com/) game.
 
-##### Basic Algorithm
+##### :computer: Basic Algorithm
 
 This is effectively an "unbounded knapsack" problem.  Added some hashing
 (which does not care about the sub-problem order) so not all 4,294,967,296 (16^8) possibilities
@@ -26,10 +26,6 @@ you might want to rethink your values or just be fine with that baseline.
 ##### Speculation
 
 Another class that will find the value where your "tent pole" movie becomes irrelevant.
-
-##### Aside
-
-I'll probably be banned from FML, but oh well.  It's still not an exact science...  until it **IS**.
 
 ##### Reference
 
@@ -65,7 +61,7 @@ The current defaults that I use are on the [About](http://mooveepicker.com/home/
   * Grids with headers which switch to labels in mobile view.
 * Twitter
   * Large summary cards are clipped, supposed to be 2:1 aspect but 600x314 works better
-  * [Emoji's](https://www.piliapp.com/twitter-symbols/)
+  * [Emoji's](https://www.piliapp.com/twitter-symbols/) :smiley:
 * Phone browsers are weird.
 * Browsers support PNG file format as a "[favicon](https://en.wikipedia.org/wiki/Favicon)" (don't need the old ICO file anymore - YAY!)
 * How to add Application Insights to monitor the web app.
