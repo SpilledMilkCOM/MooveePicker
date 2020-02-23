@@ -19,13 +19,15 @@ $(window).on("load resize", function () {
 	$(".fill-screen").css("height", window.innerHeight);
 
 	var screenRelative = $(".fill-screenrelative");
-
-//	var location = elementLocation(screenRelative);
-
 	var top = screenRelative.offset().top;
 	var margin = 5;
+	var newHeight = window.innerHeight - top - margin;
 
-	$(".fill-screenrelative").css("height", window.innerHeight - top - margin);
+	// The element may get moved by bootstrap down below the viewport (so don't resize it)
+
+	if (newHeight > 0) {
+		$(".fill-screenrelative").css("height", newHeight);
+	}
 });
 
 $(document).ready(function () {
