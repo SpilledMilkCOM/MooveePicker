@@ -62,9 +62,10 @@ namespace MoviePicker.WebApp
 
             // Initialize the Send Grid key to send email.
             var sendGridKey = ConfigurationManager.AppSettings["SendGridKey"];
+            var sendGridTo = ConfigurationManager.AppSettings["SendGridTo"];
 
             container.RegisterType<IMailModel, MailModel>();
-            container.RegisterType<IMailUtility, MailUtil>(new InjectionConstructor(sendGridKey));
+            container.RegisterType<IMailUtility, MailUtil>(new InjectionConstructor(sendGridKey, sendGridTo));
 
             // Understanding Lifetime Managers
             // https://msdn.microsoft.com/en-us/library/ff660872(v=pandp.20).aspx

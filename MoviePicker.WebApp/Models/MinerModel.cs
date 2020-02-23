@@ -186,6 +186,8 @@ namespace MoviePicker.WebApp.Models
 						}
 					}
 				}
+
+				EmailLoadedMiners(clone.Miners);
 			}
 
 			FilterMinersMovies(clone.Miners);
@@ -298,6 +300,26 @@ namespace MoviePicker.WebApp.Models
 			_postersDownloaded = true;
 
 			return result;
+		}
+
+		/// <summary>
+		/// Send an email if any of the miners were loaded.
+		/// </summary>
+		/// <param name="miners"></param>
+		private void EmailLoadedMiners(List<IMiner> miners)
+		{
+			var minersLoaded = string.Empty;
+			// Create a text list of miners that were loaded.
+
+			var loadedMiners = miners.Where(miner => miner.CloneCausedReload && miner.Name != "My Predictions").ToList();
+
+			if (loadedMiners.Any())
+			{
+				loadedMiners.ForEach(miner => minersLoaded += $"{miner.Name}\r\n");
+
+				_mailUtility.Send(null, null
+					, $"MVP: {loadedMiners.Count} Miner(s) Loaded", $"Hey,\r\n\r\nThe following miners were loaded:\r\n\r\n{minersLoaded}\r\nTHANKS!");
+			}
 		}
 
 		/// <summary>
