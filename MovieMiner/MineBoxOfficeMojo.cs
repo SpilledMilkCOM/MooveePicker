@@ -13,7 +13,6 @@ namespace MovieMiner
 	{
 		public const string DEFAULT_URL = "https://boxofficemojo.com/";
 		private const string DELIMITER = "- $";
-		private const string NO_DATA = "No Data";
 
 		/// <summary>
 		/// 
@@ -106,7 +105,8 @@ namespace MovieMiner
 			//  https://www.boxofficemojo.com/weekend/2019W42/
 
 			//url = $"{Url}weekend/chart/?yr={WeekendEnding.Value.Year}&wknd={((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}&p=.htm";
-			url = $"{Url}weekend/{WeekendEnding.Value.Year}W{((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}/";
+			//url = $"{Url}weekend/{WeekendEnding.Value.Year}W{((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1}/";
+			url = $"{Url}weekend/{WeekendEnding.Value.Year}W{((WeekendEnding.Value.DayOfYear - sundayOffset) / 7) + 1:00}/";
 
 			var doc = web.Load(url);
 
@@ -195,16 +195,17 @@ namespace MovieMiner
 			// REF: https://www.w3schools.com/xml/xpath_syntax.asp
 
 			HtmlNode node = null;
+			const string XPATH = "//body//a[contains(@href, '/article/')]";
 
 			if (articleNumber == 1)
 			{
 				//node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, '/news/?id=')]");
-				node = doc.DocumentNode.SelectSingleNode("//body//a[contains(@href, '/article/')]");
+				node = doc.DocumentNode.SelectSingleNode(XPATH);
 			}
 			else
 			{
 				//var nodes = doc.DocumentNode.SelectNodes("//body//a[contains(@href, '/news/?id=')]");
-				var nodes = doc.DocumentNode.SelectNodes("//body//a[contains(@href, '/article/')]");
+				var nodes = doc.DocumentNode.SelectNodes(XPATH);
 
 				if (nodes != null && articleNumber <= nodes.Count)
 				{

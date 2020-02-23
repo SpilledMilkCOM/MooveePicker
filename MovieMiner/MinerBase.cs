@@ -11,6 +11,7 @@ namespace MovieMiner
 	public abstract class MinerBase : IMiner, ICache
 	{
 		protected const string FOUR_DAY = "4-Day";
+		protected const string NO_DATA = "No Data";
 
 		// To make this thread safe so the miners can become singletons and shared across threads/requests.
 		private readonly object _isLoadingLock;
@@ -316,6 +317,7 @@ namespace MovieMiner
 
 			// Create a NEW list of movies, the movie objects are still shared between this object and the cloned object.
 			// (you can't just assign the list over otherwise the list will be shared too and you'll get iteration problems amongst the threads)
+			// The BoxOfficeHistory should be attached to the movies if loaded.
 
 			clone.Movies = new List<IMovie>(Movies);
 
@@ -329,11 +331,14 @@ namespace MovieMiner
 		{
 			var result = name;
 
-			if (result != null && result.Contains("Frozen II"))
+			if (result != null && result.ToLower().Contains("Brahms The Boy 2".ToLower()))
 			{
-				result = result.Replace("Frozen II", "Frozen 2");
-				//result = result.Replace("Zombieland 2", "Zombieland");
-				//result = result.Replace("é", "e").Replace("PokÃmon", "Pokemon").Replace("Pokmon", "Pokemon");
+				result = "Brahms The Boy II";
+			}
+
+			if (result != null && result.ToLower().Contains("Birds of Prey".ToLower()))
+			{
+				result = "Birds of Prey";
 			}
 
 			return result;

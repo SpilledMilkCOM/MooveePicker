@@ -698,7 +698,7 @@
 													  style="position: absolute; left: 20px; top: 5px;">
 													@movie.TheaterCount
 
-													@if (!isNew)
+													@if (!isNew && lastWeek.TheaterCount > 0)
 													{
 														var theaterDiff = movie.TheaterCount - lastWeek.TheaterCount;
 

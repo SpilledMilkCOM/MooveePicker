@@ -14,6 +14,8 @@ namespace MoviePicker.Common.Interfaces
 
 		IEnumerable<IBoxOffice> BoxOfficeHistory { get; }
 
+		DateTime? BoxOfficeHistoryExpiration { get; }
+
 		/// <summary>
 		/// Used to map the movie to a control in an array of movies.
 		/// </summary>
@@ -109,6 +111,11 @@ namespace MoviePicker.Common.Interfaces
 		/// <returns></returns>
 		int GetHashCode();
 
-		void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history);
+		/// <summary>
+		/// Set the historical data and its expiration time.
+		/// </summary>
+		/// <param name="history"></param>
+		/// <param name="expiration"></param>
+		void SetBoxOfficeHistory(IEnumerable<IBoxOffice> history, DateTime? expiration = null);
 	}
 }

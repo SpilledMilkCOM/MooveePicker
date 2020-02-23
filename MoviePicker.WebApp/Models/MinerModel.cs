@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MoviePicker.WebApp.Models
@@ -658,7 +657,7 @@ namespace MoviePicker.WebApp.Models
 			// Get the contains estimates value from the FML Miner.
 			var containsEstimates = miners.First().ContainsEstimates;
 			var weekendEnding = WeekendEnding;      // The actual end date of the game.
-			var gameDays = WeekendEnding.HasValue ? WeekendEnding.Value.Subtract(MovieDateUtil.GameStartTime()).Days + 1 : 3;
+			var gameDays = WeekendEnding.HasValue ? WeekendEnding.Value.Subtract(MovieDateUtil.GameStartTime(WeekendEnding.Value)).Days + 1 : 3;
 
 			if (containsEstimates)
 			{

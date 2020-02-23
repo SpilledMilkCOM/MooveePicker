@@ -1,0 +1,26 @@
+// FILE: Dependencies.kql
+// REF: https://docs.microsoft.com/en-us/azure/kusto/query/
+
+dependencies
+| where timestamp > ago(1d)
+    and type == "HTTP"
+| summarize targetCount=count() by target, operation_Name
+| order by targetCount desc 
+
+// For general column listing
+dependencies
+| where type == "HTTP"
+| limit 100
+
+// Last hits
+dependencies
+| where timestamp > ago(20m)
+| order by timestamp desc 
+| project timestamp
+, operation_Name 
+, operation_SyntheticSource 
+, target
+, name
+, client_IP
+, client_City
+, client_StateOrProvince

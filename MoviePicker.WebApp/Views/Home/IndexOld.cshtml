@@ -462,7 +462,7 @@
 
 									@if (movie.TheaterCount > 0)
 									{
-										if (lastWeek != null && (movie.TheaterCount - lastWeek.TheaterCount != 0))
+										if (lastWeek != null && movie.TheaterCount - lastWeek.TheaterCount != 0 && lastWeek.TheaterCount > 0)
 										{
 											if (movie.TheaterCount - lastWeek.TheaterCount > 0)
 											{

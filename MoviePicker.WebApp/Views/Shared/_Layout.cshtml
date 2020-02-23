@@ -74,7 +74,7 @@
 					<li>@Html.ActionLink("Home", "Index", "Home", ViewUtility.RequestParamsToDynamic(Request), null)</li>
 					<li>@Html.ActionLink("Help", "About", "LowMem", protocol: null, hostName: null, fragment: "help", routeValues: ViewUtility.RequestParamsToDynamic(Request), htmlAttributes: null)</li>
 					<li>@Html.ActionLink("About", "About", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
-					<li>@Html.ActionLink("Donation", "Donation", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
+					<li>@Html.ActionLink("Donate", "Donate", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
 				</ul>
 			</div>
 		</div>
@@ -89,7 +89,11 @@
 					&copy; 2017-@DateTime.Now.Year - <a href="http://SpilledMilk.com" target="_blank">@Constants.COMPANY_NAME</a>
 				</div>
 
-				<div class="col-xs-6 col-sm-3 col-sm-offset-3">
+				<div class="col-xs-6 col-sm-1">
+					ver:&nbsp;<a href="https://github.com/SpilledMilkCOM/MooveePicker" target="_blank">@ViewUtility.Version()</a>
+				</div>
+
+				<div class="col-xs-6 col-sm-3 col-sm-offset-2">
 					<a href="https://twitter.com/SpilledMilkCOM" class="twitter-follow-button" data-show-count="true">Follow @@SpilledMilkCOM</a>
 				</div>
 

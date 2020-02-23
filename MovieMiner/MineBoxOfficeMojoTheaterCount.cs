@@ -11,8 +11,6 @@ namespace MovieMiner
 	public class MineBoxOfficeMojoTheaterCount : MinerBase
 	{
 		private const string DEFAULT_URL = MineBoxOfficeMojo.DEFAULT_URL;
-		private const string DELIMITER = "- $";
-		private const string NO_DATA = "No Data";
 
 		private DateTime? _weekendEnding;
 
