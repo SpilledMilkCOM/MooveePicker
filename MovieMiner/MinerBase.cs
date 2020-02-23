@@ -148,6 +148,11 @@ namespace MovieMiner
 		public bool IsHidden { get; set; }
 
 		/// <summary>
+		/// Marks the data as "new" (should not be cloned)
+		/// </summary>
+		public bool IsNewData { get; private set; }
+
+		/// <summary>
 		/// Actual time of the reload/refresh of the data.
 		/// </summary>
 		public DateTime? LastLoaded { get; private set; }
@@ -230,6 +235,7 @@ namespace MovieMiner
 
 				try
 				{
+					var lastWeekendEnding = Movies?.FirstOrDefault()?.WeekendEnding;
 					Error = string.Empty;
 					ErrorDetail = string.Empty;
 
@@ -237,6 +243,12 @@ namespace MovieMiner
 
 					CloneCausedReload = true;
 					LastLoaded = DateTime.Now;
+
+					var weekendEnding = Movies?.FirstOrDefault()?.WeekendEnding;
+
+					// Mark the data "new" based on the weekend loaded, then an email can be sent out (to ME!)
+
+					IsNewData = weekendEnding == lastWeekendEnding;
 				}
 				catch (Exception ex)
 				{

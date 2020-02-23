@@ -31,6 +31,8 @@ namespace MovieMiner
 
 		bool IsHidden { get; set; }
 
+		bool IsNewData { get; }
+
 		DateTime? LastUpdated { get; set; }
 
 		List<IMovie> Movies { get; }

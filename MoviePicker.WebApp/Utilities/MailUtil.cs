@@ -2,6 +2,7 @@
 using SendGrid.Helpers.Mail;
 using SM.COMS.Models;
 using SM.COMS.Utilities.Interfaces;
+using System.Threading.Tasks;
 
 namespace SM.COMS.Utilities
 {
@@ -40,7 +41,7 @@ namespace SM.COMS.Utilities
 		/// <param name="to"></param>
 		/// <param name="subject"></param>
 		/// <param name="body"></param>
-		public async void Send(string from, string to, string subject, string body)
+		public async Task<Response> Send(string from, string to, string subject, string body)
 		{
 //#if DEBUG
 //			return;
@@ -51,13 +52,7 @@ namespace SM.COMS.Utilities
 
 			var mail = MailHelper.CreateSingleEmail(fromEmail, toEmail, subject, body, null);
 
-			try
-			{
-				var response = await client.SendEmailAsync(mail);
-			}
-			catch (System.Exception)
-			{
-			}
+			return await client.SendEmailAsync(mail);
 		}
 	}
 }

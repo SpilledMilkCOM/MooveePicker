@@ -71,6 +71,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			var result = new CalculateViewModel(ConstructPicksViewModel());
 
+			EmailNotificationAsync();
+
 			return Json(result, JsonRequestBehavior.AllowGet);
 		}
 
@@ -205,6 +207,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			result.Duration = stopWatch.ElapsedMilliseconds;
 
+			EmailNotificationAsync();
+
 			return View(result);
 		}
 
@@ -270,6 +274,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			var byteArray = Encoding.ASCII.GetBytes(builder.ToString());
 			var stream = new MemoryStream(byteArray);
+
+			EmailNotificationAsync();
 
 			return File(stream, "text/plain", "MooveePickerData.txt");
 		}
@@ -514,6 +520,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			viewModel.Duration = stopWatch.ElapsedMilliseconds;
 
+			EmailNotificationAsync();
+
 			return View(viewModel);
 		}
 
@@ -533,6 +541,8 @@ namespace MoviePicker.WebApp.Controllers
 			_minerModel.Miners.Last().IsHidden = true;
 
 			ControllerUtility.SetTwitterCard(ViewBag);
+
+			EmailNotificationAsync();
 
 			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
 		}
@@ -558,6 +568,8 @@ namespace MoviePicker.WebApp.Controllers
 			stopWatch.Stop();
 
 			_viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			EmailNotificationAsync();
 
 			return View(_viewModel);
 		}
@@ -589,6 +601,8 @@ namespace MoviePicker.WebApp.Controllers
 
 			ControllerUtility.SetTwitterCard(ViewBag);
 
+			EmailNotificationAsync();
+
 			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
 		}
 
@@ -607,18 +621,24 @@ namespace MoviePicker.WebApp.Controllers
 		[HttpGet]
 		public ActionResult ShareBonusOffPicks()
 		{
+			EmailNotificationAsync();
+
 			return View("SharePicks", ConstructSharePicksViewModel(false, false));
 		}
 
 		[HttpGet]
 		public ActionResult ShareBonusOnPicks()
 		{
+			EmailNotificationAsync();
+
 			return View("SharePicks", ConstructSharePicksViewModel(true, false));
 		}
 
 		[HttpGet]
 		public ActionResult SharePerfectPick()
 		{
+			EmailNotificationAsync();
+
 			return View("SharePicks", ConstructSharePicksViewModel(true, true));
 		}
 
@@ -667,6 +687,8 @@ namespace MoviePicker.WebApp.Controllers
 			stopWatch.Stop();
 
 			viewModel.Duration = stopWatch.ElapsedMilliseconds;
+
+			EmailNotificationAsync();
 
 			return View(viewModel);
 		}
@@ -968,6 +990,12 @@ namespace MoviePicker.WebApp.Controllers
 			}
 
 			return result;
+		}
+
+		private void EmailNotificationAsync()
+		{
+			// This is an Asynchronous call and shouldn't be called from the constructor.
+			_minerModel.EmailLoadedMinersAsync();
 		}
 
 		/// <summary>

@@ -1,10 +1,13 @@
-﻿using SM.COMS.Models;
+﻿using SendGrid;
+using SM.COMS.Models;
+using System.Threading.Tasks;
 
 namespace SM.COMS.Utilities.Interfaces
 {
 	public interface IMailUtility
 	{
 		void Send(MailModel model);
-		void Send(string from, string to, string subject, string body);
+
+		Task<Response> Send(string from, string to, string subject, string body);
 	}
 }

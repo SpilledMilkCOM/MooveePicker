@@ -1,7 +1,9 @@
 ﻿using MovieMiner;
 using MoviePicker.Common.Interfaces;
+using SendGrid;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MoviePicker.WebApp.Interfaces
 {
@@ -25,6 +27,8 @@ namespace MoviePicker.WebApp.Interfaces
 		List<IMovie> CreateWeightedList();
 
 		bool DownloadMoviePosters(string localFilePrefix);
+
+		Task<Response> EmailLoadedMinersAsync();
 
 		void Expire();
 	}

@@ -73,6 +73,8 @@ The current defaults that I use are on the [About](http://mooveepicker.com/home/
 * More about [Open Graph](http://ogp.me/) Facebook's standard for web page metadata.
 * Kusto Query Language (KQL) queries for Azure Application Insights logs.
   * A *GREAT* training reference: [Kusto Query Language (KQL) from Scratch](https://app.pluralsight.com/course-player?clipId=b9fc66c1-8f47-4d14-af5f-a6758b86ff2f)
+* Send email using [SendGrid ](https://sendgrid.com/) since there's no SMTP Server for an Azure Application
+    (unless you have a virtual machine for it).
 
 ##### Azure Notes
 * Application Settings

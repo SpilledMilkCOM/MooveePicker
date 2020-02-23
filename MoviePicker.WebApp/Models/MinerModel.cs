@@ -4,6 +4,7 @@ using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
 using MoviePicker.WebApp.Interfaces;
 using MoviePicker.WebApp.Utilities;
+using SendGrid;
 using SM.COMS.Utilities.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,6 @@ namespace MoviePicker.WebApp.Models
 		public const int NUMBERS_THEATER_INDEX = FML_INDEX + 8;
 		public const int MOJO_LAST_INDEX = FML_INDEX + 9;           // Miner contains the last week values (also contains all the history).
 
-		//private readonly IMoviePicker _moviePickerPrototype = null;
 		private readonly IMailUtility _mailUtility;
 		private bool _postersDownloaded;
 
@@ -186,8 +186,6 @@ namespace MoviePicker.WebApp.Models
 						}
 					}
 				}
-
-				EmailLoadedMiners(clone.Miners);
 			}
 
 			FilterMinersMovies(clone.Miners);
@@ -306,20 +304,23 @@ namespace MoviePicker.WebApp.Models
 		/// Send an email if any of the miners were loaded.
 		/// </summary>
 		/// <param name="miners"></param>
-		private void EmailLoadedMiners(List<IMiner> miners)
+		public async Task<Response> EmailLoadedMinersAsync()
 		{
 			var minersLoaded = string.Empty;
+			var myMiner = Miners[MY_INDEX];
 			// Create a text list of miners that were loaded.
 
-			var loadedMiners = miners.Where(miner => miner.CloneCausedReload && miner.Name != "My Predictions").ToList();
+			var loadedMiners = Miners.Where(miner => miner.CloneCausedReload && miner.IsNewData && miner.Name != myMiner.Name).ToList();
 
 			if (loadedMiners.Any())
 			{
 				loadedMiners.ForEach(miner => minersLoaded += $"{miner.Name}\r\n");
 
-				_mailUtility.Send(null, null
-					, $"MVP: {loadedMiners.Count} Miner(s) Loaded", $"Hey,\r\n\r\nThe following miners were loaded:\r\n\r\n{minersLoaded}\r\nTHANKS!");
+				return await _mailUtility.Send(null, null
+					, $"MVP: {loadedMiners.Count} Miner(s) Loaded", $"Hey,\r\n\r\nThe following miners were loaded:\r\n\r\n{minersLoaded}\r\nTHANKS!,\r\n{Constants.APPLICATION_NAME}.");
 			}
+
+			return null;
 		}
 
 		/// <summary>
