@@ -1,20 +1,21 @@
 ﻿using MoviePicker.Repository.Interfaces;
 using MoviePicker.Repository.Models;
-using System.Data.Entity;           // From NuGet: EntityFramework
 using System.Linq;
-
-// https://docs.microsoft.com/en-us/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/
 
 namespace MoviePicker.Repository
 {
 	/// <summary>
 	/// The context class takes care of your basic CRUD operations.
 	/// </summary>
-	public class BoxOfficeDataSource : DbContext, IBoxOfficeDataSource
+	public class BoxOfficeDataSource : IBoxOfficeDataSource
 	{
-		public DbSet<BoxOfficeSource> Sources { get; set; }
+		//public DbSet<BoxOfficeSource> Sources { get; set; }
 
-		public DbSet<BoxOfficeValue> Values { get; set; }
+		//public DbSet<BoxOfficeValue> Values { get; set; }
+
+		public IQueryable<BoxOfficeSource> Sources { get; set; }
+
+		public IQueryable<BoxOfficeValue> Values { get; set; }
 
 		IQueryable<IBoxOfficeSource> IBoxOfficeDataSource.Sources => Sources;
 
@@ -52,7 +53,6 @@ namespace MoviePicker.Repository
 
 		public void Save()
 		{
-			SaveChanges();
 		}
 	}
 }
