@@ -9,4 +9,5 @@ Ideally, this library will allow you to provide a piece of text and it will map 
 This may have to mine some data and produce a JSON file (or something like that).
 
 #### Reference
-https://emojipedia.org/twitter/twemoji-12.1/
+* https://emojipedia.org/twitter/twemoji-12.1/
+* https://www.piliapp.com/twitter-symbols/ (can use the copy button)
