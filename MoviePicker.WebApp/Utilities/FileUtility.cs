@@ -111,7 +111,7 @@ namespace MoviePicker.WebApp.Utilities
 
 						filesDownloaded = true;
 					}
-					catch (Exception ex)
+					catch (Exception)
 					{
 						// It's accpetable to ignore the error here, the app can use the direct URL or a "not found" image.
 					}

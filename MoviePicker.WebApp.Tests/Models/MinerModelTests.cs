@@ -38,7 +38,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_ConstructWithData()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			foreach (var miner in test.Miners)
 			{
@@ -51,7 +51,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_BoxOfficeReportNumbers()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			Assert.IsNotNull(test.Miners);
 			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
@@ -67,7 +67,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_CoupesNumbers()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			Assert.IsNotNull(test.Miners);
 			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
@@ -83,7 +83,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_DownloadMoviePosters()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 			var cwd = Directory.GetCurrentDirectory() + "\\..\\..";
 
 			Assert.IsNotNull(test.Miners);
@@ -94,7 +94,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_CoupesNumbers_ExpireAndReload()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			Assert.IsNotNull(test.Miners);
 			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
@@ -123,7 +123,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_FMLNumbers()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			Assert.IsNotNull(test.Miners);
 			Assert.IsTrue(test.Miners.First().Movies.Count > 0);
@@ -139,7 +139,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_FMLNumbers_ExpireAndReload()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			Assert.IsNotNull(test.Miners);
 			Assert.IsTrue(test.Miners.First().Movies.Count > 0);
@@ -166,7 +166,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_MojosNumbers()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			Assert.IsNotNull(test.Miners);
 
@@ -187,7 +187,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_MojosNumbers_ExpireAndReload()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			Assert.IsNotNull(test.Miners);
 			Assert.IsTrue(test.Miners[0].Movies.Count > 0);
@@ -214,7 +214,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_To10pMoviePicker()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 			var moviePicker = new TopMoviePicker(new MovieList());
 
 			var sw = new Stopwatch();
@@ -243,7 +243,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_Simulation()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			SetWeights(test, CreateDefaultWeights());
 
@@ -258,7 +258,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_TheaterEfficiency()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			Assert.IsNotNull(test.Miners);
 
@@ -279,7 +279,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_WriteCodedOutput()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			SetWeights(test, CreateDefaultWeights());
 
@@ -294,7 +294,7 @@ namespace MoviePicker.WebApp.Tests.Models
 		[TestMethod, TestCategory("Integration")]
 		public void MinerModel_WriteCodedOutput_ToddThatcher()
 		{
-			var test = new MinerModel(true);
+			var test = ConstructTest();
 
 			foreach (var movie in test.Miners[TODD_INDEX].Movies)
 			{
@@ -303,6 +303,11 @@ namespace MoviePicker.WebApp.Tests.Models
 		}
 
 		//----==== PRIVATE ====---------------------------------------------------------------------------
+
+		private MinerModel ConstructTest()
+		{
+			return new MinerModel(true, null);
+		}
 
 		private List<int> CreateDefaultWeights()
 		{

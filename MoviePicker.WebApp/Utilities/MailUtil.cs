@@ -21,11 +21,13 @@ namespace SM.COMS.Utilities
 			_defaultToEmail = defaultToEmail;
 		}
 
-		public void Send(MailModel model)
+		public Task<Response> SendAsync(MailModel model)
 		{
+			Task<Response> result = null;
+
 			if (model.CanSubmit)
 			{
-				Send(model.From, model.To, model.Subject, model.Message);
+				result = SendAsync(model.From, model.To, model.Subject, model.Message);
 				model.Information = "Message sent.";
 				model.CanSubmit = false;        // prevent from multiple sends.
 			}
@@ -33,6 +35,8 @@ namespace SM.COMS.Utilities
 			{
 				model.Information = "Cannot send message.";
 			}
+
+			return result;
 		}
 
 		/// <summary> Send Mail...
@@ -41,7 +45,7 @@ namespace SM.COMS.Utilities
 		/// <param name="to"></param>
 		/// <param name="subject"></param>
 		/// <param name="body"></param>
-		public async Task<Response> Send(string from, string to, string subject, string body)
+		public async Task<Response> SendAsync(string from, string to, string subject, string body)
 		{
 //#if DEBUG
 //			return;

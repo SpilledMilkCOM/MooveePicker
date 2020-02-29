@@ -43,7 +43,7 @@ namespace MoviePicker.WebApp.Tests.Models
 
 			var moviePicker = new MsfMovieSolver { DisplayDebugMessage = false };
 			var builder = new StringBuilder();
-			var test = new MinerModel(true);
+			var test = new MinerModel(true, null);
 			var defaultWeights = CreateDefaultWeights();
 
 			var weights = GenerateWeightLists(new List<int>(), defaultWeights);

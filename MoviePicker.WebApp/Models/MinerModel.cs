@@ -316,7 +316,7 @@ namespace MoviePicker.WebApp.Models
 			{
 				loadedMiners.ForEach(miner => minersLoaded += $"{miner.Name}\r\n");
 
-				return await _mailUtility.Send(null, null
+				return await _mailUtility.SendAsync(null, null
 					, $"MVP: {loadedMiners.Count} Miner(s) Loaded", $"Hey,\r\n\r\nThe following miners were loaded:\r\n\r\n{minersLoaded}\r\nTHANKS!,\r\n{Constants.APPLICATION_NAME}.");
 			}
 
