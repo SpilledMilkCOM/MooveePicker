@@ -72,6 +72,8 @@ namespace MoviePicker.WebApp
 
             appInsights.TrackTrace("Application Insights TelemetryClient registered with Unity IoC Container.", SeverityLevel.Information);
 
+            FileUtility.AppInsightsClient = appInsights;            // Since you CAN'T inject into a static utility. TODO: Possibly make FileUtility NOT static.
+
             // Initialize the Send Grid key to send email.
             var sendGridKey = ConfigurationManager.AppSettings["SendGridKey"];
             var sendGridTo = ConfigurationManager.AppSettings["SendGridTo"];

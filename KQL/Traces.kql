@@ -23,3 +23,12 @@ traces
 | where timestamp > ago(7d)
 | search "Sending Email:"
 | limit 10
+
+// Any files cleaned up?
+
+traces
+| where message startswith "Cleanup Files:"
+    and timestamp > ago(3d)
+| extend ago=timestamp - now()
+| order by timestamp 
+| project ago, message, customDimensions, cloud_RoleInstance, client_City

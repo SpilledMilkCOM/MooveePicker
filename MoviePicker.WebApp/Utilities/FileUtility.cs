@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,6 +25,8 @@ namespace MoviePicker.WebApp.Utilities
 			NextCleanup = DateTime.Now;
 		}
 
+		public static TelemetryClient AppInsightsClient { get; set; }	// Ok to be static since this is a singleton.
+
 		private static DateTime NextCleanup { get; set; }
 
 		public static double NextCleanupDuration => NextCleanup.Subtract(DateTime.Now).TotalMinutes;
@@ -40,6 +44,10 @@ namespace MoviePicker.WebApp.Utilities
 			if (ShouldCleanup() && directoryPath != null)
 			{
 				var directory = $"{Path.GetDirectoryName(directoryPath)}{Path.DirectorySeparatorChar}";
+				var postersDeleted = 0;
+				var sharedDeleted = 0;
+				var tempPostersDeleted = 0;
+				var twitterDeleted = 0;
 
 				// Loop through the MoviePosters.
 
@@ -50,10 +58,14 @@ namespace MoviePicker.WebApp.Utilities
 						// Just delete the temp files each possible pass.
 
 						File.Delete(file);
+
+						tempPostersDeleted++;
 					}
 					else if (File.GetCreationTime(file) < DateTime.Now.AddDays(MOVIE_EXPIRATION_DAYS * -1))
 					{
 						File.Delete(file);
+
+						postersDeleted++;
 					}
 				}
 
@@ -64,6 +76,8 @@ namespace MoviePicker.WebApp.Utilities
 					if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES * -1))
 					{
 						File.Delete(file);
+
+						sharedDeleted++;
 					}
 				}
 
@@ -74,10 +88,20 @@ namespace MoviePicker.WebApp.Utilities
 					if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(TWITTER_EXPIRATION_MINUTES * -1))
 					{
 						File.Delete(file);
+
+						twitterDeleted++;
 					}
 				}
 
 				NextCleanup = DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES);
+
+				AppInsightsClient?.TrackTrace("Cleanup Files: ", SeverityLevel.Information
+					, new Dictionary<string, string> {
+							{ "tempPostersDeleted", tempPostersDeleted.ToString() }
+						, { "postersDeleted", postersDeleted.ToString() }
+						, { "sharedDeleted", sharedDeleted.ToString() }
+						, { "twitterDeleted", twitterDeleted.ToString() }
+						, { "NextCleanup", NextCleanup.ToString() } });
 			}
 		}
 

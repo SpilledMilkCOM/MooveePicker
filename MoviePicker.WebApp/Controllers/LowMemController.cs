@@ -76,6 +76,11 @@ namespace MoviePicker.WebApp.Controllers
 				fileModel.SizeInBytes = fileInfo.Length;
 
 				viewModel.Images.Add(fileModel);
+
+				if (viewModel.Images.Count >= 100)
+				{
+					break;		// like a "Take()" but not really.
+				}
 			} 
 
 			if (sortBy == "size")
