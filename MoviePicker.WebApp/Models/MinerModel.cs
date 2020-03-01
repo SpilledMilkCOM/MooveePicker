@@ -1,4 +1,6 @@
-﻿using MovieMiner;
+﻿using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using MovieMiner;
 using MoviePicker.Common;
 using MoviePicker.Common.Interfaces;
 using MoviePicker.Msf;
@@ -33,10 +35,12 @@ namespace MoviePicker.WebApp.Models
 
 		private readonly IMailUtility _mailUtility;
 		private bool _postersDownloaded;
+		private TelemetryClient _telemetryClient;
 
-		public MinerModel(bool createWithData, IMailUtility mailUtility)
+		public MinerModel(bool createWithData, IMailUtility mailUtility, TelemetryClient telemetryClient)
 		{
 			_mailUtility = mailUtility;
+			_telemetryClient = telemetryClient;
 
 			if (createWithData)
 			{
@@ -60,7 +64,7 @@ namespace MoviePicker.WebApp.Models
 		/// <returns>The MinerModel clone.</returns>
 		public IMinerModel Clone()
 		{
-			var clone = new MinerModel(false, _mailUtility) { Miners = new List<IMiner>() };
+			var clone = new MinerModel(false, _mailUtility, _telemetryClient) { Miners = new List<IMiner>() };
 			var idx = 0;
 			var containsEstimates = Miners.Any() ? Miners[FML_INDEX].ContainsEstimates : false;
 
@@ -138,6 +142,17 @@ namespace MoviePicker.WebApp.Models
 
 				foreach (var miner in clone.Miners.Where(miner => miner.CloneCausedReload && miner != clone.Miners[FML_INDEX]))
 				{
+					if (miner != clone.Miners[MY_INDEX])
+					{
+						_telemetryClient.TrackTrace($"Clone caused miner to reload '{miner.Name}'", SeverityLevel.Information
+									, new Dictionary<string, string> {
+											{ "minerName", miner.Name }
+											, { "gameDays", miner.GameDays.ToString() }
+											, { "lastUpdated", miner.LastUpdated?.ToString() }
+											, { "isNewData", miner.IsNewData.ToString() }
+											, { "twitterId" , miner.TwitterID } });
+					}
+
 					foreach (var movie in clone.Miners[FML_INDEX].Movies)
 					{
 						AssignCostIdName(movie, miner.Movies);
@@ -576,7 +591,7 @@ namespace MoviePicker.WebApp.Models
 
 					if (found != null && found.WeekendEnding == fmlMovie.WeekendEnding)
 					{
-						fmlMovie.Earnings = found.EarningsBase;		// DON'T assign the bonus (if there is one).
+						fmlMovie.Earnings = found.EarningsBase;     // DON'T assign the bonus (if there is one).
 					}
 				}
 			}

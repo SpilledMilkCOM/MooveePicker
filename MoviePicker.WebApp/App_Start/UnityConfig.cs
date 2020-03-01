@@ -18,6 +18,8 @@ using SM.COMS.Models.Interfaces;
 using SM.COMS.Models;
 using SM.COMS.Utilities;
 using SM.COMS.Utilities.Interfaces;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace MoviePicker.WebApp
 {
@@ -60,12 +62,16 @@ namespace MoviePicker.WebApp
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
 
+            var appInsightsKey = ConfigurationManager.AppSettings["AppInsightsInstrumentationKey"];
+
+            container.RegisterSingleton<TelemetryClient>(new InjectionConstructor(new TelemetryConfiguration(appInsightsKey)));
+
             // Initialize the Send Grid key to send email.
             var sendGridKey = ConfigurationManager.AppSettings["SendGridKey"];
             var sendGridTo = ConfigurationManager.AppSettings["SendGridTo"];
 
             container.RegisterType<IMailModel, MailModel>();
-            container.RegisterType<IMailUtility, MailUtil>(new InjectionConstructor(sendGridKey, sendGridTo));
+            container.RegisterType<IMailUtility, MailUtil>(new InjectionConstructor(sendGridKey, sendGridTo, container.Resolve<TelemetryClient>()));
 
             // Understanding Lifetime Managers
             // https://msdn.microsoft.com/en-us/library/ff660872(v=pandp.20).aspx
@@ -74,7 +80,9 @@ namespace MoviePicker.WebApp
             // Inject "true" for the constructor because we want this filled with data.
 
             container.RegisterType<IMinerModel, MinerModel>(new ContainerControlledLifetimeManager()		// Effectively a singleton.
-                    , new InjectionConstructor(true, container.Resolve<IMailUtility>()));
+                    , new InjectionConstructor(true
+                            , container.Resolve<IMailUtility>()
+                            , container.Resolve<TelemetryClient>()));
 
 			// Each request will create a new IndexViewModel (PerThreadLifetimeManager)
 
