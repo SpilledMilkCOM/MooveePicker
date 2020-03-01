@@ -20,6 +20,8 @@ using SM.COMS.Utilities;
 using SM.COMS.Utilities.Interfaces;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
+using System.Collections.Generic;
+using Microsoft.ApplicationInsights.DataContracts;
 
 namespace MoviePicker.WebApp
 {
@@ -65,6 +67,10 @@ namespace MoviePicker.WebApp
             var appInsightsKey = ConfigurationManager.AppSettings["AppInsightsInstrumentationKey"];
 
             container.RegisterSingleton<TelemetryClient>(new InjectionConstructor(new TelemetryConfiguration(appInsightsKey)));
+
+            var appInsights = container.Resolve<TelemetryClient>();
+
+            appInsights.TrackTrace("Application Insights TelemetryClient registered with Unity IoC Container.", SeverityLevel.Information);
 
             // Initialize the Send Grid key to send email.
             var sendGridKey = ConfigurationManager.AppSettings["SendGridKey"];

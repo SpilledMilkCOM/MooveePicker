@@ -443,6 +443,17 @@ namespace MoviePicker.WebApp.Models
 
 			result.Add(new MineBoxOfficeMojo(MovieDateUtil.LastSunday(MovieDateUtil.GameSunday().AddDays(-1))));
 
+			var properties = new Dictionary<string, string>();
+			var index = 0;
+
+			foreach (var miner in result)
+			{
+				properties.Add($"miner{index:00}Name", miner.Name);
+				index++;
+			}
+
+			_telemetryClient.TrackTrace($"Constructed Miners", SeverityLevel.Information, properties);
+
 			return result;
 		}
 
@@ -690,7 +701,9 @@ namespace MoviePicker.WebApp.Models
 			List<IMovie> baseList = null;
 			List<IMovie> compoundMovies = null;
 
-			// !!!!! FML Base list is first !!!!! 
+			// !!!!! FML Base list is first !!!!!
+
+			_telemetryClient.TrackTrace($"Loading Miner", SeverityLevel.Information, new Dictionary<string, string> { { "name", miners.First().Name } });
 
 			((ICache)miners.First()).Load();
 			baseList = miners.First().Movies;
@@ -703,6 +716,8 @@ namespace MoviePicker.WebApp.Models
 
 			if (containsEstimates)
 			{
+				_telemetryClient.TrackTrace($"Loading Miner", SeverityLevel.Information, new Dictionary<string, string> { { "name", "Box Office Mojo Estimates" } });
+
 				LoadBoxOfficeMojoEstimates(miners.First());
 			}
 
@@ -718,6 +733,8 @@ namespace MoviePicker.WebApp.Models
 
 				if (minerTodd != null)
 				{
+					_telemetryClient.TrackTrace($"Loading Miner", SeverityLevel.Information, new Dictionary<string, string> { { "name", minerTodd.Name } });
+
 					((ICache)minerTodd).Load();
 
 					compoundMovies = CompoundMovies(minerTodd.Movies);
@@ -747,6 +764,8 @@ namespace MoviePicker.WebApp.Models
 
 						if (miner.OkToMine)
 						{
+							_telemetryClient.TrackTrace($"Loading Miner", SeverityLevel.Information, new Dictionary<string, string> { { "name", miner.Name } });
+
 							((ICache)miner).Load();
 
 							movieList = miner.Movies;
@@ -801,6 +820,8 @@ namespace MoviePicker.WebApp.Models
 			// Mine my/custom movies LAST because they are based on all of the other miners.
 
 			miners.ToList()[MY_INDEX].Mine();
+
+			_telemetryClient.TrackTrace($"Finished Loading Miners", SeverityLevel.Information);
 
 			return result;
 		}
