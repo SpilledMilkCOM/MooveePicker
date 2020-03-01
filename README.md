@@ -56,7 +56,7 @@ The current defaults that I use are on the [About](http://mooveepicker.com/home/
   * `.sort()` on arrays (ascending/descending)
   * `.slice(0)` to make a shallow clone of array objects.
 * I didn't know that hsl() was a thing in CSS (pretty cool)
-* More about Bootstrap
+* More about **Bootstrap**
   * Columns within columns.
   * Grids with headers which switch to labels in mobile view.
 * Twitter
@@ -64,13 +64,14 @@ The current defaults that I use are on the [About](http://mooveepicker.com/home/
   * [Emoji's](https://www.piliapp.com/twitter-symbols/) :smiley:
 * Phone browsers are weird.
 * Browsers support PNG file format as a "[favicon](https://en.wikipedia.org/wiki/Favicon)" (don't need the old ICO file anymore - YAY!)
-* How to add Application Insights to monitor the web app.
+* How to add **Azure Application Insights** to monitor the web app.
 * How to add Adsterra.com ads (removed them due to ads that take over your browser - NOT GOOD)
-* More about [Open Graph](http://ogp.me/) Facebook's standard for web page metadata.
-* Kusto Query Language (KQL) queries for Azure Application Insights logs.
+* More about **[Open Graph](http://ogp.me/)** Facebook's standard for web page metadata.
+* **Kusto Query Language** (KQL) queries for Azure Application Insights logs.
   * A *GREAT* training reference: [Kusto Query Language (KQL) from Scratch](https://app.pluralsight.com/course-player?clipId=b9fc66c1-8f47-4d14-af5f-a6758b86ff2f)
-* Send email using [SendGrid ](https://sendgrid.com/) since there's no SMTP Server for an Azure Application
+* Send serverless email using [SendGrid ](https://sendgrid.com/) since there's no SMTP Server for an Azure Application
     (unless you have a virtual machine for it).
+* Using **Application Insights `TelemetryClient`** to call `TrackTrace()` and send custom messages to the `traces` log.
 
 ##### Azure Notes
 * Application Settings
