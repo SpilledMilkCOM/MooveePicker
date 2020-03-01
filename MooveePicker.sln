@@ -57,6 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApplicationInsights", "Appl
 		KQL\Counts.kql = KQL\Counts.kql
 		KQL\Dependencies.kql = KQL\Dependencies.kql
 		KQL\RequestLocations.kql = KQL\RequestLocations.kql
+		KQL\Traces.kql = KQL\Traces.kql
 	EndProjectSection
 EndProject
 Global

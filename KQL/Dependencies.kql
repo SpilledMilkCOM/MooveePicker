@@ -2,7 +2,7 @@
 // REF: https://docs.microsoft.com/en-us/azure/kusto/query/
 
 dependencies
-| where timestamp > ago(1d)
+| where timestamp > ago(10m)
     and type == "HTTP"
 | summarize targetCount=count() by target, operation_Name
 | order by targetCount desc 
@@ -16,8 +16,11 @@ dependencies
 dependencies
 | where timestamp > ago(20m)
 | order by timestamp desc 
+| extend ago=now() - timestamp
 | project timestamp
+, ago
 , operation_Name 
+, duration 
 , operation_SyntheticSource 
 , target
 , name

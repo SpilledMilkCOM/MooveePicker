@@ -1,0 +1,25 @@
+// FILE: Traces.kql
+// REF: https://docs.microsoft.com/en-us/azure/kusto/query/
+
+traces
+| extend ago=timestamp - now()
+| order by timestamp desc 
+| project ago, message, customDimensions, cloud_RoleInstance, client_City
+
+// Is there ANY NEW data?
+
+traces
+| where message startswith "Clone caused miner to reload"
+    and timestamp > ago(3d)
+| extend ago=timestamp - now()
+    , custom=parse_json(customDimensions) 
+| where custom.isNewData == "True"
+| order by timestamp 
+| project ago, message, custom.isNewData, customDimensions, cloud_RoleInstance, client_City 
+
+// Any email sent?
+
+traces
+| where timestamp > ago(7d)
+| search "Sending Email:"
+| limit 10
