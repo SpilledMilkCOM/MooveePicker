@@ -72,7 +72,7 @@
 		<div class="col-xs-6 col-sm-3">@string.Format("{0}", string.IsNullOrEmpty(miner.Error) ? "--" : miner.Error)</div>
 
 		<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Movie Count:</div>
-		<div class="col-xs-6 col-sm-2">@string.Format("{0}", miner.Movies.Count)</div>
+		<div class="col-xs-6 col-sm-2">@string.Format("{0}", miner.Movies?.Count)</div>
 
 		<div class="col-xs-6 hidden-sm hidden-md hidden-lg" style="font-weight: bold;">Last Update:</div>
 		<div class="col-xs-6 col-sm-2">@string.Format("{0}", ((ICache)miner)?.LastLoaded)</div>

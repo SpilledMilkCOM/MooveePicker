@@ -306,7 +306,7 @@ namespace MoviePicker.WebApp.Tests.Models
 
 		private MinerModel ConstructTest()
 		{
-			return new MinerModel(true, null);
+			return new MinerModel(true, null, null);
 		}
 
 		private List<int> CreateDefaultWeights()
