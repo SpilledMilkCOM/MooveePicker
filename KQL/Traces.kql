@@ -10,10 +10,10 @@ traces
 
 traces
 | where message startswith "Clone caused miner to reload"
-    and timestamp > ago(3d)
+    and timestamp > ago(4h)
 | extend ago=timestamp - now()
     , custom=parse_json(customDimensions) 
-| where custom.isNewData == "True"
+//| where custom.isNewData == "True"
 | order by timestamp 
 | project ago, message, custom.isNewData, customDimensions, cloud_RoleInstance, client_City 
 
