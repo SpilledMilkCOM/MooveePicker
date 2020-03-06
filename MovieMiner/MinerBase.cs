@@ -301,10 +301,18 @@ namespace MovieMiner
 
 			Load();
 
+			// Make sure for these fields, copy to the clone and clear it from "this"
+
 			if (CloneCausedReload)
 			{
 				clone.CloneCausedReload = true;
 				CloneCausedReload = false;
+			}
+
+			if (IsNewData)
+			{
+				clone.IsNewData = true;
+				IsNewData = false;
 			}
 
 			// Copy and fill in all of the base goodness.
