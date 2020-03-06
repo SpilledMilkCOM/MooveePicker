@@ -432,7 +432,7 @@ namespace MoviePicker.WebApp.Models
 				new MineBoxOfficePro(),
 				new MineBoxOfficeMojo(),
 				//new MineVisualRecreation(),
-				new MineCoupe { IsHidden = true },
+				new MineCoupe { IsHidden = true, OkToMine = false },
 				//new MineCulturedVultures(),
 				new MineBoxOfficeProphet(),
 				new MineBoxOfficeReport(),
