@@ -445,7 +445,7 @@ namespace MovieMiner
 		{
 			bool result = false;
 
-			if ((DateTime.Now > Expiration || Expiration == null) && !_isLoading)
+			if (OkToMine && (DateTime.Now > Expiration || Expiration == null) && !_isLoading)
 			{
 				lock (_isLoadingLock)
 				{
