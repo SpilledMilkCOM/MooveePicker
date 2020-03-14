@@ -558,6 +558,9 @@ namespace MoviePicker.WebApp.Models
 					// Only set this if there was data and there's no error.
 					miner.Error = "Old Data";
 					miner.ErrorDetail = $"The box office data is from the weekend ending {miner.Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString()}";
+
+					_telemetryClient.TrackTrace($"Old Data", SeverityLevel.Warning
+							, new Dictionary<string, string> { { "name", miner.Name }, { "errorDetail", miner.ErrorDetail } });
 				}
 
 				miner.Clear();
@@ -812,7 +815,8 @@ namespace MoviePicker.WebApp.Models
 					miner.Error = "Error";
 					miner.ErrorDetail = ex.Message;
 
-					//Logger.WriteLine($"EXCEPTION: Mining data for {miner.Name} -- {ex.Message}");
+					_telemetryClient.TrackTrace($"Load Error", SeverityLevel.Error
+							, new Dictionary<string, string> { { "name", miner.Name }, { "errorDetail", miner.ErrorDetail } });
 				}
 				//}
 			});
