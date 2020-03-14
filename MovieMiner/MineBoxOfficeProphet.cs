@@ -45,12 +45,15 @@ namespace MovieMiner
 
 			var nodes = doc.DocumentNode.SelectNodes("//body//a[contains(@href, 'http://www.boxofficeprophets.com/column')]");
 
-			foreach (var aNode in nodes)
+			if (nodes != null)
 			{
-				if (aNode.InnerText.Contains("Weekend Forecast"))
+				foreach (var aNode in nodes)
 				{
-					node = aNode;
-					break;
+					if (aNode.InnerText.Contains("Weekend Forecast"))
+					{
+						node = aNode;
+						break;
+					}
 				}
 			}
 

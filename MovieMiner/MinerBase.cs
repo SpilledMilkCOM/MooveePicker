@@ -267,6 +267,10 @@ namespace MovieMiner
 						{
 							Expiration = LastLoaded.Value.Add(CacheConfiguration.EmptyDuration);
 						}
+						else
+						{
+							Expiration = DateTime.Now.Add(CacheConfiguration.EmptyDuration);
+						}
 					}
 
 					lock (_isLoadingLock)
