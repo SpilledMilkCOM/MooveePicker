@@ -4,7 +4,7 @@
 traces
 | extend ago=timestamp - now()
 | order by timestamp desc 
-| project ago, message, customDimensions, cloud_RoleInstance, client_City
+| project ago, severityLevel, message, customDimensions, cloud_RoleInstance, client_City
 
 // Is there ANY NEW data?
 

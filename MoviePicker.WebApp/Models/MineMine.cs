@@ -28,6 +28,11 @@ namespace MovieMiner
 
 			Clone(result);
 
+			// The base Clone() sets OkToMine to false to prevent clones from reloading.
+			// This "miner" may "load" (recalculate based on the other miners) at any time.
+
+			result.OkToMine = true;	
+
 			// Since the movies are the same, but in a new list these movies need to be cloned so they can be overwritten and NOT overwrite the static miner.
 
 			var movies = new List<IMovie>();

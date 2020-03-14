@@ -248,7 +248,7 @@ namespace MovieMiner
 
 					// Mark the data "new" based on the weekend loaded, then an email can be sent out (to ME!)
 
-					IsNewData = weekendEnding != lastWeekendEnding;
+					IsNewData = lastWeekendEnding.HasValue && weekendEnding != lastWeekendEnding;
 				}
 				catch (Exception ex)
 				{
