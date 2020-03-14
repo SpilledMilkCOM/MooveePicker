@@ -25,7 +25,7 @@ namespace MoviePicker.WebApp.Utilities
 			NextCleanup = DateTime.Now;
 		}
 
-		public static TelemetryClient AppInsightsClient { get; set; }	// Ok to be static since this is a singleton.
+		public static TelemetryClient AppInsightsClient { get; set; }   // Ok to be static since this is a singleton.
 
 		private static DateTime NextCleanup { get; set; }
 
@@ -43,65 +43,74 @@ namespace MoviePicker.WebApp.Utilities
 
 			if (ShouldCleanup() && directoryPath != null)
 			{
-				var directory = $"{Path.GetDirectoryName(directoryPath)}{Path.DirectorySeparatorChar}";
-				var postersDeleted = 0;
-				var sharedDeleted = 0;
-				var tempPostersDeleted = 0;
-				var twitterDeleted = 0;
-
-				// Loop through the MoviePosters.
-
-				foreach (var file in Directory.GetFiles(directory, $"{MOVIE_POSTER_PREFIX}*"))
+				try
 				{
-					if (file.IndexOf(".temp") > 0)
+					var directory = $"{Path.GetDirectoryName(directoryPath)}{Path.DirectorySeparatorChar}";
+					var postersDeleted = 0;
+					var sharedDeleted = 0;
+					var tempPostersDeleted = 0;
+					var twitterDeleted = 0;
+
+					// Loop through the MoviePosters.
+
+					foreach (var file in Directory.GetFiles(directory, $"{MOVIE_POSTER_PREFIX}*"))
 					{
-						// Just delete the temp files each possible pass.
+						if (file.IndexOf(".temp") > 0)
+						{
+							// Just delete the temp files each possible pass.
 
-						File.Delete(file);
+							File.Delete(file);
 
-						tempPostersDeleted++;
+							tempPostersDeleted++;
+						}
+						else if (File.GetCreationTime(file) < DateTime.Now.AddDays(MOVIE_EXPIRATION_DAYS * -1))
+						{
+							File.Delete(file);
+
+							postersDeleted++;
+						}
 					}
-					else if (File.GetCreationTime(file) < DateTime.Now.AddDays(MOVIE_EXPIRATION_DAYS * -1))
+
+					// Loop through the Shared images.
+
+					foreach (var file in Directory.GetFiles(directory, "Shared_*"))
 					{
-						File.Delete(file);
+						if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES * -1))
+						{
+							File.Delete(file);
 
-						postersDeleted++;
+							sharedDeleted++;
+						}
 					}
-				}
 
-				// Loop through the Shared images.
+					// Loop through the Twitter images.
 
-				foreach (var file in Directory.GetFiles(directory, "Shared_*"))
-				{
-					if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES * -1))
+					foreach (var file in Directory.GetFiles(directory, "Twitter_*"))
 					{
-						File.Delete(file);
+						if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(TWITTER_EXPIRATION_MINUTES * -1))
+						{
+							File.Delete(file);
 
-						sharedDeleted++;
+							twitterDeleted++;
+						}
 					}
-				}
 
-				// Loop through the Twitter images.
+					NextCleanup = DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES);
 
-				foreach (var file in Directory.GetFiles(directory, "Twitter_*"))
-				{
-					if (File.GetCreationTime(file) < DateTime.Now.AddMinutes(TWITTER_EXPIRATION_MINUTES * -1))
-					{
-						File.Delete(file);
-
-						twitterDeleted++;
-					}
-				}
-
-				NextCleanup = DateTime.Now.AddMinutes(SHARED_EXPIRATION_MINUTES);
-
-				AppInsightsClient?.TrackTrace("Cleanup Files: ", SeverityLevel.Information
-					, new Dictionary<string, string> {
+					AppInsightsClient?.TrackTrace("Cleanup Files: ", SeverityLevel.Information
+						, new Dictionary<string, string> {
 							{ "tempPostersDeleted", tempPostersDeleted.ToString() }
 						, { "postersDeleted", postersDeleted.ToString() }
 						, { "sharedDeleted", sharedDeleted.ToString() }
 						, { "twitterDeleted", twitterDeleted.ToString() }
 						, { "NextCleanup", NextCleanup.ToString() } });
+
+				}
+				finally
+				{
+					// Make sure this gets set back NO MATTER WHAT, otherwise it will NEVER clean up!!
+					_isCleaningUp = false;
+				}
 			}
 		}
 
