@@ -5,12 +5,12 @@ namespace MoviePicker.Cognitive
 {
 	public interface IComputerVision
 	{
-		string Analyze(string fileName
+		string Analyze(string posterUrl
 					, List<VisualFeature> visualFeatures = null
 					, List<Detail> details = null
 					, Language language = Language.undefined);
 
-		string Describe(string fileName
+		string Describe(string posterUrl
 					, int maxCandidates = 1
 					, Language language = Language.undefined);
 
