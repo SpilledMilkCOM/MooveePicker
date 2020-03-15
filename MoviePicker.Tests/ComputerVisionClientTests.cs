@@ -1,7 +1,6 @@
 ﻿using Microsoft.Azure.CognitiveServices.Vision.ComputerVision;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft;
 using Newtonsoft.Json;
 using SM.Common.Tests;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ namespace MoviePicker.Tests
 	[ExcludeFromCodeCoverage]
 	[DeploymentItem("app.config")]
 	[DeploymentItem("appSettings.secret.config")]
-	[DeploymentItem("Images\\MoviePoster_dora-and-the-lost-city-of-gold-2019-poster-2.temp.jpg")]
 	public class ComputerVisionClientTests : TestBase
 	{
 		private const string IMAGES_FOLDER = "Images";
@@ -37,7 +35,7 @@ namespace MoviePicker.Tests
 		public static void InitializeBeforeAllTests(TestContext context)
 		{
 			var apiKey = ConfigurationManager.AppSettings["APIKey"];
-			var disposeHttpClient = true;       // We don't need to deal with that nonsense.
+			var disposeHttpClient = false;       // Can't run all tests if the client disposes of the HttpClient
 
 			_unity = new UnityContainer();
 
@@ -45,7 +43,7 @@ namespace MoviePicker.Tests
 						  new InjectionConstructor(new ApiKeyServiceClientCredentials(apiKey), new HttpClient(), disposeHttpClient)
 						, new InjectionProperty("Endpoint", "https://southcentralus.api.cognitive.microsoft.com"));
 
-			_cwd = Directory.GetCurrentDirectory() + "\\..\\..\\..\\MoviePicker.Tests";
+			_cwd = Directory.GetCurrentDirectory() + $"{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}MoviePicker.Tests";
 		}
 
 		[TestMethod, TestCategory("Integration")]
@@ -55,7 +53,10 @@ namespace MoviePicker.Tests
 			{
 				using (var stream = new FileStream($"{ImagesFolder}MoviePoster_dora-and-the-lost-city-of-gold-2019-poster-2.temp.jpg", FileMode.Open))
 				{
-					var imageAnalysisTask = test.AnalyzeImageInStreamAsync(stream);
+					var visualFeatures = new List<VisualFeatureTypes>() { VisualFeatureTypes.Adult, VisualFeatureTypes.Description, VisualFeatureTypes.Faces };
+					var details = new List<Details> { Details.Celebrities };
+
+					var imageAnalysisTask = test.AnalyzeImageInStreamAsync(stream, visualFeatures, details);
 
 					// Maybe write out entire object as JSON.
 
@@ -73,7 +74,7 @@ namespace MoviePicker.Tests
 			{
 				using (var stream = new FileStream($"{ImagesFolder}MoviePoster_fast-furious-presents-hobbs-shaw-2019-poster-2.temp.jpg", FileMode.Open))
 				{
-					var visualFeatures = new List<VisualFeatureTypes>() { VisualFeatureTypes.Faces };
+					var visualFeatures = new List<VisualFeatureTypes>() { VisualFeatureTypes.Adult, VisualFeatureTypes.Description, VisualFeatureTypes.Faces };
 					var details = new List<Details> { Details.Celebrities };
 
 					var imageAnalysisTask = test.AnalyzeImageInStreamAsync(stream, visualFeatures, details);
@@ -86,7 +87,6 @@ namespace MoviePicker.Tests
 				}
 			}
 		}
-
 
 		[TestMethod, TestCategory("Integration")]
 		public void ComputerVision_Analyze_OnceUponATime()
