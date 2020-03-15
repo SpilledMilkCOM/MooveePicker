@@ -559,8 +559,13 @@ namespace MoviePicker.WebApp.Models
 					miner.Error = "Old Data";
 					miner.ErrorDetail = $"The box office data is from the weekend ending {miner.Movies?.FirstOrDefault()?.WeekendEnding.ToShortDateString()}";
 
-					_telemetryClient.TrackTrace($"Old Data", SeverityLevel.Warning
-							, new Dictionary<string, string> { { "name", miner.Name }, { "errorDetail", miner.ErrorDetail } });
+					if (miner.CloneCausedReload)
+					{
+						// Only log this if the miner loaded (not EVERY time)
+
+						_telemetryClient.TrackTrace($"Old Data", SeverityLevel.Warning
+								, new Dictionary<string, string> { { "name", miner.Name }, { "errorDetail", miner.ErrorDetail } });
+					}
 				}
 
 				miner.Clear();
