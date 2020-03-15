@@ -43,9 +43,9 @@ namespace MoviePicker.Tests
 
 			//var actual = test.Analyze(TEST_POSTER_SINGLE_FACE);
 
-			Assert.IsNotNull(actual);
+			//Assert.IsNotNull(actual);
 
-			Logger.WriteLine(actual);
+			//Logger.WriteLine(actual);
 		}
 
 		//----==== PRIVATE ====---------------------------------------------------------
