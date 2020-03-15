@@ -18,6 +18,9 @@ namespace MoviePicker.Tests
 	[DeploymentItem("appSettings.secret.config")]
 	public class ComputerVisionTests : TestBase
 	{
+		private string TEST_POSTER_SINGLE_FACE = "https://mooveepicker.com/Images/MoviePoster_p17331910_p_v12_ab.jpg";      // Ben Afflec
+		private string TEST_POSTER_MULTIPLE_FACES = "https://mooveepicker.com/Images/MoviePoster_p12028834_p_v12_ad.jpg";   // Bad Boys
+
 		// Unity Reference: https://msdn.microsoft.com/en-us/library/ff648211.aspx
 		private static IUnityContainer _unity;
 
@@ -33,7 +36,7 @@ namespace MoviePicker.Tests
 
 			_unity.RegisterType<ICognitiveConfiguration, CognitiveConfiguration>();
 			_unity.RegisterType<IComputerVision, ComputerVision>();
-			_unity.RegisterType<IRestClient, RestClient>(new InjectionProperty("APIKey", apiKey) );
+			_unity.RegisterType<IRestClient, RestClient>(new InjectionProperty("APIKey", apiKey));
 		}
 
 		[TestMethod, TestCategory("Integration")]
@@ -51,9 +54,11 @@ namespace MoviePicker.Tests
 		{
 			var test = ConstructTestObject();
 
-			var actual = test.Analyze("https://mooveepicker.com/Images/MoviePoster_p16311223_p_v12_ac.jpg");
+			var actual = test.Analyze(TEST_POSTER_SINGLE_FACE);
 
 			Assert.IsNotNull(actual);
+
+			Logger.WriteLine(actual);
 		}
 
 		[TestMethod, TestCategory("Integration")]
@@ -63,23 +68,7 @@ namespace MoviePicker.Tests
 			var details = new List<Detail> { Detail.Celebrities };
 			var test = ConstructTestObject();
 
-			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360"
-									, visualFeatures, details);
-
-			Assert.IsNotNull(actual);
-
-			Logger.WriteLine(actual);
-		}
-
-		[TestMethod, TestCategory("Integration")]
-		public void ComputerVision_Analyze_WithCelebrityFaces_Dora()
-		{
-			var visualFeatures = new List<VisualFeature> { VisualFeature.Faces };
-			var details = new List<Detail> { Detail.Celebrities };
-			var test = ConstructTestObject();
-
-			var actual = test.Analyze("https://images.noovie.com/posters/movies/137736/standard/dora-and-the-lost-city-of-gold-2019-poster-2.jpg?1562688856"
-									, visualFeatures, details);
+			var actual = test.Analyze(TEST_POSTER_MULTIPLE_FACES, visualFeatures, details);
 
 			Assert.IsNotNull(actual);
 
@@ -92,7 +81,7 @@ namespace MoviePicker.Tests
 			var visualFeatures = new List<VisualFeature> { VisualFeature.Faces };
 			var test = ConstructTestObject();
 
-			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360", visualFeatures);
+			var actual = test.Analyze(TEST_POSTER_MULTIPLE_FACES, visualFeatures);
 
 			Assert.IsNotNull(actual);
 
@@ -105,7 +94,7 @@ namespace MoviePicker.Tests
 			var visualFeatures = new List<VisualFeature> { VisualFeature.Adult, VisualFeature.Description, VisualFeature.Faces };
 			var test = ConstructTestObject();
 
-			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360", visualFeatures);
+			var actual = test.Analyze(TEST_POSTER_MULTIPLE_FACES, visualFeatures);
 
 			Assert.IsNotNull(actual);
 
@@ -118,8 +107,7 @@ namespace MoviePicker.Tests
 			var visualFeatures = new List<VisualFeature> { VisualFeature.Tags };
 			var test = ConstructTestObject();
 
-			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360"
-							, visualFeatures);
+			var actual = test.Analyze(TEST_POSTER_MULTIPLE_FACES, visualFeatures);
 
 			Assert.IsNotNull(actual);
 
@@ -132,8 +120,7 @@ namespace MoviePicker.Tests
 			var visualFeatures = new List<VisualFeature> { VisualFeature.Tags };
 			var test = ConstructTestObject();
 
-			var actual = test.Analyze("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360"
-							, visualFeatures, language: Language.es);
+			var actual = test.Analyze(TEST_POSTER_MULTIPLE_FACES, visualFeatures, language: Language.es);
 
 			Assert.IsNotNull(actual);
 
@@ -145,7 +132,19 @@ namespace MoviePicker.Tests
 		{
 			var test = ConstructTestObject();
 
-			var actual = test.Describe("https://images.noovie.com/posters/movies/124620/standard/fast-furious-presents-hobbs-shaw-2019-poster-2.jpg?1561742360");
+			var actual = test.Describe(TEST_POSTER_SINGLE_FACE);
+
+			Assert.IsNotNull(actual);
+
+			Logger.WriteLine(actual);
+		}
+
+		[TestMethod, TestCategory("Integration")]
+		public void ComputerVision_Describe_Multiple()
+		{
+			var test = ConstructTestObject();
+
+			var actual = test.Describe(TEST_POSTER_MULTIPLE_FACES);
 
 			Assert.IsNotNull(actual);
 

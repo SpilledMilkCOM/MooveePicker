@@ -12,6 +12,7 @@ namespace MoviePicker.Cognitive
 	/// </summary>
 	public class ComputerVision : IComputerVision
 	{
+		private const string BASE_ADDRESS = "https://southcentralus.api.cognitive.microsoft.com";
 		private const string BASE_METHOD = "vision";
 		private const string API_VERSION = "V2.0";
 		private const string HEADER_KEY = "Ocp-Apim-Subscription-Key";
@@ -24,7 +25,7 @@ namespace MoviePicker.Cognitive
 			_configuration = configuration;
 			_restClient = restClient;
 			_restClient.AddHeaders = AddHeaders;
-			_restClient.BaseAddress = "https://southcentralus.api.cognitive.microsoft.com";
+			_restClient.BaseAddress = BASE_ADDRESS;
 		}
 
 		public string Analyze(string posterUrl, List<VisualFeature> visualFeatures = null, List<Detail> details = null, Language language = Language.undefined)
