@@ -52,33 +52,49 @@
 </head>
 
 <body>
-	<div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
+	<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
 
-				<a class="navbar-brand" href="@Url.Action("Index", "Home")">
-					<span>
-						<img src="~/Images/Moovee Picker Cow32x32.png" alt="Moovee Picker Logo" width="32" height="32" />
-						&nbsp;&nbsp;@Constants.APPLICATION_NAME
-					</span>
-				</a>
-			</div>
+		@*Do NOT use @Html.Action() or you WILL get a "stack overflow" error*@
 
-			<div class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<li>@Html.ActionLink("Home", "Index", "Home", ViewUtility.RequestParamsToDynamic(Request), null)</li>
-					<li>@Html.ActionLink("Help", "About", "LowMem", protocol: null, hostName: null, fragment: "help", routeValues: ViewUtility.RequestParamsToDynamic(Request), htmlAttributes: null)</li>
-					<li>@Html.ActionLink("About", "About", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
-					<li>@Html.ActionLink("Donate", "Donate", "LowMem", ViewUtility.RequestParamsToDynamic(Request), null)</li>
-				</ul>
-			</div>
+		<a class="navbar-brand" href="~/Home">
+			<span>
+				<img src="~/Images/Moovee Picker Cow32x32.png" alt="Moovee Picker Logo" style="height: 2em;" />
+				&nbsp;&nbsp;@Constants.APPLICATION_NAME
+			</span>
+		</a>
+
+		@*
+			For WHATEVER reason the JS was not running for "collapse"
+			When using this method I don't believe that I need any of the other data attributes.
+		*@
+
+		<button class="navbar-toggler" type="button" onclick="$('.collapse').collapse()"
+				data-toggle="collapse" data-target="#mainNavBar"
+				aria-controls="mainNavBar" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="navbar-collapse collapse" id="mainNavBar">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					@Html.ActionLink("Home", "Index", "Home", ViewUtility.RequestParamsToDynamic(Request)
+						, new { @class = string.Format("nav-link{0}", ViewBag.Title == "Home" ? " active" : string.Empty) })
+				</li>
+				<li class="nav-item">
+					@Html.ActionLink("Help", "About", "LowMem", protocol: null, hostName: null, fragment: "help", routeValues: ViewUtility.RequestParamsToDynamic(Request)
+							, htmlAttributes: new { @class = string.Format("nav-link{0}", ViewBag.Title == "Help" ? " active" : string.Empty) })
+				</li>
+				<li class="nav-item">
+					@Html.ActionLink("About", "About", "LowMem", ViewUtility.RequestParamsToDynamic(Request)
+							, new { @class = string.Format("nav-link{0}", ViewBag.Title == "About" ? " active" : string.Empty) })
+				</li>
+				<li class="nav-item">
+					@Html.ActionLink("Donate", "Donate", "LowMem", ViewUtility.RequestParamsToDynamic(Request)
+							, new { @class = string.Format("nav-link{0}", ViewBag.Title == "Donate" ? " active" : string.Empty) })
+				</li>
+			</ul>
 		</div>
-	</div>
+	</nav>
 
 	<div class="container-fluid body-content">
 		@RenderBody()
