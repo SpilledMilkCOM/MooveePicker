@@ -1,24 +1,4 @@
-﻿body {
-	padding-top: 50px;
-	padding-bottom: 20px;
-}
-
-/* Set padding to keep content from hitting the edges */
-.body-content {
-	padding-left: 15px;
-	padding-right: 15px;
-}
-
-.chart-responsive {
-	width: 100%;
-	min-height: 200px;
-}
-
-.chart-responsive-pie {
-	width: 100%;
-	min-height: 300px;
-}
-
+﻿
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -31,6 +11,25 @@ input,
 select,
 textarea {
 	max-width: 280px;
+}
+
+/* Custom CSS below ==================================== Default CSS above */
+
+.chart-responsive {
+	width: 100%;
+	min-height: 200px;
+}
+
+.chart-responsive-pie {
+	width: 100%;
+	min-height: 300px;
+}
+
+/* The spacing between the top of the navbar and the footer. */
+
+.container-main {
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 
 /* Put stuff in this class style for later use. */

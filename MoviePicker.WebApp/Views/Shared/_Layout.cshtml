@@ -96,36 +96,36 @@
 		</div>
 	</nav>
 
-	<div class="container-fluid body-content">
+	<main role="main">
 		@RenderBody()
-		<hr />
-		<footer>
-			<div class="row">
-				<div class="col-xs-6 col-sm-3">
-					&copy; 2017-@DateTime.Now.Year - <a href="http://SpilledMilk.com" target="_blank">@Constants.COMPANY_NAME</a>
-				</div>
+	</main>
 
-				<div class="col-xs-6 col-sm-1">
-					ver:&nbsp;<a href="https://github.com/SpilledMilkCOM/MooveePicker/commits/master" target="_blank">@ViewUtility.Version()</a>
-				</div>
-
-				<div class="col-xs-6 col-sm-3 col-sm-offset-2">
-					<a href="https://twitter.com/SpilledMilkCOM" class="twitter-follow-button" data-show-count="true">Follow @@SpilledMilkCOM</a>
-				</div>
-
-				<div class="col-sm-2 col-sm-offset-1">
-					@if (string.IsNullOrEmpty(ViewBag.TwitterTweetText))
-					{
-						<a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a>
-					}
-					else
-					{
-						<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=@ViewBag.TwitterTweetText">Tweet</a>
-					}
-				</div>
+	<footer>
+		<div class="row">
+			<div class="col-8 col-md-4">
+				&copy; 2017-@DateTime.Now.Year - <a href="http://SpilledMilk.com" target="_blank">@Constants.COMPANY_NAME</a>
 			</div>
-		</footer>
-	</div>
+
+			<div class="col-4 col-md-3">
+				ver:&nbsp;<a href="https://github.com/SpilledMilkCOM/MooveePicker/commits/master" target="_blank">@ViewUtility.Version()</a>
+			</div>
+
+			<div class="col-8 col-md-4">
+				<a href="https://twitter.com/SpilledMilkCOM" class="twitter-follow-button" data-show-count="true">Follow @@SpilledMilkCOM</a>
+			</div>
+
+			<div class="col-4 col-md-1">
+				@if (string.IsNullOrEmpty(ViewBag.TwitterTweetText))
+				{
+					<a class="twitter-share-button" href="https://twitter.com/intent/tweet">Tweet</a>
+				}
+				else
+				{
+					<a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=@ViewBag.TwitterTweetText">Tweet</a>
+				}
+			</div>
+		</div>
+	</footer>
 
 	@Scripts.Render("~/bundles/jquery")
 	@Scripts.Render("~/bundles/bootstrap")
