@@ -32,6 +32,10 @@ textarea {
 	margin-bottom: 1em;
 }
 
+.icon-light {
+	color: white;
+}
+
 /* Put stuff in this class style for later use. */
 
 .movie-holding-pen {

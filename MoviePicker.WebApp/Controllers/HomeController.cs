@@ -606,18 +606,6 @@ namespace MoviePicker.WebApp.Controllers
 			return View(UpdatePicksViewModel(ConstructPicksViewModel()));
 		}
 
-		//[HttpGet]
-		//public ActionResult MorePicks()
-		//{
-		//	ParseViewRequest();
-
-		//	ControllerUtility.SetTwitterCard(ViewBag);
-
-		//	DownloadMoviePosters();
-
-		//	return View(ConstructMorePicksViewModel());
-		//}
-
 		[HttpGet]
 		public ActionResult ShareBonusOffPicks()
 		{

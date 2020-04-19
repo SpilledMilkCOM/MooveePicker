@@ -59,13 +59,13 @@
 					   onclick="navigateToExplicit('@string.Format("/Home/ExpertPicks?{0}", Request.QueryString)')"
 					   data-toggle="tooltip"
 					   data-placement="bottom"
-					   title="Experts League - Click to see the available picks by the experts..."><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
+					   title="Experts League - Click to see the available picks by the experts..."><span class="iconic iconic-medal icon-light" aria-hidden="true"></span></a>
 
 					<a class="btn btn-xs btn-info" style="margin-left: 10px;"
 					   onclick="clickCollapseTitle()"
 					   data-toggle="tooltip"
 					   data-placement="top"
-					   title="Collapse title area"><span class="glyphicon glyphicon-collapse-up" aria-hidden="true"></span></a>
+					   title="Collapse title area"><span class="iconic iconic-collapse-up icon-light" aria-hidden="true"></span></a>
 				</div>
 
 				<div class="hidden-xs col-xs-4 col-sm-pull-8" style="display: inline-block; float: none; vertical-align: middle !important;">
@@ -130,7 +130,7 @@
 				   onclick="clickShowTitle()"
 				   data-toggle="tooltip"
 				   data-placement="bottom"
-				   title="Show title area"><span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span></a>
+				   title="Show title area"><span class="iconic iconic-collapse-down icon-light" aria-hidden="true"></span></a>
 			</div>
 
 			<div class="clearfix"></div>
@@ -155,7 +155,7 @@
 								  title="The table below compares ALL of the movies to the MOST efficient one.
 								The Difference column is the dollar amount of gain, and the % Difference is just that; Difference divided the actual earnings (percentage gain).
 								The MOST efficient movie shows how much it would have to drop to match second place.">
-								<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+								<span class="iconic iconic-info icon-light" aria-hidden="true"></span>
 							</span>
 						</h4>
 
@@ -329,7 +329,7 @@
 							Theater Counts
 							<span class="btn btn-info btn-xs" style="font-size: large;" data-toggle="tooltip" data-placement="bottom"
 								  title="The table below contains theater counts and efficiencies ($$ / theater) as well as last week (where applicable).">
-								<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+								<span class="iconic iconic-info icon-light" aria-hidden="true"></span>
 							</span>
 						</h4>
 
@@ -514,7 +514,7 @@
 				<div class="btn btn-info btn-xs" style="font-size: small;" data-toggle="tooltip" data-placement="bottom"
 					 title="FYI: Did you know you can link directly to this website with your box office numbers? Look at the Help page under the API / Request Parameters section.
 					There is even a link to a BLOG post that explains how to do this.">
-					<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+					<span class="iconic iconic-info icon-light" aria-hidden="true"></span>
 				</div>
 			</div>
 
@@ -711,20 +711,20 @@
 														if (theaterDiff > 0)
 														{
 															<br />
-															<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
+															<span class="iconic iconic-chevron-top" aria-hidden="true" style="color: lawngreen;"></span>
 															@(movie.TheaterCount - lastWeek.TheaterCount)
 														}
 														else
 														{
 															<br />
-															<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
+															<span class="iconic iconic-chevron-bottom" aria-hidden="true" style="color: red;"></span>
 															@(lastWeek.TheaterCount - movie.TheaterCount)
 														}
 													}
 												</span>
 												}
 
-												<span class="glyphicon glyphicon-info-sign"
+												<span class="iconic iconic-info icon-light"
 													  aria-hidden="true"
 													  data-toggle="tooltip"
 													  data-placement="@((movieCount - 1) / 3 == 0 ? "bottom" : "top")"
@@ -733,7 +733,7 @@
 													  style="position: absolute; left: @infoIndent; top: 5px; color: white; cursor: pointer; border-radius: 5px; background: gray; opacity: 0.8">
 												</span>
 
-												<span class="glyphicon glyphicon-remove"
+												<span class="iconic iconic-x icon-light"
 													  aria-hidden="true"
 													  data-toggle="tooltip"
 													  data-placement="bottom"
@@ -790,7 +790,7 @@
 														  data-placement="top"
 														  title="Percentage of Weekend Total"
 														  style="position: absolute; left: 15px; top: -50px; color: dimgrey; background-color: lightskyblue">
-														<span class="glyphicon glyphicon-tasks" aria-hidden="true"
+														<span class="iconic iconic-list" aria-hidden="true"
 															  style="color: dimgrey;"></span>
 														<span id="@string.Format("{0}CompoundPct", boId)">@string.Format("{0:N1}%", customCompoundTotal > 0 ? value / customCompoundTotal * 100 : 0)</span>
 													</span>
@@ -805,13 +805,13 @@
 												</span>
 
 												<span id="@string.Format("{0}UpPct", boId)"
-													  class="glyphicon glyphicon-triangle-top"
+													  class="iconic iconic-arrow-thick-top-fill-large-acute"
 													  aria-hidden="true"
 													  style="position: absolute; left: 130px; top: -30px; color: white; cursor: pointer; box-shadow: 2px 4px 8px 0px black;"
 													  onclick="clickChangePercent(this, @movie.ControlId, 1)">
 												</span>
 												<span id="@string.Format("{0}DownPct", boId)"
-													  class="glyphicon glyphicon-triangle-bottom"
+													  class="iconic iconic-arrow-thick-bottom-fill-large-acute"
 													  aria-hidden="true"
 													  style="position: absolute; left: 130px; top: -17px; color: white; cursor: pointer; box-shadow: 2px 4px 8px 0px black;"
 													  onclick="clickChangePercent(this, @movie.ControlId, -1)">
@@ -861,18 +861,18 @@
 									</td>
 									<td>
 										<span id="compoundUpId"
-											  class="glyphicon glyphicon-triangle-bottom"
+											  class="iconic iconic-arrow-thick-bottom-fill-large-acute"
 											  aria-hidden="true"
 											  onclick="clickChangeCompoundPercent(-1)"
 											  style="cursor: pointer; margin-left: 10px;">
 										</span>
 										<span id="compoundDownId"
-											  class="glyphicon glyphicon-triangle-top"
+											  class="iconic iconic-arrow-thick-top-fill-large-acute"
 											  aria-hidden="true"
 											  onclick="clickChangeCompoundPercent(1)"
 											  style="cursor: pointer; margin-left: 5px;">
 										</span>
-										<span class="glyphicon glyphicon-tasks" aria-hidden="true"
+										<span class="iconi iconi-list" aria-hidden="true"
 											  data-toggle="tooltip"
 											  data-placement="bottom"
 											  data-template='<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner" style="min-width: 200px; white-space: pre-wrap;"></div><div class="tooltip-extra">@toolTipBuilder.ToString()</div></div>'

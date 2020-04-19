@@ -157,7 +157,7 @@
 				 title="The following table is an aggregation of data for the &quot;play&quot; week ending @weekendEnding for the Fantasy Movie League website.
 						Currently the site aggregates box office data from Todd Thatcher's post on FML, Box Office Pro, Box Office Mojo, Box Office Report, Culture Vulture, and Box Office Prophet.
 						These are the &quot;experts&quot; in the field.  YOUR job is to determine who you trust and by how much and apply a weighting mechanism before you make your game picks.">
-				<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+				<span class="iconic iconic-info icon-light" aria-hidden="true"></span>
 			</div>
 		</h2>
 
@@ -213,7 +213,7 @@
 			<div class="btn btn-info btn-xs" style="font-size: small;" data-toggle="tooltip" data-placement="bottom"
 				 title="FYI: Did you know you can link directly to this website with your box office numbers? Look at the Help page under the API / Request Parameters section.
 					There is even a link to a BLOG post that explains how to do this.">
-				<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+				<span class="iconic iconic-info icon-light" aria-hidden="true"></span>
 			</div>
 		</div>
 	</div>
@@ -439,7 +439,7 @@
 											{
 												<td>&nbsp;&nbsp;&nbsp;</td>
 												<td>
-													<span class="glyphicon glyphicon-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+													<span class="iconic iconic-list icon-light" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
 														  style="color: grey;"
 														  title="Percentage of the total weekend box office dollars for compound movie."></span>
 													&nbsp;&nbsp;
@@ -457,7 +457,7 @@
 									{
 										var buxPercent = $"{movie.Cost / (decimal)compoundBuxTotal * 100:N1}%";
 
-										<span class="glyphicon glyphicon-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+										<span class="iconic iconic-list icon-light" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
 											  title="Percentage of the total BUX for compound movie."></span>
 										@buxPercent<br />
 									}
@@ -473,7 +473,7 @@
 													  data-placement="top"
 													  title="Theater Count">
 													@movie.TheaterCount
-													<span class="glyphicon glyphicon-chevron-up" aria-hidden="true" style="color: lawngreen;"></span>
+													<span class="iconic iconic-chevron-top" aria-hidden="true" style="color: lawngreen;"></span>
 													@(movie.TheaterCount - lastWeek.TheaterCount)
 												</span>
 											}
@@ -484,7 +484,7 @@
 													  data-placement="top"
 													  title="Theater Count">
 													@movie.TheaterCount
-													<span class="glyphicon glyphicon-chevron-down" aria-hidden="true" style="color: red;"></span>
+													<span class="iconic iconic-chevron-bottom" aria-hidden="true" style="color: red;"></span>
 													@(lastWeek.TheaterCount - movie.TheaterCount)
 												</span>
 											}
@@ -523,7 +523,7 @@
 												var moviePercent = string.Format("{0:N2}%", minerMovie?.Earnings / miner.CompoundTotal * 100);
 
 												<br />
-												<span class="glyphicon glyphicon-tasks" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
+												<span class="iconic iconic-list icon-light" aria-hidden="true" data-toggle="tooltip" data-placement="bottom"
 													  style="color: grey;"
 													  title="Percentage of the total weekend box office dollars for compound movie."></span>
 												@moviePercent
